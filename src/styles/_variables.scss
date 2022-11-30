@@ -1,0 +1,41 @@
+// Variable overrides
+
+$nav-link-color: #000;
+$nav-link-hover-color: #000;
+
+$badge-padding-x: 0.85em;
+$badge-padding-y: 0.85em;
+
+$coreui-icons-font-path: "~@coreui/icons/fonts" !default;
+
+$primary-dark: #9ba32f !default;
+$primary-base: #bbc536 !default;
+$primary-50: #dde28c !default;
+$primary-25: #e3e5c3 !default;
+
+$secondary-dark: #353535 !default;
+$secondary-base: #646464 !default;
+$secondary-50: #828080 !default;
+$secondary-25: #b2b2b2 !default;
+
+$success-dark: #1b9e3e !default;
+$success-base: #2eb85c !default;
+$success-50: #96dbad !default;
+$success-25: #cbedd6 !default;
+
+$info-dark: #9ba32f !default;
+$info-base: #bbc536 !default;
+$info-50: #dde28c !default;
+$info-25: #e3e5c3 !default;
+
+$warning-dark: #f6960b !default;
+$warning-base: #f9b115 !default;
+$warning-50: #fcd88a !default;
+$warning-25: #feecc5 !default;
+
+$danger-dark: #d93737 !default;
+$danger-base: #e55353 !default;
+$danger-50: #f2a9a9 !default;
+$danger-25: #f9d4d4 !default;
+
+$sidebar-bg: #666262;

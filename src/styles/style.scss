@@ -1,0 +1,23 @@
+// If you want to override variables do it here
+@import "variables";
+
+$enable-ltr: true;
+$enable-rtl: true;
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+// Import Chart.js Tooltips
+@import "~@coreui/chartjs/scss/tooltips";
+
+// @import "~bootstrap/scss/bootstrap.scss";
+
+// Import IconsCoreIU
+@import "~@coreui/icons/scss/free";
+
+// Import onboarding
+@import "v-onboarding/dist/style.css";
+
+@import "layout";
+
+// If you want to add something do it here
+@import "custom";
