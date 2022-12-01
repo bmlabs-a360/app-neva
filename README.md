@@ -1,4 +1,4 @@
-# app-backoffice
+# app-neva
 
 ## Project setup
 

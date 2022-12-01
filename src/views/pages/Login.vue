@@ -105,8 +105,18 @@
                   <CCol :xs="6" class="text-right">
                     <a
                       href="#"
+                      @click="abirModalCreacion"
+                      style="color: #1a0dab;"
+                      class="px-0"
+                    >
+                      Crea tu acceso aquí 
+                    </a>
+                  </CCol>
+                  <CCol :xs="6" class="text-right">
+                    <a
+                      href="#"
                       @click="abirModalRecuperacion"
-                      style="color: #afafaf"
+                      style="color: #afafaf; display:none"
                       class="px-0"
                     >
                       Recuperar contraseña
@@ -296,14 +306,14 @@ export default {
         email: email,
         password: pass,
       };
-      //await recaptchaLoaded();
+      await recaptchaLoaded();
 
-      //await executeRecaptcha("Authenticate")
-        //.then((token) => {
+      await executeRecaptcha("Authenticate")
+        .then((token) => {
           ApiNeva.post("Login/Authenticate", bodyLogin, {
             headers: {
               ApiKey,
-              tokenRC: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",//token,
+              tokenRC: token,
             },
           })
             .then((response) => {
@@ -319,7 +329,7 @@ export default {
               showSpining(false, "btnLogin", "loading");
               swal("Login", "El email o password es incorrecto.", "warning");
             });
-        /*})
+        })
         .catch(() => {
           showSpining(false, "btnLogin", "loading");
           swal(
@@ -339,7 +349,6 @@ export default {
             window.open("https://support.google.com/websearch/answer/86640");
           });
         });
-        */
     };
     const accesosValidacion = (response) => {
       localStorage.token = response.data.tokenBearer;
