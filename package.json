@@ -28,7 +28,7 @@
     "form-wizard-vue3": "^0.2.1",
     "moment": "^2.29.3",
     "scss-tokenizer": "^0.4.3",
-    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.6.15",
     "v-calendar": "^3.0.0-alpha.8",
     "v-onboarding": "^2.1.0",
     "vue": "^3.2.13",

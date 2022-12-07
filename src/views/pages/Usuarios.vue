@@ -1,5 +1,5 @@
 <template>
-  <VOnboardingWrapper ref="wrapper" :steps="steps" :options="options" />
+  <!--<VOnboardingWrapper ref="wrapper" :steps="steps" :options="options" />-->
   <CRow>
     <!-- LIST -->
     <CCol :md="12">
@@ -7,7 +7,7 @@
         <CCardHeader>
           <CRow>
             <CCol :sm="6" :md="10" :xs="6" :lg="11">
-              <strong>Gestión de Usuarios</strong>
+              <strong>Crear Usuarios</strong>
             </CCol>
             <CCol :sm="6" :md="2" :xs="6" :lg="1">
               <div class="d-grid">
@@ -531,23 +531,23 @@ import ApiNeva from "@/api/ApiNeva";
 import { validateEmail, Fn } from "@/Helper/util";
 import { useRoute } from "vue-router";
 import { useReCaptcha } from "vue-recaptcha-v3";
-import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
+//import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import { permisosUsuario } from "@/_menuOnboarding.js";
-import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
+//import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
 
 export default {
   name: "Usuario",
   methods: {
     validateEmail,
     Fn,
-    renderSteps,
+    //renderSteps,
   },
   components: {
-    VOnboardingWrapper,
+    //VOnboardingWrapper,
   },
   setup() {
     const wrapper = ref(null);
-    const { start } = useVOnboarding(wrapper);
+    //const { start } = useVOnboarding(wrapper);
     const localMenuOnvoarding = permisosUsuario;
 
     const globalProperties =
@@ -567,9 +567,9 @@ export default {
     //const email = route.query.email;
 
     const state = reactive({
-      isonboarding: false,
+      //isonboarding: false,
       wrapper,
-      steps: [],
+      //steps: [],
       options: {
         overlay: {
           enabled: true,
@@ -923,7 +923,7 @@ export default {
       }
     };
 
-    const onBoarding = async () => {
+    /*const onBoarding = async () => {
       let user = JSON.parse(localStorage.getItem("usuarioModel"));
       try {
         state.isonboarding = await onBoardingHelper.getUserSeeMenu(
@@ -945,16 +945,16 @@ export default {
           header
         );
       }
-    };
+    };*/
 
     onMounted(() => {
       getProfile();
-      onBoarding();
-      if (!state.isonboarding) {
+      //onBoarding();
+      /*if (!state.isonboarding) {
         setTimeout(() => {
           start();
         }, 500);
-      }
+      }*/
     });
 
     return {

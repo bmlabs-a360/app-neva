@@ -16,7 +16,7 @@
                   "
                   fluid
                   rounded
-                  alt="Logo HabuPay"
+                  alt="Logo Neva"
                   :src="imgLogo"
                 />
                 <p class="text-medium-emphasis">Accede con tu cuenta</p>
@@ -103,14 +103,9 @@
                     </CButton>
                   </CCol>
                   <CCol :xs="6" class="text-right">
-                    <a
-                      href="#"
-                      @click="abirModalCreacion"
-                      style="color: #1a0dab;"
-                      class="px-0"
-                    >
+                    <CNavLink id="dashboard" @click="ir('Register')" href="#" style="color: #1a0dab;" class="px-0">
                       Crea tu acceso aquí 
-                    </a>
+                    </CNavLink>
                   </CCol>
                   <CCol :xs="6" class="text-right">
                     <a
@@ -130,6 +125,7 @@
       </CRow>
     </CContainer>
   </div>
+
   <!-- MODAL -->
   <CModal
     backdrop="static"
@@ -197,13 +193,13 @@
 
 <script>
 import { getCurrentInstance, reactive, toRefs } from "vue";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import router from "@/router/index";
 import { validateEmail, Fn } from "@/Helper/util";
 import { useRoute } from "vue-router";
 import { useReCaptcha } from "vue-recaptcha-v3";
-import imgLogo from "@/assets/images/habu_login.png";
+import imgLogo from "@/assets/images/neva_login.png";
 export default {
   name: "Login",
   methods: {
@@ -237,7 +233,7 @@ export default {
       showSpining(true, "btnRecuperar", "loadingRecuperar");
       let email = document.getElementById("emailRecuperar").value;
       if (!email || !validateEmail(email)) {
-        swal(
+        swal.fire(
           "Recuperación contraseña",
           "Debe ingresar un email válido",
           "warning"
@@ -259,7 +255,7 @@ export default {
         )
           .then((response) => {
             if (response.status != 200) return false;
-            swal(
+            swal.fire(
               "Recuperación contraseña",
               "Se ha enviado un enlace de recuperación a su correo eléctronico",
               "success"
@@ -270,7 +266,7 @@ export default {
           })
           .catch((error) => {
             console.log(error);
-            swal(
+            swal.fire(
               "Recuperación contraseña",
               "Ha ocurrido un problema durante el proceso, por favor intente nuevamente o verifique con su administrador que el usuario existe registrado en el sistema",
               "warning"
@@ -293,12 +289,12 @@ export default {
       let email = document.getElementById("email").value;
       let pass = document.getElementById("password").value;
       if (!email || !validateEmail(email)) {
-        swal("Login", "Debe ingresar email y password", "warning");
+        swal.fire("Login", "Debe ingresar email y password", "warning");
         showSpining(false, "btnLogin", "loading");
         return false;
       }
       if (!pass) {
-        swal("Login", "Debe ingresar email y password", "warning");
+        swal.fire("Login", "Debe ingresar email y password", "warning");
         showSpining(false, "btnLogin", "loading");
         return false;
       }
@@ -321,18 +317,18 @@ export default {
                 accesosValidacion(response);
               } else {
                 showSpining(false, "btnLogin", "loading");
-                swal("Login", "El email o password es incorrecto.", "warning");
+                swal.fire("Login", "El email o password es incorrecto.", "warning");
               }
               return false;
             })
             .catch(() => {
               showSpining(false, "btnLogin", "loading");
-              swal("Login", "El email o password es incorrecto.", "warning");
+              swal.fire("Login", "El email o password es incorrecto.", "warning");
             });
         })
         .catch(() => {
           showSpining(false, "btnLogin", "loading");
-          swal(
+          swal.fire(
             "ReCaptcha ha detectado un uso abusivo y ha denegado el acceso.",
             {
               buttons: {
@@ -381,7 +377,7 @@ export default {
           localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
         } else {
           showSpining(false, "btnLogin", "loading");
-          swal(
+          swal.fire(
             "Login",
             "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
             "warning"
@@ -398,12 +394,15 @@ export default {
     };
     const onLoad = () => {
       if (showMsjInvalidToken === "true") {
-        swal(
+        swal.fire(
           "Token invalido",
           "El token de recuperción o registro es inválido o ha vencido",
           "warning"
         );
       }
+    };
+    const ir = (namePageDestiny) => {
+      return router.push({ name: namePageDestiny });
     };
     onLoad();
     return {
@@ -413,6 +412,7 @@ export default {
       login,
       solicitarRecuperacion,
       buscarEnter,
+      ir,
       imgLogo,
     };
   },
@@ -477,7 +477,7 @@ export default {
                 );
               } else {
                 showSpining(false, "btnLogin", "loading");
-                swal(
+                swal.fire(
                   "Login",
                   "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
                   "warning"

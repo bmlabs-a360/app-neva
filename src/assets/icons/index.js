@@ -74,6 +74,7 @@ import {
   cilStar,
   cilTask,
   cilUser,
+  cilPhone,
   cilUserFemale,
   cilUserFollow,
   cilXCircle,
@@ -87,6 +88,7 @@ import {
   cilCash,
   cilToggleOn,
   cilFace,
+  cilSpreadsheet,
 } from "@coreui/icons";
 
 export const iconsSet = Object.assign(
@@ -140,6 +142,7 @@ export const iconsSet = Object.assign(
     cilStar,
     cilTask,
     cilUser,
+    cilPhone,
     cilUserFemale,
     cilUserFollow,
     cilXCircle,
@@ -153,6 +156,7 @@ export const iconsSet = Object.assign(
     cilCash,
     cilToggleOn,
     cilFace,
+    cilSpreadsheet,
   },
   {
     cifUs,

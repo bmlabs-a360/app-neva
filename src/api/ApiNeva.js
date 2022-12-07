@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from "@/router/index";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 
 const ApiNeva = axios.create({
   baseURL: process.env.VUE_APP_API_NEVA_HOST,
@@ -68,11 +68,11 @@ ApiNeva.interceptors.request.use((config) => {
     miPrivilegio = false;
     mensaje = "Lo sentimos, no tienes los privilegios. Usuario inactivo.";
   }
-  if (!usuarioModel.perfil.activo) {
-    miPrivilegio = false;
-    mensaje = "Lo sentimos, no tienes los privilegios. Perfil inactivo.";
-  }
-  if (miPrivilegio) {
+  //if (!usuarioModel.perfil.activo) {
+  //  miPrivilegio = false;
+  //  mensaje = "Lo sentimos, no tienes los privilegios. Perfil inactivo.";
+  //}
+  /*if (miPrivilegio) {
     usuarioModel.perfil.perfilRols.forEach((rol) => {
       if (!rol.activo) {
         swal(
@@ -111,7 +111,7 @@ ApiNeva.interceptors.request.use((config) => {
   } else {
     config.url = "";
     swal("Sin privilegios", mensaje, "warning");
-  }
+  }*/
   return config;
 });
 

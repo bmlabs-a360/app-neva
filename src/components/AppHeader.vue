@@ -4,7 +4,7 @@
       <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
-      <!--CImage  width="140" height="60" fluid rounded alt="Logo HabuPay" :src="imgLogo"/-->
+      <!--CImage  width="140" height="60" fluid rounded alt="Logo Neva" :src="imgLogo"/-->
 
       <CHeaderBrand class="mx-auto d-lg-none" to="/">
         <!--CIcon :icon="logo" height="48" alt="Logo" /-->
@@ -38,7 +38,7 @@
 <script>
 import AppBreadcrumb from "./AppBreadcrumb";
 
-import imgLogo from "@/assets/images/habu_login4.png";
+import imgLogo from "@/assets/images/neva_login.png";
 import router from "@/router/index";
 
 export default {

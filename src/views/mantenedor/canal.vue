@@ -499,7 +499,7 @@
         <div style="padding-top: 0.3rem">
           <CLink
             v-c-tooltip="
-              'La formas de pago desactivadas no serán visibles desde app-habupay'
+              'La formas de pago desactivadas no serán visibles desde app-neva'
             "
           >
             <CIcon :icon="cilWarning" size="lg" />
@@ -592,7 +592,7 @@
       <div style="display: flex">
         <CModalTitle>Forma de Pago</CModalTitle>&nbsp;&nbsp;
         <div style="padding-top: 0.3rem">
-          <CLink v-c-tooltip="'Si desactivas no será visible en Habupay!'">
+          <CLink v-c-tooltip="'Si desactivas no será visible en neva!'">
             <CFormSwitch
               disabled
               style="cursor: pointer"
@@ -664,7 +664,7 @@
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
 import { cilPen, cilBarChart, cilWallet, cilWarning } from "@coreui/icons";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 
 import imgTransbank from "@/assets/images/webpay_logo.png";

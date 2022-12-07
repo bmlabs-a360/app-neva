@@ -13,10 +13,10 @@
   >
     <CSidebarBrand>
       <!--div v-if="sidebarVisible">
-      <CImage   custom-class-name="sidebar-brand-full" style="width: 3.5em;"  fluid rounded alt="Logo HabuPay" :src="imgLogo"/>
+      <CImage   custom-class-name="sidebar-brand-full" style="width: 3.5em;"  fluid rounded alt="Logo Neva" :src="imgLogo"/>
       </div>
        <div v-if="!sidebarVisible">
-      <CImage  custom-class-name="sidebar-brand-narrow" style="width: 3.5em;"  fluid rounded alt="Logo HabuPay" :src="imgLogoAncho"/>
+      <CImage  custom-class-name="sidebar-brand-narrow" style="width: 3.5em;"  fluid rounded alt="Logo Neva" :src="imgLogoAncho"/>
       </div-->
       <CIcon
         custom-class-name="sidebar-brand-full"
@@ -43,8 +43,8 @@ import { useStore } from "vuex";
 import { AppSidebarNav } from "./AppSidebarNav";
 import { logoNegative } from "@/assets/brand/logo-negative";
 import { sygnet } from "@/assets/brand/sygnet";
-import imgLogo from "@/assets/images/habu_login4.png";
-import imgLogoAncho from "@/assets/images/habu_login2.png";
+import imgLogo from "@/assets/images/neva_login.png";
+import imgLogoAncho from "@/assets/images/neva_login.png";
 export default {
   name: "AppSidebar",
   components: {

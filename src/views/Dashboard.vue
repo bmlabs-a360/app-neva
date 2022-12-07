@@ -338,6 +338,7 @@ export default {
       state.dateSelected =
         "Resumen entre año: " + primerDia + " y " + ultimoDia;
 
+      debugger;
       ApiNeva.get(
         "Transaccion/TransaccionesResumenEstado?canalId=" +
           idcanal +

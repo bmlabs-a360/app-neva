@@ -9,7 +9,7 @@
             style="width: 9.5em"
             fluid
             rounded
-            alt="Logo HabuPay"
+            alt="Logo Neva"
             :src="imgLogo"
           />
         </span>
@@ -20,7 +20,7 @@
 
 <script>
 import { reactive, toRefs } from "vue";
-import imgLogo from "@/assets/images/habu_login.png";
+import imgLogo from "@/assets/images/neva_login.png";
 export default {
   name: "AppFooter",
   setup() {

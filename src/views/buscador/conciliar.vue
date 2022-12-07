@@ -824,7 +824,7 @@
 
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import Paginate from "vuejs-paginate-next";
 import {

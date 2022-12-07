@@ -203,7 +203,7 @@
 
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import { cilPen, cilX } from "@coreui/icons";
 import ApiNeva from "@/api/ApiNeva";
 import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";

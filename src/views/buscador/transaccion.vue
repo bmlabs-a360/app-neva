@@ -938,7 +938,7 @@
 
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import { cilSearch, cilStorage, cilZoomIn } from "@coreui/icons";
 import Paginate from "vuejs-paginate-next";
 import * as XLSX from "xlsx";

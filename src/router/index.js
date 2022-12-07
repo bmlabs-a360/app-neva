@@ -185,15 +185,30 @@ const routes = [
         name: "Login",
         component: () => import("@/views/pages/Login"),
       },
+      { //eliminar register 2
+        path: "register2",
+        name: "Register2",
+        component: () => import("@/views/pages/Register2"),
+      },
+      {
+        path: "recuperar",
+        name: "Recuperar",
+        component: () => import("@/views/pages/Recuperar"),
+      },
       {
         path: "register",
         name: "Register",
         component: () => import("@/views/pages/Register"),
       },
       {
-        path: "recuperar",
-        name: "Recuperar",
-        component: () => import("@/views/pages/Recuperar"),
+        path: "completaacceso",
+        name: "CompletaAcceso",
+        component: () => import("@/views/pages/CompletaAcceso"),
+      },
+      {
+        path: "usuarios",
+        name: "Usuarios",
+        component: () => import("@/views/pages/Usuarios"),
       },
     ],
   },

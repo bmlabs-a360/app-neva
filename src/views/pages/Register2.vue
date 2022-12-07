@@ -5,8 +5,60 @@
         <CCol :md="9" :lg="7" :xl="7">
           <CCard class="mx-4">
             <CCardBody class="p-4">
-              <h1>Recuperación contraseña</h1>
-              <p class="text-medium-emphasis">Ingrese su nueva contraseña</p>
+              <h1>Registro nuevo usuario</h1>
+              <p class="text-medium-emphasis">
+                Complete el siguiente formulario con sus datos
+              </p>
+
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-user" />
+                </CInputGroupText>
+                <CFormInput
+                  id="nombres"
+                  maxlength="150"
+                  placeholder="Nombres"
+                  autocomplete="nombres"
+                />
+              </CInputGroup>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-user" />
+                </CInputGroupText>
+                <CFormInput
+                  id="apellidos"
+                  maxlength="150"
+                  placeholder="Apellidos"
+                  autocomplete="apellidos"
+                />
+              </CInputGroup>
+
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-user" />
+                </CInputGroupText>
+                <CFormInput
+                  id="rut"
+                  v-c-tooltip="{
+                    content: 'Ingrese su rut sin puntos y con guión',
+                    placement: 'right',
+                  }"
+                  placeholder="12345678-0"
+                  autocomplete="rut"
+                />
+              </CInputGroup>
+
+              <CInputGroup class="mb-3">
+                <CInputGroupText>@</CInputGroupText>
+                <CFormInput
+                  id="email"
+                  placeholder="Email"
+                  maxlength="150"
+                  :value="email"
+                  autocomplete="email"
+                />
+              </CInputGroup>
+
               <CInputGroup class="mb-3">
                 <CInputGroupText>
                   <CIcon icon="cil-lock-locked" />
@@ -31,7 +83,9 @@
               </CInputGroup>
 
               <div class="d-grid">
-                <CButton @click="guardar" color="primary">Guardar</CButton>
+                <CButton @click="guardarUsuario" color="primary"
+                  >Crear usuario</CButton
+                >
               </div>
             </CCardBody>
           </CCard>
@@ -42,14 +96,19 @@
 </template>
 
 <script>
-import { getCurrentInstance } from "vue";
+import { getCurrentInstance, reactive, toRefs } from "vue";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { useRoute } from "vue-router";
 import router from "@/router/index";
+import { validateEmail, Fn } from "@/Helper/util";
 import { useReCaptcha } from "vue-recaptcha-v3";
 export default {
-  name: "Recuperar",
+  name: "Register",
+  methods: {
+    validateEmail,
+    Fn,
+  },
   setup() {
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
@@ -60,35 +119,64 @@ export default {
     };
     const route = useRoute();
     const uri = route.query.uri;
-    const guardar = async () => {
+    const email = route.query.email;
+    const state = reactive({
+      email: email,
+      uri: uri,
+    });
+    const guardarUsuario = async () => {
       if (!uri)
         return router.push({
           name: "Pages",
           query: { showMsjInvalidToken: "true" },
         });
+      let email = state.email;
+      let nombres = document.getElementById("nombres").value;
+      let apellidos = document.getElementById("apellidos").value;
+      let rut = document.getElementById("rut").value;
       let pass = document.getElementById("pass").value;
       let pass_rep = document.getElementById("pass_rep").value;
+      if (!email || !validateEmail(email)) {
+        swal("Registro usuario", "Debe ingresar un email", "warning");
+        return false;
+      }
+      if (!nombres) {
+        swal("Registro usuario", "Debe ingresar sus nombres", "warning");
+        return false;
+      }
+      if (!apellidos) {
+        swal("Registro usuario", "Debe ingresar sus apellidos", "warning");
+        return false;
+      }
+      if (!rut || !Fn.validaRut(rut)) {
+        swal("Registro usuario", "Debe ingresar su rut", "warning");
+        return false;
+      }
       if (!pass) {
-        swal("Nueva contraseña", "Debe ingresar una password", "warning");
+        swal("Registro usuario", "Debe ingresar una password", "warning");
         return false;
       }
       if (!pass_rep || pass != pass_rep) {
         swal(
-          "Nueva contraseña",
+          "Registro usuario",
           "Sus contraseñas deben ser iguales",
           "warning"
         );
         return false;
       }
-
+      let bodyUser = {
+        email: email,
+        password: pass,
+        nombres: nombres,
+        apellidos: apellidos,
+        rut: rut,
+        fechaCreacion: null,
+      };
       await recaptchaLoaded();
-      await executeRecaptcha("RecuperarContrasena").then((token) => {
+      await executeRecaptcha("UsuarioInsert").then((token) => {
         ApiNeva.post(
-          "Usuario/RecuperarContrasena?uri=" +
-            encodeURIComponent(uri) +
-            "&pass=" +
-            pass,
-          null,
+          "Usuario/Insert?uri=" + encodeURIComponent(uri) + "&tr=" + token,
+          bodyUser,
           {
             headers: {
               ApiKey,
@@ -99,8 +187,8 @@ export default {
           .then((response) => {
             if (response.status != 200) return false;
             swal(
-              "Nueva contraseña",
-              "Se ha cambiado su contraseña correctamente",
+              "Registro usuario",
+              "Se ha enviado un email para confirmar su correo eléctronico",
               "success"
             ).then(() => {
               router.push({
@@ -113,19 +201,28 @@ export default {
                 name: "Pages",
                 query: { showMsjInvalidToken: "false" },
               });
-            }, 4000);
+            }, 10000);
           })
           .catch((error) => {
+            if (error.response.data.detail.includes("llave duplicada")) {
+              swal(
+                "Registro usuario",
+                "El email o rut ya se encuentran registrados, prueba con recuperar tu contraseña o contacta a tu administrador.",
+                "warning"
+              );
+              return;
+            }
             swal(
-              "Nueva contraseña",
-              "Por favor, verifique los datos ingresados son válidos",
+              "Registro usuario",
+              "Por favor, verifique los datos ingresados son válidos.",
               "warning"
             );
           });
       });
     };
     return {
-      guardar,
+      ...toRefs(state),
+      guardarUsuario,
     };
   },
   async beforeMount() {

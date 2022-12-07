@@ -229,7 +229,7 @@
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
 import { cilPen } from "@coreui/icons";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import { permisosPerfiles } from "@/_menuOnboarding.js";
