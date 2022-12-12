@@ -23,6 +23,7 @@ import {
   cibCcPaypal,
   cibCcApplePay,
   cibCcAmex,
+  cibAddthis,
 } from "@coreui/icons";
 import { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl } from "@coreui/icons";
 import {
@@ -89,6 +90,7 @@ import {
   cilToggleOn,
   cilFace,
   cilSpreadsheet,
+  cilTrash,
 } from "@coreui/icons";
 
 export const iconsSet = Object.assign(
@@ -157,6 +159,7 @@ export const iconsSet = Object.assign(
     cilToggleOn,
     cilFace,
     cilSpreadsheet,
+    cilTrash,
   },
   {
     cifUs,
@@ -191,5 +194,6 @@ export const iconsSet = Object.assign(
     cibCcPaypal,
     cibCcApplePay,
     cibCcAmex,
+    cibAddthis,
   }
 );

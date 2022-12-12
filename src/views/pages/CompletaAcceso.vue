@@ -42,7 +42,7 @@
                                     <CFormSelect
                                         id="rubro"
                                         size="sm"
-                                        @change="getRubro"
+                                        @change="GetTipoSubRubroByIdRubro"
                                         >
                                         <option :key="0">Seleccione rubro</option>
                                         <option
@@ -60,7 +60,6 @@
                                     <CFormSelect
                                         id="subRubro"
                                         size="sm"
-                                        @change="getSubRubro"
                                         >
                                         <option :key="0">Seleccione sub rubro</option>
                                         <option
@@ -80,7 +79,6 @@
                                     <CFormSelect
                                         id="comuna"
                                         size="sm"
-                                        @change="getComuna"
                                         >
                                         <option :key="0">Seleccione comuna</option>
                                         <option
@@ -98,7 +96,6 @@
                                     <CFormSelect
                                         id="tamano"
                                         size="sm"
-                                        @change="getTamanoEmpresa"
                                         >
                                         <option :key="0">Seleccione Tamaño</option>
                                         <option
@@ -115,30 +112,34 @@
                               <CRow>
                                 <CCol :md="6" :lg="6" :xl="6">
                                     <CFormLabel for="nivelventa"  class="mt-3">Nivel de venta</CFormLabel>
-                                    <CInputGroup class="mb-3">
-                                        <CFormInput
-                                            id="nivelventa"
-                                            maxlength="150"
-                                            placeholder="Nivel de venta"
-                                            autocomplete="nivelventa"
-                                        />
-                                    </CInputGroup>
+                                     <CFormSelect
+                                        id="nivelventa"
+                                        size="sm"
+                                        >
+                                        <option :key="0">Seleccione nivel venta</option>
+                                        <option
+                                            v-for="nivelventa in nivelventas"
+                                            :value="nivelventa.id"
+                                            :key="nivelventa.id"
+                                        >
+                                            {{ nivelventa.nombre }}
+                                        </option>
+                                    </CFormSelect>
                                 </CCol>
 
                                 <CCol :md="6" :lg="6" :xl="6">
-                                    <CFormLabel for="rango" class="mt-3">Rango</CFormLabel>
+                                    <CFormLabel for="rangoempleado" class="mt-3">Cantidad de empleados</CFormLabel>
                                     <CFormSelect
-                                        id="rango"
+                                        id="rangoempleado"
                                         size="sm"
-                                        @change="getRango"
                                         >
                                         <option :key="0">Seleccione rango</option>
                                         <option
-                                            v-for="rango in rangos"
-                                            :value="rango.id"
-                                            :key="rango.id"
+                                            v-for="rangoempleado in rangoempleados"
+                                            :value="rangoempleado.id"
+                                            :key="rangoempleado.id"
                                         >
-                                            {{ rango.nombre }}
+                                            {{ rangoempleado.nombre }}
                                         </option>
                                     </CFormSelect>
                                 </CCol>
@@ -172,8 +173,6 @@ import { useRoute } from "vue-router";
 import router from "@/router/index";
 import { Fn } from "@/Helper/util";
 import { useReCaptcha } from "vue-recaptcha-v3";
-import { CIcon } from '@coreui/icons-vue';
-import { cilPhone, cilShieldAlt } from '@coreui/icons';
 export default {
   name: "Register",
   methods: {
@@ -196,12 +195,58 @@ export default {
       rutempresa: rutempresa,
       uri: uri,
       rubros: [],
+      subrubros: [],
+      tamanos: [],
+      nivelventas: [],
+      rangoempleados: [],
     });
     const getAllRubro= () => {
-      ApiNeva.get("Rubro/Rubros", { headers: header })
+      ApiNeva.get("TipoRubro/GetTipoRubros", { headers: header })
         .then((response) => {
           if (response.status != 200) return false;
           state.rubros = response.data;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const GetTipoSubRubroByIdRubro = (elemento) => {
+      let idrubro =
+        elemento.target.options[elemento.target.selectedIndex].value;
+      if (!idrubro) return false;
+
+      ApiNeva.get("TipoSubRubro/GetTipoSubRubroByIdRubro?TipoRubroId=" + idrubro, {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.subrubros = response.data;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getAllTamano= () => {
+      ApiNeva.get("TipoTamanoEmpresa/GetTipoTamanoEmpresas", { headers: header })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.tamanos = response.data;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getAllNivelVenta= () => {
+      ApiNeva.get("TipoNivelVenta/GetTipoNivelVentas", { headers: header })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.nivelventas = response.data;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getAllRangoEmpleado= () => {
+      ApiNeva.get("TipoCantidadEmpleado/GetTipoCantidadEmpleados", { headers: header })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.rangoempleados = response.data;
         })
         .catch((error) => console.log(error));
     };
@@ -317,12 +362,15 @@ export default {
     };
     onMounted(() => {
       getAllRubro();
+      getAllTamano();
+      getAllNivelVenta();
+      getAllRangoEmpleado();
     });
 
     return {
-      /*...toRefs(state),*/
+      ...toRefs(state),
       guardarUsuario,
-      recaptcha
+      GetTipoSubRubroByIdRubro
     }; 
   },
   async beforeMount() {

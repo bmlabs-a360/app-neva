@@ -15,7 +15,7 @@ ApiNeva.interceptors.response.use(
   function (error) {
     console.log("miError: ", error);
     if (error.message.includes("Network Error")) {
-      swal(
+      swal.fire(
         "Sin conexión",
         "Lo sentimos, no se ha logrado establecer conexión con el servidor. Intente en un momento.",
         "warning"

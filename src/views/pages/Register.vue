@@ -338,7 +338,6 @@ export default {
     return {
       /*...toRefs(state),*/
       crearUsuario,
-      recaptcha
     }; 
   },
   async beforeMount() {

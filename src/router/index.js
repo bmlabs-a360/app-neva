@@ -205,11 +205,6 @@ const routes = [
         name: "CompletaAcceso",
         component: () => import("@/views/pages/CompletaAcceso"),
       },
-      {
-        path: "usuarios",
-        name: "Usuarios",
-        component: () => import("@/views/pages/Usuarios"),
-      },
     ],
   },
 ];

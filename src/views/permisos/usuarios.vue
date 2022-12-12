@@ -1,26 +1,22 @@
 <template>
-  <VOnboardingWrapper ref="wrapper" :steps="steps" :options="options" />
+  <!--<VOnboardingWrapper ref="wrapper" :steps="steps" :options="options" />-->
   <CRow>
     <!-- LIST -->
     <CCol :md="12">
       <CCard class="mb-4" data-aos="fade-up" data-aos-easing="ease">
         <CCardHeader>
           <CRow>
-            <CCol :sm="6" :md="10" :xs="6" :lg="11">
-              <strong>Gestión de Usuarios</strong>
+            <CCol :sm="6" :md="9" :xs="6" :lg="9">
+              <strong>Crear Usuarios</strong>
             </CCol>
-            <CCol :sm="6" :md="2" :xs="6" :lg="1">
-              <div class="d-grid">
-                <CButton
-                  id="crear_usuario"
-                  color="primary"
-                  @click="
-                    () => {
-                      visibleModalNuevoUser = true;
-                    }
-                  "
-                  ><strong>Crear</strong></CButton
-                >
+            <CCol :sm="6" :md="3" :xs="6" :lg="3">
+              <div class="d-grid flex">
+                <strong>Crear usuario 
+                    <CButton  @click="() => {visibleModalNuevoUser = true;}">
+                      <CIcon icon="cib-addthis" id="crear_usuario"/>
+                    </CButton>
+                  </strong>
+                  
               </div>
             </CCol>
           </CRow>
@@ -30,65 +26,40 @@
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell class="text-center" scope="col"
-                  >Email</CTableHeaderCell
+                  >Usuario</CTableHeaderCell
                 >
                 <CTableHeaderCell class="text-center" scope="col"
-                  >Nombre</CTableHeaderCell
+                  >Área</CTableHeaderCell
                 >
                 <CTableHeaderCell class="text-center" scope="col"
-                  >Apellidos</CTableHeaderCell
-                >
-                <!--CTableHeaderCell class="text-center" scope="col">Rut</CTableHeaderCell-->
-                <CTableHeaderCell class="text-center" scope="col"
-                  >Perfil</CTableHeaderCell
-                >
-                <CTableHeaderCell class="text-center" scope="col"
-                  >Fecha creación</CTableHeaderCell
-                >
-                <CTableHeaderCell class="text-center" scope="col"
-                  >Fecha último acceso</CTableHeaderCell
+                  >Acción</CTableHeaderCell
                 >
                 <CTableHeaderCell class="text-start" scope="col"
-                  >Activo</CTableHeaderCell
-                >
-                <CTableHeaderCell class="text-center" scope="col"
-                  >Acciones</CTableHeaderCell
+                  >Baja/Alta</CTableHeaderCell
                 >
               </CTableRow>
             </CTableHead>
             <CTableBody>
               <CTableRow v-for="user in usuarios" :key="user.id">
                 <CTableDataCell class="text-center">{{
-                  user.email
-                }}</CTableDataCell>
-                <CTableDataCell class="text-center">{{
                   user.nombres
                 }}</CTableDataCell>
                 <CTableDataCell class="text-center">{{
-                  user.apellidos
+                  user.area
                 }}</CTableDataCell>
-                <!--CTableDataCell class="text-center">{{ user.rut }}</CTableDataCell-->
-                <CTableDataCell class="text-center">{{
-                  user.perfil.nombre
-                }}</CTableDataCell>
-                <CTableDataCell class="text-center">{{
-                  new Date(user.fechaCreacion).toLocaleString()
-                }}</CTableDataCell>
-                <CTableDataCell class="text-center">{{
-                  user.fechaUltimoAcceso
-                    ? new Date(user.fechaUltimoAcceso).toLocaleString()
-                    : "-"
-                }}</CTableDataCell>
+                <CTableDataCell class="text-center" id="acciones_usuario">
+                  <CButton 
+                    @click="getUserDelete(user.id)"><CIcon :icon="cilTrash" size="lg" />
+                  </CButton>
+                  <CButton 
+                    @click="getUserSelected(user.id)"><CIcon :icon="cilPen" size="lg" />
+                  </CButton>
+                </CTableDataCell>
                 <CTableDataCell class="text-center"
                   ><CFormSwitch
                     style="cursor: pointer"
-                    disabled
                     :checked="user.activo"
                 /></CTableDataCell>
-                <CTableDataCell class="text-center" id="acciones_usuario"
-                  ><CButton @click="getUserSelected(user.id)"
-                    ><CIcon :icon="cilPen" size="lg" /></CButton
-                ></CTableDataCell>
               </CTableRow>
             </CTableBody>
           </CTable>
@@ -112,126 +83,170 @@
     "
   >
     <CModalHeader>
-      <div style="display: flex">
-        <CModalTitle>Usuario</CModalTitle>&nbsp;&nbsp;
-        <div style="padding-top: 0.3rem">
-          <CFormSwitch
-            style="cursor: pointer"
-            disabled
-            id="activo"
-            v-model="userSelected.activo"
-            :checked="userSelected.activo"
-          />
-        </div>
-      </div>
+        <CModalTitle>Crear usuario</CModalTitle>&nbsp;&nbsp;
     </CModalHeader>
     <CModalBody>
       <CContainer>
         <CRow>
-          <CCol sm="6">
-            <div class="mb-3">
-              <CFormLabel for="nombre">Nombres</CFormLabel>
-              <CFormInput
-                type="text"
-                id="nombre"
-                placeholder="Nombres"
-                size="sm"
-                disabled
-                maxlength="255"
-                :value="userSelected.nombres"
-              />
-            </div>
-
-            <div class="mb-3">
-              <CFormLabel for="apellidos">Apellidos</CFormLabel>
-              <CFormInput
-                type="text"
-                id="apellidos"
-                placeholder="Apellidos"
-                size="sm"
-                disabled
-                maxlength="255"
-                :value="userSelected.apellidos"
-              />
-            </div>
-
-            <!--div class="mb-3">
-            <CFormLabel for="rut">Rut</CFormLabel>
-            <CFormInput type="text" id="rut" maxlength="15" size="sm" disabled :value="userSelected.rut"/>
-          </div-->
-
-            <div class="mb-3">
-              <CFormLabel for="activo">{{
-                userSelected.activo ? "Activo" : "Incativo"
-              }}</CFormLabel>
-              <!--CFormInput type="text" id="rut" maxlength="15" size="sm" disabled :value="userSelected.rut"/-->
+          <div style="display: flex">
+            <CFormLabel >Baja/Alta </CFormLabel>
+            <div>
               <CFormSwitch
-                id="activouseredit"
                 style="cursor: pointer"
-                size="sm"
+                id="activo"
                 v-model="userSelected.activo"
                 :checked="userSelected.activo"
               />
             </div>
+          </div>
+          <CCol sm="6">
+            <div class="mb-3">
+              <CFormLabel for="nombre">Nombre de usuario*</CFormLabel>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-user" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="nombre"
+                  placeholder="Nombres"
+                  size="sm"
+                  disabled
+                  maxlength="255"
+                  :value="userSelected.nombres"
+                />
+              </CInputGroup>
+            </div>
+
+            <div class="mb-3">
+              <CFormLabel for="apellidos">Contraseña*</CFormLabel>
+              <CInputGroup class="mb-4">
+                  <CInputGroupText>
+                    <div v-if="passwordFieldType != 'password'">
+                      <i @click="switchVisibility">
+                        <svg
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-eye"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
+                          />
+                          <path
+                            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
+                          />
+                        </svg>
+                      </i>
+                    </div>
+                    <div v-if="passwordFieldType == 'password'">
+                      <i @click="switchVisibility">
+                        <svg
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-eye-slash"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"
+                          />
+                          <path
+                            d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"
+                          />
+                          <path
+                            d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"
+                          />
+                        </svg>
+                      </i>
+                    </div>
+                  </CInputGroupText>
+                  <CFormInput
+                    id="password"
+                    :type="passwordFieldType"
+                    size="sm"
+                    maxlength="255"
+                    :value="userSelected.password"
+                  ></CFormInput>
+                </CInputGroup>
+            </div>
           </CCol>
 
           <CCol sm="6">
             <div class="mb-3">
-              <CFormLabel for="email">Email</CFormLabel>
-              <CFormInput
-                type="text"
-                id="email"
-                disabled
-                maxlength="255"
-                size="sm"
-                :value="userSelected.email"
-              />
+              <CFormLabel for="email">Correo*</CFormLabel>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-mail" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="email"
+                  disabled
+                  maxlength="255"
+                  size="sm"
+                  :value="userSelected.email"
+                />
+              </CInputGroup>
+             
             </div>
-
-            <div class="mb-3">
-              <CFormLabel for="fechaCracion">Último acceso</CFormLabel>
-              <CFormInput
-                type="text"
-                id="fechaCracion"
-                :value="
-                  new Date(userSelected.fechaUltimoAcceso).toLocaleString()
-                "
-                size="sm"
-                disabled
-                placeholder="dd/mm/yyyy"
-              />
-            </div>
-
-            <div class="mb-3">
-              <CFormLabel for="fechaUltimoAcceso">Creación</CFormLabel>
-              <CFormInput
-                type="text"
-                id="fechaUltimoAcceso"
-                :value="new Date(userSelected.fechaCreacion).toLocaleString()"
-                size="sm"
-                disabled
-                placeholder="dd/mm/yyyy"
-              />
-            </div>
-
-            <CFormLabel>Tipo perfil</CFormLabel>
-            <CFormSelect
-              id="perfilIdSelectedEdit"
-              v-model="perfilIdSelectedEdit"
-              size="sm"
-            >
-              <!--option value="0" disabled :key="0">Seleccione un perfil</option-->
-              <option
-                v-for="pf in perfiles"
-                :key="pf.id"
-                :value="pf.id"
-                v-bind:selected="pf.nombre == perfilIdSelectedEdit.nombre"
-              >
-                {{ pf.nombre }}
-              </option>
-              <!--option value="0"  selected>{{userSelected.perfil.nombre}}</option-->
-            </CFormSelect>
           </CCol>
+
+           <CCol sm="6">
+            <div class="mb-3">
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-mail" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="empresaid"
+                  size="sm"
+                  :value="userSelected.empresaId"
+                />
+              </CInputGroup>
+             
+            </div>
+          </CCol>
+
+          <div class="mt-3">
+            <CFormLabel>Asociar evaluación y área</CFormLabel>
+          </div>
+          <CTable responsive>
+            <CTableHead>
+              <CTableRow>
+                
+                <CTableHeaderCell class="text-center" scope="col">
+                  Evaluación
+                </CTableHeaderCell>
+                <CTableHeaderCell class="text-center" scope="col">
+                  Asociar
+                </CTableHeaderCell>
+                <CTableHeaderCell class="text-center" scope="col">
+                  Asociar área
+                </CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              <CTableRow v-for="evaluacion in evaluaciones" :key="evaluacion.id">
+                <CTableDataCell class="text-center">
+                  {{evaluacion.nombres}}
+                </CTableDataCell>
+                <CTableDataCell class="text-center">
+                  {{user.area}}
+                </CTableDataCell>
+                <CTableDataCell class="text-center" id="acciones_usuario">
+                     <CFormCheck 
+                          id="chkAsociar"
+                      />
+                  <CButton 
+                    @click="getUserSelected(user.id)"><CIcon :icon="cilPen" size="lg" />
+                  </CButton>
+                </CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
         </CRow>
       </CContainer>
     </CModalBody>
@@ -525,30 +540,30 @@
 
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
-import { cilPen } from "@coreui/icons";
+import { cilPen, cilTrash} from "@coreui/icons";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { validateEmail, Fn } from "@/Helper/util";
 import { useRoute } from "vue-router";
 import { useReCaptcha } from "vue-recaptcha-v3";
-import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
+//import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import { permisosUsuario } from "@/_menuOnboarding.js";
-import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
+//import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
 
 export default {
   name: "Usuario",
   methods: {
     validateEmail,
     Fn,
-    renderSteps,
+    //renderSteps,
   },
   components: {
-    VOnboardingWrapper,
+    //VOnboardingWrapper,
   },
   setup() {
     const wrapper = ref(null);
-    const { start } = useVOnboarding(wrapper);
-    const localMenuOnvoarding = permisosUsuario;
+    //const { start } = useVOnboarding(wrapper);
+    //const localMenuOnvoarding = permisosUsuario;
 
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
@@ -567,9 +582,9 @@ export default {
     //const email = route.query.email;
 
     const state = reactive({
-      isonboarding: false,
+      //isonboarding: false,
       wrapper,
-      steps: [],
+      //steps: [],
       options: {
         overlay: {
           enabled: true,
@@ -604,6 +619,9 @@ export default {
       uri: uri,
       tabPaneActiveKey: 1,
       usuarios: [],
+      evaluaciones: [],
+
+
       userSelected: {},
       perfiles: [],
       perfilIdSelectedNew: 0,
@@ -622,7 +640,7 @@ export default {
 
     const getProfile = () => {
       state.perfiles = [];
-      ApiNeva.get("Perfil/PerfilGetAll", { headers: header })
+      ApiNeva.get("Perfil/GetPerfils", { headers: header })
         .then((response) => {
           if (response.status != 200) return false;
           state.perfiles = response.data;
@@ -656,7 +674,32 @@ export default {
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
       state.visibleModalUser = true;
       state.perfilIdSelectedEdit = state.userSelected.perfil;
+      getEvaluaciones(state.userSelected.id);
     };
+
+    const getEvaluaciones = (usuarioId) => {
+      debugger;
+        let bodyUser = {
+                          id : usuarioId
+                      };
+
+      ApiNeva.post(
+            "Evaluacion/GetEvaluacionsByUsuarioId",
+            bodyUser,
+            {
+              headers: {
+                  ApiKey,
+              },
+            }
+        )
+        .then((response) => {
+          debugger;
+          if (response.status != 200) return false;
+          state.evaluaciones = response.data;
+        })
+        .catch((error) => console.log(error));
+    };
+
 
     const resetUser = () => {
       state.userSelected = {
@@ -923,7 +966,7 @@ export default {
       }
     };
 
-    const onBoarding = async () => {
+    /*const onBoarding = async () => {
       let user = JSON.parse(localStorage.getItem("usuarioModel"));
       try {
         state.isonboarding = await onBoardingHelper.getUserSeeMenu(
@@ -945,20 +988,21 @@ export default {
           header
         );
       }
-    };
+    };*/
 
     onMounted(() => {
       getProfile();
-      onBoarding();
-      if (!state.isonboarding) {
+      //onBoarding();
+      /*if (!state.isonboarding) {
         setTimeout(() => {
           start();
         }, 500);
-      }
+      }*/
     });
 
     return {
       cilPen,
+      cilTrash,
       ...toRefs(state),
       getUserSelected,
       resetUser,
