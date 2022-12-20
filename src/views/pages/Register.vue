@@ -208,7 +208,6 @@ export default {
             }, 10000);
             })
             .catch((error) => {
-              debugger;
               if (error.response.data.detail.includes("llave duplicada")) {
                 swal.fire(
                   "Registro usuario",

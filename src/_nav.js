@@ -1,5 +1,5 @@
 export default [
-  {
+  /*{
     component: "CNavTitle",
     name: "Buscador",
   },
@@ -21,7 +21,7 @@ export default [
         to: "/buscador/conciliar",
       },
     ],
-  },
+  },*/
   {
     component: "CNavTitle",
     name: "Conciliación",
@@ -58,10 +58,10 @@ export default [
     items: [
       {
         component: "CNavItem",
-        name: "Canal",
-        to: "/mantenedor/canal",
+        name: "Evaluación",
+        to: "/mantenedor/evaluacion",
       },
-      {
+      /*{
         component: "CNavItem",
         name: "Configuración",
         to: "/mantenedor/configuracion",
@@ -75,7 +75,7 @@ export default [
         component: "CNavItem",
         name: "Forma Pago",
         to: "/mantenedor/formapagoMoneda",
-      },
+      },*/
     ],
   },
   {
@@ -94,7 +94,7 @@ export default [
         name: "Usuarios",
         to: "/permisos/usuarios",
       },
-      {
+      /*{
         component: "CNavItem",
         name: "Perfiles",
         to: "/permisos/perfiles",
@@ -108,10 +108,10 @@ export default [
         component: "CNavItem",
         name: "Privilegios",
         to: "/permisos/privilegios",
-      },
+      },*/
     ],
   },
-  {
+  /*{
     component: "CNavTitle",
     name: "Simulación",
   },
@@ -120,5 +120,5 @@ export default [
     name: "Crear link de pago",
     to: "/simulacion/linkPago",
     icon: "cil-basket",
-  },
+  },*/
 ];

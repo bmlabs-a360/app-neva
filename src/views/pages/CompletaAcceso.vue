@@ -19,6 +19,7 @@
                                             maxlength="150"
                                             placeholder="Nombre Empresa"
                                             autocomplete="razonsocial"
+                                            :value="razonsocial"
                                             disabled
                                         />
                                     </CInputGroup>
@@ -30,6 +31,7 @@
                                         id="rutempresa"
                                         placeholder="12345678-0"
                                         autocomplete="rutempresa"
+                                        :value="rutempresa"
                                         disabled
                                     />
                                     </CInputGroup>
@@ -76,19 +78,14 @@
                             <CRow>
                                 <CCol :md="6" :lg="6" :xl="6">
                                     <CFormLabel for="comuna"  class="mt-3">Comuna</CFormLabel>
-                                    <CFormSelect
-                                        id="comuna"
-                                        size="sm"
-                                        >
-                                        <option :key="0">Seleccione comuna</option>
-                                        <option
-                                            v-for="comuna in comunas"
-                                            :value="comuna.id"
-                                            :key="comuna.id"
-                                        >
-                                            {{ comuna.nombre }}
-                                        </option>
-                                    </CFormSelect>
+                                     <CInputGroup class="mb-3">
+                                        <CFormInput
+                                            id="comuna"
+                                            maxlength="150"
+                                            placeholder="Comuna"
+                                            autocomplete="comuna"
+                                        />
+                                    </CInputGroup>
                                 </CCol>
 
                                 <CCol :md="6" :lg="6" :xl="6">
@@ -152,9 +149,9 @@
                                       />
                             </div>        
                             <div class="d-grid mt-3">
-                                <CButton @click="guardarUsuario" color="primary"
-                                >Crear</CButton
-                                >
+                                <CButton @click="guardarUsuario" color="primary">
+                                  Crear
+                                </CButton>
                             </div>
                         </CCardBody>
                     </CCard>
@@ -188,8 +185,8 @@ export default {
     };
     const route = useRoute();
     const uri = route.query.uri;
-    const razonsocial = route.query.razonsocial;
-    const rutempresa = route.query.rutempresa;
+    const razonsocial = route.query.RazonSocial;
+    const rutempresa = route.query.RutEmpresa;
     const state = reactive({
       razonsocial: razonsocial,
       rutempresa: rutempresa,
@@ -210,10 +207,13 @@ export default {
     };
 
     const GetTipoSubRubroByIdRubro = (elemento) => {
+      if ( elemento.target.options[elemento.target.selectedIndex].index == 0) {  
+        state.subrubros = [];
+        return false;
+      }
       let idrubro =
         elemento.target.options[elemento.target.selectedIndex].value;
       if (!idrubro) return false;
-
       ApiNeva.get("TipoSubRubro/GetTipoSubRubroByIdRubro?TipoRubroId=" + idrubro, {
         headers: header,
       })
@@ -252,70 +252,65 @@ export default {
     };
 
     const guardarUsuario = async () => {
-      if (!uri)
-        return router.push({
-          name: "Pages",
-          query: { showMsjInvalidToken: "true" },
-        });
       let razonsocial = state.razonsocial;
       let rutempresa = state.rutempresa;
-      let rubro = document.getElementById("rubro").value;
-      let subRubro = document.getElementById("subRubro").value;
+      let rubro = document.getElementById("rubro");
+      let subRubro = document.getElementById("subRubro");
       let comuna = document.getElementById("comuna").value;
-      let tamano = document.getElementById("tamano").value;
-      let nivelventa = document.getElementById("nivelventa").value;
-      let rango = document.getElementById("rango").value;
+      let tamano = document.getElementById("tamano");
+      let nivelventa = document.getElementById("nivelventa");
+      let rango = document.getElementById("rangoempleado");
       let chkAceptaTerminos = document.getElementById("chkAceptaTerminos").checked;
       if (!razonsocial) {
-        swal("Registro usuario", "Debe ingresar razón social", "warning");
+        swal.fire("Registro usuario", "Debe ingresar razón social", "warning");
         return false;
       }
       if (!rutempresa || !Fn.validaRut(rutempresa)) {
-        swal("Registro usuario", "Debe ingresar rut empresa", "warning");
+        swal.fire("Registro usuario", "Debe ingresar rut empresa", "warning");
         return false;
       }
-      if (!rubro) {
-        swal("Registro usuario", "Debe seleccionar rubro", "warning");
+      if (rubro.selectedIndex == 0) {
+        swal.fire("Registro usuario", "Debe seleccionar rubro", "warning");
         return false;
       }
-      if (!subRubro) {
-        swal("Registro usuario", "Debe seleccionar sub rubro", "warning");
+      if (subRubro.selectedIndex == 0) {
+        swal.fire("Registro usuario", "Debe seleccionar sub rubro", "warning");
         return false;
       }
       if (!comuna) {
-        swal("Registro usuario", "Debe seleccionar comuna", "warning");
+        swal.fire("Registro usuario", "Debe seleccionar comuna", "warning");
         return false;
       }
-       if (!tamano) {
-        swal("Registro usuario", "Debe seleccionar tamaño", "warning");
+       if (tamano.selectedIndex == 0) {
+        swal.fire("Registro usuario", "Debe seleccionar tamaño", "warning");
         return false;
       }
-      if (!nivelventa) {
-        swal("Registro usuario", "Debe seleccionar nivel venta", "warning");
+      if (nivelventa.selectedIndex == 0) {
+        swal.fire("Registro usuario", "Debe seleccionar nivel venta", "warning");
         return false;
       }
-      if (!rango) {
-        swal("Registro usuario", "Debe seleccionar rango", "warning");
+      if (rango.selectedIndex == 0) {
+        swal.fire("Registro usuario", "Debe seleccionar rango", "warning");
         return false;
       }
       if (!chkAceptaTerminos) {
-        swal("Registro usuario", "Debe términos y condiciones de uso", "warning");
+        swal.fire("Registro usuario", "Debe aceptar términos y condiciones de uso", "warning");
         return false;
       }
       let bodyUser = {
         razonsocial: razonsocial,
         rutempresa: rutempresa,
-        rubro: rubro,
-        subRubro: subRubro,
+        TipoRubroId: rubro.value,
+        TipoSubRubroId: subRubro.value,
         comuna: comuna,
-        tamano: tamano,
-        nivelventa: nivelventa,
-        rango: rango
+        TipoTamanoEmpresaId: tamano.value,
+        TipoNivelVentaId: nivelventa.value,
+        TipoCantidadEmpleadoId: rango.value
       };
       await recaptchaLoaded();
-      await executeRecaptcha("CompletaDatos").then((token) => {
+      await executeRecaptcha("EmpresaInsertOrUpdate").then((token) => {
         ApiNeva.post(
-          "Empresa/CompletaDatos?uri=" + encodeURIComponent(uri) + "&tr=" + token,
+          "Empresa/EmpresaInsertOrUpdate?uri=" + encodeURIComponent(uri) + "&tr=" + token,
           bodyUser,
           {
             headers: {
@@ -326,9 +321,9 @@ export default {
         )
           .then((response) => {
             if (response.status != 200) return false;
-            swal(
-              "Registro usuario",
-              "Se ha enviado un email para confirmar su correo eléctronico",
+            swal.fire(
+              "Registro de empresa",
+              "Se ha completado datos para su empresa",
               "success"
             ).then(() => {
               router.push({
@@ -345,14 +340,14 @@ export default {
           })
           .catch((error) => {
             if (error.response.data.detail.includes("llave duplicada")) {
-              swal(
+              swal.fire(
                 "Registro usuario",
                 "El email o rut ya se encuentran registrados, prueba con recuperar tu contraseña o contacta a tu administrador.",
                 "warning"
               );
               return;
             }
-            swal(
+            swal.fire(
               "Registro usuario",
               "Por favor, verifique los datos ingresados son válidos.",
               "warning"
