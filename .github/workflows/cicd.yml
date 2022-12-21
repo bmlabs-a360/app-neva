@@ -1,10 +1,9 @@
 name: Deploy
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
   pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ develop ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,5 +25,5 @@ jobs:
           username: e0259e347e0942509983dffb61cc619d33d1224a40116f0208e81687d306b9cf
           password: ${{ secrets.REGISTRY_SECRET }}
       - run: |
-            docker build . -t registry.digitalocean.com/bmlabs/app-backoffice:base-latest
-            docker push registry.digitalocean.com/bmlabs/app-backoffice:base-latest
+            docker build . -t registry.digitalocean.com/bmlabs/neva/app-backoffice:dev-latest
+            docker push registry.digitalocean.com/bmlabs/neva/app-backoffice:dev-latest
