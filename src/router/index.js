@@ -29,16 +29,17 @@ const routes = [
             return h(resolveComponent("router-view"));
           },
         },
-        redirect: "/mantenedor/canal",
+        redirect: "/mantenedor/evaluacion",
         meta: {
           middleware: [auth, log],
         },
         children: [
           {
-            path: "/mantenedor/canal",
-            name: "Canal",
-            component: () => import("@/views/mantenedor/canal.vue"),
+            path: "/mantenedor/evaluacion",
+            name: "Evaluacion",
+            component: () => import("@/views/mantenedor/evaluacion.vue"),
           },
+          /*
           {
             path: "/mantenedor/configuracion",
             name: "Configuracion",
@@ -53,7 +54,7 @@ const routes = [
             path: "/mantenedor/formapagoMoneda",
             name: "Forma Pago - Moneda",
             component: () => import("@/views/mantenedor/formapagoMoneda.vue"),
-          },
+          },*/
         ],
       },
       {
@@ -131,7 +132,7 @@ const routes = [
             name: "Usuarios",
             component: () => import("@/views/permisos/usuarios.vue"),
           },
-          {
+         /* {
             path: "/permisos/perfiles",
             name: "Perfiles",
             component: () => import("@/views/permisos/perfiles.vue"),
@@ -145,10 +146,10 @@ const routes = [
             path: "/permisos/privilegios",
             name: "privilegios",
             component: () => import("@/views/permisos/privilegios.vue"),
-          },
+          },*/
         ],
       },
-      {
+      /*{
         path: "/simulacion",
         name: "Simulación",
         component: {
@@ -167,7 +168,7 @@ const routes = [
             component: () => import("@/views/simulacion/linkPago.vue"),
           },
         ],
-      },
+      },*/
     ],
   },
   {
@@ -184,12 +185,12 @@ const routes = [
         path: "login",
         name: "Login",
         component: () => import("@/views/pages/Login"),
-      },
+      },/*
       { //eliminar register 2
         path: "register2",
         name: "Register2",
         component: () => import("@/views/pages/Register2"),
-      },
+      },*/
       {
         path: "recuperar",
         name: "Recuperar",

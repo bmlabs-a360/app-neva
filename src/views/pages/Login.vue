@@ -353,6 +353,10 @@ export default {
         "usuarioModel",
         JSON.stringify(response.data.usuarioModel)
       );
+       localStorage.setItem(
+        "empresaModel",
+        JSON.stringify(response.data.usuarioModel.empresa)
+      );
       ApiNeva.get(process.env.VUE_APP_API_NEVA_SWAGGER, {
         headers: header,
       }).then((response2) => {
