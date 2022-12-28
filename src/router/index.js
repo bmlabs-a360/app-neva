@@ -57,7 +57,7 @@ const routes = [
           },*/
         ],
       },
-      {
+      /*{
         path: "/conciliacion",
         name: "Conciliacion",
         component: {
@@ -82,13 +82,13 @@ const routes = [
             component: () =>
               import("@/views/conciliacion/conciliarAsistente.vue"),
           },
-          /*{
+          {
             path: '/conciliacion/conciliarAsistente',
             name: 'Asistente',
             component: () => import('@/views/conciliacion/ejemplo.txt')
-          },*/
+          },
         ],
-      },
+      },*/
       {
         path: "/buscador",
         name: "Buscador",

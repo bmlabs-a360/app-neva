@@ -114,7 +114,7 @@
                   size="sm"
                   disabled
                   maxlength="255"
-                  :value="userSelected.nombres"
+                  v-model="userSelected.nombres"
                 />
               </CInputGroup>
             </div>
@@ -168,7 +168,7 @@
                     :type="passwordFieldType"
                     size="sm"
                     maxlength="255"
-                    :value="clave"
+                    v-model="clave"
                   ></CFormInput>
                 </CInputGroup>
             </div>
@@ -187,7 +187,7 @@
                   disabled
                   maxlength="255"
                   size="sm"
-                  :value="userSelected.email"
+                  v-model="userSelected.email"
                 />
               </CInputGroup>
              
@@ -213,19 +213,17 @@
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              <CTableRow v-for="evaluacion in usuarioEvaluacions" :key="evaluacion.id">
+              <CTableRow v-for="evaluacionEmpresa in evaluacionEmpresas" :key="evaluacionEmpresa.id">
                 <CTableDataCell class="text-center">
-                  {{evaluacion.evaluacion.nombre}}
+                  {{evaluacionEmpresa.nombre}}
                 </CTableDataCell>
                 <CTableDataCell class="text-center">
-                  <CFormCheck 
-                          :id="evaluacion.id"
-                          name="chkAsociar"
-                          :checked="evaluacion.activo"
-                      />
+                   <CFormCheck name="chkAsociar"
+                              v-model="evaluacionEmpresa.activo"
+                              :checked="evaluacionEmpresa.activo" />
                 </CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuario">
-                  <CButton @click="getEvaluacionSelected(evaluacion.evaluacionId)">
+                  <CButton @click="segmentacionArea(evaluacionEmpresa)">
                     <CIcon :icon="cilPen" size="lg" />
                   </CButton>
                 </CTableDataCell>
@@ -260,7 +258,7 @@
     :visible="visibleModalNuevoUser"
     @close="
       () => {
-        resetNewUser();
+        resetUser();
         visibleModalNuevoUser = false;
       }
     "
@@ -278,6 +276,7 @@
                 style="cursor: pointer"
                 id="activoNew"
                 :checked="true"
+                v-model="userSelected.activo"
               />
             </div>
           </div>
@@ -294,6 +293,7 @@
                   placeholder="Nombre"
                   size="sm"
                   maxlength="255"
+                  v-model="userSelected.nombres"
                 />
               </CInputGroup>
             </div>
@@ -347,7 +347,7 @@
                     :type="passwordFieldType"
                     size="sm"
                     maxlength="255"
-                    :value="clave"
+                    v-model="userSelected.password"
                   ></CFormInput>
                 </CInputGroup>
             </div>
@@ -365,6 +365,7 @@
                   id="emailNew"
                   maxlength="255"
                   size="sm"
+                  v-model="userSelected.email"
                 />
               </CInputGroup>
              
@@ -390,18 +391,15 @@
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              <CTableRow v-for="evaluacion in usuarioEvaluacions" :key="evaluacion.id">
+              <CTableRow v-for="evaluacionEmpresa in evaluacionEmpresas" :key="evaluacionEmpresa.id">
                 <CTableDataCell class="text-center">
-                  {{evaluacion.evaluacion.nombre}}
+                  {{evaluacionEmpresa.evaluacion.nombre}}
                 </CTableDataCell>
                 <CTableDataCell class="text-center">
-                  <CFormCheck 
-                          :id="evaluacion.id"
-                          name="chkAsociarNew"
-                      />
+                  <CFormCheck name="chkAsociarNew" />
                 </CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuarionew">
-                  <CButton @click="getEvaluacionSelectedNew(evaluacion.evaluacionId)">
+                  <CButton @click="segmentacionAreaNew(evaluacionEmpresa.evaluacion)">
                     <CIcon :icon="cilPen" size="lg" />
                   </CButton>
                 </CTableDataCell>
@@ -416,28 +414,29 @@
         color="secondary"
         @click="
           () => {
-            resetNewUser();
+            resetUser();
             visibleModalNuevoUser = false;
           }
         "
       >
         Cerrar
       </CButton>
-      <CButton color="primary" @click="crearUser">Guardar</CButton>
+      <CButton color="primary" @click="crearUser()">Guardar</CButton>
     </CModalFooter>
   </CModal>
   <!-- FIN MODAL CREAR -->
 
-  <!-- MODAL ASOCIAR AREA  -->
+  <!-- MODAL SEGMENTACION AREA CREAR  -->
   <CModal
     backdrop="static"
     size="lg"
     alignment="center"
-    :visible="visibleModalAsociarArea"
+    :visible="visibleModalSegmentacionAreaNew"
     @close="
       () => {
         resetAsociarArea();
-        visibleModalAsociarArea = false;
+        visibleModalSegmentacionAreaNew = false;
+        visibleModalNuevoUser = true;
       }
     "
   >
@@ -457,7 +456,78 @@
                   size="sm"
                   disabled
                   maxlength="255"
-                  :value="evaluacionSelected.evaluacion.nombre"
+                />
+            </div>
+          </div>
+          <CCol sm="12">
+            <div class="mb-2">
+              <CFormLabel>Asociar área*</CFormLabel>
+            </div>
+            <div class="mb-2" >
+                <CFormLabel style="display:flex"> 
+                  <CFormSwitch style="cursor: pointer" id="todoschkNew" @click="checkAll()" /> Todos
+                </CFormLabel>
+              <div v-for="area in segmentacionAreas" :key="area.id">
+                <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
+                <CFormSwitch style="cursor: pointer"
+                              v-model="area.activo"
+                              :checked="area.activo"
+                              name="check" />
+              </div>
+            </div>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </CModalBody>
+    <CModalFooter>
+      <CButton
+        color="secondary"
+        @click="
+          () => {
+            resetAsociarArea();
+            visibleModalSegmentacionAreaNew = false;
+            visibleModalNuevoUser = true;
+          }
+        "
+      >
+        Cerrar
+      </CButton>
+      <CButton color="primary" @click="asociarArea()">Guardar</CButton>
+    </CModalFooter>
+  </CModal>
+  <!-- FIN MODAL SEGMENTACION AREA CREAR-->
+
+  <!-- MODAL SEGMENTACION AREA EDITAR  -->
+  <CModal
+    backdrop="static"
+    size="lg"
+    alignment="center"
+    :visible="visibleModalSegmentacionArea"
+    @close="
+      () => {
+        resetAsociarArea();
+        visibleModalSegmentacionArea = false;
+        visibleModalUser = true;
+      }
+    "
+  >
+     <CModalHeader>
+        <CModalTitle>Asociar áreas</CModalTitle>&nbsp;&nbsp;
+    </CModalHeader>
+    <CModalBody>
+      <CContainer>
+        <CRow>
+          <div style="display: flex">
+            <CFormLabel > Asociar área a evaluación </CFormLabel>
+            <div>
+              <CFormInput
+                  type="text"
+                  id="nombreevaluacion"
+                  placeholder="Evaluacion"
+                  size="sm"
+                  disabled
+                  maxlength="255"
+                  :value="evaluacion.nombre" 
                 />
             </div>
           </div>
@@ -466,13 +536,15 @@
               <CFormLabel>Asociar área*</CFormLabel>
             </div>
               <div class="mb-2" >
-                  <CFormLabel > 
-                    <CFormCheck id="todoschk" @click="checkAll()" /> Todos
+                  <CFormLabel style="display:flex" > 
+                    <CFormSwitch style="cursor: pointer" id="todoschk" @click="checkAll()" /> Todos
                   </CFormLabel>
-                <div v-for="area in evaluacionSelected.evaluacion.segmentacionAreas" :key="area.id">
-                  <CFormLabel > 
-                    <CFormCheck name="check" :id="area.id"/> {{area.nombreArea}}
-                  </CFormLabel>
+                <div v-for="area in segmentacionAreas" :key="area.id">
+                  <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
+                  <CFormSwitch style="cursor: pointer"
+                                v-model="area.activo"
+                                :checked="area.activo" 
+                                name="check"/>
                 </div>
             </div>
           </CCol>
@@ -485,7 +557,8 @@
         @click="
           () => {
             resetAsociarArea();
-            visibleModalAsociarArea = false;
+            visibleModalSegmentacionArea = false;
+            visibleModalUser = true;
           }
         "
       >
@@ -494,7 +567,7 @@
       <CButton color="primary" @click="asociarArea()">Guardar</CButton>
     </CModalFooter>
   </CModal>
-  <!-- MODAL ASOCIAR AREA -->
+  <!-- MODAL SEGMENTACION AREA EDITAR-->
 </template>
 
 <script>
@@ -548,25 +621,31 @@ export default {
       uri: uri,
       empresas: [],
       usuarioEvaluacions: [],
+      evaluacionEmpresas: [],
+      empresaSelected: [],
+      segmentacionAreas: [],
+      evaluacion:null,
+      usuarioAreas: [],
+      userSelected: {},
+
       //segmentacionAreas :[],
       tabPaneActiveKey: 1,
       usuarios: [],
       //evaluaciones: [],
       /*evaluaciones: [],
       nombreEvaluacion : "",*/
-      areasSelected: [],
       //areas: [],
-      userSelected: {},
       evaluacionSelected: {},
       perfiles: [],
       visibleModalNuevoUser: false,
-      visibleModalAsociarArea: false,
+      visibleModalSegmentacionArea: false,
+      visibleModalSegmentacionAreaNew: false,
       visibleModalUser: false,
       passwordFieldType: "password",
       clave: "",
 
       perfilIdSelectedNew: 0,
-      perfilIdSelectedEdit: 0,
+      perfilIdSelectedEdit: [],
       perfilIdSelectedNewSolicitar: 0,
     });
 
@@ -586,7 +665,7 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.perfiles = response.data;
-          console.log(" state.perfiles ", state.perfiles);
+          //console.log(" state.perfiles ", state.perfiles);
           getUsers();
         })
         .catch((error) => console.log(error));
@@ -601,7 +680,7 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.usuarios = response.data;
-          console.log("state.usuarios 1  ", state.usuarios);
+          //console.log("state.usuarios 1  ", state.usuarios);
           state.usuarios.forEach((element) => {
             if (element.perfilId == null) {
               element.perfil = { nombre: "sin definir", id: 0 };
@@ -628,109 +707,113 @@ export default {
         .catch((error) => console.log(error));
     };
 
+    const segmentacionArea = (evaluacionEmpresa) =>{
+      state.evaluacion = evaluacionEmpresa;
+      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
+        .then((response) => {
+            if (response.status != 200) return false;
+
+            state.usuarioAreas = [];
+            state.userSelected.usuarioEvaluacions.forEach(y => {
+                if (y.evaluacionId == state.evaluacion.id && y.empresaId == state.evaluacion.empresaId) {
+                    state.usuarioAreas = y.usuarioAreas
+                }
+            });
+
+            state.segmentacionAreas = response.data;
+            state.segmentacionAreas.forEach(x => {
+                var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
+                x.activo = false;
+                if (areaAsuario != undefined)  x.activo = areaAsuario.activo;
+            });
+
+            state.visibleModalUser = false;
+            state.visibleModalSegmentacionArea = true;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const segmentacionAreaNew = (evaluacionEmpresa) => {
+      state.evaluacion = evaluacionEmpresa;
+      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.segmentacionAreas = response.data;
+            state.segmentacionAreas.forEach(x => {
+                x.activo = false;
+            });
+            state.visibleModalNuevoUser = false;
+            state.visibleModalSegmentacionAreaNew = true;
+        })
+        .catch((error) => console.log(error));
+    };
+
     const getUserSelected = (idusuario) => {
+      debugger;
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
       state.visibleModalUser = true;
-      state.perfilIdSelectedEdit = state.userSelected.perfil;
+      //state.perfilIdSelectedEdit = state.userSelected.perfil;
 
       state.usuarioEvaluacions=[];
-      //state.segmentacionAreas=[];
-      
-      state.usuarioEvaluacions = state.empresas.usuarioEvaluacions;
-      
-      /*if ( state.empresas.usuarioEvaluacions){
-        state.evaluaciones = state.usuarioEvaluacions.find((c) => c.usuarioId === idusuario);
-        //state.evaluaciones = state.empresas.usuarioEvaluacions[0].evaluacion;
-        state.segmentacionAreas = state.empresas.usuarioEvaluacions[0].evaluacion.segmentacionAreas;
-      }*/
+      state.empresaSelected =  state.empresas;
+
+       cargarEvaluacion();
+    };
+
+    const cargarEvaluacion =  () => {
+        state.evaluacionEmpresas = [];
+        state.empresaSelected.evaluacionEmpresas.forEach(element => {
+            element.evaluacion.empresaId=element.empresaId
+            state.evaluacionEmpresas.push(element.evaluacion);
+        });
+        state.evaluacionEmpresas.forEach(element => {
+          var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
+          element.activo = false;
+          if (evaluacion != undefined) element.activo = evaluacion.activo;
+            
+        });
     };
 
     const ModalUserNuevo = () => {
       state.visibleModalNuevoUser = true;
-      state.usuarioEvaluacions=[];
-      //state.segmentacionAreas=[];
-      
-      state.usuarioEvaluacions = state.empresas.usuarioEvaluacions;
-      
-      /*if ( state.empresas.usuarioEvaluacions){
-        state.evaluaciones = state.empresas.usuarioEvaluacions[0].evaluacion;
-        state.segmentacionAreas = state.empresas.usuarioEvaluacions[0].evaluacion.segmentacionAreas;
-      }*/
+      resetUser();
+      state.evaluacionEmpresas = [];
+      state.evaluacionEmpresas = state.empresas.evaluacionEmpresas;
     };
 
-    const getEvaluacionSelectedNew = (idevaluacion) => {
-      state.visibleModalAsociarArea = true;
-     /* if ( state.empresas.usuarioEvaluacions){
-        state.segmentacionAreas = state.empresas.usuarioEvaluacions[0].evaluacion.segmentacionAreas;
-      }*/
-      state.evaluacionSelected = state.usuarioEvaluacions.find((c) => c.evaluacionId === idevaluacion);
-
-    };
-
-    const getEvaluacionSelected = (idevaluacion) => {
-      state.areasSelected = [];
-      let idusuarioevaluacion = state.usuarioEvaluacions.find((c) => c.evaluacionId === idevaluacion && state.userSelected.id === c.usuarioId);
-
-      if (idusuarioevaluacion){
-        ApiNeva.get("UsuarioArea/GetUsuarioAreasByUsuarioEvaluacionId?idusuarioevaluacion=" + idusuarioevaluacion.id, null, { headers: header })
-          .then((response) => {
-            if (response.status != 200) return false;
-            state.areasSelected = response.data;
-            console.log("state.areasSelected",state.areasSelected);
-            checkedAreas();
-          })
-          .catch((error) => console.log(error));
-      }
-
-      /*if ( state.empresas.usuarioEvaluacions){
-        state.segmentacionAreas = state.empresas.usuarioEvaluacions[0].evaluacion.segmentacionAreas;
-      }*/
-      state.evaluacionSelected = state.usuarioEvaluacions.find((c) => c.evaluacionId === idevaluacion);
-      state.visibleModalAsociarArea = true;
-
-    };
-
-    const checkedAreas = () => {
-      let seleccionados = 0;
-      for (let x = 0; x < state.areasSelected.length; x++) {
-        document.getElementById(state.areasSelected[x].segmentacionAreaId).checked = true;
-        seleccionados++;
-      }
-      if (seleccionados == state.evaluacionSelected.evaluacion.segmentacionAreas.length){
-         document.getElementById("todoschk").checked = true;
-      }
-    };
-
-    /*const getEvaluacion = () => {
-      state.evaluaciones = [];  
-      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, { headers: header })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.evaluaciones = response.data;
-          console.log(" state.evaluacion ", state.evaluaciones);
-        })
-        .catch((error) => console.log(error));
-    };*/
-    
     const resetUser = () => {
       state.userSelected = {
-        nombres: "",
-        apellidos: "",
-        activo: false,
+        id: "",
+        perfilId: "",
+        empresaId: "",
+        telefono: "",
         email: "",
+        password: "",
+        nombres: "",
+        fechaUltimoAcceso: null,
+        fechaCreacion: null,
+        activo: true,
+        empresa: [],
+
+        perfil: [],
+        usuarioEmpresas: [],
+        usuarioEvaluacions: [
+          {
+            
+            activo: true,
+            empresaId: "",
+            evaluacion: null,
+            evaluacionId: "",
+            fechaCreacion: null,
+            id: "",
+            usuarioAreas: [],
+            usuarioId: "",
+          }
+        ]
       };
       state.clave = "";
       state.passwordFieldType = "password";
-    };
-
-    const resetNewUser = () => {
-      document.getElementById("nombreNew").value = "";
-      document.getElementById("passwordNew").value = "";
-      document.getElementById("emailNew").value = "";
-      state.clave = "";
-      state.passwordFieldType = "password";
-    };
+    }
 
     const resetAsociarArea = () => {
       let boxes = document.getElementsByName("check");
@@ -743,12 +826,14 @@ export default {
     };
 
     const crearUser = () => {
-      let nombre = document.getElementById("nombreNew").value;
+      debugger;
+      /*let nombre = document.getElementById("nombreNew").value;
       let pass = document.getElementById("passwordNew").value;
       let email = document.getElementById("emailNew").value;
-      let activo = document.getElementById("activoNew").checked;
-      let asociar = document.getElementsByName("chkAsociarNew"); 
-      let idempresa = JSON.parse(localStorage.usuarioModel).empresaId;
+      let activo = document.getElementById("activoNew").checked; 
+      let idempresa = JSON.parse(localStorage.usuarioModel).empresaId;*/
+      
+      let asociar = document.getElementsByName("chkAsociarNew");
       let asociarId = [];
       for (let x = 0; x < asociar.length; x++) {
         let obj = asociar[x];
@@ -757,23 +842,47 @@ export default {
         }
       }
 
-      if (!nombre) {
+      if (!state.userSelected.nombres) {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
       }
-      if (!pass) {
+      if (!state.userSelected.password) {
           swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
           return false;
       }
-      if (!email || !validateEmail(email)) {
+      if (!state.userSelected.email || !validateEmail(state.userSelected.email)) {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
       }
+      
+      //state.userSelected.perfil = state.perfiles;
+      //state.userSelected.perfilId = state.perfiles.id;
+      state.userSelected.empresa = state.empresas;
+      state.userSelected.empresaId = state.empresas.id;
+      InsertOrUpdateUser(asociarId);
+    };
 
-      Crear(idempresa, nombre, email, pass, activo, asociarId);
+    const InsertOrUpdateUser = (asociarId) => {
+      ApiNeva.post(
+        "Usuario/InsertOrUpdateUser?asociarIds=" + asociarId,
+        state.userSelected,
+        { headers: header }
+      ).then((response) => {
+        if (response.status != 200) return false;
+        swal.fire(
+          "Registro usuario",
+          "Se agregó usuario",
+          "success"
+        );
+        state.visibleModalNuevoUser = false;
+        getProfile();
+        return;
+      });
     };
 
     const modificarUser = () => {
+      debugger;
+      //COMENTAR LOS DOCUMENT YA QUE SE ESTA VIENDO POR V-MODEL
       let idusuario = state.userSelected.id.toString();
       let nombre = document.getElementById("nombre").value;
       let pass = document.getElementById("password").value;
@@ -789,20 +898,20 @@ export default {
         }
       }
 
-      if (!nombre) {
+      if (!state.userSelected.nombres) {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
       }
-      if (!pass) {
+      if (!state.userSelected.password) {
           swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
           return false;
       }
-      if (!email || !validateEmail(email)) {
+      if (!state.userSelected.email || !validateEmail(state.userSelected.email)) {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
       }
 
-      if (idusuario == localStorage.iduser) {
+      if (state.userSelected.id == localStorage.iduser) {
         swal.fire({
           title: "Modificar Usuario",
           text: "¿Está seguro de modificar el estado del usuario en cesión?",
@@ -904,7 +1013,6 @@ export default {
     };
 
     const asociarArea = () => {
-      debugger;
     };
 
     const setTextGuardarOrSolicitar = (text) => {
@@ -1128,19 +1236,19 @@ export default {
       getUserSelected,
       getUserDelete,
       ModalUserNuevo,
-      getEvaluacionSelected,
-      getEvaluacionSelectedNew,
       resetUser,
+      InsertOrUpdateUser,
       guardarOrSolicitar,
       crearUser,
       asociarArea,
       modificarUser,
       setTextGuardarOrSolicitar,
-      resetNewUser,
       resetAsociarArea,
       showSpining,
       switchVisibility,
       switchVisibilityNew,
+      segmentacionArea,
+      segmentacionAreaNew,
     };
   },
 };

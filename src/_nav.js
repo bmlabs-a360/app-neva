@@ -22,7 +22,7 @@ export default [
       },
     ],
   },*/
-  {
+ /* {
     component: "CNavTitle",
     name: "Conciliación",
   },
@@ -44,7 +44,7 @@ export default [
         to: "/conciliacion/conciliarAutomatico",
       },
     ],
-  },
+  },*/
   {
     component: "CNavTitle",
     name: "Mantenedor",

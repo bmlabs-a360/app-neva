@@ -286,8 +286,10 @@ export function getStyleConciliacionSegunEstado(estado) {
 
 export function checkAll() {
   let boxes = document.getElementsByName("check");
+  debugger;
   for (let x = 0; x < boxes.length; x++) {
     let obj = boxes[x];
+    debugger;
     if (obj.type == "checkbox") {
         obj.checked = document.getElementById("todoschk").checked;
     }

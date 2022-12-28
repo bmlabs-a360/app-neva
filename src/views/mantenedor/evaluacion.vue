@@ -20,11 +20,6 @@
                                 <CNavLink id="paso1"
                                     href="javascript:void(0);"
                                     :active="selectedTab === 1"
-                                    @click="
-                                    () => {
-                                        selectedTab = 1;
-                                    }
-                                    "
                                 >
                                     <div
                                         :style="{
@@ -41,11 +36,6 @@
                                     id="paso2"
                                     href="javascript:void(0);"
                                     :active="selectedTab === 2"
-                                    @click="
-                                    () => {
-                                        readFile();
-                                    }
-                                    "
                                 >
                                     <div
                                         :style="{
@@ -62,11 +52,6 @@
                                     id="paso3"
                                     href="javascript:void(0);"
                                     :active="selectedTab === 3"
-                                    @click="
-                                    () => {
-                                        readColumns();
-                                    }
-                                    "
                                 >
                                     <div
                                         :style="{
@@ -83,11 +68,6 @@
                                     id="paso4"
                                     href="javascript:void(0);"
                                     :active="selectedTab === 4"
-                                    @click="
-                                    () => {
-                                        readColumns();
-                                    }
-                                    "
                                 >
                                     <div
                                         :style="{
@@ -112,8 +92,11 @@
                                 class="pt-2"
                                 :style="`background: ${tabs[0].color}; color: black;`"
                             >  
-                            {{tabs[0].description}}
-
+                              <CRow>
+                                <CCol sm="6" md="6" lg="6">
+                                      <CFormLabel class="mt-2">1 {{tabs[0].description}}</CFormLabel>
+                                </CCol>
+                              </CRow>
                               <CModalTitle class="text-center">
                                 Evaluación
                               </CModalTitle>
@@ -148,12 +131,18 @@
                                 </CCol> 
                               </CRow>   
 
-                              <CRow v-for="area in segmentacionAreas" :key="area.id" >
+                              <CRow v-for="area in segmentacionAreasByEvaluacion" :key="area.id">
                                 <CCol sm="6" md="6" lg="6" >
-                                      <CFormLabel for="tipoevaluacion" > {{area.nombreArea}} </CFormLabel>
+                                      <CFormLabel for="tipoevaluacion" class="mt-1" > {{area.nombreArea}} </CFormLabel>
                                 </CCol>     
                                 <CCol sm="6" md="6" lg="6">
-
+                                  <CFormInput
+                                    :id="area.id"
+                                    placeholder="Porcentaje"
+                                    type="number"
+                                    class="mt-1"
+                                    name="porcentajeAreas"
+                                  />
                                 </CCol>
                               </CRow>
 
@@ -163,7 +152,7 @@
                                     <CButton
                                         :disabled="isLoadingFile"
                                         color="primary"
-                                        @click="paso2"
+                                        @click="irPaso2"
                                         >Siguiente</CButton
                                     >
                                     </div>
@@ -183,7 +172,11 @@
                                 class="pt-3"
                                 :style="`background: ${tabs[1].color}; color: black;`"
                             >
-                            {{tabs[1].description}}
+                              <CRow>
+                                <CCol sm="6" md="6" lg="6">
+                                      <CFormLabel class="mt-2">2 {{tabs[1].description}}</CFormLabel>
+                                </CCol>
+                              </CRow>
                               <CModalTitle class="text-center">
                                 Evaluación
                               </CModalTitle>
@@ -213,19 +206,20 @@
 
                               <CRow>
                                 <CCol sm="6" md="6" lg="6">
-                                      <CFormLabel for="tipoarea" class="mt-2">Nombre área</CFormLabel>
+                                      <CFormLabel for="tipoAreaPaso2" class="mt-2">Nombre área</CFormLabel>
                                 </CCol>     
                                 <CCol sm="6" md="6" lg="6">
                                       <CFormSelect
-                                          id="tipoarea"
+                                          id="tipoAreaPaso2"
                                           size="sm"
                                           @change="changeSegmentacionSubArea()"
                                           class="mt-2"
                                       >
                                         <option
-                                            v-for="segmentacionArea in segmentacionAreas"
+                                            v-for="segmentacionArea in segmentacionAreasByEvaluacion"
                                             :value="segmentacionArea.id"
                                             :key="segmentacionArea.id"
+                                            
                                         >
                                             {{ segmentacionArea.nombreArea }}
                                         </option>
@@ -241,12 +235,18 @@
                                 </CCol>
                               </CRow>
 
-                              <CRow v-for="subArea in segmentacionSubAreas" :key="subArea.id" >
+                              <CRow v-for="subArea in segmentacionSubAreasbyAreas" :key="subArea.id" >
                                 <CCol sm="6" md="6" lg="6" >
-                                      <CFormLabel for="tipoSubArea" > {{subArea.nombreSubArea}}</CFormLabel>
+                                  <CFormLabel for="tipoSubAreaPaso2" class="mt-1"> {{subArea.nombreSubArea}}</CFormLabel>
                                 </CCol>     
                                 <CCol sm="6" md="6" lg="6">
-
+                                  <CFormInput
+                                    :id="subArea.id"
+                                    placeholder="Porcentaje"
+                                    type="number"
+                                    class="mt-1"
+                                    name="porcentajeSubAreas"
+                                  />
                                 </CCol>
                               </CRow>
 
@@ -264,7 +264,7 @@
                                     <CButton
                                         :disabled="isLoadingColumns"
                                         color="primary"
-                                        @click="readColumns"
+                                        @click="irPaso3"
                                         >Siguiente
                                       </CButton>
                                   </CCol>
@@ -284,157 +284,115 @@
                                 class="pt-3"
                                 :style="`background: ${tabs[2].color}; color: black;`"
                             >
-                                <CModalTitle class="text-center">{{
-                                tabs[2].description
-                                }}</CModalTitle>
-                                <br />
-                                <CRow>
-                                <CCol :md="12">
-                                    <CCard
-                                    class="mb-4"
-                                    data-aos="fade-up"
-                                    data-aos-easing="ease"
-                                    data-aos-delay="300"
-                                    >
-                                    <CCardHeader>
-                                        <CRow>
-                                        <CCol :sm="7">
-                                            <strong
-                                            >Listado de Conciliaciones
-                                            Obtenidas</strong
-                                            >&nbsp;<br />
-                                        </CCol>
-                                        <CCol :sm="5">
-                                            <div style="padding-top: 0.3rem">
-                                            <CLink
-                                                v-c-tooltip="
-                                                'Subir datos obtenidos de concilación'
-                                                "
-                                            >
-                                                <CButton
-                                                color="primary"
-                                                @click="
-                                                    () => {
-                                                    loadData();
-                                                    }
-                                                "
-                                                >Subir
-                                                <i class="cil-cloud-upload"></i>
-                                                </CButton>
-                                            </CLink>
-                                            </div>
-                                        </CCol>
-                                        </CRow>
-                                    </CCardHeader>
-                                    <CCardBody>
-                                        <CTable responsive striped>
-                                        <CTableHead>
-                                            <CTableRow>
-                                            <CTableHeaderCell
-                                                class="text-center"
-                                                scope="col"
-                                                >Identificador</CTableHeaderCell
-                                            >
-                                            <CTableHeaderCell
-                                                class="text-center"
-                                                scope="col"
-                                                >Medio&nbsp;Pago</CTableHeaderCell
-                                            >
-                                            <CTableHeaderCell
-                                                class="text-center"
-                                                scope="col"
-                                                >Tipo Movimiento</CTableHeaderCell
-                                            >
-                                            <CTableHeaderCell
-                                                class="text-center"
-                                                scope="col"
-                                                >Monto Afecto</CTableHeaderCell
-                                            >
-                                            <CTableHeaderCell
-                                                class="text-center"
-                                                scope="col"
-                                                >Estado</CTableHeaderCell
-                                            >
-                                            <CTableHeaderCell
-                                                class="text-center"
-                                                scope="col"
-                                                >Fecha&nbsp;Venta</CTableHeaderCell
-                                            >
-                                            </CTableRow>
-                                        </CTableHead>
-                                        <CTableBody>
-                                            <CTableRow
-                                            v-if="!conciliaciones"
-                                            color="warning"
-                                            >
-                                            <CTableDataCell
-                                                colspan="9"
-                                                class="text-center"
-                                                ><strong id="textEmpty"
-                                                >Utilice los filtos para buscar
-                                                conciliaciones</strong
-                                                ></CTableDataCell
-                                            >
-                                            </CTableRow>
-                                            <CTableRow
-                                            v-for="cons in conciliaciones"
-                                            :key="cons.identificador"
-                                            >
-                                            <CTableDataCell class="text-center">{{
-                                                cons.identificador
-                                            }}</CTableDataCell>
-                                            <CTableDataCell class="text-center">{{
-                                                cons.mediopago_id
-                                            }}</CTableDataCell>
-                                            <CTableDataCell class="text-center"
-                                                >VENTA</CTableDataCell
-                                            >
-                                            <CTableDataCell class="text-center">{{
-                                                formatterMoney.format(cons.monto_afecto)
-                                            }}</CTableDataCell>
-                                            <!--CTableDataCell class="text-center">{{ getNameEstadoConciliacion(cons.estado) }}</CTableDataCell-->
-                                            <CTableDataCell class="text-center">
-                                                <CBadge
-                                                :color="
-                                                    getStyleConciliacionSegunEstado(
-                                                    cons.estado
-                                                    )
-                                                "
-                                                >
-                                                {{
-                                                    getNameEstadoConciliacion(
-                                                    cons.estado
-                                                    )
-                                                }}
-                                                </CBadge>
-                                            </CTableDataCell>
-                                            <CTableDataCell class="text-center">{{
-                                                new Date(
-                                                cons.fecha_venta
-                                                ).toLocaleString()
-                                            }}</CTableDataCell>
-                                            </CTableRow>
-                                        </CTableBody>
-                                        </CTable>
-                                    </CCardBody>
-                                    <CCardFooter v-if="conciliaciones">
-                                        <paginate
-                                        v-model="initialPage"
-                                        :page-count="totalconciliacion"
-                                        :page-range="3"
-                                        :margin-pages="2"
-                                        :click-handler="selectedPagination"
-                                        :prev-text="'Prev'"
-                                        :next-text="'Siguiente'"
-                                        :container-class="'pagination'"
-                                        :page-class="'page-item'"
-                                        >
-                                        </paginate>
-                                    </CCardFooter>
-                                    </CCard>
+                              <CRow>
+                                <CCol sm="6" md="6" lg="6">
+                                      <CFormLabel class="mt-2">3 {{tabs[2].description}}</CFormLabel>
                                 </CCol>
-                                </CRow>
-                                <br />
+                              </CRow>
+                              <CModalTitle class="text-center">
+                              </CModalTitle>
+                              <CRow>
+                                <CCol sm="6" md="6" lg="6">
+                                      <CFormLabel for="nombreAreaPaso3" class="mt-2">Nombre área</CFormLabel>
+                                </CCol>     
+                                <CCol sm="6" md="6" lg="6">
+                                  <CFormSelect
+                                    id="idAreaPaso3"
+                                    size="sm"
+                                    @change="changeSegmentacionAreaPaso3()"
+                                  >
+                                    <option value="0" :key="0">Todos</option>
+                                    <option
+                                      v-for="segmentacionArea in segmentacionAreasPaso3"
+                                      :key="segmentacionArea.id"
+                                      :value="segmentacionArea.id"
+                                    >
+                                      {{ segmentacionArea.nombreArea }}
+                                    </option>
+                                  </CFormSelect>
+                                </CCol>
+                              </CRow>
+
+                              <CRow>
+                                <CCol sm="6" md="6" lg="6">
+                                      <CFormLabel for="tipoSubAreaPaso3" class="mt-2">Nombre Sub área</CFormLabel>
+                                </CCol>     
+                                <CCol sm="6" md="6" lg="6">
+                                      <CFormSelect
+                                          id="tipoSubAreaPaso3"
+                                          size="sm"
+                                          class="mt-2"
+                                          @change="changeSegmentacionSubAreaPaso3()"
+                                      >
+                                       <option value="0" :key="0">Todos</option>
+                                        <option
+                                            v-for="segmentacionSubArea in segmentacionSubAreasPaso3"
+                                            :value="segmentacionSubArea.id"
+                                            :key="segmentacionSubArea.id"
+                                        >
+                                            {{ segmentacionSubArea.nombreSubArea }}
+                                        </option>
+                                      </CFormSelect>
+                                </CCol>
+                              </CRow>
+
+                              <CTable responsive class="mt-4">
+                                <CTableHead>
+                                  <CTableRow>
+                                    <CTableHeaderCell class="text-center" scope="col">
+                                      Área
+                                    </CTableHeaderCell>
+                                    <CTableHeaderCell class="text-center" scope="col">
+                                      Sub Área
+                                    </CTableHeaderCell>
+                                    <CTableHeaderCell class="text-center" scope="col">
+                                      Estado
+                                    </CTableHeaderCell>
+                                    <CTableHeaderCell class="text-center" scope="col">
+                                      Preguntas
+                                    </CTableHeaderCell>
+                                  </CTableRow>
+                                </CTableHead>
+                                <CTableBody>
+                                  <CTableRow v-for="segmentacionAreaPaso3Tabla in segmentacionAreasPaso3Tabla" :key="segmentacionAreaPaso3Tabla.id">
+                                    <CTableDataCell class="text-center">
+                                      {{segmentacionAreaPaso3Tabla.nombreArea}}
+                                    </CTableDataCell>
+                                     <CTableDataCell class="text-center">
+                                      {{segmentacionAreaPaso3Tabla.nombreSubArea}}
+                                    </CTableDataCell>
+                                    <CTableDataCell class="text-center">
+                                      <CFormCheck name="chkEstado" disabled/>
+                                    </CTableDataCell>
+                                    <CTableDataCell class="text-center">
+                                      <CButton @click="getPregunta(segmentacionAreaPaso3Tabla)">
+                                        <CIcon :icon="cilPen" size="lg" />
+                                      </CButton>
+                                    </CTableDataCell>
+                                  </CTableRow>
+                                </CTableBody>
+                              </CTable>
+
+                               <CRow>
+                                <div class="mt-3 d-flex flex-row" style="justify-content: center;" >
+                                  <CCol sm="6" md="6" lg="6">
+                                      <CButton
+                                        :disabled="isLoadingColumns"
+                                        color="primary"
+                                        @click="selectedTab = 2"
+                                        >Anterior
+                                      </CButton>
+                                  </CCol>
+                                  <CCol sm="6" md="6" lg="6">
+                                    <CButton
+                                        :disabled="isLoadingColumns"
+                                        color="primary"
+                                        @click="irPaso4"
+                                        >Siguiente
+                                      </CButton>
+                                  </CCol>
+                                </div>
+                              </CRow>
                             </CContainer>
                             </CTabPane>
                         </CTabContent>
@@ -446,7 +404,135 @@
       </CCard>
     </CCol>
   </CRow>
+
+  <!-- MODAL PREGUNTAS -->
+  <CModal
+    backdrop="static"
+    size="lg"
+    alignment="center"
+    :visible="visibleModalPreguntas"
+    @close="
+      () => {
+        resetModalPregunta();
+        visibleModalPreguntas = false;
+      }
+    "
+  >
+     <CModalHeader>
+        <CModalTitle>Preguntas</CModalTitle>&nbsp;&nbsp;
+    </CModalHeader>
+    <CModalBody>
+      <CContainer>
+        <CRow>
+          <CCol sm="12">
+            <div class="mb-2 text-center">
+              <h4> {{preguntaSelected.detalle}}</h4>
+            </div>
+          </CCol>
+          <CCol sm="12">
+            <div class="mt-3 text-center">
+              <h5> Alternativas </h5>
+            </div>
+          </CCol>
+
+          <CCol sm="12 mt-1">
+            <div v-for="alternativa in preguntaSelected.alternativas" :key="alternativa.id">
+              <div style="display: flex">
+                <CFormInput
+                  type="radio"
+                  name="alternativa"
+                  :id="alternativa.id"
+                  class="form-check-input"
+                />
+                <CFormLabel > {{alternativa.detalle}} </CFormLabel>
+              </div>
+            </div>
+          </CCol>
+        </CRow>
+
+        <CRow>
+          <CCol sm="6" class="mt-3">
+            <h5> Importancia </h5>
+            <div style="display: flex">
+              <CFormInput
+                type="radio"
+                name="importancia"
+                id="muyimportante"
+                class="form-check-input"
+              />
+              <CFormLabel > Muy importante </CFormLabel>
+            </div>
+            <div style="display: flex">
+              <CFormInput
+                type="radio"
+                name="importancia"
+                id="importante"
+                class="form-check-input"
+              />
+              <CFormLabel > Importante </CFormLabel>
+            </div>
+            <div style="display: flex">
+              <CFormInput
+                type="radio"
+                name="importancia"
+                id="pocoimportante"
+                class="form-check-input"
+              />
+              <CFormLabel > Poco Importante </CFormLabel>
+            </div>
+            <div style="display: flex">
+              <CFormInput
+                type="radio"
+                name="importancia"
+                id="irrelevante"
+                class="form-check-input"
+              />
+              <CFormLabel > Irrelevante </CFormLabel>
+            </div>
+            <div style="display: flex">
+              <CFormInput
+                type="radio"
+                name="importancia"
+                id="noaplica"
+                class="form-check-input"
+              />
+              <CFormLabel > No aplica </CFormLabel>
+            </div>
+          </CCol>
+
+          <CCol sm="6" class="mt-3">
+            <h5> Difencia relacionada con </h5>
+            <div v-for="difRelacionada in difRelacionadas" :key="difRelacionada.id">
+              <div style="display: flex">
+                <CFormInput
+                  type="radio"
+                  :name="'difRelacionada-' + preguntaSelected.id"
+                  :id="difRelacionada.id"
+                  class="form-check-input"
+                />
+                <CFormLabel > {{difRelacionada.nombre}} </CFormLabel>
+              </div>
+            </div>
+          </CCol>
+
+        </CRow>
+      </CContainer>
+    </CModalBody>
+    <CModalFooter>
+      <CButton color="primary" class="text-start" @click="pasosPreguntas('atras')">
+        Anterior
+      </CButton>
+      <CFormLabel class="text-center"> Pregunta {{preguntaSelected.orden}} de {{preguntasTotal}} </CFormLabel>
+      <CButton color="primary" class="text-end"  @click="pasosPreguntas('siguiente')" >
+        Siguiente
+      </CButton>
+    </CModalFooter>
+  </CModal>
+  <!-- MODAL PREGUNTAS -->
+
 </template>
+
+
 
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
@@ -466,6 +552,7 @@ import axios from "axios";
 import archivoEjemplo from "@/assets/fileSample/ejemplo.xlsx";
 import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import { asistenteConciliacion } from "@/_menuOnboarding.js";
+import { cilPen } from "@coreui/icons";
 //import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
 
 export default {
@@ -506,8 +593,19 @@ export default {
       steps: [],
       evaluaciones : [],
       segmentacionAreas : [],
+      segmentacionAreaSelected: [],
+      segmentacionAreasByEvaluacion: [],
       evaluacionSelected: {},
-      segmentacionSubAreas : [],
+      segmentacionSubAreasbyAreas: [],
+      segmentacionAreasPaso3: [],
+      segmentacionSubAreasPaso3: [],
+      segmentacionAreasPaso3Tabla: [],
+      visibleModalPreguntas : false,
+      alternativas: [],
+      difRelacionadas: [],
+      preguntas : [],
+      preguntaSelected : [],
+      preguntasTotal:0,
 
       options: {
         overlay: {
@@ -577,7 +675,7 @@ export default {
           label: "Paso 3",
           value: 3,
           description: "Levantamiento y entrevista",
-          color: "#e6e0e0",
+          color: "#ebedef",
           colorTab: "black",
           active: false,
         },
@@ -585,14 +683,14 @@ export default {
           label: "Paso 4",
           value: 4,
           description: "Preguntas",
-          color: "#e6e0e0",
+          color: "#ebedef",
           colorTab: "black",
           active: false,
         },
       ],
     });
 
-      const getEvaluaciones = async () => {
+    const getEvaluaciones = async () => {
       state.evaluaciones = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
       ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
@@ -603,6 +701,15 @@ export default {
           state.evaluaciones = response.data;
           state.evaluacionSelected = state.evaluaciones[0];
           console.log("state.evaluaciones", state.evaluaciones);
+          console.log("state.evaluacionSelected", state.evaluacionSelected);
+          if (!state.evaluacionSelected){
+            swal.fire({
+              title: "Preparación áreas",
+              text: "Empresa no tiene evaluaciones asignadas",
+              icon: "warning",
+            });
+            return false;
+          }
           getSegmentacionArea();
         })
         .catch((error) => console.log(error));
@@ -610,69 +717,217 @@ export default {
 
     const getSegmentacionArea = async () => {
       state.segmentacionAreas = [];
-      ApiNeva.get("SegmentacionArea/GetSegmentacionAreasByEvaluacionId?evaluacionId=" + state.evaluaciones[0].id, {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.segmentacionAreas = response.data;
-          console.log("state.segmentacionArea", state.segmentacionAreas);
-        })
-        .catch((error) => console.log(error));
+      state.segmentacionAreasByEvaluacion = [];
+      if (!state.evaluacionSelected.segmentacionAreas){
+        swal.fire({
+          title: "Preparación de areas",
+          text: "Empresa no tiene evaluaciones asignadas",
+          icon: "warning",
+        });
+        return false;
+      }
+      let areas = [];
+      state.evaluaciones.forEach(x => {
+        areas =  areas.concat(x.segmentacionAreas);
+      });
+      state.segmentacionAreas.push(areas);
+      state.segmentacionAreas = state.segmentacionAreas[0];
+      state.segmentacionAreas.forEach( x => {
+        if (x.evaluacionId == state.evaluacionSelected.id){
+           state.segmentacionAreasByEvaluacion.push(x);
+        }
+      });
+      state.segmentacionAreaSelected = 
+      console.log("state.segmentacionAreas", state.segmentacionAreas);
+      console.log("state.segmentacionAreasByEvaluacion", state.segmentacionAreasByEvaluacion);
     };
 
     const changeSegmentacionArea = async () => {
-   
-      state.segmentacionAreas = [];
+      state.segmentacionAreasByEvaluacion = [];
       let idevaluacion = document.getElementById("tipoevaluacion").value;
-      state.evaluacionSelected = state.evaluaciones.find((c) => c.id === idevaluacion);
-      ApiNeva.get("SegmentacionArea/GetSegmentacionAreasByEvaluacionId?evaluacionId=" + idevaluacion, {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.segmentacionAreas = response.data;
-          console.log("state.segmentacionArea", state.segmentacionAreas);
-        })
-        .catch((error) => console.log(error));
+      state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idevaluacion);
+      console.log("state.evaluacionSelected", state.evaluacionSelected);
+      state.segmentacionAreas.forEach( x => {
+        if (x.evaluacionId == idevaluacion){
+           state.segmentacionAreasByEvaluacion.push(x);
+        }
+      });
     };
 
-    const paso2 = async () => {
-      let tipoevaluacion = document.getElementById("tipoevaluacion").value;
-      if (!tipoevaluacion){
+    const irPaso2 = async () => {
+      if (!state.evaluacionSelected){
         swal.fire({
-          title: "Preparación de areas",
+          title: "Preparación de áreas",
           text: "Debe seleccionar un tipo de evaluación",
           icon: "warning",
         });
         return false;
       }
-      let idarea = document.getElementById("tipoarea").value;
-      ApiNeva.get("SegmentacionSubArea/GetSegmentacionSubAreasBySegmentacionAreaId?segmentacionAreaId=" + idarea , null, {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.segmentacionSubAreas = response.data;
-          console.log("state.segmentacionSubAreas", state.segmentacionSubAreas);
-        })
-        .catch((error) => console.log(error));
+      if (!state.segmentacionAreasByEvaluacion){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "Empresa no tiene áreas asignadas",
+          icon: "warning",
+        });
+        return false;
+      }
+      let idarea = document.getElementById("tipoAreaPaso2").value;
+      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idarea);
+      console.log("state.segmentacionAreaSelected", state.segmentacionAreaSelected);
+      state.segmentacionSubAreasbyAreas = [];
+   
+      state.segmentacionAreasByEvaluacion.forEach( x => {
+        if (x.id == state.segmentacionAreaSelected.id){
+          state.segmentacionSubAreasbyAreas.push(x.segmentacionSubAreas);
+        }
+      });
 
+      state.segmentacionSubAreasbyAreas = state.segmentacionSubAreasbyAreas[0];
+      console.log("state.segmentacionSubAreasbyAreas", state.segmentacionSubAreasbyAreas);
       state.selectedTab = 2;
       state.tabs[0].colorTab = "black";
     };
 
     const changeSegmentacionSubArea = async () => {
-      let idarea = document.getElementById("tipoarea").value;
-      ApiNeva.get("SegmentacionSubArea/GetSegmentacionSubAreasBySegmentacionAreaId?segmentacionAreaId=" + idarea , null, {
+      let idarea = document.getElementById("tipoAreaPaso2").value;
+      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idarea);
+      state.segmentacionSubAreasbyAreas = [];
+      state.segmentacionSubAreasbyAreas = state.segmentacionAreaSelected.segmentacionSubAreas;
+      console.log("state.segmentacionAreaSelected", state.segmentacionAreaSelected);
+      console.log("state.segmentacionSubAreasbyAreas", state.segmentacionSubAreasbyAreas);
+    };
+    
+    const irPaso3 = async () => {
+      state.segmentacionAreasPaso3 = [];
+      state.segmentacionAreasPaso3 = state.segmentacionAreasByEvaluacion;
+      console.log("state.segmentacionAreasPaso3", state.segmentacionAreasPaso3);
+      getSubAreasByPaso3();
+      state.selectedTab = 3;
+      state.tabs[0].colorTab = "black";
+    };
+
+    const changeSegmentacionAreaPaso3 = async () => {
+      state.segmentacionSubAreasPaso3 = [];
+      state.segmentacionAreasPaso3Tabla = [];
+      let idarea = document.getElementById("idAreaPaso3").value;
+      if (idarea == "0"){
+        getSubAreasByPaso3();
+        return false;
+      }
+      state.segmentacionSubAreasPaso3 = state.segmentacionAreasPaso3.find((y) => y.id == idarea).segmentacionSubAreas;
+      console.log("state.segmentacionSubAreasPaso3", state.segmentacionSubAreasPaso3);
+      state.segmentacionSubAreasPaso3.forEach (x => {
+        if (x.segmentacionAreaId == idarea){
+          state.segmentacionAreasPaso3.forEach(y => {
+              if (x.segmentacionAreaId == y.id){
+                x.nombreArea = y.nombreArea;
+              };
+          });
+          state.segmentacionAreasPaso3Tabla.push(x);
+        }
+      });
+      console.log("state.segmentacionAreasPaso3Tabla", state.segmentacionAreasPaso3Tabla);
+    };
+
+    const changeSegmentacionSubAreaPaso3 = async () => {
+      state.segmentacionAreasPaso3Tabla = [];
+      let idsubarea = document.getElementById("tipoSubAreaPaso3").value;
+      if (idsubarea == "0"){
+        changeSegmentacionAreaPaso3();
+        return false;
+      }
+      state.segmentacionSubAreasPaso3.forEach (x => {
+        if (x.id == idsubarea){
+          state.segmentacionAreasPaso3.forEach(y => {
+              if (x.segmentacionAreaId == y.id){
+                x.nombreArea = y.nombreArea;
+              };
+          });
+          state.segmentacionAreasPaso3Tabla.push(x);
+        }
+      });
+      console.log("state.segmentacionAreasPaso3Tabla", state.segmentacionAreasPaso3Tabla);
+    };
+
+    const getSubAreasByPaso3 = async () => {
+      let subAreas = [];
+      state.segmentacionSubAreasPaso3 = [];
+      state.segmentacionAreas.forEach(x => {
+        subAreas = subAreas.concat(x.segmentacionSubAreas);
+      });
+      state.segmentacionSubAreasPaso3.push(subAreas);
+      state.segmentacionSubAreasPaso3 = state.segmentacionSubAreasPaso3[0];
+
+      state.segmentacionSubAreasPaso3.forEach (x => {
+        state.segmentacionAreasPaso3.forEach(y => {
+            if (x.segmentacionAreaId == y.id){
+              x.nombreArea = y.nombreArea;
+            };
+        });
+        state.segmentacionAreasPaso3Tabla.push(x);
+      });
+      console.log("state.segmentacionAreasPaso3Tabla", state.segmentacionAreasPaso3Tabla);
+    };
+
+    const getPregunta = (segmentacionArea) => {
+      state.preguntas = [];
+      state.preguntaSelected = [];
+      state.preguntasTotal = [];
+      ApiNeva.get("Pregunta/GetPreguntasByIdsEvaluacionSegmentacionAreaSubArea?idEvaluacion=" + state.evaluacionSelected.id + "&idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
         headers: header,
       })
         .then((response) => {
           if (response.status != 200) return false;
-          state.segmentacionSubAreas = response.data;
-          console.log("state.segmentacionSubAreas", state.segmentacionSubAreas);
+          state.preguntas = response.data;
+          state.preguntaSelected = response.data[0];
+          state.preguntasTotal = response.data.length;
+          if (!state.preguntaSelected){
+            swal.fire({
+              title: "Preguntas",
+              text: "Sub área no tiene preguntas asignadas",
+              icon: "warning",
+            });
+            return false;
+          }
+          state.visibleModalPreguntas = true;
+          console.log("state.preguntas", state.preguntas);
         })
         .catch((error) => console.log(error));
+      getDiferenciaRelacionada();
+    };
+
+    const getDiferenciaRelacionada = async () => {
+      state.difRelacionadas = [];
+      ApiNeva.post("TipoDiferenciaRelacionada/GetTipoDiferenciaRelacionadas", null,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.difRelacionadas = response.data;
+          console.log("state.difRelacionadas", state.difRelacionadas);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const pasosPreguntas = async (paso) => {
+
+      let orden = state.preguntaSelected.orden - 1;
+      if (paso == "siguiente"){
+        if (state.preguntaSelected.orden == state.preguntasTotal){
+          return false;
+        }
+        state.preguntaSelected = state.preguntas[orden + 1];
+      }
+      if (paso == "atras"){
+        if (state.preguntaSelected.orden == 1){
+          return false;
+        }
+        state.preguntaSelected = state.preguntas[orden - 1];
+      }
+
+    };
+
+    const resetModalPregunta = () => {
     };
 
     const selectedPagination = (pageNum) => {
@@ -887,7 +1142,7 @@ export default {
       state.isLoadingFile =
         localStorage.isLoadingFile == "false" ? false : true;
 
-      ApiNeva.get("Config/GetAll", { headers: header })
+      /*ApiNeva.get("Config/GetAll", { headers: header })
         .then((response) => {
           if (response.status != 200) return false;
           state.configuracionWizard = response.data.filter((x) =>
@@ -912,10 +1167,10 @@ export default {
             });
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error));*/
     };
 
-    const onBoarding = async () => {
+    /*const onBoarding = async () => {
       let user = JSON.parse(localStorage.getItem("usuarioModel"));
       try {
         state.isonboarding = await onBoardingHelper.getUserSeeMenu(
@@ -937,12 +1192,12 @@ export default {
           header
         );
       }
-    };
+    };*/
 
     onMounted(() => {
       getEvaluaciones();
       oncreated();
-      onBoarding();
+      //onBoarding();
       /*if (!state.isonboarding) {
         setTimeout(() => {
           start();
@@ -955,13 +1210,20 @@ export default {
       formatterMoney,
       selectedPagination,
       getNameEstadoConciliacion,
-      paso2,
+      irPaso2,
+      irPaso3,
       loadData,
       readColumns,
       randomKey,
       exportEjemplo,
       changeSegmentacionArea,
       changeSegmentacionSubArea,
+      changeSegmentacionAreaPaso3,
+      changeSegmentacionSubAreaPaso3,
+      getPregunta,
+      cilPen,
+      resetModalPregunta,
+      pasosPreguntas,
     };
   },
 };

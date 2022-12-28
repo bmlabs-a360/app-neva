@@ -1,4 +1,69 @@
 <template>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;700&family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" :href="style">
+</head>
+<body class="height-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="img-login col-sm-7 col-lg-6 d-flex justify-content-center align-items-center">
+                <img class="w-100 m-5" :src="imgLogin" alt="persona manipulando una interfaz">
+            </div>
+            <div class="col-12 col-sm-5 col-lg-6 d-flex justify-content-center align-items-center p-md-2 p-lg-5">
+                <div class="container m-md-2 m-lg-5 center-form">
+                    <div class="mb-4">
+                        <img class="mb-md-3" :src="imgLogo" alt="">
+                    <h2 class="mb-2">Ingresar</h2>
+                    <p class="gris-400 p-10">Bienvenido de nuevo a su cuenta.</p>
+                    
+                    </div>
+                    <form  class="login-form" action="">
+                        <div class="mb-md-4">
+                            <div class="field">
+    
+                                <div class="control has-icon">
+                                    <input class="input w-100" id="email" type="email" placeholder="correo@correo.cl">
+                                    <label class="label" for="" >
+                                        Correo
+                                    </label>
+                                    <div class="form-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:user" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="control has-icon">
+                                <input class="input w-100"  id="password" type="password" @keypress="buscarEnter" placeholder="Contraseña" >
+                                <label class="label" for="">
+                                    Contraseña
+                                </label>
+                                <div class="form-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="login">
+                            <button type="button" @click="login" aria-hidden="false" class="button button v-button is-bold is-fullwidth is-raised is-primary"><span> Ingresar </span></button>
+                        </div>
+                        <div class="d-flex flex-column align-items-center mt-4">
+                            <a class="link-primary" @click="ir('Register')" style="cursor:pointer">Crear una cuenta.</a>
+                            <a class="link-secundary" @click="abirModalRecuperacion()" style="cursor:pointer;display: none;">¿Has olvidado tu contraseña?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
   <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
     <CContainer>
       <CRow class="justify-content-center">
@@ -126,7 +191,56 @@
     </CContainer>
   </div>
 
-  <!-- MODAL -->
+  <!-- MODAL LOGIN CONSULTOR-->
+  <CModal
+    backdrop="static"
+    size="lg"
+    alignment="center"
+    :visible="visibleModalLoginConsultor"
+    @close="
+      () => {
+        visibleModalLoginConsultor = false;
+      }
+    "
+  >
+    <CModalHeader>
+      <CModalTitle>Login Consultor</CModalTitle>
+    </CModalHeader>
+    <CModalBody>
+      <CContainer>
+        <CRow>
+          <CCol sm="8">
+            <CFormLabel for="seleccionempresa"
+              >Seleccione empresa
+            </CFormLabel>
+           <CFormSelect
+                id="empresa"
+                size="sm"
+                class="mt-2"
+            >
+              <option
+                  v-for="empresa in empresas"
+                  :value="empresa.id"
+                  :key="empresa.id"
+              >
+                  {{ empresa.razonSocial }}
+              </option>
+            </CFormSelect>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </CModalBody>
+    <CModalFooter>
+      <CButton id="btnIngresarConsultor" @click="IngresarConsultor" color="primary">
+        <CRow>
+          <CCol> Aceptar </CCol>
+        </CRow>
+      </CButton>
+    </CModalFooter>
+  </CModal>
+  <!-- FIN MODAL LOGIN CONSULTOR -->
+
+  <!-- MODAL RECUPERACION-->
   <CModal
     backdrop="static"
     size="lg"
@@ -188,7 +302,7 @@
       </CButton>
     </CModalFooter>
   </CModal>
-  <!-- MODAL -->
+  <!-- FIN MODAL RECUPERACION-->
 </template>
 
 <script>
@@ -199,7 +313,9 @@ import router from "@/router/index";
 import { validateEmail, Fn } from "@/Helper/util";
 import { useRoute } from "vue-router";
 import { useReCaptcha } from "vue-recaptcha-v3";
-import imgLogo from "@/assets/images/neva_login.png";
+import { style } from "@/assets/css/style.css";
+import imgLogin from "@/assets/img/ilustraciones/login.svg";
+import imgLogo from "@/assets/img/logo.svg";
 export default {
   name: "Login",
   methods: {
@@ -221,6 +337,9 @@ export default {
       visibleModalRecuperacion: false,
       passwordFieldType: "password",
       clave: "",
+      visibleModalLoginConsultor: false,
+      empresas: [],
+
     });
     const switchVisibility = () => {
       state.passwordFieldType =
@@ -357,6 +476,19 @@ export default {
         "empresaModel",
         JSON.stringify(response.data.usuarioModel.empresa)
       );
+      if (response.data.usuarioModel.perfil.nombre == "Consultor"){
+        state.empresas = [];
+        ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + response.data.usuarioModel.id , null, { headers: header })
+          .then((response) => {
+            if (response.status != 200) return false;
+            state.empresas = response.data;
+            console.log("state.empresas",state.empresas);
+          })
+          .catch((error) => console.log(error));
+        state.visibleModalLoginConsultor = true;
+        return false;
+      }
+      
       ApiNeva.get(process.env.VUE_APP_API_NEVA_SWAGGER, {
         headers: header,
       }).then((response2) => {
@@ -391,6 +523,65 @@ export default {
       });
       return router.push({ name: "Dashboard" });
     };
+
+   
+    const IngresarConsultor = () => {
+      let idempresa = document.getElementById("empresa").value;
+      state.empresaSelected = state.empresas.find((c) => c.id === idempresa);
+      if (!state.empresaSelected) {
+         swal.fire(
+            "Login",
+            "Debe seleccionar una empresa",
+            "warning"
+          );
+          return false;
+      }
+      let usuarioModel = JSON.parse(localStorage.usuarioModel);
+      usuarioModel.empresa = state.empresaSelected;
+      usuarioModel.empresaId = idempresa;
+      localStorage.setItem(
+        "usuarioModel",
+        JSON.stringify(usuarioModel)
+      );
+       localStorage.setItem(
+        "empresaModel",
+        JSON.stringify(state.empresaSelected)
+      );
+      ApiNeva.get(process.env.VUE_APP_API_NEVA_SWAGGER, {
+        headers: header,
+      }).then((response2) => {
+        if (response2.status == 200) {
+          var asd = Object.keys(response2.data.paths).toString().split(",");
+          var swaggerList = [];
+          var i = 1;
+          asd.forEach((element) => {
+            swaggerList.push({
+              id: i++,
+              repositorio: element
+                .toString()
+                .replace("/api/v1/", "")
+                .split("/")[0],
+              metodo: element.toString().replace("/api/v1/", "").split("/")[1],
+              nombre:
+                element.toString().replace("/api/v1/", "").split("/")[0] +
+                "_" +
+                element.toString().replace("/api/v1/", "").split("/")[1],
+            });
+          });
+          localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
+        } else {
+          showSpining(false, "btnLogin", "loading");
+          swal.fire(
+            "Login",
+            "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
+            "warning"
+          );
+          return false;
+        }
+      });
+      return router.push({ name: "Dashboard" });
+    };
+    
     const buscarEnter = (elemento) => {
       if (elemento.keyCode === 13) {
         login();
@@ -418,6 +609,9 @@ export default {
       buscarEnter,
       ir,
       imgLogo,
+      imgLogin,
+      style,
+      IngresarConsultor,
     };
   },
   async beforeMount() {
