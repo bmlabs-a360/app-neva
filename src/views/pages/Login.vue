@@ -64,6 +64,7 @@
 </body>
 </html>
 
+  <!--
   <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
     <CContainer>
       <CRow class="justify-content-center">
@@ -190,7 +191,7 @@
       </CRow>
     </CContainer>
   </div>
-
+    -->
   <!-- MODAL LOGIN CONSULTOR-->
   <CModal
     backdrop="static"
@@ -349,7 +350,7 @@ export default {
       state.visibleModalRecuperacion = true;
     };
     const solicitarRecuperacion = async () => {
-      showSpining(true, "btnRecuperar", "loadingRecuperar");
+      //showSpining(true, "btnRecuperar", "loadingRecuperar");
       let email = document.getElementById("emailRecuperar").value;
       if (!email || !validateEmail(email)) {
         swal.fire(
@@ -357,7 +358,7 @@ export default {
           "Debe ingresar un email válido",
           "warning"
         );
-        showSpining(false, "btnRecuperar", "loadingRecuperar");
+        //showSpining(false, "btnRecuperar", "loadingRecuperar");
         return false;
       }
       await recaptchaLoaded();
@@ -380,7 +381,7 @@ export default {
               "success"
             ).then(() => {
               state.visibleModalRecuperacion = false;
-              showSpining(false, "btnRecuperar", "loadingRecuperar");
+              //showSpining(false, "btnRecuperar", "loadingRecuperar");
             });
           })
           .catch((error) => {
@@ -390,11 +391,11 @@ export default {
               "Ha ocurrido un problema durante el proceso, por favor intente nuevamente o verifique con su administrador que el usuario existe registrado en el sistema",
               "warning"
             );
-            showSpining(false, "btnRecuperar", "loadingRecuperar");
+            //showSpining(false, "btnRecuperar", "loadingRecuperar");
           });
       });
     };
-    const showSpining = (isActivate, idbtn, idloadin) => {
+    /*const showSpining = (isActivate, idbtn, idloadin) => {
       if (isActivate) {
         document.getElementById(idloadin).style.display = "inline-block";
         document.getElementById(idbtn).disabled = true;
@@ -402,19 +403,19 @@ export default {
         document.getElementById(idloadin).style.display = "none";
         document.getElementById(idbtn).disabled = false;
       }
-    };
+    };*/
     const login = async () => {
-      showSpining(true, "btnLogin", "loading");
+      //showSpining(true, "btnLogin", "loading");
       let email = document.getElementById("email").value;
       let pass = document.getElementById("password").value;
       if (!email || !validateEmail(email)) {
         swal.fire("Login", "Debe ingresar email y password", "warning");
-        showSpining(false, "btnLogin", "loading");
+        //showSpining(false, "btnLogin", "loading");
         return false;
       }
       if (!pass) {
         swal.fire("Login", "Debe ingresar email y password", "warning");
-        showSpining(false, "btnLogin", "loading");
+        //showSpining(false, "btnLogin", "loading");
         return false;
       }
       let bodyLogin = {
@@ -435,18 +436,18 @@ export default {
               if (response.status == 200) {
                 accesosValidacion(response);
               } else {
-                showSpining(false, "btnLogin", "loading");
+                //showSpining(false, "btnLogin", "loading");
                 swal.fire("Login", "El email o password es incorrecto.", "warning");
               }
               return false;
             })
             .catch(() => {
-              showSpining(false, "btnLogin", "loading");
+              //showSpining(false, "btnLogin", "loading");
               swal.fire("Login", "El email o password es incorrecto.", "warning");
             });
         })
         .catch(() => {
-          showSpining(false, "btnLogin", "loading");
+          //showSpining(false, "btnLogin", "loading");
           swal.fire(
             "ReCaptcha ha detectado un uso abusivo y ha denegado el acceso.",
             {
@@ -512,7 +513,7 @@ export default {
           });
           localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
         } else {
-          showSpining(false, "btnLogin", "loading");
+          //showSpining(false, "btnLogin", "loading");
           swal.fire(
             "Login",
             "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
@@ -570,7 +571,7 @@ export default {
           });
           localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
         } else {
-          showSpining(false, "btnLogin", "loading");
+          //showSpining(false, "btnLogin", "loading");
           swal.fire(
             "Login",
             "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
@@ -674,7 +675,7 @@ export default {
                   JSON.stringify(swaggerList)
                 );
               } else {
-                showSpining(false, "btnLogin", "loading");
+                //showSpining(false, "btnLogin", "loading");
                 swal.fire(
                   "Login",
                   "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
