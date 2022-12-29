@@ -19,5 +19,12 @@ $enable-rtl: true;
 
 @import "layout";
 
+@import 'sweetalert2/src/sweetalert2';
+
+$swal2-confirm-button-background-color: $primary-base !default;
+$swal2-deny-button-background-color: $danger-dark !default;
+$swal2-cancel-button-background-color: $secondary-base !default;
+
+
 // If you want to add something do it here
 @import "custom";

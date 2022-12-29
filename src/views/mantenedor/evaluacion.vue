@@ -111,7 +111,9 @@
                                           id="tipoevaluacion"
                                           size="sm"
                                           @change="changeSegmentacionArea()"
+                                          v-model="idEvaluacionSelected"
                                       >
+                                        <option value="0" :key="0">Seleccione tipo evaluación</option>
                                         <option
                                             v-for="evaluacion in evaluaciones"
                                             :value="evaluacion.id"
@@ -195,10 +197,10 @@
                                           disabled
                                       >
                                         <option
-                                            :value="evaluacionSelected.id"
-                                            :key="evaluacionSelected.id"
+                                            :value="idEvaluacionSelected"
+                                            :key="idEvaluacionSelected"
                                         >
-                                          {{ evaluacionSelected.nombre }}
+                                          {{ idEvaluacionSelected }}
                                         </option>
                                       </CFormSelect>
                                 </CCol>
@@ -453,50 +455,16 @@
         <CRow>
           <CCol sm="6" class="mt-3">
             <h5> Importancia </h5>
-            <div style="display: flex">
-              <CFormInput
-                type="radio"
-                name="importancia"
-                id="muyimportante"
-                class="form-check-input"
-              />
-              <CFormLabel > Muy importante </CFormLabel>
-            </div>
-            <div style="display: flex">
-              <CFormInput
-                type="radio"
-                name="importancia"
-                id="importante"
-                class="form-check-input"
-              />
-              <CFormLabel > Importante </CFormLabel>
-            </div>
-            <div style="display: flex">
-              <CFormInput
-                type="radio"
-                name="importancia"
-                id="pocoimportante"
-                class="form-check-input"
-              />
-              <CFormLabel > Poco Importante </CFormLabel>
-            </div>
-            <div style="display: flex">
-              <CFormInput
-                type="radio"
-                name="importancia"
-                id="irrelevante"
-                class="form-check-input"
-              />
-              <CFormLabel > Irrelevante </CFormLabel>
-            </div>
-            <div style="display: flex">
-              <CFormInput
-                type="radio"
-                name="importancia"
-                id="noaplica"
-                class="form-check-input"
-              />
-              <CFormLabel > No aplica </CFormLabel>
+            <div v-for="tipoImportancia in tiposImportancia" :key="tipoImportancia.id">
+              <div style="display: flex">
+                <CFormInput
+                  type="radio"
+                  :name="'tipoImportancia-' + tipoImportancia.id"
+                  :id="tipoImportancia.id"
+                  class="form-check-input"
+                />
+                <CFormLabel > {{tipoImportancia.nombre}} </CFormLabel>
+              </div>
             </div>
           </CCol>
 
@@ -591,11 +559,14 @@ export default {
       isonboarding: false,
      // wrapper,
       steps: [],
+      idEvaluacionSelected: 0,
       evaluaciones : [],
+      evaluacionSelected: [],
+
       segmentacionAreas : [],
       segmentacionAreaSelected: [],
       segmentacionAreasByEvaluacion: [],
-      evaluacionSelected: {},
+      //evaluacionSelected: [],
       segmentacionSubAreasbyAreas: [],
       segmentacionAreasPaso3: [],
       segmentacionSubAreasPaso3: [],
@@ -605,6 +576,7 @@ export default {
       difRelacionadas: [],
       preguntas : [],
       preguntaSelected : [],
+      tiposImportancia : [],
       preguntasTotal:0,
 
       options: {
@@ -699,70 +671,58 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.evaluaciones = response.data;
-          state.evaluacionSelected = state.evaluaciones[0];
           console.log("state.evaluaciones", state.evaluaciones);
-          console.log("state.evaluacionSelected", state.evaluacionSelected);
-          if (!state.evaluacionSelected){
-            swal.fire({
-              title: "Preparación áreas",
-              text: "Empresa no tiene evaluaciones asignadas",
-              icon: "warning",
-            });
-            return false;
-          }
-          getSegmentacionArea();
         })
         .catch((error) => console.log(error));
     };
 
-    const getSegmentacionArea = async () => {
+    /*const getSegmentacionArea = async () => {
+      debugger;
       state.segmentacionAreas = [];
       state.segmentacionAreasByEvaluacion = [];
-      if (!state.evaluacionSelected.segmentacionAreas){
-        swal.fire({
-          title: "Preparación de areas",
-          text: "Empresa no tiene evaluaciones asignadas",
-          icon: "warning",
-        });
-        return false;
-      }
-      let areas = [];
+      //let areas = [];
       state.evaluaciones.forEach(x => {
-        areas =  areas.concat(x.segmentacionAreas);
+        state.segmentacionAreas =  state.segmentacionAreas.concat(x.segmentacionAreas);
       });
-      state.segmentacionAreas.push(areas);
-      state.segmentacionAreas = state.segmentacionAreas[0];
+      //state.segmentacionAreas.push(areas);
+      //state.segmentacionAreas = state.segmentacionAreas[0];
       state.segmentacionAreas.forEach( x => {
-        if (x.evaluacionId == state.evaluacionSelected.id){
-           state.segmentacionAreasByEvaluacion.push(x);
+        if (x.evaluacionId == state.idEvaluacionSelected){
+            state.segmentacionAreasByEvaluacion.push(x);
         }
       });
-      state.segmentacionAreaSelected = 
+      //state.segmentacionAreaSelected = 
       console.log("state.segmentacionAreas", state.segmentacionAreas);
       console.log("state.segmentacionAreasByEvaluacion", state.segmentacionAreasByEvaluacion);
     };
+    */
 
     const changeSegmentacionArea = async () => {
+      state.segmentacionAreas = [];
       state.segmentacionAreasByEvaluacion = [];
-      let idevaluacion = document.getElementById("tipoevaluacion").value;
-      state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idevaluacion);
-      console.log("state.evaluacionSelected", state.evaluacionSelected);
+      state.evaluaciones.forEach(x => {
+        state.segmentacionAreas = state.segmentacionAreas.concat(x.segmentacionAreas);
+      });
+      //let idevaluacion = document.getElementById("tipoevaluacion").value;
+      //state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idevaluacion);
+      //console.log("state.evaluacionSelected", state.evaluacionSelected);
       state.segmentacionAreas.forEach( x => {
-        if (x.evaluacionId == idevaluacion){
+        if (x.evaluacionId == state.idEvaluacionSelected){
            state.segmentacionAreasByEvaluacion.push(x);
         }
       });
     };
 
     const irPaso2 = async () => {
-      if (!state.evaluacionSelected){
+      debugger;
+      /*if (!state.evaluacionSelected){
         swal.fire({
           title: "Preparación de áreas",
           text: "Debe seleccionar un tipo de evaluación",
           icon: "warning",
         });
         return false;
-      }
+      }*/
       if (!state.segmentacionAreasByEvaluacion){
         swal.fire({
           title: "Preparación de áreas",
@@ -873,7 +833,7 @@ export default {
       state.preguntas = [];
       state.preguntaSelected = [];
       state.preguntasTotal = [];
-      ApiNeva.get("Pregunta/GetPreguntasByIdsEvaluacionSegmentacionAreaSubArea?idEvaluacion=" + state.evaluacionSelected.id + "&idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
+      ApiNeva.get("Pregunta/GetPreguntasByIdsEvaluacionSegmentacionAreaSubArea?idEvaluacion=" + state.idEvaluacionSelected + "&idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
         headers: header,
       })
         .then((response) => {
@@ -894,6 +854,20 @@ export default {
         })
         .catch((error) => console.log(error));
       getDiferenciaRelacionada();
+      getTipoimportancia();
+    };
+
+    const getTipoimportancia = async () => {
+      state.difRelacionadas = [];
+      ApiNeva.post("TipoImportancia/GetTipoImportancias", null,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.tiposImportancia = response.data;
+          console.log("state.tiposImportancia", state.tiposImportancia);
+        })
+        .catch((error) => console.log(error));
     };
 
     const getDiferenciaRelacionada = async () => {
