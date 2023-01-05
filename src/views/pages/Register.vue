@@ -363,7 +363,6 @@ export default {
           return false;
         }
  
-        debugger;
         //FALTA APELLIDO
         let bodyUser = {
             nombres: state.nombre,

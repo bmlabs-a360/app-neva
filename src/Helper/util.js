@@ -284,9 +284,8 @@ export function getStyleConciliacionSegunEstado(estado) {
   gi;
 }
 
-export function checkAll() {
-  let boxes = document.getElementsByName("check");
-  debugger;
+export function checkAll(name) {
+  let boxes = document.getElementsByName(name);
   for (let x = 0; x < boxes.length; x++) {
     let obj = boxes[x];
     debugger;

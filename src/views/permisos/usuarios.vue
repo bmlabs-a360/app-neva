@@ -12,7 +12,7 @@
             <CCol :sm="6" :md="3" :xs="6" :lg="3">
               <div class="d-grid flex">
                 <strong>Crear usuario 
-                    <CButton  @click="ModalUserNuevo()">
+                    <CButton  @click="visibleModalNuevoUser = true;">
                       <CIcon icon="cib-addthis" id="crear_usuario"/>
                     </CButton>
                   </strong>
@@ -70,6 +70,274 @@
   </CRow>
   <!-- LIST -->
 
+  <!-- MODAL CREAR -->
+  <CModal
+    backdrop="static"
+    size="lg"
+    alignment="center"
+    :visible="visibleModalNuevoUser"
+    @close="
+      () => {
+        resetNewUser();
+        visibleModalNuevoUser = false;
+      }
+    "
+  >
+     <CModalHeader>
+        <CModalTitle>Crear usuario</CModalTitle>&nbsp;&nbsp;
+    </CModalHeader>
+    <CModalBody>
+      <CContainer>
+        <CRow>
+          <div style="display: flex">
+            <CFormLabel >Baja/Alta </CFormLabel>
+            <div>
+              <CFormSwitch
+                style="cursor: pointer"
+                id="activoNew"
+                :checked="true"
+                v-model="activoUserNew"
+              />
+            </div>
+          </div>
+          <CCol sm="6">
+            <div class="mb-3">
+              <CFormLabel for="nombrenew">Nombre de usuario*</CFormLabel>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-user" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="nombreNew"
+                  placeholder="Nombre"
+                  size="sm"
+                  maxlength="255"
+                  v-model="nombreUserNew"
+                />
+              </CInputGroup>
+            </div>
+
+            <div class="mb-3">
+              <CFormLabel for="passnew">Contraseña*</CFormLabel>
+              <CInputGroup class="mb-4">
+                  <CInputGroupText>
+                    <div v-if="passwordFieldType != 'password'">
+                      <i @click="switchVisibility('passwordNew')">
+                        <svg
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-eye"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
+                          />
+                          <path
+                            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
+                          />
+                        </svg>
+                      </i>
+                    </div>
+                    <div v-if="passwordFieldType == 'password'">
+                      <i @click="switchVisibility('passwordNew')">
+                        <svg
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-eye-slash"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"
+                          />
+                          <path
+                            d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"
+                          />
+                          <path
+                            d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"
+                          />
+                        </svg>
+                      </i>
+                    </div>
+                  </CInputGroupText>
+                  <CFormInput
+                    id="passwordNew"
+                    :type="passwordFieldType"
+                    size="sm"
+                    maxlength="255"
+                    v-model="passUserNew"
+                    placeholder="Contraseña"
+                  ></CFormInput>
+                </CInputGroup>
+            </div>
+          </CCol>
+
+          <CCol sm="6">
+            <div class="mb-3">
+              <CFormLabel for="email">Correo*</CFormLabel>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-mail" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="emailNew"
+                  maxlength="255"
+                  size="sm"
+                  placeholder="Correo"
+                  v-model="emailUserNew"
+                />
+              </CInputGroup>
+            </div>
+
+            <div class="mb-3">
+              <CFormLabel for="email">Telefono</CFormLabel>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-mail" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="telefonoNew"
+                  maxlength="255"
+                  size="sm"
+                  placeholder="telefono"
+                  v-model="telefonoUserNew"
+                />
+              </CInputGroup>
+            </div>
+
+          </CCol>
+
+          <div class="mt-3">
+            <CFormLabel>Asociar evaluación y área</CFormLabel>
+          </div>
+          <CTable responsive>
+            <CTableHead>
+              <CTableRow>
+                
+                <CTableHeaderCell class="text-center" scope="col">
+                  Evaluación
+                </CTableHeaderCell>
+                <CTableHeaderCell class="text-center" scope="col">
+                  Asociar
+                </CTableHeaderCell>
+                <CTableHeaderCell class="text-center" scope="col">
+                  Asociar área
+                </CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              <CTableRow v-for="evaluacion in evaluaciones" :key="evaluacion.id">
+                <CTableDataCell class="text-center">
+                  {{evaluacion.nombre}}
+                </CTableDataCell>
+                <CTableDataCell class="text-center">
+                  <CFormCheck name="chkAsociarNew" :value="evaluacion.id" />
+                </CTableDataCell>
+                <CTableDataCell class="text-center" id="acciones_usuarionew">
+                  <CButton @click="getSegmentacionAreaNew(evaluacion)" disabled>
+                    <CIcon :icon="cilPen" size="lg" />
+                  </CButton>
+                </CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
+        </CRow>
+      </CContainer>
+    </CModalBody>
+    <CModalFooter>
+      <CButton
+        color="secondary"
+        @click="
+          () => {
+            resetNewUser();
+            visibleModalNuevoUser = false;
+          }
+        "
+      >
+        Cerrar
+      </CButton>
+      <CButton color="primary" @click="crearUser()">Guardar</CButton>
+    </CModalFooter>
+  </CModal>
+  <!-- FIN MODAL CREAR -->
+
+  <!-- MODAL SEGMENTACION AREA CREAR  -->
+  <CModal
+    backdrop="static"
+    size="lg"
+    alignment="center"
+    :visible="visibleModalSegmentacionAreaNew"
+    @close="
+      () => {
+        resetAsociarArea();
+        visibleModalSegmentacionAreaNew = false;
+        visibleModalNuevoUser = true;
+      }
+    "
+  >
+     <CModalHeader>
+        <CModalTitle>Asociar áreas</CModalTitle>&nbsp;&nbsp;
+    </CModalHeader>
+    <CModalBody>
+      <CContainer>
+        <CRow>
+          <div style="display: flex">
+            <CFormLabel > Asociar área a evaluación </CFormLabel>
+            <div>
+              <CFormInput
+                  type="text"
+                  id="nombreevaluacion"
+                  placeholder="Evaluacion"
+                  size="sm"
+                  disabled
+                  maxlength="255"
+                  v-model="evaluacionNewUserSelected"
+                />
+            </div>
+          </div>
+          <CCol sm="12">
+            <div class="mb-2">
+              <CFormLabel>Asociar área*</CFormLabel>
+            </div>
+            <div class="mb-2" >
+                <CFormLabel style="display:flex"> 
+                  <CFormSwitch style="cursor: pointer" id="todoschk" @click="checkAll('checkAreaNewUser')" /> Todos
+                </CFormLabel>
+              <div v-for="area in segmentacionAreas" :key="area.id">
+                <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
+                <CFormSwitch style="cursor: pointer"
+                              v-model="area.activo"
+                              :checked="area.activo"
+                              name="checkAreaNewUser" 
+                              :value="area.id"/>
+              </div>
+            </div>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </CModalBody>
+    <CModalFooter>
+      <CButton
+        color="secondary"
+        @click="
+          () => {
+            resetAsociarArea();
+            visibleModalSegmentacionAreaNew = false;
+            visibleModalNuevoUser = true;
+          }
+        "
+      >
+        Cerrar
+      </CButton>
+      <CButton color="primary" @click="asociarArea()">Guardar</CButton>
+    </CModalFooter>
+  </CModal>
+  <!-- FIN MODAL SEGMENTACION AREA CREAR-->
+
   <!-- MODAL EDITAR USUARIO-->
   <CModal
     backdrop="static"
@@ -121,10 +389,10 @@
 
             <div class="mb-3">
               <CFormLabel for="pass">Contraseña*</CFormLabel>
-              <CInputGroup class="mb-4">
+              <CInputGroup class="mb-3">
                   <CInputGroupText>
                     <div v-if="passwordFieldType != 'password'">
-                      <i @click="switchVisibility">
+                      <i @click="switchVisibility('password')">
                         <svg
                           width="16"
                           height="16"
@@ -142,7 +410,7 @@
                       </i>
                     </div>
                     <div v-if="passwordFieldType == 'password'">
-                      <i @click="switchVisibility">
+                      <i @click="switchVisibility('password')">
                         <svg
                           width="16"
                           height="16"
@@ -169,6 +437,7 @@
                     size="sm"
                     maxlength="255"
                     v-model="clave"
+                    placeholder="Contraseña"
                   ></CFormInput>
                 </CInputGroup>
             </div>
@@ -190,7 +459,22 @@
                   v-model="userSelected.email"
                 />
               </CInputGroup>
-             
+            </div>
+            <div class="mb-3">
+              <CFormLabel for="email">Telefono</CFormLabel>
+              <CInputGroup class="mb-3">
+                <CInputGroupText>
+                  <CIcon icon="cil-mail" />
+                </CInputGroupText>
+                <CFormInput
+                  type="text"
+                  id="telefonoNew"
+                  maxlength="255"
+                  size="sm"
+                  placeholder="telefono"
+                  v-model="userSelected.telefono"
+                />
+              </CInputGroup>
             </div>
           </CCol>
 
@@ -213,17 +497,15 @@
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              <CTableRow v-for="evaluacionEmpresa in evaluacionEmpresas" :key="evaluacionEmpresa.id">
+              <CTableRow v-for="evaluacionEmpresa in evaluacionEmpresaSelected" :key="evaluacionEmpresa.id">
                 <CTableDataCell class="text-center">
                   {{evaluacionEmpresa.nombre}}
                 </CTableDataCell>
                 <CTableDataCell class="text-center">
-                   <CFormCheck name="chkAsociar"
-                              v-model="evaluacionEmpresa.activo"
-                              :checked="evaluacionEmpresa.activo" />
+                   <CFormCheck name="chkAsociar" :value="evaluacionEmpresa.id" :checked="evaluacionEmpresa.activo"  v-model="evaluacionEmpresa.activo" />
                 </CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuario">
-                  <CButton @click="segmentacionArea(evaluacionEmpresa)">
+                  <CButton @click="getSegmentacionArea(evaluacionEmpresa)">
                     <CIcon :icon="cilPen" size="lg" />
                   </CButton>
                 </CTableDataCell>
@@ -248,254 +530,7 @@
       <CButton color="primary" @click="modificarUser()">Guardar</CButton>
     </CModalFooter>
   </CModal>
-  <!-- MODAL -->
-
-  <!-- MODAL CREAR -->
-  <CModal
-    backdrop="static"
-    size="lg"
-    alignment="center"
-    :visible="visibleModalNuevoUser"
-    @close="
-      () => {
-        resetUser();
-        visibleModalNuevoUser = false;
-      }
-    "
-  >
-     <CModalHeader>
-        <CModalTitle>Crear usuario</CModalTitle>&nbsp;&nbsp;
-    </CModalHeader>
-    <CModalBody>
-      <CContainer>
-        <CRow>
-          <div style="display: flex">
-            <CFormLabel >Baja/Alta </CFormLabel>
-            <div>
-              <CFormSwitch
-                style="cursor: pointer"
-                id="activoNew"
-                :checked="true"
-                v-model="userSelected.activo"
-              />
-            </div>
-          </div>
-          <CCol sm="6">
-            <div class="mb-3">
-              <CFormLabel for="nombrenew">Nombre de usuario*</CFormLabel>
-              <CInputGroup class="mb-3">
-                <CInputGroupText>
-                  <CIcon icon="cil-user" />
-                </CInputGroupText>
-                <CFormInput
-                  type="text"
-                  id="nombreNew"
-                  placeholder="Nombre"
-                  size="sm"
-                  maxlength="255"
-                  v-model="userSelected.nombres"
-                />
-              </CInputGroup>
-            </div>
-
-            <div class="mb-3">
-              <CFormLabel for="passnew">Contraseña*</CFormLabel>
-              <CInputGroup class="mb-4">
-                  <CInputGroupText>
-                    <div v-if="passwordFieldType != 'password'">
-                      <i @click="switchVisibilityNew">
-                        <svg
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-eye"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
-                          />
-                          <path
-                            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
-                          />
-                        </svg>
-                      </i>
-                    </div>
-                    <div v-if="passwordFieldType == 'password'">
-                      <i @click="switchVisibilityNew">
-                        <svg
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-eye-slash"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"
-                          />
-                          <path
-                            d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"
-                          />
-                          <path
-                            d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"
-                          />
-                        </svg>
-                      </i>
-                    </div>
-                  </CInputGroupText>
-                  <CFormInput
-                    id="passwordNew"
-                    :type="passwordFieldType"
-                    size="sm"
-                    maxlength="255"
-                    v-model="userSelected.password"
-                  ></CFormInput>
-                </CInputGroup>
-            </div>
-          </CCol>
-
-          <CCol sm="6">
-            <div class="mb-3">
-              <CFormLabel for="email">Correo*</CFormLabel>
-              <CInputGroup class="mb-3">
-                <CInputGroupText>
-                  <CIcon icon="cil-mail" />
-                </CInputGroupText>
-                <CFormInput
-                  type="text"
-                  id="emailNew"
-                  maxlength="255"
-                  size="sm"
-                  v-model="userSelected.email"
-                />
-              </CInputGroup>
-             
-            </div>
-          </CCol>
-
-          <div class="mt-3">
-            <CFormLabel>Asociar evaluación y área</CFormLabel>
-          </div>
-          <CTable responsive>
-            <CTableHead>
-              <CTableRow>
-                
-                <CTableHeaderCell class="text-center" scope="col">
-                  Evaluación
-                </CTableHeaderCell>
-                <CTableHeaderCell class="text-center" scope="col">
-                  Asociar
-                </CTableHeaderCell>
-                <CTableHeaderCell class="text-center" scope="col">
-                  Asociar área
-                </CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              <CTableRow v-for="evaluacionEmpresa in evaluacionEmpresas" :key="evaluacionEmpresa.id">
-                <CTableDataCell class="text-center">
-                  {{evaluacionEmpresa.evaluacion.nombre}}
-                </CTableDataCell>
-                <CTableDataCell class="text-center">
-                  <CFormCheck name="chkAsociarNew" />
-                </CTableDataCell>
-                <CTableDataCell class="text-center" id="acciones_usuarionew">
-                  <CButton @click="segmentacionAreaNew(evaluacionEmpresa.evaluacion)">
-                    <CIcon :icon="cilPen" size="lg" />
-                  </CButton>
-                </CTableDataCell>
-              </CTableRow>
-            </CTableBody>
-          </CTable>
-        </CRow>
-      </CContainer>
-    </CModalBody>
-    <CModalFooter>
-      <CButton
-        color="secondary"
-        @click="
-          () => {
-            resetUser();
-            visibleModalNuevoUser = false;
-          }
-        "
-      >
-        Cerrar
-      </CButton>
-      <CButton color="primary" @click="crearUser()">Guardar</CButton>
-    </CModalFooter>
-  </CModal>
-  <!-- FIN MODAL CREAR -->
-
-  <!-- MODAL SEGMENTACION AREA CREAR  -->
-  <CModal
-    backdrop="static"
-    size="lg"
-    alignment="center"
-    :visible="visibleModalSegmentacionAreaNew"
-    @close="
-      () => {
-        resetAsociarArea();
-        visibleModalSegmentacionAreaNew = false;
-        visibleModalNuevoUser = true;
-      }
-    "
-  >
-     <CModalHeader>
-        <CModalTitle>Asociar áreas</CModalTitle>&nbsp;&nbsp;
-    </CModalHeader>
-    <CModalBody>
-      <CContainer>
-        <CRow>
-          <div style="display: flex">
-            <CFormLabel > Asociar área a evaluación </CFormLabel>
-            <div>
-              <CFormInput
-                  type="text"
-                  id="nombreevaluacion"
-                  placeholder="Evaluacion"
-                  size="sm"
-                  disabled
-                  maxlength="255"
-                />
-            </div>
-          </div>
-          <CCol sm="12">
-            <div class="mb-2">
-              <CFormLabel>Asociar área*</CFormLabel>
-            </div>
-            <div class="mb-2" >
-                <CFormLabel style="display:flex"> 
-                  <CFormSwitch style="cursor: pointer" id="todoschkNew" @click="checkAll()" /> Todos
-                </CFormLabel>
-              <div v-for="area in segmentacionAreas" :key="area.id">
-                <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
-                <CFormSwitch style="cursor: pointer"
-                              v-model="area.activo"
-                              :checked="area.activo"
-                              name="check" />
-              </div>
-            </div>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </CModalBody>
-    <CModalFooter>
-      <CButton
-        color="secondary"
-        @click="
-          () => {
-            resetAsociarArea();
-            visibleModalSegmentacionAreaNew = false;
-            visibleModalNuevoUser = true;
-          }
-        "
-      >
-        Cerrar
-      </CButton>
-      <CButton color="primary" @click="asociarArea()">Guardar</CButton>
-    </CModalFooter>
-  </CModal>
-  <!-- FIN MODAL SEGMENTACION AREA CREAR-->
+  <!-- FIN MODAL EDITAR -->
 
   <!-- MODAL SEGMENTACION AREA EDITAR  -->
   <CModal
@@ -527,7 +562,8 @@
                   size="sm"
                   disabled
                   maxlength="255"
-                  :value="evaluacion.nombre" 
+                  :v-model="evaluacionSelected"
+                  :value="evaluacionSelected"
                 />
             </div>
           </div>
@@ -537,14 +573,15 @@
             </div>
               <div class="mb-2" >
                   <CFormLabel style="display:flex" > 
-                    <CFormSwitch style="cursor: pointer" id="todoschk" @click="checkAll()" /> Todos
+                    <CFormSwitch style="cursor: pointer" id="todoschk" @click="checkAll('checkArea')" /> Todos
                   </CFormLabel>
                 <div v-for="area in segmentacionAreas" :key="area.id">
                   <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
                   <CFormSwitch style="cursor: pointer"
                                 v-model="area.activo"
                                 :checked="area.activo" 
-                                name="check"/>
+                                :value="area.id"
+                                name="checkArea"/>
                 </div>
             </div>
           </CCol>
@@ -576,7 +613,7 @@ import { cilPen, cilTrash} from "@coreui/icons";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { validateEmail, Fn, checkAll } from "@/Helper/util";
-import { useRoute } from "vue-router";
+//import { useRoute } from "vue-router";
 import { useReCaptcha } from "vue-recaptcha-v3";
 //import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import { permisosUsuario } from "@/_menuOnboarding.js";
@@ -594,7 +631,7 @@ export default {
     //VOnboardingWrapper,
   },
   setup() {
-    const wrapper = ref(null);
+    //const wrapper = ref(null);
     //const { start } = useVOnboarding(wrapper);
     //const localMenuOnvoarding = permisosUsuario;
 
@@ -610,16 +647,37 @@ export default {
       ApiKey,
     };
 
-    const route = useRoute();
-    const uri = route.query.uri;
+    //const route = useRoute();
+    //const uri = route.query.uri;
     //const email = route.query.email;
 
     const state = reactive({
+      usuarios: [],
+      evaluaciones: [],
+      userSelected: [],
+      visibleModalUser: false,
+      evaluacionEmpresaSelected : [],
+      passwordFieldType: "password",
+      clave: "",
+      usuarioAreas: [],
+      segmentacionAreas: [],
+      visibleModalSegmentacionArea: false,
+      evaluacionSelected: "",
+      visibleModalNuevoUser: false,
+      activoUserNew: true,
+      nombreUserNew: "",
+      passUserNew: "",
+      emailUserNew: "",
+      telefonoUserNew: "",
+      evaluacionNewUserSelected: "",
+      visibleModalSegmentacionAreaNew: false,
+      UsuarioEvaluacionSelected: [],
+
       //isonboarding: false,
-      wrapper,
+      //wrapper,
       //steps: [],
-      uri: uri,
-      empresas: [],
+      //uri: uri,
+      /*empresas: [],
       usuarioEvaluacions: [],
       evaluacionEmpresas: [],
       empresaSelected: [],
@@ -632,8 +690,8 @@ export default {
       tabPaneActiveKey: 1,
       usuarios: [],
       //evaluaciones: [],
-      /*evaluaciones: [],
-      nombreEvaluacion : "",*/
+      //evaluaciones: [],
+      nombreEvaluacion : "",
       //areas: [],
       evaluacionSelected: {},
       perfiles: [],
@@ -646,10 +704,304 @@ export default {
 
       perfilIdSelectedNew: 0,
       perfilIdSelectedEdit: [],
-      perfilIdSelectedNewSolicitar: 0,
+      perfilIdSelectedNewSolicitar: 0, */
     });
 
-    const switchVisibility = () => {
+    const resetUser = () => {
+      state.passwordFieldType = "password";
+      state.clave = "";
+      state.userSelected = [];
+      state.UsuarioEvaluacionSelected = [];
+    };
+
+    const resetAsociarArea = () => {
+      state.evaluacionSelected = "";
+      state.segmentacionAreas = [];
+    };
+
+    const resetNewUser = () => {
+      state.passwordFieldType = "password";
+      state.activoUserNew = true;
+      state.nombreUserNew = "";
+      state.passUserNew = "";
+      state.emailUserNew = "";
+      state.telefonoUserNew = "";
+      state.evaluacionNewUserSelected = "";
+    };
+
+    const switchVisibility = (tipo) => {
+      state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
+      state.clave = document.getElementById(tipo).value;
+    };
+
+    const getUsers = async () => {
+      state.usuarios = [];
+      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
+      ApiNeva.get("Usuario/GetUsuarioByIdEmpresa?empresaId=" + empresaId, {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.usuarios = response.data;
+          console.log("state.usuarios", state.usuarios);
+          getEvaluaciones();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getEvaluaciones = async () => {
+      state.evaluaciones = [];
+      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
+      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.evaluaciones = response.data;
+          console.log("state.evaluaciones", state.evaluaciones);
+        })
+        .catch((error) => console.log(error));
+        
+    };
+
+    const getUserSelected = (idusuario) => {
+      state.userSelected = state.usuarios.find((c) => c.id === idusuario);
+      console.log("state.userSelected", state.userSelected);
+      state.visibleModalUser = true;
+      getUsuarioEvaluacionByEvaluacionEmpresa();
+    };
+
+    const getUsuarioEvaluacionByEvaluacionEmpresa = () => {
+      state.evaluacionEmpresaSelected = state.evaluaciones;
+
+      state.evaluacionEmpresaSelected.forEach(element => {
+        var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
+        element.activo = false;
+        if (evaluacion != undefined) element.activo = evaluacion.activo;
+      });
+      console.log("state.evaluacionEmpresaSelected", state.evaluacionEmpresaSelected);
+
+    };
+
+    const getSegmentacionArea = (evaluacionEmpresa) =>{
+      state.evaluacionSelected = evaluacionEmpresa.nombre;
+      let evaluacionEmpresaSelected = evaluacionEmpresa;
+      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresa, { headers: header, })
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.usuarioAreas = [];
+            state.userSelected.usuarioEvaluacions.forEach(y => {
+              if (y.evaluacionId == evaluacionEmpresaSelected.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) {
+                  state.usuarioAreas = y.usuarioAreas
+              }
+            });
+            state.segmentacionAreas = response.data;
+            state.segmentacionAreas.forEach(x => {
+                var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
+                x.activo = false;
+                if (areaAsuario != undefined)  x.activo = areaAsuario.activo;
+            });
+            console.log("state.segmentacionAreas", state.segmentacionAreas);
+            state.visibleModalUser = false;
+            state.visibleModalSegmentacionArea = true;
+        })
+        .catch((error) => console.log(error));
+        state.UsuarioEvaluacionSelected = [];
+        state.UsuarioEvaluacionSelected = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == evaluacionEmpresa.id);
+        console.log("state.UsuarioEvaluacionSelected", state.UsuarioEvaluacionSelected);
+      
+    };
+
+    const getSegmentacionAreaNew = (evaluacionEmpresa) => {
+      state.evaluacionNewUserSelected= evaluacionEmpresa.nombre;
+      let evaluacionEmpresaSelected = evaluacionEmpresa;
+      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresaSelected, { headers: header, })
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.segmentacionAreas = response.data;
+            state.segmentacionAreas.forEach(x => {
+                x.activo = false;
+            });
+            state.visibleModalNuevoUser = false;
+            state.visibleModalSegmentacionAreaNew = true;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const crearUser = () => {
+
+      if (state.nombreUserNew == "") {
+          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
+          return false;
+      }
+      if (state.passUserNew == "") {
+          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
+          return false;
+      }
+      if (state.emailUserNew == "" || !validateEmail(state.emailUserNew)) {
+          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
+          return false;
+      }
+
+      let bodyUser = {
+        nombres: state.nombreUserNew,
+        password: state.passUserNew,
+        email: state.emailUserNew,
+        telefono: state.telefonoUserNew,
+        activo: state.activoUserNew,
+        EmpresaId: JSON.parse(localStorage.empresaModel).id,
+      };
+
+      ApiNeva.post("Usuario/InsertUser", bodyUser, { headers: header }
+        ).then((response) => {
+          if (response.status != 200)  return false;
+          swal.fire(
+            "Registro usuario",
+            "Se agregó usuario",
+            "success"
+          );
+          AsociarEvaluacionNewUser(response.data.id);
+          state.visibleModalNuevoUser = false;
+          return;
+      });
+    };
+
+    const AsociarEvaluacionNewUser = async (idUsuario) => {
+      let chkAsociarNew = document.getElementsByName("chkAsociarNew");
+      chkAsociarNew.forEach((element) => {
+        let bodyUsuarioEvaluacion = {
+          usuarioId: idUsuario,
+          empresaId: JSON.parse(localStorage.empresaModel).id,
+          evaluacionId: element.value,
+          activo: element.checked,
+        };
+        
+        ApiNeva.post("UsuarioEvaluacion/UsuarioEvaluacionInsertOrUpdate", bodyUsuarioEvaluacion , {
+          headers: header,
+        })
+        .then((response) => {
+          if (response.status != 200){
+            swal.fire({
+              title: "Registro usuario",
+              text: "Error al guardar evaluación",
+              icon: "warning",
+            });
+            return false;
+          }
+          getUsers();
+          resetNewUser();
+        })
+        .catch((error) => console.log(error));
+      });
+    };
+
+    const modificarUser = () => {
+
+      if (state.userSelected.nombres == "") {
+          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
+          return false;
+      }
+      if (state.clave == "") {
+          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
+          return false;
+      }
+      if (state.userSelected.email == "" || !validateEmail(state.userSelected.email)) {
+          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
+          return false;
+      }
+
+      let bodyUser = {
+        id: state.userSelected.id,
+        nombres: state.userSelected.nombres,
+        password: state.clave,
+        email: state.userSelected.email,
+        telefono: state.userSelected.telefono,
+        activo: state.userSelected.activo,
+        EmpresaId: JSON.parse(localStorage.empresaModel).id,
+      };
+
+      ApiNeva.post("Usuario/UpdateUser", bodyUser, { headers: header }
+        ).then((response) => {
+          if (response.status != 200)  return false;
+          swal.fire(
+            "Registro usuario",
+            "Se modificó usuario",
+            "success"
+          );
+          AsociarEvaluacion();
+          state.visibleModalUser = false;
+          return;
+      });
+    };
+
+    const AsociarEvaluacion = async () => {
+      let chkAsociar = document.getElementsByName("chkAsociar");
+      chkAsociar.forEach((element) => {
+        var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.value);
+        let idEvaluacion = evaluacion ? evaluacion.id : "00000000-0000-0000-0000-000000000000";
+        
+        let bodyUsuarioEvaluacion = {
+          id: idEvaluacion,
+          usuarioId: state.userSelected.id,
+          empresaId: JSON.parse(localStorage.empresaModel).id,
+          evaluacionId: element.value,
+          activo: element.checked,
+        };
+        
+        ApiNeva.post("UsuarioEvaluacion/UsuarioEvaluacionInsertOrUpdate", bodyUsuarioEvaluacion , {
+          headers: header,
+        })
+        .then((response) => {
+          if (response.status != 200){
+            swal.fire({
+              title: "Registro usuario",
+              text: "Error al guardar evaluación",
+              icon: "warning",
+            });
+            return false;
+          }
+          getUsers();
+          resetUser();
+        })
+        .catch((error) => console.log(error));
+      });
+    };
+
+    const asociarArea = () => {
+      let checkArea = document.getElementsByName("checkArea");
+      checkArea.forEach((element) => {
+        var segmentacionArea = state.UsuarioEvaluacionSelected.usuarioAreas.find((y) => y.segmentacionAreaId == element.value);
+        let idUsuarioArea = segmentacionArea ? segmentacionArea.id : "00000000-0000-0000-0000-000000000000";
+        
+        let bodyUsuarioArea = {
+          id: idUsuarioArea,
+          usuarioEvaluacionId: state.UsuarioEvaluacionSelected.id,
+          segmentacionAreaId: element.value,
+          activo: element.checked
+        };
+       
+        ApiNeva.post("UsuarioArea/UsuarioAreaInsertOrUpdate", bodyUsuarioArea , {
+          headers: header,
+        })
+        .then((response) => {
+          if (response.status != 200){
+            swal.fire({
+              title: "Registro usuario",
+              text: "Error al guardar áreas",
+              icon: "warning",
+            });
+            return false;
+          }
+          state.visibleModalSegmentacionArea = false;
+          getUsers();
+        })
+        .catch((error) => console.log(error));
+      });
+    };
+
+    
+
+    /*const switchVisibility = () => {
       state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
       state.clave = document.getElementById("password").value;
     };
@@ -749,7 +1101,6 @@ export default {
     };
 
     const getUserSelected = (idusuario) => {
-      debugger;
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
       state.visibleModalUser = true;
       //state.perfilIdSelectedEdit = state.userSelected.perfil;
@@ -761,17 +1112,16 @@ export default {
     };
 
     const cargarEvaluacion =  () => {
-        state.evaluacionEmpresas = [];
-        state.empresaSelected.evaluacionEmpresas.forEach(element => {
-            element.evaluacion.empresaId=element.empresaId
-            state.evaluacionEmpresas.push(element.evaluacion);
-        });
-        state.evaluacionEmpresas.forEach(element => {
-          var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
-          element.activo = false;
-          if (evaluacion != undefined) element.activo = evaluacion.activo;
-            
-        });
+      state.empresaSelected.evaluacionEmpresas.forEach(element => {
+          element.evaluacion.empresaId=element.empresaId
+          state.evaluacionEmpresas.push(element.evaluacion);
+      });
+      state.evaluacionEmpresas.forEach(element => {
+        var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
+        element.activo = false;
+        if (evaluacion != undefined) element.activo = evaluacion.activo;
+          
+      });
     };
 
     const ModalUserNuevo = () => {
@@ -826,12 +1176,11 @@ export default {
     };
 
     const crearUser = () => {
-      debugger;
-      /*let nombre = document.getElementById("nombreNew").value;
-      let pass = document.getElementById("passwordNew").value;
-      let email = document.getElementById("emailNew").value;
-      let activo = document.getElementById("activoNew").checked; 
-      let idempresa = JSON.parse(localStorage.usuarioModel).empresaId;*/
+      //let nombre = document.getElementById("nombreNew").value;
+      //let pass = document.getElementById("passwordNew").value;
+      //let email = document.getElementById("emailNew").value;
+      //let activo = document.getElementById("activoNew").checked; 
+      //let idempresa = JSON.parse(localStorage.usuarioModel).empresaId;
       
       let asociar = document.getElementsByName("chkAsociarNew");
       let asociarId = [];
@@ -881,7 +1230,6 @@ export default {
     };
 
     const modificarUser = () => {
-      debugger;
       //COMENTAR LOS DOCUMENT YA QUE SE ESTA VIENDO POR V-MODEL
       let idusuario = state.userSelected.id.toString();
       let nombre = document.getElementById("nombre").value;
@@ -1142,7 +1490,7 @@ export default {
         fechaCreacion: null,
         perfilId: state.perfilIdSelectedNew,
       };
-      console.log("route.query.uri", route.query.uri);
+      //console.log("route.query.uri", route.query.uri);
 
       ApiNeva.post(
         "Usuario/UsuarioCreate?token=" + localStorage.token,
@@ -1195,32 +1543,33 @@ export default {
       }
     };
 
-    /*const onBoarding = async () => {
-      let user = JSON.parse(localStorage.getItem("usuarioModel"));
-      try {
-        state.isonboarding = await onBoardingHelper.getUserSeeMenu(
-          user.id,
-          "permisosUsuario",
-          header
-        );
-      } catch (error) {
-        console.log(error);
-      }
+    //const onBoarding = async () => {
+    //  let user = JSON.parse(localStorage.getItem("usuarioModel"));
+    //  try {
+    //    state.isonboarding = await onBoardingHelper.getUserSeeMenu(
+    //      user.id,
+     //     "permisosUsuario",
+     //     header
+    //    );
+    //  } catch (error) {
+    //    console.log(error);
+    //  }
 
-      if (!state.isonboarding) {
-        state.steps = localMenuOnvoarding.map((x) => {
-          return renderSteps(x);
-        });
-        await onBoardingHelper.setUserSeeMenu(
-          user.id,
-          "permisosUsuario",
-          header
-        );
-      }
-    };*/
+     // if (!state.isonboarding) {
+     //   state.steps = localMenuOnvoarding.map((x) => {
+    //      return renderSteps(x);
+    //    });
+    //    await onBoardingHelper.setUserSeeMenu(
+    //      user.id,
+     //     "permisosUsuario",
+     //     header
+     //   );
+     // }
+    //};*/
 
     onMounted(() => {
-      getProfile();
+      getUsers();
+      //getProfile();
       //onBoarding();
       /*if (!state.isonboarding) {
         setTimeout(() => {
@@ -1233,13 +1582,24 @@ export default {
       cilPen,
       cilTrash,
       ...toRefs(state),
+      switchVisibility,
       getUserSelected,
+      resetUser,
+      resetNewUser,
+      getSegmentacionArea,
+      resetAsociarArea,
+      getSegmentacionAreaNew,
+      crearUser,
+      modificarUser,
+      asociarArea,
+
+
+      /*getUserSelected,
       getUserDelete,
       ModalUserNuevo,
       resetUser,
       InsertOrUpdateUser,
       guardarOrSolicitar,
-      crearUser,
       asociarArea,
       modificarUser,
       setTextGuardarOrSolicitar,
@@ -1248,7 +1608,7 @@ export default {
       switchVisibility,
       switchVisibilityNew,
       segmentacionArea,
-      segmentacionAreaNew,
+      segmentacionAreaNew,*/
     };
   },
 };

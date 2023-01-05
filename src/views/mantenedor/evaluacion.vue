@@ -108,17 +108,13 @@
                                 </CCol>     
                                 <CCol sm="6" md="6" lg="6">
                                       <CFormSelect
-                                          id="tipoevaluacion"
+                                          id="idEvaluacionSelected"
                                           size="sm"
-                                          @change="changeSegmentacionArea()"
+                                          @change="changeEvaluacion"
                                           v-model="idEvaluacionSelected"
                                       >
                                         <option value="0" :key="0">Seleccione tipo evaluación</option>
-                                        <option
-                                            v-for="evaluacion in evaluaciones"
-                                            :value="evaluacion.id"
-                                            :key="evaluacion.id"
-                                        >
+                                        <option v-for="evaluacion in evaluaciones" :value="evaluacion.id" :key="evaluacion.id">
                                             {{ evaluacion.nombre }}
                                         </option>
                                       </CFormSelect>
@@ -128,7 +124,7 @@
                               <CRow>
                                 <CCol sm="12" md="12" lg="12" class="text-center">
                                       <CFormLabel class="mt-4"> 
-                                        <h6> % importancia relativa por area </h6>
+                                        <h6> % importancia relativa por área </h6>
                                       </CFormLabel>
                                 </CCol> 
                               </CRow>   
@@ -136,16 +132,29 @@
                               <CRow v-for="area in segmentacionAreasByEvaluacion" :key="area.id">
                                 <CCol sm="6" md="6" lg="6" >
                                       <CFormLabel for="tipoevaluacion" class="mt-1" > {{area.nombreArea}} </CFormLabel>
-                                </CCol>     
-                                <CCol sm="6" md="6" lg="6">
-                                  <CFormInput
-                                    :id="area.id"
-                                    placeholder="Porcentaje"
-                                    type="number"
-                                    class="mt-1"
-                                    name="porcentajeAreas"
-                                  />
-                                </CCol>
+                                </CCol>  
+                                  <CCol sm="4" md="4" lg="4">
+                                    <CFormInput
+                                      :id="area.id"
+                                      placeholder="Porcentaje"
+                                      type="range"
+                                      class="mt-1"
+                                      name="porcentajeAreas"
+                                      min="0" 
+                                      max="100"
+                                      :value="area.valor"
+                                      @change="CambioPorcentajePaso1(area.id)"
+                                    />
+                                  </CCol>
+                                  <CCol sm="2" md="2" lg="2">
+                                    <span :id="'porc-'+ area.id"> {{area.valor}} %</span>
+                                  </CCol>
+                              </CRow>
+
+                              <CRow class="justify-content-end">
+                                  <CCol sm="2" md="2" lg="2">
+                                    <span class="d-none text-success" id="totalporcentaje">{{totalPorcentaje}} %</span>
+                                  </CCol>
                               </CRow>
 
                               <CRow>
@@ -192,15 +201,11 @@
                                       <CFormSelect
                                           id="tipoevaluacionPaso2"
                                           size="sm"
-                                          @change="changeSegmentacionArea()"
                                           class="mt-2"
                                           disabled
                                       >
-                                        <option
-                                            :value="idEvaluacionSelected"
-                                            :key="idEvaluacionSelected"
-                                        >
-                                          {{ idEvaluacionSelected }}
+                                        <option :value="idEvaluacionSelected" :key="idEvaluacionSelected">
+                                          {{ evaluacionSelected.nombre }}
                                         </option>
                                       </CFormSelect>
                                 </CCol>
@@ -212,17 +217,14 @@
                                 </CCol>     
                                 <CCol sm="6" md="6" lg="6">
                                       <CFormSelect
-                                          id="tipoAreaPaso2"
+                                          id="idTipoAreaSelected"
                                           size="sm"
-                                          @change="changeSegmentacionSubArea()"
+                                          v-model="idTipoAreaSelected"
+                                          @change="changeSegmentacionArea"
                                           class="mt-2"
                                       >
-                                        <option
-                                            v-for="segmentacionArea in segmentacionAreasByEvaluacion"
-                                            :value="segmentacionArea.id"
-                                            :key="segmentacionArea.id"
-                                            
-                                        >
+                                        <option value="0" :key="0">Seleccione nombre área</option>
+                                        <option v-for="segmentacionArea in segmentacionAreasByEvaluacion" :value="segmentacionArea.id" :key="segmentacionArea.id">
                                             {{ segmentacionArea.nombreArea }}
                                         </option>
                                       </CFormSelect>
@@ -237,19 +239,33 @@
                                 </CCol>
                               </CRow>
 
-                              <CRow v-for="subArea in segmentacionSubAreasbyAreas" :key="subArea.id" >
+                              <CRow v-for="subArea in segmentacionSubAreasbyAreaSelected" :key="subArea.id" >
                                 <CCol sm="6" md="6" lg="6" >
                                   <CFormLabel for="tipoSubAreaPaso2" class="mt-1"> {{subArea.nombreSubArea}}</CFormLabel>
                                 </CCol>     
-                                <CCol sm="6" md="6" lg="6">
+                                <CCol sm="4" md="4" lg="4">
                                   <CFormInput
                                     :id="subArea.id"
                                     placeholder="Porcentaje"
-                                    type="number"
+                                    type="range"
                                     class="mt-1"
                                     name="porcentajeSubAreas"
+                                    min="0" 
+                                    max="100"
+                                    :value="subArea.valor"
+                                    @change="CambioPorcentajePaso2(subArea.id)"
+
                                   />
                                 </CCol>
+                                <CCol sm="2" md="2" lg="2">
+                                  <span :id="'porcPaso2-'+ subArea.id"> {{subArea.valor}} %</span>
+                                </CCol>
+                              </CRow>
+
+                              <CRow class="justify-content-end">
+                                  <CCol sm="2" md="2" lg="2">
+                                    <span class="d-none text-success" id="totalPorcentajeSubAreas">{{totalPorcentajeSubAreas}} %</span>
+                                  </CCol>
                               </CRow>
 
                               <CRow>
@@ -258,7 +274,7 @@
                                       <CButton
                                         :disabled="isLoadingColumns"
                                         color="primary"
-                                        @click="selectedTab = 1"
+                                        @click="selectedTab = 1; RegresarPaso1()"
                                         >Anterior
                                       </CButton>
                                   </CCol>
@@ -301,14 +317,11 @@
                                   <CFormSelect
                                     id="idAreaPaso3"
                                     size="sm"
-                                    @change="changeSegmentacionAreaPaso3()"
+                                    @change="changeSegmentacionAreaPaso3"
+                                    v-model="idAreaPaso3"
                                   >
                                     <option value="0" :key="0">Todos</option>
-                                    <option
-                                      v-for="segmentacionArea in segmentacionAreasPaso3"
-                                      :key="segmentacionArea.id"
-                                      :value="segmentacionArea.id"
-                                    >
+                                    <option v-for="segmentacionArea in allSegmentacionAreas" :key="segmentacionArea.id" :value="segmentacionArea.id">
                                       {{ segmentacionArea.nombreArea }}
                                     </option>
                                   </CFormSelect>
@@ -321,18 +334,15 @@
                                 </CCol>     
                                 <CCol sm="6" md="6" lg="6">
                                       <CFormSelect
-                                          id="tipoSubAreaPaso3"
+                                          id="idTipoSubAreaPaso3"
                                           size="sm"
                                           class="mt-2"
-                                          @change="changeSegmentacionSubAreaPaso3()"
+                                          @change="changeSegmentacionSubAreaPaso3"
+                                          v-model="idTipoSubAreaPaso3"
                                       >
-                                       <option value="0" :key="0">Todos</option>
-                                        <option
-                                            v-for="segmentacionSubArea in segmentacionSubAreasPaso3"
-                                            :value="segmentacionSubArea.id"
-                                            :key="segmentacionSubArea.id"
-                                        >
-                                            {{ segmentacionSubArea.nombreSubArea }}
+                                        <option value="0" :key="0">Todos</option>
+                                        <option v-for="segmentacionSubArea in allSegmentacionSubAreasByIdArea" :value="segmentacionSubArea.id" :key="segmentacionSubArea.id">
+                                          {{ segmentacionSubArea.nombreSubArea }}
                                         </option>
                                       </CFormSelect>
                                 </CCol>
@@ -356,18 +366,18 @@
                                   </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
-                                  <CTableRow v-for="segmentacionAreaPaso3Tabla in segmentacionAreasPaso3Tabla" :key="segmentacionAreaPaso3Tabla.id">
+                                  <CTableRow v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
                                     <CTableDataCell class="text-center">
-                                      {{segmentacionAreaPaso3Tabla.nombreArea}}
+                                      {{tablaSegmentacionArea.nombreArea}}
                                     </CTableDataCell>
                                      <CTableDataCell class="text-center">
-                                      {{segmentacionAreaPaso3Tabla.nombreSubArea}}
+                                      {{tablaSegmentacionArea.nombreSubArea}}
                                     </CTableDataCell>
                                     <CTableDataCell class="text-center">
                                       <CFormCheck name="chkEstado" disabled/>
                                     </CTableDataCell>
                                     <CTableDataCell class="text-center">
-                                      <CButton @click="getPregunta(segmentacionAreaPaso3Tabla)">
+                                      <CButton @click="getPregunta(tablaSegmentacionArea)">
                                         <CIcon :icon="cilPen" size="lg" />
                                       </CButton>
                                     </CTableDataCell>
@@ -377,11 +387,11 @@
 
                                <CRow>
                                 <div class="mt-3 d-flex flex-row" style="justify-content: center;" >
-                                  <CCol sm="6" md="6" lg="6">
+                                  <CCol v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" sm="6" md="6" lg="6">
                                       <CButton
                                         :disabled="isLoadingColumns"
                                         color="primary"
-                                        @click="selectedTab = 2"
+                                        @click="selectedTab = 2; RegresarPaso2"
                                         >Anterior
                                       </CButton>
                                   </CCol>
@@ -442,9 +452,10 @@
               <div style="display: flex">
                 <CFormInput
                   type="radio"
-                  name="alternativa"
-                  :id="alternativa.id"
+                  name="alternativas"
                   class="form-check-input"
+                  v-model="alternativaSelected"
+                  :value="alternativa.id"
                 />
                 <CFormLabel > {{alternativa.detalle}} </CFormLabel>
               </div>
@@ -459,26 +470,28 @@
               <div style="display: flex">
                 <CFormInput
                   type="radio"
-                  :name="'tipoImportancia-' + tipoImportancia.id"
-                  :id="tipoImportancia.id"
+                  name="tipoImportancias"
                   class="form-check-input"
+                  v-model="tipoImportanciaSelected"
+                  :value="tipoImportancia.id"
                 />
                 <CFormLabel > {{tipoImportancia.nombre}} </CFormLabel>
               </div>
             </div>
           </CCol>
 
-          <CCol sm="6" class="mt-3">
-            <h5> Difencia relacionada con </h5>
-            <div v-for="difRelacionada in difRelacionadas" :key="difRelacionada.id">
+          <CCol sm="6" class="mt-3" v-if="perfilSelected && (perfilSelected.nombre=='Consultor' )">
+            <h5> Deficiencia relacionada con </h5>
+            <div v-for="defRelacionada in defRelacionadas" :key="defRelacionada.id">
               <div style="display: flex">
                 <CFormInput
                   type="radio"
-                  :name="'difRelacionada-' + preguntaSelected.id"
-                  :id="difRelacionada.id"
+                  name="defRelacionada"
                   class="form-check-input"
+                  v-model="defRelacionadaSelected"
+                  :value="defRelacionada.id"
                 />
-                <CFormLabel > {{difRelacionada.nombre}} </CFormLabel>
+                <CFormLabel > {{defRelacionada.nombre}} </CFormLabel>
               </div>
             </div>
           </CCol>
@@ -487,11 +500,11 @@
       </CContainer>
     </CModalBody>
     <CModalFooter>
-      <CButton color="primary" class="text-start" @click="pasosPreguntas('atras')">
+      <CButton color="primary" class="text-start" @click="pasosPreguntas('atras') ; getRespuesta();">
         Anterior
       </CButton>
       <CFormLabel class="text-center"> Pregunta {{preguntaSelected.orden}} de {{preguntasTotal}} </CFormLabel>
-      <CButton color="primary" class="text-end"  @click="pasosPreguntas('siguiente')" >
+      <CButton color="primary" class="text-end"  @click="addRespuesta();" >
         Siguiente
       </CButton>
     </CModalFooter>
@@ -558,26 +571,40 @@ export default {
     const state = reactive({
       isonboarding: false,
      // wrapper,
-      steps: [],
-      idEvaluacionSelected: 0,
+      //steps: [],
+      perfilSelected: [],
+      idEvaluacionSelected: "0",
       evaluaciones : [],
       evaluacionSelected: [],
-
+      porcentajesAreaSelected: [],
       segmentacionAreas : [],
-      segmentacionAreaSelected: [],
+      totalPorcentaje : 0,
+      totalPorcentajeSubAreas: 0,
       segmentacionAreasByEvaluacion: [],
-      //evaluacionSelected: [],
-      segmentacionSubAreasbyAreas: [],
-      segmentacionAreasPaso3: [],
-      segmentacionSubAreasPaso3: [],
-      segmentacionAreasPaso3Tabla: [],
+      idTipoAreaSelected: "0",
+      segmentacionAreaSelected: [],
+      segmentacionSubAreasbyAreaSelected: [],
+      importanciaRelativaSelected: [],
+      porcentajesSubAreasSelected: [],
+      allSegmentacionAreas: [],
+      allSegmentacionSubAreas: [],
+      tablaSegmentacionAreas: [],
+      allSegmentacionSubAreasByIdArea: [],
+
       visibleModalPreguntas : false,
-      alternativas: [],
-      difRelacionadas: [],
+      idAreaPaso3: "0",
+      idTipoSubAreaPaso3: "0",
+      evaluacionPaso3: [],
+      alternativaSelected: [],
+      defRelacionadas: [],
+      defRelacionadaSelected: [],
+      tiposImportancia : [],
+      tipoImportanciaSelected: [],
       preguntas : [],
       preguntaSelected : [],
-      tiposImportancia : [],
       preguntasTotal:0,
+
+      respuestaSelected: [],
 
       options: {
         overlay: {
@@ -676,53 +703,106 @@ export default {
         .catch((error) => console.log(error));
     };
 
-    /*const getSegmentacionArea = async () => {
-      debugger;
-      state.segmentacionAreas = [];
-      state.segmentacionAreasByEvaluacion = [];
-      //let areas = [];
-      state.evaluaciones.forEach(x => {
-        state.segmentacionAreas =  state.segmentacionAreas.concat(x.segmentacionAreas);
-      });
-      //state.segmentacionAreas.push(areas);
-      //state.segmentacionAreas = state.segmentacionAreas[0];
-      state.segmentacionAreas.forEach( x => {
-        if (x.evaluacionId == state.idEvaluacionSelected){
-            state.segmentacionAreasByEvaluacion.push(x);
-        }
-      });
-      //state.segmentacionAreaSelected = 
-      console.log("state.segmentacionAreas", state.segmentacionAreas);
-      console.log("state.segmentacionAreasByEvaluacion", state.segmentacionAreasByEvaluacion);
-    };
-    */
+    const changeEvaluacion = async () => {
+      let idEvaluacionSelected = document.getElementById("idEvaluacionSelected")
+        .options[
+        document.getElementById("idEvaluacionSelected").selectedIndex
+      ].value;
 
-    const changeSegmentacionArea = async () => {
-      state.segmentacionAreas = [];
-      state.segmentacionAreasByEvaluacion = [];
+      limpiarPaso1();
+
+      if (!idEvaluacionSelected || idEvaluacionSelected == 0){
+        document.getElementById("totalporcentaje").classList.add("d-none");
+        return;
+      } 
+
+      state.idEvaluacionSelected = idEvaluacionSelected;
+      state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idEvaluacionSelected);
       state.evaluaciones.forEach(x => {
         state.segmentacionAreas = state.segmentacionAreas.concat(x.segmentacionAreas);
       });
-      //let idevaluacion = document.getElementById("tipoevaluacion").value;
-      //state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idevaluacion);
-      //console.log("state.evaluacionSelected", state.evaluacionSelected);
-      state.segmentacionAreas.forEach( x => {
-        if (x.evaluacionId == state.idEvaluacionSelected){
-           state.segmentacionAreasByEvaluacion.push(x);
-        }
+
+      getSegmentacionAreaByevaluacionPorcentajes();
+
+      document.getElementById("totalporcentaje").classList.remove("d-none");
+      console.log("state.segmentacionAreas", state.segmentacionAreas);
+      console.log("state.segmentacionAreasByEvaluacion", state.segmentacionAreasByEvaluacion);
+    };
+
+    const limpiarPaso1 = async () => {
+      state.evaluacionSelected = [];
+      state.segmentacionAreas = [];
+      state.segmentacionAreasByEvaluacion = [];
+      state.porcentajesAreaSelected = [];
+      state.totalPorcentaje = 0;
+    };
+
+    const getSegmentacionAreaByevaluacionPorcentajes = async () =>{
+
+      let bodySegmentacionArea = {
+          id: state.evaluacionSelected.evaluacionEmpresas[0].id,
+      };
+      ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId", bodySegmentacionArea , {
+        headers: header,
+      })
+      .then((response) => {
+        if (response.status != 200) return false;
+        state.porcentajesAreaSelected = response.data;
+        console.log("state.porcentajesAreaSelected", state.porcentajesAreaSelected);
+
+        state.segmentacionAreas.forEach( x => {
+          if (x.evaluacionId == state.idEvaluacionSelected){
+            if (state.porcentajesAreaSelected.length == 0) x.valor = 0;
+            state.porcentajesAreaSelected.forEach( y => {
+              if (y.segmentacionAreaId == x.id){
+                if ( y.valor != undefined) {
+                  x.valor = y.valor;
+                  state.totalPorcentaje += parseInt(y.valor);
+                }else{
+                   x.valor = 0;
+                }
+              }
+            });
+            state.segmentacionAreasByEvaluacion.push(x);
+          }
+        });
       });
     };
 
+    const CambioPorcentajePaso1 = async (idarea) => {
+      document.getElementById("porc-"+idarea).innerHTML=document.getElementById(idarea).value + "%";
+      let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
+      state.totalPorcentaje = 0;
+      idAreasPorcentajes.forEach((element) => {
+        state.totalPorcentaje += parseInt(element.value);
+      });
+      if (state.totalPorcentaje > 100){
+        document.getElementById("totalporcentaje").classList.remove("text-success");
+        document.getElementById("totalporcentaje").classList.add("text-danger");
+        return;
+      }
+      document.getElementById("totalporcentaje").classList.remove("text-danger");
+      document.getElementById("totalporcentaje").classList.add("text-success");
+    };
+
+    const RegresarPaso1 = async () => {
+      state.idTipoAreaSelected = "0";
+      state.idEvaluacionSelected = state.evaluacionSelected.id;
+      state.segmentacionAreaSelected = [];
+      state.segmentacionSubAreasbyAreaSelected = [];
+      document.getElementById("totalPorcentajeSubAreas").classList.add("d-none");
+    };
+
     const irPaso2 = async () => {
-      debugger;
-      /*if (!state.evaluacionSelected){
+      if (state.idEvaluacionSelected == "0"){
         swal.fire({
           title: "Preparación de áreas",
-          text: "Debe seleccionar un tipo de evaluación",
+          text: "Seleccione tipo evaluación",
           icon: "warning",
         });
         return false;
-      }*/
+      }
+
       if (!state.segmentacionAreasByEvaluacion){
         swal.fire({
           title: "Preparación de áreas",
@@ -731,113 +811,292 @@ export default {
         });
         return false;
       }
-      let idarea = document.getElementById("tipoAreaPaso2").value;
-      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idarea);
-      console.log("state.segmentacionAreaSelected", state.segmentacionAreaSelected);
-      state.segmentacionSubAreasbyAreas = [];
-   
-      state.segmentacionAreasByEvaluacion.forEach( x => {
-        if (x.id == state.segmentacionAreaSelected.id){
-          state.segmentacionSubAreasbyAreas.push(x.segmentacionSubAreas);
-        }
-      });
-
-      state.segmentacionSubAreasbyAreas = state.segmentacionSubAreasbyAreas[0];
-      console.log("state.segmentacionSubAreasbyAreas", state.segmentacionSubAreasbyAreas);
+      
+      if (state.totalPorcentaje > 100){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "No puede sobrepasar el 100% de importancia entre las área",
+          icon: "warning",
+        });
+        return false;
+      }
+      
+      guardarPorcentajeAreas();
       state.selectedTab = 2;
       state.tabs[0].colorTab = "black";
     };
 
-    const changeSegmentacionSubArea = async () => {
-      let idarea = document.getElementById("tipoAreaPaso2").value;
-      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idarea);
-      state.segmentacionSubAreasbyAreas = [];
-      state.segmentacionSubAreasbyAreas = state.segmentacionAreaSelected.segmentacionSubAreas;
-      console.log("state.segmentacionAreaSelected", state.segmentacionAreaSelected);
-      console.log("state.segmentacionSubAreasbyAreas", state.segmentacionSubAreasbyAreas);
+    const guardarPorcentajeAreas = async () => {
+      let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
+      idAreasPorcentajes.forEach((element) => {
+        let bodyImportanciaRelativa = {
+            evaluacionEmpresaId: state.evaluacionSelected.evaluacionEmpresas[0].id,
+            segmentacionAreaId: element.id,
+            valor: element.value,
+            activo: true,
+        };
+        
+        ApiNeva.post("ImportanciaRelativa/ImportanciaRelativaInsertOrUpdate", bodyImportanciaRelativa , {
+          headers: header,
+        })
+        .then((response) => {
+          if (response.status != 200){
+            swal.fire({
+              title: "Preparación de áreas",
+              text: "Error al guardar porcentajes",
+              icon: "warning",
+            });
+            return false;
+          }
+        })
+        .catch((error) => console.log(error));
+      });
     };
-    
+
+    const CambioPorcentajePaso2 = async (idsubarea) => {
+      document.getElementById("porcPaso2-"+idsubarea).innerHTML=document.getElementById(idsubarea).value + "%";
+      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
+      state.totalPorcentajeSubAreas = 0;
+      idSubAreasPorcentajes.forEach((element) => {
+        state.totalPorcentajeSubAreas += parseInt(element.value);
+      });
+      if (state.totalPorcentajeSubAreas > 100){
+        document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
+        document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
+        return;
+      }
+      document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
+      document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
+    };
+
+
+    const changeSegmentacionArea = async () => {
+      let idTipoAreaSelected = document.getElementById("idTipoAreaSelected")
+        .options[
+        document.getElementById("idTipoAreaSelected").selectedIndex
+      ].value;
+
+      limpiarPaso2();
+
+      if (idTipoAreaSelected == 0){
+        document.getElementById("totalPorcentajeSubAreas").classList.add("d-none");
+        return;
+      } 
+
+      state.idTipoAreaSelected = idTipoAreaSelected;
+      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idTipoAreaSelected);
+
+      getSegmentacionSubAreaByAreaPorcentajes();
+
+      document.getElementById("totalPorcentajeSubAreas").classList.remove("d-none");
+      console.log("state.segmentacionAreaSelected", state.segmentacionAreaSelected);
+    };
+
+    const limpiarPaso2 = async () => {
+      state.segmentacionAreaSelected = [];
+      state.segmentacionSubAreasbyAreaSelected = [];
+      state.totalPorcentajeSubAreas = 0;
+      state.idTipoAreaSelected  = 0;
+      state.importanciaRelativaSelected = [];
+    };
+
+    const getSegmentacionSubAreaByAreaPorcentajes = async () => {
+      state.importanciaRelativaSelected = state.porcentajesAreaSelected.find((y) => y.evaluacionEmpresaId == state.evaluacionSelected.evaluacionEmpresas[0].id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
+      console.log("state.importanciaRelativaSelected", state.importanciaRelativaSelected);
+
+      ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativaId", state.importanciaRelativaSelected , {
+        headers: header,
+      })
+      .then((response) => {
+        if (response.status != 200) return false;
+        state.porcentajesSubAreasSelected = response.data;
+        console.log("state.porcentajesSubAreasSelected", state.porcentajesSubAreasSelected);
+
+        state.segmentacionAreaSelected.segmentacionSubAreas.forEach( x => {
+            if (state.porcentajesSubAreasSelected.length == 0) x.valor = 0;
+            state.porcentajesSubAreasSelected.forEach( y => {
+            if (y.segmentacionSubAreaId == x.id ){
+                if ( y.valor != undefined) {
+                  x.valor = y.valor;
+                  state.totalPorcentajeSubAreas += parseInt(y.valor);
+                }else {
+                   x.valor = 0;
+                }
+              }
+            });
+            state.segmentacionSubAreasbyAreaSelected.push(x);
+        });
+        console.log("state.segmentacionSubAreasbyAreaSelected", state.segmentacionSubAreasbyAreaSelected);
+      });
+    };
+
     const irPaso3 = async () => {
-      state.segmentacionAreasPaso3 = [];
-      state.segmentacionAreasPaso3 = state.segmentacionAreasByEvaluacion;
-      console.log("state.segmentacionAreasPaso3", state.segmentacionAreasPaso3);
-      getSubAreasByPaso3();
+      if (state.idTipoAreaSelected == "0"){
+        swal.fire({
+          title: "Preparación sub áreas",
+          text: "Seleccione nombre área",
+          icon: "warning",
+        });
+        return false;
+      }
+      if (state.totalPorcentajeSubAreas > 100){
+        swal.fire({
+          title: "Preparación sub áreas",
+          text: "No puede sobrepasar el 100% de importancia entre las sub área",
+          icon: "warning",
+        });
+        return false;
+      }
+      guardarPorcentajeSubAreas();
+      getAllAreas();
+      state.idAreaPaso3 = "0";
+      state.idTipoSubAreaPaso3 = "0";
       state.selectedTab = 3;
       state.tabs[0].colorTab = "black";
     };
 
-    const changeSegmentacionAreaPaso3 = async () => {
-      state.segmentacionSubAreasPaso3 = [];
-      state.segmentacionAreasPaso3Tabla = [];
-      let idarea = document.getElementById("idAreaPaso3").value;
-      if (idarea == "0"){
-        getSubAreasByPaso3();
-        return false;
-      }
-      state.segmentacionSubAreasPaso3 = state.segmentacionAreasPaso3.find((y) => y.id == idarea).segmentacionSubAreas;
-      console.log("state.segmentacionSubAreasPaso3", state.segmentacionSubAreasPaso3);
-      state.segmentacionSubAreasPaso3.forEach (x => {
-        if (x.segmentacionAreaId == idarea){
-          state.segmentacionAreasPaso3.forEach(y => {
-              if (x.segmentacionAreaId == y.id){
-                x.nombreArea = y.nombreArea;
-              };
-          });
-          state.segmentacionAreasPaso3Tabla.push(x);
-        }
+    const guardarPorcentajeSubAreas = async () => {
+      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
+      idSubAreasPorcentajes.forEach((element) => {
+        let bodyImportanciaEstrategica = {
+            importanciaRelativaId: state.importanciaRelativaSelected.id,
+            segmentacionSubAreaId: element.id,
+            valor: element.value,
+            activo: true,
+        };
+        
+        ApiNeva.post("ImportanciaEstrategica/ImportanciaEstrategicaInsertOrUpdate", bodyImportanciaEstrategica , {
+          headers: header,
+        })
+        .then((response) => {
+          if (response.status != 200){
+            swal.fire({
+              title: "Preparación de sub áreas",
+              text: "Error al guardar porcentajes" + error,
+              icon: "warning",
+            });
+            return false;
+          }
+        })
+        .catch((error) => console.log(error));
       });
-      console.log("state.segmentacionAreasPaso3Tabla", state.segmentacionAreasPaso3Tabla);
     };
 
-    const changeSegmentacionSubAreaPaso3 = async () => {
-      state.segmentacionAreasPaso3Tabla = [];
-      let idsubarea = document.getElementById("tipoSubAreaPaso3").value;
-      if (idsubarea == "0"){
-        changeSegmentacionAreaPaso3();
-        return false;
-      }
-      state.segmentacionSubAreasPaso3.forEach (x => {
-        if (x.id == idsubarea){
-          state.segmentacionAreasPaso3.forEach(y => {
-              if (x.segmentacionAreaId == y.id){
-                x.nombreArea = y.nombreArea;
-              };
+    const getAllAreas = async () => {
+      state.allSegmentacionAreas = [];
+      state.allSegmentacionSubAreas = [];
+      state.tablaSegmentacionAreas = [];
+      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
+      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.evaluacionPaso3 = response.data;
+          console.log("state.evaluacionPaso3", state.evaluacionPaso3);
+          response.data.forEach(x => {
+            state.allSegmentacionAreas = state.allSegmentacionAreas.concat(x.segmentacionAreas);
           });
-          state.segmentacionAreasPaso3Tabla.push(x);
-        }
-      });
-      console.log("state.segmentacionAreasPaso3Tabla", state.segmentacionAreasPaso3Tabla);
+          console.log("state.allSegmentacionAreas", state.allSegmentacionAreas);
+
+          state.allSegmentacionAreas.forEach(x => {
+            state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
+          });
+          console.log("state.allSegmentacionSubAreas", state.allSegmentacionSubAreas);
+
+          cargarTablaPaso3();
+          
+        })
+        .catch((error) => console.log(error));
     };
 
-    const getSubAreasByPaso3 = async () => {
-      let subAreas = [];
-      state.segmentacionSubAreasPaso3 = [];
-      state.segmentacionAreas.forEach(x => {
-        subAreas = subAreas.concat(x.segmentacionSubAreas);
-      });
-      state.segmentacionSubAreasPaso3.push(subAreas);
-      state.segmentacionSubAreasPaso3 = state.segmentacionSubAreasPaso3[0];
+    const cargarTablaPaso3 = async () => {
+      state.tablaSegmentacionAreas = [];
+      state.allSegmentacionSubAreasByIdArea = [];
 
-      state.segmentacionSubAreasPaso3.forEach (x => {
-        state.segmentacionAreasPaso3.forEach(y => {
+      state.allSegmentacionSubAreas.forEach (x => {
+        state.allSegmentacionAreas.forEach(y => {
             if (x.segmentacionAreaId == y.id){
               x.nombreArea = y.nombreArea;
             };
         });
-        state.segmentacionAreasPaso3Tabla.push(x);
+        state.tablaSegmentacionAreas.push(x);
       });
-      console.log("state.segmentacionAreasPaso3Tabla", state.segmentacionAreasPaso3Tabla);
+      state.allSegmentacionSubAreasByIdArea = state.allSegmentacionSubAreas;
+      console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
+    };
+
+    const changeSegmentacionAreaPaso3 = async () => {
+       let idAreaPaso3 = document.getElementById("idAreaPaso3")
+        .options[
+        document.getElementById("idAreaPaso3").selectedIndex
+      ].value;
+
+      state.idTipoSubAreaPaso3 = "0";
+      state.allSegmentacionSubAreasByIdArea = [];
+      state.tablaSegmentacionAreas = [];
+
+      if (idAreaPaso3 == "0"){
+        cargarTablaPaso3();
+        return false;
+      }
+
+      state.allSegmentacionSubAreas.forEach (x => {
+        if (x.segmentacionAreaId == idAreaPaso3){
+          state.allSegmentacionAreas.forEach(y => {
+              if (x.segmentacionAreaId == y.id){
+                x.nombreArea = y.nombreArea;
+              };
+          });
+          state.tablaSegmentacionAreas.push(x);
+          state.allSegmentacionSubAreasByIdArea.push(x);
+        }
+      });
+      console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
+    };
+
+    const changeSegmentacionSubAreaPaso3 = async () => {
+      let idTipoSubAreaPaso3 = document.getElementById("idTipoSubAreaPaso3")
+        .options[
+        document.getElementById("idTipoSubAreaPaso3").selectedIndex
+      ].value;
+
+      
+      if (idTipoSubAreaPaso3 == "0"){
+        cargarTablaPaso3();
+        return false;
+      }
+
+      state.tablaSegmentacionAreas = [];
+
+      state.allSegmentacionSubAreas.forEach (x => {
+        if ( x.id == idTipoSubAreaPaso3 ){
+          state.allSegmentacionAreas.forEach(y => {
+            if (x.segmentacionAreaId == y.id){
+              x.nombreArea = y.nombreArea;
+            };
+          });
+          state.tablaSegmentacionAreas.push(x);
+        }
+      });
+      console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
+
+    };
+
+    const RegresarPaso2 = async () => {
+      state.idAreaPaso3 = "0";
+      state.idTipoSubAreaPaso3 = "0";
     };
 
     const getPregunta = (segmentacionArea) => {
       state.preguntas = [];
       state.preguntaSelected = [];
       state.preguntasTotal = [];
-      ApiNeva.get("Pregunta/GetPreguntasByIdsEvaluacionSegmentacionAreaSubArea?idEvaluacion=" + state.idEvaluacionSelected + "&idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
+      ApiNeva.get("Pregunta/GetPreguntasByIdsSegmentacionAreaSubArea?idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
         headers: header,
       })
         .then((response) => {
-          if (response.status != 200) return false;
+          if (response.status != 200) return false;;
           state.preguntas = response.data;
           state.preguntaSelected = response.data[0];
           state.preguntasTotal = response.data.length;
@@ -851,14 +1110,15 @@ export default {
           }
           state.visibleModalPreguntas = true;
           console.log("state.preguntas", state.preguntas);
+          getTipoimportancia();
+          if (state.perfilSelected.nombre == "Consultor") getDeficienciaRelacionada();
+          getRespuesta();
         })
         .catch((error) => console.log(error));
-      getDiferenciaRelacionada();
-      getTipoimportancia();
     };
 
     const getTipoimportancia = async () => {
-      state.difRelacionadas = [];
+      state.tiposImportancia = [];
       ApiNeva.post("TipoImportancia/GetTipoImportancias", null,  {
         headers: header,
       })
@@ -870,27 +1130,103 @@ export default {
         .catch((error) => console.log(error));
     };
 
-    const getDiferenciaRelacionada = async () => {
-      state.difRelacionadas = [];
+    const getDeficienciaRelacionada = async () => {
+      state.defRelacionadas = [];
       ApiNeva.post("TipoDiferenciaRelacionada/GetTipoDiferenciaRelacionadas", null,  {
         headers: header,
       })
         .then((response) => {
           if (response.status != 200) return false;
-          state.difRelacionadas = response.data;
-          console.log("state.difRelacionadas", state.difRelacionadas);
+          state.defRelacionadas = response.data;
+          console.log("state.defRelacionadas", state.defRelacionadas);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const addRespuesta= () => {
+      if (state.alternativaSelected == ""){
+         swal.fire({
+            title: "Preguntas",
+            text: "Debe seleccionar una alternativa",
+            icon: "warning",
+          });
+          return false;
+      }
+      if (state.tipoImportanciaSelected == ""){
+         swal.fire({
+            title: "Preguntas",
+            text: "Debe seleccionar un tipo importancia",
+            icon: "warning",
+          });
+          return false;
+      }
+      if (state.perfilSelected.nombre == "Consultor"){
+        if (state.defRelacionadaSelected == ""){
+          swal.fire({
+              title: "Preguntas",
+              text: "Debe seleccionar una deficiencia relacionada",
+              icon: "warning",
+            });
+            return false;
+        }
+      }
+
+      let EvaluacionEmpresa = "";
+      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
+        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
+        if (EvaluacionEmpresa) break;
+      }
+
+      let alternativa = state.preguntaSelected.alternativas.find((y) => y.id == state.alternativaSelected);
+      let idRespuesta = state.respuestaSelected ? state.respuestaSelected.id : "00000000-0000-0000-0000-000000000000";
+      let idDefRelacionada = state.perfilSelected.nombre == "Consultor" ? state.defRelacionadaSelected : "00000000-0000-0000-0000-000000000000";
+
+      let bodyRespuesta = {
+        id: idRespuesta,
+        alternativaId: state.alternativaSelected,
+        preguntaId: state.preguntaSelected.id,
+        evaluacionEmpresaId: EvaluacionEmpresa.id,
+        tipoImportanciaId: state.tipoImportanciaSelected,
+        tipoDiferenciaRelacionadaId: idDefRelacionada,
+        valor: alternativa.valor,
+        realimentacion: alternativa.retroalimentacion,
+        activo: true,
+        usuarioId: localStorage.iduser
+      };
+      ApiNeva.post("Respuesta/InsertOrUpdate", bodyRespuesta,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) {
+            swal.fire({
+                title: "Preguntas",
+                text: "Error al guardar pregunta" + error,
+                icon: "warning",
+              });
+              return false;
+          }
+          pasosPreguntas("siguiente");
         })
         .catch((error) => console.log(error));
     };
 
     const pasosPreguntas = async (paso) => {
-
       let orden = state.preguntaSelected.orden - 1;
-      if (paso == "siguiente"){
+      if (paso == "siguiente"){ 
+        limpiarRespuestas("alternativas");
+        limpiarRespuestas("tipoImportancias");
+        if (state.perfilSelected.nombre == "Consultor"){
+          limpiarRespuestas("defRelacionada");
+        }
+        state.alternativaSelected = [];
+        state.tipoImportanciaSelected = [];
+        state.defRelacionadaSelected = [];
+
         if (state.preguntaSelected.orden == state.preguntasTotal){
           return false;
         }
         state.preguntaSelected = state.preguntas[orden + 1];
+        getRespuesta();
       }
       if (paso == "atras"){
         if (state.preguntaSelected.orden == 1){
@@ -898,7 +1234,74 @@ export default {
         }
         state.preguntaSelected = state.preguntas[orden - 1];
       }
+    };
 
+    const getRespuesta = () => {
+      let EvaluacionEmpresa = "";
+      state.respuestaSelected = [];
+      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
+        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
+        if (EvaluacionEmpresa) break;
+      }
+
+       let bodyRespuesta = {
+        preguntaId: state.preguntaSelected.id,
+        evaluacionEmpresaId: EvaluacionEmpresa.id,
+        usuarioId: localStorage.iduser
+      };
+
+      ApiNeva.post("Respuesta/GetRespuestaByIdsPreguntaUsuarioEvaluacionEmpresa", bodyRespuesta,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.respuestaSelected = response.data;
+          console.log("state.respuestaSelected", state.respuestaSelected);
+          if (state.respuestaSelected) cargarRespuestas();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const cargarRespuestas = async () => {
+      let alternativas = document.getElementsByName("alternativas");
+      for (let x = 0; x < alternativas.length; x++) {
+        let obj = alternativas[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.alternativaId){
+          obj.checked = true;
+          state.alternativaSelected = obj.value;
+        }
+      };
+
+      let tipoImportancias = document.getElementsByName("tipoImportancias");
+      for (let x = 0; x < tipoImportancias.length; x++) {
+        let obj = tipoImportancias[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.tipoImportanciaId){
+          obj.checked = true;
+          state.tipoImportanciaSelected = obj.value;
+        }
+      };
+
+      if (state.perfilSelected.nombre == "Consultor"){
+        let defRelacionada = document.getElementsByName("defRelacionada");
+        for (let x = 0; x < defRelacionada.length; x++) {
+          let obj = defRelacionada[x];
+          obj.checked = false;
+          if (obj.value == state.respuestaSelected.tipoDiferenciaRelacionadaId){
+            obj.checked = true;
+            state.defRelacionadaSelected = obj.value;
+          }
+        }
+      }
+    };
+
+    const limpiarRespuestas = async (name) => {
+      let radios = document.getElementsByName(name);
+      for (let x = 0; x < radios.length; x++) {
+        let obj = radios[x];
+        obj.checked = false;
+      }
     };
 
     const resetModalPregunta = () => {
@@ -1109,13 +1512,18 @@ export default {
     };
 
     const oncreated = () => {
+      state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       state.selectedTab = 1;
-      if (typeof localStorage.isLoadingFile === "undefined") {
+      if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
+        getAllAreas();
+        state.selectedTab = 3;
+      }
+      /*if (typeof localStorage.isLoadingFile === "undefined") {
         localStorage.isLoadingFile = false;
       }
       state.isLoadingFile =
         localStorage.isLoadingFile == "false" ? false : true;
-
+      */
       /*ApiNeva.get("Config/GetAll", { headers: header })
         .then((response) => {
           if (response.status != 200) return false;
@@ -1181,22 +1589,32 @@ export default {
 
     return {
       ...toRefs(state),
+
       formatterMoney,
       selectedPagination,
       getNameEstadoConciliacion,
+
       irPaso2,
       irPaso3,
+
       loadData,
       readColumns,
       randomKey,
       exportEjemplo,
+
+      changeEvaluacion,
       changeSegmentacionArea,
-      changeSegmentacionSubArea,
       changeSegmentacionAreaPaso3,
       changeSegmentacionSubAreaPaso3,
       getPregunta,
       cilPen,
       resetModalPregunta,
+      RegresarPaso1,
+      RegresarPaso2,
+      CambioPorcentajePaso1,
+      CambioPorcentajePaso2,
+      addRespuesta,
+      getRespuesta,
       pasosPreguntas,
     };
   },
