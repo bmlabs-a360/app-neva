@@ -1108,6 +1108,12 @@ export default {
             });
             return false;
           }
+          let orden = 0;
+          state.preguntas.forEach((element) => {
+            orden++;
+            element.orden = orden;
+          });
+
           state.visibleModalPreguntas = true;
           console.log("state.preguntas", state.preguntas);
           getTipoimportancia();
@@ -1213,6 +1219,14 @@ export default {
     const pasosPreguntas = async (paso) => {
       let orden = state.preguntaSelected.orden - 1;
       if (paso == "siguiente"){ 
+        if (state.preguntasTotal <= state.preguntaSelected.orden ){
+          swal.fire(
+            "Preguntas",
+            "No existen mas preguntas asociadas",
+            "warning"
+          );
+          return false;
+        }
         limpiarRespuestas("alternativas");
         limpiarRespuestas("tipoImportancias");
         if (state.perfilSelected.nombre == "Consultor"){
