@@ -86,9 +86,9 @@
 
                 <div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between" v-for="empresa in empresas" :key="empresa.id">
                     <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
-                        <div class="img-left me-lg-3">
+                        <div class="img-left me-lg-3" style="width: 5rem;height: 5rem;border-radius: 50%;background: #15acc0;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:3%">
                             <!--<img class="company" :src="logoLatam" alt="">-->
-                            {{empresa.iniciales}}
+                            <b style="color:white">{{empresa.iniciales}}</b>
                         </div>
                         <div class="me-md-3">
                             <h3 class="my-3 my-md-0 text-center text-md-start">{{empresa.razonSocial}}</h3>
