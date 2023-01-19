@@ -88,7 +88,7 @@
                     <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                         <div class="img-left me-lg-3">
                             <!--<img class="company" :src="logoLatam" alt="">-->
-                            {{empresa.razonSocial}}
+                            {{empresa.iniciales}}
                         </div>
                         <div class="me-md-3">
                             <h3 class="my-3 my-md-0 text-center text-md-start">{{empresa.razonSocial}}</h3>
@@ -382,6 +382,7 @@ export default {
             state.empresas = response.data;
             state.empresas.forEach((m) => {
               m.fechaCreacion = m.fechaCreacion.substring(0, '10');
+              m.iniciales = m.razonSocial.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
             });
             console.log("state.empresas",state.empresas);
           })
