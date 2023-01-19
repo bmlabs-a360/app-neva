@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+ <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>registro</title>
@@ -15,10 +15,7 @@
     <div class="container">
       <div class="d-flex justify-content-between">
         <div class="nav-login">
-            <div class="div-img">
-                <img :src="imgIcon" alt="simbolo neva360">
-            </div>
-        <h1 class="">Analisis 360</h1>
+          <img class="img-logo" :src="imgIcon" alt="simbolo neva360">
         </div>
         <nav class="d-flex">
             <ul class="navbar">
@@ -145,14 +142,10 @@
             </div>
             <div class="row">
               <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-3 mt-md-5  mb-2">
-                    <label class="check mb-2">Terminos y condiciones
-                      <input type="checkbox" v-model="terminos">
-                      <span class="checkmark"></span>
-                    </label>
-                    <label class="check">Terminos y condiciones
-                      <input type="checkbox">
-                      <span class="checkmark"></span>
-                    </label>
+                <label class="check mb-2">Terminos y condiciones
+                  <input type="checkbox" v-model="terminos">
+                  <span class="checkmark"></span>
+                </label>
               </div>
               <div class="registro mb-5">
                   <button type="button" @click="crearUsuario" aria-hidden="false" class="button button v-button is-bold is-fullwidth is-raised is-primary"><span> Ingresar </span></button>
@@ -278,7 +271,7 @@
 <script>
 import { getCurrentInstance, reactive, toRefs } from "vue";
 import { style } from "@/assets/css/style.css";
-import imgIcon from "@/assets/img/icons.svg";
+import imgIcon from "@/assets/img/neva-logo.svg";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { useRoute } from "vue-router";

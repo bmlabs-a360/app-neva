@@ -13,10 +13,10 @@
                     <img :src="logoCubo" @click="ir('Mantenedor')" style="cursor:pointer" alt="">
                 </div>
                 <div>
-                    <img src="assets/img/nav/mas.svg" alt="">
+                    <img :src="logoMas" alt="">
                 </div>
                 <div>
-                    <img src="assets/img/nav/search.svg" alt="">
+                    <img :src="logoLupa" alt="">
                 </div>
             </div>
         </div>
@@ -25,10 +25,10 @@
                  <img :src="logoConfiguracion" @click="logout" style="cursor:pointer" alt="">
             </div>
             <div>
-                <img src="assets/img/nav/cubo.svg" alt="">
+                <img :src="logoCubo" alt="">
             </div>
             <div>
-                <img src="assets/img/nav/mas.svg" alt="">
+                <img :src="logoMas" alt="">
             </div>
             <div>
                 <img :src="logoLupa" alt="">
@@ -99,6 +99,7 @@ import logoConfiguracion from "@/assets/img/nav/config.svg";
 import logoCubo from "@/assets/img/nav/cubo.svg";
 import router from "@/router/index";
 import logoLupa from "@/assets/img/nav/search.svg";
+import logoMas from "@/assets/img/nav/mas.svg";
 
 export default {
   name: "Login",
@@ -136,6 +137,7 @@ export default {
       logoConfiguracion,
       logoCubo,
       logoLupa,
+      logoMas,
       ir,
       logout,
     };

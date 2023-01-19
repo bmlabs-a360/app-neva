@@ -40,19 +40,23 @@
   <!--Header-->
  
   <div class="col-12 d-flex justify-content-between">
-    <div class="page-title">
+    <div class="page-title mt-5 pt-5 pt-sm-0 mt-sm-0">
         <div class="py-3 d-flex align-items-center">
+          <!--<div class="nav-media img-left">
             <span class="me-3 menu-toggle has-chevron">
                 <span class="icon-box-toggle">
                     <span class="rotate"><i aria-hidden="true" class="icon-line-top"></i><i aria-hidden="true" class="icon-line-center"></i><i aria-hidden="true" class="icon-line-bottom"></i>
                     </span>
                 </span>
             </span>
-            <h1 class="title">
-                Tus Clientes
-            </h1>
+            <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+            <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
+          </div>-->
+          <h1 class="title">
+              Tus Clientes
+          </h1>
         </div>
-        <div class="toolbar ml-auto desktop-toolbar">
+        <!--<div class="toolbar ml-auto desktop-toolbar">
             <div class="dropdown is-spaced is-dots is-right dropdown-trigger">
                 <div tabindex="0" class="is-trigger" aria-haspopup="true">
                     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:bell" class="iconify iconify--feather"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9m-4.27 13a2 2 0 0 1-3.46 0"></path></svg>
@@ -71,7 +75,7 @@
                         <ul class="notification-list">
                             <li>
                                 <a class="notification-item">
-                                    <div class="img-left">
+                                    <div class="img-left me-2">
                                         <img class="user-photo" alt="" src="assets/img/nav/pers/02.png">
                                     </div>
                                     <div class="user-content">
@@ -82,7 +86,7 @@
                             </li>
                             <li>
                                 <a class="notification-item">
-                                    <div class="img-left">
+                                    <div class="img-left me-2">
                                         <img class="user-photo" alt="" src="assets/img/nav/pers/01.jpg">
                                     </div>
                                     <div class="user-content">
@@ -93,7 +97,7 @@
                             </li>
                             <li>
                                 <a class="notification-item">
-                                    <div class="img-left">
+                                    <div class="img-left me-2">
                                         <img class="user-photo" alt="" src="assets/img/nav/pers/01.jpg">
                                     </div>
                                     <div class="user-content">
@@ -104,7 +108,7 @@
                             </li>
                             <li>
                                 <a class="notification-item">
-                                    <div class="img-left">
+                                    <div class="img-left me-2">
                                         <img class="user-photo" alt="" src="assets/img/nav/pers/02.png">
                                     </div>
                                     <div class="user-content">
@@ -117,7 +121,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
   </div>
   <!--Termino Header-->
@@ -128,6 +132,8 @@ import AppBreadcrumb from "./AppBreadcrumb";
 
 import imgLogo from "@/assets/images/neva_login.png";
 import router from "@/router/index";
+import logoNegro from "@/assets/img/nav/logos/logo-negro.svg";
+import logoPers from "@/assets/img/nav/pers/02.png";
 
 export default {
   name: "AppHeader",
@@ -149,6 +155,8 @@ export default {
 
     return {
       imgLogo,
+      logoNegro,
+      logoPers,
       logout,
       ir,
     };

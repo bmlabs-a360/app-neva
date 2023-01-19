@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;700&family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;700&family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" :href="style">
 </head>
+
 <body class="height-100">
     <div class="container-fluid">
         <div class="row">
@@ -21,22 +24,20 @@
                         <img class="mb-md-3" :src="imgLogo" alt="">
                     <h2 class="mb-2">Ingresar</h2>
                     <p class="gris-400 p-10">Bienvenido de nuevo a su cuenta.</p>
-                    
                     </div>
+
                     <form  class="login-form" action="">
                         <div class="mb-md-4">
                             <div class="field">
-    
-                                <div class="control has-icon">
-                                    <input class="input w-100" id="email" type="email" placeholder="correo@correo.cl">
-                                    <label class="label" for="" >
-                                        Correo
-                                    </label>
-                                    <div class="form-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:user" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
-                                    </div>
-                                    
-                                </div>
+                              <div class="control has-icon">
+                                  <input class="input w-100 mb-2" type="email" id="email" placeholder="correo@correo.cl">
+                                  <label class="label" for="" >
+                                      Correo
+                                  </label>
+                                  <div class="form-icon">
+                                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:user" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
+                                  </div>
+                              </div>
                             </div>
                             <div class="control has-icon">
                                 <input class="input w-100"  id="password" :type="passwordFieldType" @keypress="buscarEnter" placeholder="Contraseña" >
@@ -44,20 +45,21 @@
                                     Contraseña
                                 </label>
                                 <div class="form-icon">
-                                    <svg  @click="switchVisibility" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="cursor:pointer" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
+                                    <svg @click="switchVisibility" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
                                 </div>
                             </div>
                         </div>
 
                         <div class="login">
-                            <button type="button" @click="login" aria-hidden="false" class="button button v-button is-bold is-fullwidth is-raised is-primary"><span> Ingresar </span></button>
+                          <button type="button" @click="login" aria-hidden="false" class="button button v-button is-bold is-fullwidth is-raised is-primary"><span> Ingresar </span></button>
                         </div>
                         <div class="d-flex flex-column align-items-center mt-4">
                             <a class="link-primary" @click="ir('Register')" style="cursor:pointer">Crear una cuenta.</a>
-                            <a class="link-secundary" @click="abirModalRecuperacion" style="cursor:pointer;display: none;">¿Has olvidado tu contraseña?</a>
+                            <!--<a class="link-secundary" @click="abirModalRecuperacion" style="cursor:pointer;display: none;">¿Has olvidado tu contraseña?</a>-->
                         </div>
                     </form>
                 </div>
+    
             </div>
         </div>
     </div>

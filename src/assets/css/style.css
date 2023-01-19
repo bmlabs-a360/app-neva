@@ -12059,6 +12059,7 @@ p, a, span {
 .control.has-icon.has-icon .input.new {
   height: 36px;
   border-radius: 8px;
+  width: 200px !important;
 }
 
 .button.is-fullwidth {
@@ -12244,6 +12245,11 @@ a {
 .logo {
   width: 50px;
 }
+@media screen and (max-width: 576px) {
+  .logo {
+    display: none;
+  }
+}
 
 .circle {
   margin-bottom: 8px;
@@ -12288,6 +12294,19 @@ a {
 
 .card {
   border: 1px solid #EAEBEF;
+}
+.card h3, .card .h3 {
+  font-size: 18px !important;
+  color: #283252;
+}
+
+.close {
+  background: none;
+  border: none;
+}
+
+.img-logo {
+  width: 80px;
 }
 
 .body-login {
@@ -12454,9 +12473,19 @@ a {
   top: 0;
   left: 0;
   margin-left: 0;
-  z-index: 99;
+  z-index: 999;
   transition: border-radius 0.3s ease-in, background-color 0.3s ease-in, top 0.3s ease-in, margin-left 0.3s ease-in, height 0.3s ease-in;
   padding: 16px;
+  transition: all 0.2s;
+}
+@media screen and (max-width: 576px) {
+  .color-nav {
+    left: -60px;
+    top: 68px;
+  }
+  .color-nav.active {
+    left: 0;
+  }
 }
 .color-nav div {
   margin-bottom: 40px;
@@ -12475,13 +12504,35 @@ a {
   background-color: white;
   left: -190px;
   box-shadow: 5px 4px 4px rgba(110, 120, 124, 0.06);
-  transition: all 0.2s;
+  transition: all 0.5s;
+  z-index: 99;
+}
+@media screen and (max-width: 576px) {
+  .sidebar-panel {
+    left: -270px;
+    top: 60px;
+  }
 }
 .sidebar-panel .accordion-button {
   font-size: 12px;
 }
 .sidebar-panel.active {
-  left: 70px;
+  left: 56px;
+  z-index: 99;
+}
+@media screen and (max-width: 992px) {
+  .sidebar-panel.active {
+    position: fixed;
+    z-index: 99;
+    top: 0px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .sidebar-panel.active {
+    position: fixed;
+    z-index: 99;
+    top: 68px;
+  }
 }
 .sidebar-panel .content-sidebar {
   padding: 0 20px;
@@ -12517,15 +12568,32 @@ a {
 .view-wrapper {
   position: relative;
   height: 100%;
-  width: calc(100% - 80px);
+  width: calc(100% - 70px);
   padding: 0 0 60px;
-  margin-left: 75px;
-  background: var(--background-grey);
+  margin-left: 70px;
   transition: all 0.3s;
 }
+@media screen and (max-width: 576px) {
+  .view-wrapper {
+    margin-left: 0px;
+    width: 100%;
+  }
+}
 .view-wrapper.is-pushed-full {
-  margin-left: 335px;
-  width: calc(100% - 340px);
+  margin-left: 320px;
+  width: calc(100% - 320px);
+}
+@media screen and (max-width: 992px) {
+  .view-wrapper.is-pushed-full {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+}
+@media screen and (max-width: 576px) {
+  .view-wrapper.is-pushed-full {
+    margin-left: 0px;
+    width: 100%;
+  }
 }
 
 .menu-toggle {
@@ -12736,14 +12804,10 @@ a {
   background-color: #15ACC0;
 }
 
-.img-left {
-  max-width: 100px;
-  min-width: 100px;
-}
 .img-left .company {
-  height: 6.25rem;
-  width: 6.25rem;
-  object-fit: contain;
+  min-width: 100px;
+  min-height: 100px;
+  object-fit: cover;
   background-color: #1b0188;
 }
 .img-left img {
@@ -12751,9 +12815,93 @@ a {
   vertical-align: middle;
   height: 2.25rem;
   width: 2.25rem;
-  margin: 0 0.5rem 0 0;
   border-radius: 50%;
   max-width: 100%;
+}
+
+.data-icon {
+  gap: 16px;
+}
+.data-icon div:last-child {
+  margin-right: 0px;
+}
+.data-icon .responsible {
+  margin-left: 8px;
+}
+.data-icon p {
+  margin-bottom: 0;
+  color: #6E787C;
+}
+
+.btn {
+  padding: 8px 24px;
+}
+.btn.secundary {
+  border: solid 1px #15ACC0;
+  border-radius: 8px;
+  color: #15ACC0;
+  background-color: white;
+}
+.btn.secundary:hover {
+  color: white;
+  background-color: #15ACC0;
+  border: solid 1px #15ACC0;
+  box-shadow: 0 8px 16px -12px rgba(22, 197, 156, 0.123), 0 4px 12px 0 rgba(22, 197, 156, 0.123), 0 4px 5px -5px rgba(22, 197, 156, 0.123) !important;
+}
+.btn.circle {
+  padding: 8px 12px;
+  border: solid 1px #EAEBEF;
+  border-radius: 50%;
+  color: #15ACC0;
+  background-color: #EAEBEF;
+  margin-bottom: 0;
+}
+@media screen and (max-width: 992px) {
+  .btn.circle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+.btn.circle:hover {
+  color: white;
+  background-color: #ED9A37;
+  border: solid 1px #ED9A37;
+  box-shadow: 0 8px 16px -12px rgba(220, 53, 70, 0.179), 0 4px 12px 0 rgba(220, 53, 70, 0.14), 0 4px 5px -5px rgba(220, 53, 70, 0.054) !important;
+}
+.btn.circle.active {
+  color: white;
+  background-color: #ED9A37;
+  border: solid 1px #ED9A37;
+}
+
+.nav-media {
+  position: initial;
+  padding: 0;
+}
+@media screen and (max-width: 576px) {
+  .nav-media {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    background: white;
+    left: 0;
+    padding: 16px;
+    z-index: 99999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 12px 12px rgba(182, 182, 182, 0.1);
+  }
+}
+@media screen and (min-width: 576px) {
+  .nav-media .user-photo {
+    position: absolute;
+    top: 14px;
+    right: 30px;
+    height: 1.8rem;
+    width: 1.8rem;
+  }
 }
 
 .cards {

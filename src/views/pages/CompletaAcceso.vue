@@ -15,7 +15,7 @@
       <div class="d-flex justify-content-between">
         <div class="nav-login">
             <div class="div-img">
-                <img :src="imgIcon" alt="simbolo neva360">
+                <img class="img-logo" :src="imgIcon" alt="simbolo neva360">
             </div>
         <h1 class="">Analisis 360</h1>
         </div>
@@ -158,7 +158,7 @@
               <div class="row">
                 <div class="col-6 ">
                   <div class="services card-producto">
-                    <h3>Empresa</h3>
+                    <h3>Inica</h3>
                     <p>Plan</p>
                   </div>
                 </div>
@@ -368,7 +368,7 @@
 <script>
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
 import { style } from "@/assets/css/style.css";
-import imgIcon from "@/assets/img/icons.svg";
+import imgIcon from "@/assets/img/neva-logo.svg";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { useRoute } from "vue-router";

@@ -33,7 +33,7 @@
         </div>
         <div class="d-flex w-100 row cards-none">
             <div class="col-12 img-left d-flex align-items-center w-100 mb-3">
-                <img class="user-photo" alt="" src="assets/img/nav/pers/02.png">
+                <img class="user-photo" alt="" :src="logoPersona">
                 <h3>Carolina Espinosa</h3>        
             </div>
             <div class="col-12 card p-3">
@@ -49,8 +49,8 @@
         </div>
     </div>
 </section>
-<div class="col-12 d-flex  flex-column flex-sm-row justify-content-between align-items-center">
-    <ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
+<div class="col-12 d-flex mt-3 mt-sm-0 flex-column flex-sm-row justify-content-between align-items-center">
+    <!--<ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Todos</button>
         </li>
@@ -74,24 +74,253 @@
                 </svg>
             </label>
         </div>
-    </div>
+    </div>-->
 </div>
 <!--content tabs-->
 <div class="tab-content pb-2" id="pills-tabContent">
     <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-        <!--card forma-->
-        <div class="card my-3 p-3 d-flex">
-            <div class="img-left">
-                <img class="company" src="assets/img/clientes/logo_latam.jpeg" alt="">
-            </div>
-            <div>
-                <h3>Sociedad Anónima Comercial Industrial (S.A.C.I) Falabella</h3>
-                <div>
+        <!--content tabs-->
+        <div class="tab-content pb-2" id="pills-tabContent">
+            <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                <!--card forma-->
 
+                <div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between" v-for="empresa in empresas" :key="empresa.id">
+                    <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
+                        <div class="img-left me-lg-3">
+                            <!--<img class="company" :src="logoLatam" alt="">-->
+                            {{empresa.razonSocial}}
+                        </div>
+                        <div class="me-md-3">
+                            <h3 class="my-3 my-md-0 text-center text-md-start">{{empresa.razonSocial}}</h3>
+                            <div class="d-flex align-items-center data-icon justify-content-center justify-content-md-between flex-wrap">
+                                <div class="d-flex align-items-center ">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">Cristian Vistoso</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">Plan  Primer</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">50%</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">{{empresa.fechaCreacion}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="d-flex">
+                        <button class="btn circle order-md-2 ">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.4583 14.875L8.49999 11.3333L3.54166 14.875V3.54167C3.54166 3.16594 3.69091 2.80561 3.95659 2.53993C4.22226 2.27426 4.5826 2.125 4.95832 2.125H12.0417C12.4174 2.125 12.7777 2.27426 13.0434 2.53993C13.3091 2.80561 13.4583 3.16594 13.4583 3.54167V14.875Z" stroke="#283252" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>      
+                        </button>
+                        <button class="btn secundary order-md-1 me-lg-4 mt-3 mt-lg-0">Primary</button>
+                    </div> -->  
                 </div>
+                <div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+                    <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
+                        <div class="img-left me-lg-3">
+                            <img class="company" :src="logoLatam" alt="">
+                        </div>
+                        <div class="me-md-3">
+                            <h3 class="my-3 my-md-0 text-center text-md-start">Sociedad Anónima Comercial Industrial (S.A.C.I) Falabella</h3>
+                            <div class="d-flex align-items-center data-icon justify-content-center justify-content-md-between flex-wrap">
+                                <div class="d-flex align-items-center ">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">Cristian Vistoso</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">Plan  Primer</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">50%</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">15-01-2023</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="d-flex">
+                        <button class="btn circle order-md-2 ">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.4583 14.875L8.49999 11.3333L3.54166 14.875V3.54167C3.54166 3.16594 3.69091 2.80561 3.95659 2.53993C4.22226 2.27426 4.5826 2.125 4.95832 2.125H12.0417C12.4174 2.125 12.7777 2.27426 13.0434 2.53993C13.3091 2.80561 13.4583 3.16594 13.4583 3.54167V14.875Z" stroke="#283252" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>  
+                        </button>
+                        <button class="btn secundary order-md-1 me-lg-4 mt-3 mt-lg-0">Primary</button>
+                    </div>-->
+                        
+                </div>
+                <!--<div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+                    <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
+                        <div class="img-left me-lg-3">
+                            <img class="company" :src="logoLatam" alt="">
+                        </div>
+                        <div class="me-md-3">
+                            <h3 class="my-3 my-md-0 text-center text-md-start">Sociedad Anónima Comercial Industrial (S.A.C.I) Falabella</h3>
+                            <div class="d-flex align-items-center data-icon justify-content-center justify-content-md-between flex-wrap">
+                                <div class="d-flex align-items-center ">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">Cristian Vistoso</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">Plan  Primer</p>
+                                    </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">50%</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_258_1364)">
+                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_258_1364">
+                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <p class="responsible">15-01-2023</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <button class="btn circle order-md-2 ">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.4583 14.875L8.49999 11.3333L3.54166 14.875V3.54167C3.54166 3.16594 3.69091 2.80561 3.95659 2.53993C4.22226 2.27426 4.5826 2.125 4.95832 2.125H12.0417C12.4174 2.125 12.7777 2.27426 13.0434 2.53993C13.3091 2.80561 13.4583 3.16594 13.4583 3.54167V14.875Z" stroke="#283252" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>   
+                        </button>
+                        <button class="btn secundary order-md-1 me-lg-4 mt-3 mt-lg-0">Primary</button>
+                    </div> 
+                </div>-->
             </div>
+            <!--termino card forma-->
         </div>
-        <!--termino card forma-->
+                
     </div>
     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui sed aliquam ipsa dolorem molestias veritatis numquam maxime quod aut, quo beatae vitae tempora, eveniet cupiditate. Ex ullam unde saepe accusamus!
@@ -114,24 +343,51 @@
 -->
 
 <script>
-import { reactive, toRefs, onMounted } from "vue";
+import { reactive, toRefs, onMounted, getCurrentInstance } from "vue";
+import ApiNeva from "@/api/ApiNeva";
 import { style } from "@/assets/css/style.css";
 import logoNeva from "@/assets/img/nav/logos/logo-negro.svg";
 import logoConfiguracion from "@/assets/img/nav/config.svg";
 import logoCubo from "@/assets/img/nav/cubo.svg";
+import logoLatam from "@/assets/img/clientes/logo_latam.jpg";
+import logoPersona from "@/assets/img/nav/pers/02.png";
 import router from "@/router/index";
 export default {
   name: "Login",
   methods: {
   },
   setup() {
+    const globalProperties =
+      getCurrentInstance().appContext.config.globalProperties;
+    const ApiKey = globalProperties.$apiKey;
+    const header = {
+      ApiKey,
+    };
+
     const state = reactive({
         userSelected : [],
+        empresas : [],
     });
 
     const getUsuario = () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
+        getEmpesas();
     };
+
+    const getEmpesas = () => {
+        state.empresas = [];
+        ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + JSON.parse(localStorage.usuarioModel).id , null, { headers: header })
+          .then((response) => {
+            if (response.status != 200) return false;
+            state.empresas = response.data;
+            state.empresas.forEach((m) => {
+              m.fechaCreacion = m.fechaCreacion.substring(0, '10');
+            });
+            console.log("state.empresas",state.empresas);
+          })
+          .catch((error) => console.log(error));
+        return false;
+    }
 
     onMounted(() => {
       getUsuario();
@@ -143,6 +399,8 @@ export default {
       logoNeva,
       logoConfiguracion,
       logoCubo,
+      logoLatam,
+      logoPersona,
     };
   },
 };
