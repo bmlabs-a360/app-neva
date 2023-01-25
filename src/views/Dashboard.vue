@@ -20,7 +20,7 @@
         <h2>Hola {{userSelected.nombres}}, lo estás haciendo muy bien</h2>
         <p>Empiece a utilizar nuestras herramientas de gestión de equipos y proyectos Aprende más</p>
     </div>
-    <div class="cards-message flex-column">
+    <!--<div class="cards-message flex-column">
         <div class="d-flex w-100  justify-content-between">
             <p>Inbox</p>
             <div>
@@ -47,7 +47,7 @@
         <div>
 
         </div>
-    </div>
+    </div>-->
 </section>
 <div class="col-12 d-flex mt-3 mt-sm-0 flex-column flex-sm-row justify-content-between align-items-center">
     <!--<ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
@@ -162,7 +162,7 @@
                         <button class="btn secundary order-md-1 me-lg-4 mt-3 mt-lg-0">Primary</button>
                     </div> -->  
                 </div>
-                <div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+            <!-- <div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between">
                     <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                         <div class="img-left me-lg-3">
                             <img class="company" :src="logoLatam" alt="">
@@ -229,7 +229,7 @@
                             </div>
                         </div>
                     </div>
-
+                    -->
                     <!--<div class="d-flex">
                         <button class="btn circle order-md-2 ">
                             <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -239,7 +239,7 @@
                         <button class="btn secundary order-md-1 me-lg-4 mt-3 mt-lg-0">Primary</button>
                     </div>-->
                         
-                </div>
+                <!--</div> -->
                 <!--<div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between">
                     <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                         <div class="img-left me-lg-3">

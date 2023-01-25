@@ -66,6 +66,10 @@
 </body>
 </html>
 
+<div>
+  <button @click="getMadurez"> Ingresar </button>
+</div>
+
   <!--
   <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
     <CContainer>
@@ -312,6 +316,7 @@
 import { getCurrentInstance, reactive, toRefs } from "vue";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
+import ApibackOffice from "@/api/ApiBackOffice";
 import router from "@/router/index";
 import { validateEmail, Fn } from "@/Helper/util";
 import { useRoute } from "vue-router";
@@ -344,6 +349,25 @@ export default {
       empresas: [],
 
     });
+
+    
+    const getMadurez = async () => {
+      ApibackOffice.post("EvaluacionEmpresa/GetSeguimiento", 
+          { headers: header }
+      )
+          .then((response) => {
+              if (response.status != 200) return false;
+              console.log("response.data", response.data);
+              debugger;
+              console.log("response.data", response.data);
+              return;
+          })
+          .catch((error) => {
+              console.log("error->", error);
+          });
+    };
+
+
     const switchVisibility = () => {
       state.passwordFieldType =
         state.passwordFieldType === "password" ? "text" : "password";
@@ -406,6 +430,7 @@ export default {
         document.getElementById(idbtn).disabled = false;
       }
     };*/
+
     const login = async () => {
       //showSpining(true, "btnLogin", "loading");
       let email = document.getElementById("email").value;
@@ -615,6 +640,7 @@ export default {
       imgLogin,
       style,
       IngresarConsultor,
+      getMadurez,
     };
   },
   async beforeMount() {

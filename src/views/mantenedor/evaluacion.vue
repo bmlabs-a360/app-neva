@@ -751,6 +751,7 @@ export default {
 
       state.idEvaluacionSelected = idEvaluacionSelected;
       state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idEvaluacionSelected);
+      console.log("state.evaluacionSelected", state.evaluacionSelected);
       state.evaluaciones.forEach(x => {
         state.segmentacionAreas = state.segmentacionAreas.concat(x.segmentacionAreas);
       });
@@ -1012,7 +1013,7 @@ export default {
         return false;
       }
       guardarPorcentajeSubAreas();
-      getUsuarioAreas();
+      getUsuarioAreasByEvaluacionSelected();
       state.idAreaPaso3 = "0";
       state.idTipoSubAreaPaso3 = "0";
       state.selectedTab = 3;
@@ -1044,6 +1045,22 @@ export default {
         })
         .catch((error) => console.log(error));
       });
+    };
+
+    const getUsuarioAreasByEvaluacionSelected = async () => {
+      state.evaluacionPaso3 = [];
+      state.allSegmentacionAreas = [];
+      state.allSegmentacionSubAreas = [];
+
+      state.evaluacionPaso3.push(state.evaluacionSelected);
+      state.allSegmentacionAreas = state.segmentacionAreasByEvaluacion;
+      state.allSegmentacionAreas.forEach(x => {
+          state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
+        });
+        
+      state.tablaSegmentacionAreas = [];
+      getEstadoSubArea();
+
     };
 
     const getUsuarioAreas = async () => {
@@ -1102,7 +1119,6 @@ export default {
     };
 
     const getEstadoSubArea = async () => {
-      
       let bodyEmpresa =  { 
         id: JSON.parse(localStorage.usuarioModel).empresaId 
       };
@@ -1202,6 +1218,8 @@ export default {
     const RegresarPaso2 = async () => {
       state.idAreaPaso3 = "0";
       state.idTipoSubAreaPaso3 = "0";
+      state.allSegmentacionAreas = [];
+      state.allSegmentacionSubAreas = [];
     };
 
     const getPregunta = (segmentacionArea) => {
