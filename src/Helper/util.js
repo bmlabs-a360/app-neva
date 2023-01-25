@@ -288,7 +288,6 @@ export function checkAll(name) {
   let boxes = document.getElementsByName(name);
   for (let x = 0; x < boxes.length; x++) {
     let obj = boxes[x];
-    debugger;
     if (obj.type == "checkbox") {
         obj.checked = document.getElementById("todoschk").checked;
     }

@@ -761,7 +761,6 @@ export default {
           console.log("state.evaluaciones", state.evaluaciones);
         })
         .catch((error) => console.log(error));
-        
     };
 
     const getUserSelected = (idusuario) => {
@@ -804,11 +803,11 @@ export default {
             console.log("state.segmentacionAreas", state.segmentacionAreas);
             state.visibleModalUser = false;
             state.visibleModalSegmentacionArea = true;
+            state.UsuarioEvaluacionSelected = [];
+            state.UsuarioEvaluacionSelected = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == evaluacionEmpresa.id);
+            console.log("state.UsuarioEvaluacionSelected", state.UsuarioEvaluacionSelected);
         })
         .catch((error) => console.log(error));
-        state.UsuarioEvaluacionSelected = [];
-        state.UsuarioEvaluacionSelected = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == evaluacionEmpresa.id);
-        console.log("state.UsuarioEvaluacionSelected", state.UsuarioEvaluacionSelected);
       
     };
 
@@ -868,6 +867,7 @@ export default {
 
     const AsociarEvaluacionNewUser = async (idUsuario) => {
       let chkAsociarNew = document.getElementsByName("chkAsociarNew");
+      var largo = 0;
       chkAsociarNew.forEach((element) => {
         let bodyUsuarioEvaluacion = {
           usuarioId: idUsuario,
@@ -880,6 +880,7 @@ export default {
           headers: header,
         })
         .then((response) => {
+          largo++;
           if (response.status != 200){
             swal.fire({
               title: "Registro usuario",
@@ -888,8 +889,10 @@ export default {
             });
             return false;
           }
-          getUsers();
-          resetNewUser();
+          if (largo >= chkAsociarNew.length){
+            getUsers();
+            resetNewUser();
+          }
         })
         .catch((error) => console.log(error));
       });
@@ -929,13 +932,13 @@ export default {
             "success"
           );
           AsociarEvaluacion();
-          state.visibleModalUser = false;
           return;
       });
     };
 
     const AsociarEvaluacion = async () => {
       let chkAsociar = document.getElementsByName("chkAsociar");
+      var largo = 0;
       chkAsociar.forEach((element) => {
         var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.value);
         let idEvaluacion = evaluacion ? evaluacion.id : "00000000-0000-0000-0000-000000000000";
@@ -952,6 +955,7 @@ export default {
           headers: header,
         })
         .then((response) => {
+          largo++;
           if (response.status != 200){
             swal.fire({
               title: "Registro usuario",
@@ -960,8 +964,11 @@ export default {
             });
             return false;
           }
-          getUsers();
-          resetUser();
+          if (largo >= chkAsociar.length){
+            state.visibleModalUser = false;
+            resetUser();
+            getUsers();
+          }
         })
         .catch((error) => console.log(error));
       });

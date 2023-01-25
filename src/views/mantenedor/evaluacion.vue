@@ -151,9 +151,9 @@
                                   </CCol>
                               </CRow>
 
-                              <CRow class="justify-content-end">
-                                  <CCol sm="2" md="2" lg="2">
-                                    <span class="d-none text-success" id="totalporcentaje">{{totalPorcentaje}} %</span>
+                              <CRow class="justify-content-end" >
+                                  <CCol sm="2" md="2" lg="2" >
+                                    <span class="d-none text-success" id="totalporcentaje" :value="totalPorcentaje">{{totalPorcentaje}} %</span>
                                   </CCol>
                               </CRow>
 
@@ -361,6 +361,9 @@
                                       Estado
                                     </CTableHeaderCell>
                                     <CTableHeaderCell class="text-center" scope="col">
+                                      Completado
+                                    </CTableHeaderCell>
+                                    <CTableHeaderCell class="text-center" scope="col">
                                       Preguntas
                                     </CTableHeaderCell>
                                   </CTableRow>
@@ -374,10 +377,13 @@
                                       {{tablaSegmentacionArea.nombreSubArea}}
                                     </CTableDataCell>
                                     <CTableDataCell class="text-center">
-                                      <CFormCheck name="chkEstado" disabled/>
+                                      <input type="checkbox" name="chkEstado" :checked="tablaSegmentacionArea.completado" disabled  />
                                     </CTableDataCell>
                                     <CTableDataCell class="text-center">
-                                      <CButton @click="getPregunta(tablaSegmentacionArea)">
+                                      <CFormLabel> {{tablaSegmentacionArea.estado}}%</CFormLabel>
+                                    </CTableDataCell>
+                                    <CTableDataCell class="text-center">
+                                      <CButton @click="getPregunta(tablaSegmentacionArea )">
                                         <CIcon :icon="cilPen" size="lg" />
                                       </CButton>
                                     </CTableDataCell>
@@ -435,6 +441,30 @@
     </CModalHeader>
     <CModalBody>
       <CContainer>
+        <CRow class="justify-content-center">
+            <CCol sm="4">
+                <div class="mb-4">
+                    <b style="text-align: center; ">Área:</b>
+                    <CInputGroup class="mb-4">
+                        <CFormLabel>  {{nombreAreaSelected}} </CFormLabel>
+                    </CInputGroup>
+                </div>
+            </CCol>
+            <CCol sm="4">
+
+            </CCol>
+
+            <CCol sm="4">
+                <div class="mb-4">
+                    <b style="text-align: center; ">Subárea:</b>
+
+                    <CInputGroup class="mb-4">
+                        <CFormLabel>  {{nombreSubAreaSelected}} </CFormLabel>
+                    </CInputGroup>
+                </div>
+            </CCol>
+
+        </CRow>
         <CRow>
           <CCol sm="12">
             <div class="mb-2 text-center">
@@ -480,7 +510,7 @@
             </div>
           </CCol>
 
-          <CCol sm="6" class="mt-3" v-if="perfilSelected && (perfilSelected.nombre=='Consultor' )">
+          <CCol sm="6" class="mt-3">
             <h5> Deficiencia relacionada con </h5>
             <div v-for="defRelacionada in defRelacionadas" :key="defRelacionada.id">
               <div style="display: flex">
@@ -595,6 +625,7 @@ export default {
       idAreaPaso3: "0",
       idTipoSubAreaPaso3: "0",
       evaluacionPaso3: [],
+      usuarioArea: [],
       alternativaSelected: [],
       defRelacionadas: [],
       defRelacionadaSelected: [],
@@ -605,6 +636,8 @@ export default {
       preguntasTotal:0,
 
       respuestaSelected: [],
+      nombreAreaSelected: "",
+      nombreSubAreaSelected: "",
 
       options: {
         overlay: {
@@ -766,6 +799,13 @@ export default {
             state.segmentacionAreasByEvaluacion.push(x);
           }
         });
+        if (state.totalPorcentaje == 100){
+          document.getElementById("totalporcentaje").classList.remove("text-danger");
+          document.getElementById("totalporcentaje").classList.add("text-success");
+        }else{
+          document.getElementById("totalporcentaje").classList.remove("text-success");
+          document.getElementById("totalporcentaje").classList.add("text-danger");
+        }
       });
     };
 
@@ -776,7 +816,7 @@ export default {
       idAreasPorcentajes.forEach((element) => {
         state.totalPorcentaje += parseInt(element.value);
       });
-      if (state.totalPorcentaje > 100){
+      if (state.totalPorcentaje != 100 ){
         document.getElementById("totalporcentaje").classList.remove("text-success");
         document.getElementById("totalporcentaje").classList.add("text-danger");
         return;
@@ -812,10 +852,19 @@ export default {
         return false;
       }
       
+      if (state.totalPorcentaje < 100){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "No puede ser menor al 100% de importancia entre las áreas",
+          icon: "warning",
+        });
+        return false;
+      }
+
       if (state.totalPorcentaje > 100){
         swal.fire({
           title: "Preparación de áreas",
-          text: "No puede sobrepasar el 100% de importancia entre las área",
+          text: "No puede sobrepasar el 100% de importancia entre las áreas",
           icon: "warning",
         });
         return false;
@@ -860,7 +909,7 @@ export default {
       idSubAreasPorcentajes.forEach((element) => {
         state.totalPorcentajeSubAreas += parseInt(element.value);
       });
-      if (state.totalPorcentajeSubAreas > 100){
+      if (state.totalPorcentajeSubAreas != 100){
         document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
         document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
         return;
@@ -926,6 +975,13 @@ export default {
             });
             state.segmentacionSubAreasbyAreaSelected.push(x);
         });
+        if (state.totalPorcentajeSubAreas == 100){
+          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
+          document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
+        }else{
+          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
+          document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
+        }
         console.log("state.segmentacionSubAreasbyAreaSelected", state.segmentacionSubAreasbyAreaSelected);
       });
     };
@@ -939,16 +995,24 @@ export default {
         });
         return false;
       }
+      if (state.totalPorcentajeSubAreas < 100){
+        swal.fire({
+          title: "Preparación sub áreas",
+          text: "No puede ser menor al 100% de importancia entre las sub áreas",
+          icon: "warning",
+        });
+        return false;
+      }
       if (state.totalPorcentajeSubAreas > 100){
         swal.fire({
           title: "Preparación sub áreas",
-          text: "No puede sobrepasar el 100% de importancia entre las sub área",
+          text: "No puede sobrepasar el 100% de importancia entre las sub áreas",
           icon: "warning",
         });
         return false;
       }
       guardarPorcentajeSubAreas();
-      getAllAreas();
+      getUsuarioAreas();
       state.idAreaPaso3 = "0";
       state.idTipoSubAreaPaso3 = "0";
       state.selectedTab = 3;
@@ -982,12 +1046,28 @@ export default {
       });
     };
 
+    const getUsuarioAreas = async () => {
+      let bodyUsuarioEvaluacion = {
+        id: localStorage.iduser
+      }
+        ApiNeva.post("UsuarioEvaluacion/GetUsuarioEvaluacionsByUsuarioId", bodyUsuarioEvaluacion ,{
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.usuarioArea = response.data;
+          console.log("state.usuarioArea", state.usuarioArea);
+          getAllAreas();
+        })
+        .catch((error) => console.log(error));
+    };
+
     const getAllAreas = async () => {
       state.allSegmentacionAreas = [];
       state.allSegmentacionSubAreas = [];
       state.tablaSegmentacionAreas = [];
-      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
+      
+      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + JSON.parse(localStorage.usuarioModel).empresaId , {
         headers: header,
       })
         .then((response) => {
@@ -997,18 +1077,54 @@ export default {
           response.data.forEach(x => {
             state.allSegmentacionAreas = state.allSegmentacionAreas.concat(x.segmentacionAreas);
           });
+
+          let areas = [];
+          state.allSegmentacionAreas.forEach(element => {
+            state.usuarioArea.forEach(x => {
+              x.usuarioAreas.forEach(y => {
+                if (y.segmentacionAreaId == element.id && y.activo){
+                  areas = areas.concat(element);
+                }
+              });
+            });
+          });
+
+          state.allSegmentacionAreas = areas;
           console.log("state.allSegmentacionAreas", state.allSegmentacionAreas);
 
           state.allSegmentacionAreas.forEach(x => {
             state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
           });
           console.log("state.allSegmentacionSubAreas", state.allSegmentacionSubAreas);
-
-          cargarTablaPaso3();
-          
+          getEstadoSubArea();
         })
         .catch((error) => console.log(error));
     };
+
+    const getEstadoSubArea = async () => {
+      
+      let bodyEmpresa =  { 
+        id: JSON.parse(localStorage.usuarioModel).empresaId 
+      };
+
+      ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          response.data.forEach(x => {
+            state.allSegmentacionSubAreas.forEach(y => {
+              if (x.segmentacionSubAreaId == y.id){
+                y.estado = x.respuestaPorcentaje;
+                if (x.respuestaPorcentaje == '100') y.completado = true;
+              }
+            });
+          });
+          cargarTablaPaso3();
+        })
+        .catch((error) => console.log(error));
+    };
+
 
     const cargarTablaPaso3 = async () => {
       state.tablaSegmentacionAreas = [];
@@ -1092,6 +1208,8 @@ export default {
       state.preguntas = [];
       state.preguntaSelected = [];
       state.preguntasTotal = [];
+      state.nombreAreaSelected = segmentacionArea.nombreArea;
+      state.nombreSubAreaSelected = segmentacionArea.nombreSubArea;
       ApiNeva.get("Pregunta/GetPreguntasByIdsSegmentacionAreaSubArea?idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
         headers: header,
       })
@@ -1117,8 +1235,6 @@ export default {
           state.visibleModalPreguntas = true;
           console.log("state.preguntas", state.preguntas);
           getTipoimportancia();
-          if (state.perfilSelected.nombre == "Consultor") getDeficienciaRelacionada();
-          getRespuesta();
         })
         .catch((error) => console.log(error));
     };
@@ -1132,6 +1248,7 @@ export default {
           if (response.status != 200) return false;
           state.tiposImportancia = response.data;
           console.log("state.tiposImportancia", state.tiposImportancia);
+          getDeficienciaRelacionada();
         })
         .catch((error) => console.log(error));
     };
@@ -1145,8 +1262,66 @@ export default {
           if (response.status != 200) return false;
           state.defRelacionadas = response.data;
           console.log("state.defRelacionadas", state.defRelacionadas);
+          getRespuesta();
         })
         .catch((error) => console.log(error));
+    };
+
+    const getRespuesta = () => {
+      let EvaluacionEmpresa = "";
+      state.respuestaSelected = [];
+      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
+        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
+        if (EvaluacionEmpresa) break;
+      }
+
+       let bodyRespuesta = {
+        preguntaId: state.preguntaSelected.id,
+        evaluacionEmpresaId: EvaluacionEmpresa.id
+      };
+
+      ApiNeva.post("Respuesta/GetRespuestaByIdsPreguntaUsuarioEvaluacionEmpresa", bodyRespuesta,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.respuestaSelected = response.data;
+          console.log("state.respuestaSelected", state.respuestaSelected);
+          if (state.respuestaSelected) cargarRespuestas();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const cargarRespuestas = async () => {
+      let alternativas = document.getElementsByName("alternativas");
+      for (let x = 0; x < alternativas.length; x++) {
+        let obj = alternativas[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.alternativaId){
+          obj.checked = true;
+          state.alternativaSelected = obj.value;
+        }
+      };
+
+      let tipoImportancias = document.getElementsByName("tipoImportancias");
+      for (let x = 0; x < tipoImportancias.length; x++) {
+        let obj = tipoImportancias[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.tipoImportanciaId){
+          obj.checked = true;
+          state.tipoImportanciaSelected = obj.value;
+        }
+      };
+
+      let defRelacionada = document.getElementsByName("defRelacionada");
+      for (let x = 0; x < defRelacionada.length; x++) {
+        let obj = defRelacionada[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.tipoDiferenciaRelacionadaId){
+          obj.checked = true;
+          state.defRelacionadaSelected = obj.value;
+        }
+      }
     };
 
     const addRespuesta= () => {
@@ -1166,15 +1341,13 @@ export default {
           });
           return false;
       }
-      if (state.perfilSelected.nombre == "Consultor"){
-        if (state.defRelacionadaSelected == ""){
-          swal.fire({
-              title: "Preguntas",
-              text: "Debe seleccionar una deficiencia relacionada",
-              icon: "warning",
-            });
-            return false;
-        }
+      if (state.defRelacionadaSelected == ""){
+        swal.fire({
+            title: "Preguntas",
+            text: "Debe seleccionar una deficiencia relacionada",
+            icon: "warning",
+          });
+          return false;
       }
 
       let EvaluacionEmpresa = "";
@@ -1185,7 +1358,7 @@ export default {
 
       let alternativa = state.preguntaSelected.alternativas.find((y) => y.id == state.alternativaSelected);
       let idRespuesta = state.respuestaSelected ? state.respuestaSelected.id : "00000000-0000-0000-0000-000000000000";
-      let idDefRelacionada = state.perfilSelected.nombre == "Consultor" ? state.defRelacionadaSelected : "00000000-0000-0000-0000-000000000000";
+      let idDefRelacionada = state.defRelacionadaSelected;
 
       let bodyRespuesta = {
         id: idRespuesta,
@@ -1229,9 +1402,7 @@ export default {
         }
         limpiarRespuestas("alternativas");
         limpiarRespuestas("tipoImportancias");
-        if (state.perfilSelected.nombre == "Consultor"){
-          limpiarRespuestas("defRelacionada");
-        }
+        limpiarRespuestas("defRelacionada");
         state.alternativaSelected = [];
         state.tipoImportanciaSelected = [];
         state.defRelacionadaSelected = [];
@@ -1247,66 +1418,6 @@ export default {
           return false;
         }
         state.preguntaSelected = state.preguntas[orden - 1];
-      }
-    };
-
-    const getRespuesta = () => {
-      let EvaluacionEmpresa = "";
-      state.respuestaSelected = [];
-      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
-        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-        if (EvaluacionEmpresa) break;
-      }
-
-       let bodyRespuesta = {
-        preguntaId: state.preguntaSelected.id,
-        evaluacionEmpresaId: EvaluacionEmpresa.id,
-        usuarioId: localStorage.iduser
-      };
-
-      ApiNeva.post("Respuesta/GetRespuestaByIdsPreguntaUsuarioEvaluacionEmpresa", bodyRespuesta,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.respuestaSelected = response.data;
-          console.log("state.respuestaSelected", state.respuestaSelected);
-          if (state.respuestaSelected) cargarRespuestas();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const cargarRespuestas = async () => {
-      let alternativas = document.getElementsByName("alternativas");
-      for (let x = 0; x < alternativas.length; x++) {
-        let obj = alternativas[x];
-        obj.checked = false;
-        if (obj.value == state.respuestaSelected.alternativaId){
-          obj.checked = true;
-          state.alternativaSelected = obj.value;
-        }
-      };
-
-      let tipoImportancias = document.getElementsByName("tipoImportancias");
-      for (let x = 0; x < tipoImportancias.length; x++) {
-        let obj = tipoImportancias[x];
-        obj.checked = false;
-        if (obj.value == state.respuestaSelected.tipoImportanciaId){
-          obj.checked = true;
-          state.tipoImportanciaSelected = obj.value;
-        }
-      };
-
-      if (state.perfilSelected.nombre == "Consultor"){
-        let defRelacionada = document.getElementsByName("defRelacionada");
-        for (let x = 0; x < defRelacionada.length; x++) {
-          let obj = defRelacionada[x];
-          obj.checked = false;
-          if (obj.value == state.respuestaSelected.tipoDiferenciaRelacionadaId){
-            obj.checked = true;
-            state.defRelacionadaSelected = obj.value;
-          }
-        }
       }
     };
 
@@ -1529,7 +1640,7 @@ export default {
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       state.selectedTab = 1;
       if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
-        getAllAreas();
+        getUsuarioAreas();
         state.selectedTab = 3;
       }
       /*if (typeof localStorage.isLoadingFile === "undefined") {

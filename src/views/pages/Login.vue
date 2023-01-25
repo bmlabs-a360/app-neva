@@ -194,7 +194,7 @@
     </CContainer>
   </div>
     -->
-  <!-- MODAL LOGIN CONSULTOR-->
+  <!-- MODAL LOGIN ADMINISTRADOR O CONSULTOR-->
   <CModal
     backdrop="static"
     size="lg"
@@ -207,7 +207,7 @@
     "
   >
     <CModalHeader>
-      <CModalTitle>Login Consultor</CModalTitle>
+      <CModalTitle>Login Administrador o Consultor</CModalTitle>
     </CModalHeader>
     <CModalBody>
       <CContainer>
@@ -479,7 +479,7 @@ export default {
         "empresaModel",
         JSON.stringify(response.data.usuarioModel.empresa)
       );
-      if (response.data.usuarioModel.perfil.nombre == "Consultor"){
+      if (response.data.usuarioModel.perfil.nombre == "Consultor" || response.data.usuarioModel.perfil.nombre == "Administrador"){
         state.empresas = [];
         ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + response.data.usuarioModel.id , null, { headers: header })
           .then((response) => {
