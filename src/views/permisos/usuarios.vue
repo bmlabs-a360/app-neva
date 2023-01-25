@@ -73,7 +73,7 @@
   <!-- MODAL CREAR -->
   <CModal
     backdrop="static"
-    size="lg"
+    size="xl"
     alignment="center"
     :visible="visibleModalNuevoUser"
     @close="
@@ -268,7 +268,7 @@
   <!-- MODAL SEGMENTACION AREA CREAR  -->
   <CModal
     backdrop="static"
-    size="lg"
+    size="xl"
     alignment="center"
     :visible="visibleModalSegmentacionAreaNew"
     @close="
@@ -341,7 +341,7 @@
   <!-- MODAL EDITAR USUARIO-->
   <CModal
     backdrop="static"
-    size="lg"
+    size="xl"
     alignment="center"
     :visible="visibleModalUser"
     @close="
@@ -535,7 +535,7 @@
   <!-- MODAL SEGMENTACION AREA EDITAR  -->
   <CModal
     backdrop="static"
-    size="lg"
+    size="xl"
     alignment="center"
     :visible="visibleModalSegmentacionArea"
     @close="
@@ -976,6 +976,8 @@ export default {
 
     const asociarArea = () => {
       let checkArea = document.getElementsByName("checkArea");
+      let largo = 0;
+      //revisar por que se estan insertando en vez de actualizar
       checkArea.forEach((element) => {
         var segmentacionArea = state.UsuarioEvaluacionSelected.usuarioAreas.find((y) => y.segmentacionAreaId == element.value);
         let idUsuarioArea = segmentacionArea ? segmentacionArea.id : "00000000-0000-0000-0000-000000000000";
@@ -991,6 +993,7 @@ export default {
           headers: header,
         })
         .then((response) => {
+          largo++;
           if (response.status != 200){
             swal.fire({
               title: "Registro usuario",
@@ -999,8 +1002,21 @@ export default {
             });
             return false;
           }
-          state.visibleModalSegmentacionArea = false;
-          getUsers();
+          if (largo >= checkArea.length){
+            state.visibleModalSegmentacionArea = false;
+           // state.visibleModalUser = true;
+            //state.segmentacionAreas = [];
+           // getEvaluaciones();
+            swal.fire(
+              "Registro usuario",
+              "Se asociaron areas correctamente",
+              "success"
+            );
+            resetUser();
+            getUsers();
+            return;
+            //getUsers();
+          }
         })
         .catch((error) => console.log(error));
       });
