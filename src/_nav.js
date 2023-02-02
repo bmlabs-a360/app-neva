@@ -61,6 +61,11 @@ export default [
         name: "Evaluación",
         to: "/mantenedor/evaluacion",
       },
+      {
+        component: "CNavItem",
+        name: "Reporte",
+        to: "/mantenedor/reporte",
+      },
       /*{
         component: "CNavItem",
         name: "Configuración",

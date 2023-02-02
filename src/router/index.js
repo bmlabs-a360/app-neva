@@ -39,6 +39,11 @@ const routes = [
             name: "Evaluacion",
             component: () => import("@/views/mantenedor/evaluacion.vue"),
           },
+          {
+            path: "/mantenedor/reporte",
+            name: "Reporte",
+            component: () => import("@/views/mantenedor/reporte.vue"),
+          },
           /*
           {
             path: "/mantenedor/configuracion",

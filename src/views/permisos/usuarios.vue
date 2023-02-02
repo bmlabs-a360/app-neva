@@ -618,7 +618,6 @@ import { useReCaptcha } from "vue-recaptcha-v3";
 //import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import { permisosUsuario } from "@/_menuOnboarding.js";
 //import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
-
 export default {
   name: "Usuario",
   methods: {
@@ -634,7 +633,6 @@ export default {
     //const wrapper = ref(null);
     //const { start } = useVOnboarding(wrapper);
     //const localMenuOnvoarding = permisosUsuario;
-
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
     const ApiKey = globalProperties.$apiKey;
@@ -646,11 +644,9 @@ export default {
     const headerRecaptcha = {
       ApiKey,
     };
-
     //const route = useRoute();
     //const uri = route.query.uri;
     //const email = route.query.email;
-
     const state = reactive({
       usuarios: [],
       evaluaciones: [],
@@ -672,7 +668,6 @@ export default {
       evaluacionNewUserSelected: "",
       visibleModalSegmentacionAreaNew: false,
       UsuarioEvaluacionSelected: [],
-
       //isonboarding: false,
       //wrapper,
       //steps: [],
@@ -685,7 +680,6 @@ export default {
       evaluacion:null,
       usuarioAreas: [],
       userSelected: {},
-
       //segmentacionAreas :[],
       tabPaneActiveKey: 1,
       usuarios: [],
@@ -701,24 +695,20 @@ export default {
       visibleModalUser: false,
       passwordFieldType: "password",
       clave: "",
-
       perfilIdSelectedNew: 0,
       perfilIdSelectedEdit: [],
       perfilIdSelectedNewSolicitar: 0, */
     });
-
     const resetUser = () => {
       state.passwordFieldType = "password";
       state.clave = "";
       state.userSelected = [];
       state.UsuarioEvaluacionSelected = [];
     };
-
     const resetAsociarArea = () => {
       state.evaluacionSelected = "";
       state.segmentacionAreas = [];
     };
-
     const resetNewUser = () => {
       state.passwordFieldType = "password";
       state.activoUserNew = true;
@@ -728,12 +718,10 @@ export default {
       state.telefonoUserNew = "";
       state.evaluacionNewUserSelected = "";
     };
-
     const switchVisibility = (tipo) => {
       state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
       state.clave = document.getElementById(tipo).value;
     };
-
     const getUsers = async () => {
       state.usuarios = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -748,7 +736,6 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const getEvaluaciones = async () => {
       state.evaluaciones = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -762,26 +749,21 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const getUserSelected = (idusuario) => {
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
       console.log("state.userSelected", state.userSelected);
       state.visibleModalUser = true;
       getUsuarioEvaluacionByEvaluacionEmpresa();
     };
-
     const getUsuarioEvaluacionByEvaluacionEmpresa = () => {
       state.evaluacionEmpresaSelected = state.evaluaciones;
-
       state.evaluacionEmpresaSelected.forEach(element => {
         var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
         element.activo = false;
         if (evaluacion != undefined) element.activo = evaluacion.activo;
       });
       console.log("state.evaluacionEmpresaSelected", state.evaluacionEmpresaSelected);
-
     };
-
     const getSegmentacionArea = (evaluacionEmpresa) =>{
       state.evaluacionSelected = evaluacionEmpresa.nombre;
       let evaluacionEmpresaSelected = evaluacionEmpresa;
@@ -810,7 +792,6 @@ export default {
         .catch((error) => console.log(error));
       
     };
-
     const getSegmentacionAreaNew = (evaluacionEmpresa) => {
       state.evaluacionNewUserSelected= evaluacionEmpresa.nombre;
       let evaluacionEmpresaSelected = evaluacionEmpresa;
@@ -826,9 +807,7 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const crearUser = () => {
-
       if (state.nombreUserNew == "") {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
@@ -841,7 +820,6 @@ export default {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
       }
-
       let bodyUser = {
         nombres: state.nombreUserNew,
         password: state.passUserNew,
@@ -850,7 +828,6 @@ export default {
         activo: state.activoUserNew,
         EmpresaId: JSON.parse(localStorage.empresaModel).id,
       };
-
       ApiNeva.post("Usuario/InsertUser", bodyUser, { headers: header }
         ).then((response) => {
           if (response.status != 200)  return false;
@@ -864,7 +841,6 @@ export default {
           return;
       });
     };
-
     const AsociarEvaluacionNewUser = async (idUsuario) => {
       let chkAsociarNew = document.getElementsByName("chkAsociarNew");
       var largo = 0;
@@ -897,9 +873,7 @@ export default {
         .catch((error) => console.log(error));
       });
     };
-
     const modificarUser = () => {
-
       if (state.userSelected.nombres == "") {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
@@ -912,7 +886,6 @@ export default {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
       }
-
       let bodyUser = {
         id: state.userSelected.id,
         nombres: state.userSelected.nombres,
@@ -922,7 +895,6 @@ export default {
         activo: state.userSelected.activo,
         EmpresaId: JSON.parse(localStorage.empresaModel).id,
       };
-
       ApiNeva.post("Usuario/UpdateUser", bodyUser, { headers: header }
         ).then((response) => {
           if (response.status != 200)  return false;
@@ -935,7 +907,6 @@ export default {
           return;
       });
     };
-
     const AsociarEvaluacion = async () => {
       let chkAsociar = document.getElementsByName("chkAsociar");
       var largo = 0;
@@ -973,7 +944,6 @@ export default {
         .catch((error) => console.log(error));
       });
     };
-
     const asociarArea = () => {
       let checkArea = document.getElementsByName("checkArea");
       let largo = 0;
@@ -1021,19 +991,15 @@ export default {
         .catch((error) => console.log(error));
       });
     };
-
     
-
     /*const switchVisibility = () => {
       state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
       state.clave = document.getElementById("password").value;
     };
-
     const switchVisibilityNew = () => {
       state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
       state.clave = document.getElementById("passwordNew").value;
     };
-
     const getProfile = () => {
       state.perfiles = [];
       ApiNeva.get("Perfil/GetPerfils", { headers: header })
@@ -1045,7 +1011,6 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const getUsers = async () => {
       state.usuarios = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -1069,7 +1034,6 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const getEmpresas = async () => {
       console.log("getEmpresas ");
       state.empresas = [];
@@ -1081,33 +1045,28 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const segmentacionArea = (evaluacionEmpresa) =>{
       state.evaluacion = evaluacionEmpresa;
       ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
         .then((response) => {
             if (response.status != 200) return false;
-
             state.usuarioAreas = [];
             state.userSelected.usuarioEvaluacions.forEach(y => {
                 if (y.evaluacionId == state.evaluacion.id && y.empresaId == state.evaluacion.empresaId) {
                     state.usuarioAreas = y.usuarioAreas
                 }
             });
-
             state.segmentacionAreas = response.data;
             state.segmentacionAreas.forEach(x => {
                 var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
                 x.activo = false;
                 if (areaAsuario != undefined)  x.activo = areaAsuario.activo;
             });
-
             state.visibleModalUser = false;
             state.visibleModalSegmentacionArea = true;
         })
         .catch((error) => console.log(error));
     };
-
     const segmentacionAreaNew = (evaluacionEmpresa) => {
       state.evaluacion = evaluacionEmpresa;
       ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
@@ -1122,18 +1081,14 @@ export default {
         })
         .catch((error) => console.log(error));
     };
-
     const getUserSelected = (idusuario) => {
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
       state.visibleModalUser = true;
       //state.perfilIdSelectedEdit = state.userSelected.perfil;
-
       state.usuarioEvaluacions=[];
       state.empresaSelected =  state.empresas;
-
        cargarEvaluacion();
     };
-
     const cargarEvaluacion =  () => {
       state.empresaSelected.evaluacionEmpresas.forEach(element => {
           element.evaluacion.empresaId=element.empresaId
@@ -1146,14 +1101,12 @@ export default {
           
       });
     };
-
     const ModalUserNuevo = () => {
       state.visibleModalNuevoUser = true;
       resetUser();
       state.evaluacionEmpresas = [];
       state.evaluacionEmpresas = state.empresas.evaluacionEmpresas;
     };
-
     const resetUser = () => {
       state.userSelected = {
         id: "",
@@ -1167,7 +1120,6 @@ export default {
         fechaCreacion: null,
         activo: true,
         empresa: [],
-
         perfil: [],
         usuarioEmpresas: [],
         usuarioEvaluacions: [
@@ -1187,7 +1139,6 @@ export default {
       state.clave = "";
       state.passwordFieldType = "password";
     }
-
     const resetAsociarArea = () => {
       let boxes = document.getElementsByName("check");
       for (let x = 0; x < boxes.length; x++) {
@@ -1197,7 +1148,6 @@ export default {
         }
       }
     };
-
     const crearUser = () => {
       //let nombre = document.getElementById("nombreNew").value;
       //let pass = document.getElementById("passwordNew").value;
@@ -1213,7 +1163,6 @@ export default {
           asociarId.push(obj.id);
         }
       }
-
       if (!state.userSelected.nombres) {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
@@ -1233,7 +1182,6 @@ export default {
       state.userSelected.empresaId = state.empresas.id;
       InsertOrUpdateUser(asociarId);
     };
-
     const InsertOrUpdateUser = (asociarId) => {
       ApiNeva.post(
         "Usuario/InsertOrUpdateUser?asociarIds=" + asociarId,
@@ -1251,7 +1199,6 @@ export default {
         return;
       });
     };
-
     const modificarUser = () => {
       //COMENTAR LOS DOCUMENT YA QUE SE ESTA VIENDO POR V-MODEL
       let idusuario = state.userSelected.id.toString();
@@ -1268,7 +1215,6 @@ export default {
           asociarId.push(obj.id);
         }
       }
-
       if (!state.userSelected.nombres) {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
@@ -1281,7 +1227,6 @@ export default {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
       }
-
       if (state.userSelected.id == localStorage.iduser) {
         swal.fire({
           title: "Modificar Usuario",
@@ -1304,7 +1249,6 @@ export default {
       }
       Modificar(idusuario, idempresa, nombre, email, pass, activo, asociarId);
     };
-
     const Crear = (idempresa, nombre, email, pass, activo, asociarId) => {
       ApiNeva.post(
         "Usuario/InsertUser?&idempresa=" + idempresa + "&nombres="+ nombre +"&email=" + email +"&pass=" + pass + "&activo=" + activo + "&asociarIds=" + asociarId,
@@ -1322,7 +1266,6 @@ export default {
         return;
       });
     };
-
      const Modificar = (idusuario, idempresa, nombre, email, pass, activo, asociarId) => {
       ApiNeva.post(
         "Usuario/UpdateUser?&idusuario=" + idusuario+ "&idempresa=" + idempresa + "&nombres=" + nombre + "&email=" + email + "&pass=" + pass + "&activo=" + activo + "&asociarIds=" + asociarId,
@@ -1340,9 +1283,7 @@ export default {
         return;
       });
     };
-
     const getUserDelete = (idusuario) => {
-
       let mensaje = "¿Está seguro de eliminar el usuario?";
       if (idusuario == localStorage.iduser) {
         mensaje = "¿Está seguro de eliminar el usuario en cesión?";
@@ -1365,7 +1306,6 @@ export default {
         Eliminar(idusuario);
       });
     };
-
     const Eliminar = (idusuario) => {
       ApiNeva.get(
         "Usuario/DeleteUser?&idusuario=" + idusuario ,
@@ -1382,15 +1322,12 @@ export default {
         return;
       });
     };
-
     const asociarArea = () => {
     };
-
     const setTextGuardarOrSolicitar = (text) => {
       document.getElementById("btnGuardarOrSolicitar").innerText = "";
       document.getElementById("btnGuardarOrSolicitar").innerText = text;
     };
-
     const guardarOrSolicitar = async () => {
       //showSpining(true)
       if (state.tabPaneActiveKey == 1) {
@@ -1402,7 +1339,6 @@ export default {
         ).options[
           document.getElementById("perfilIdSelectedNewSolicitar").selectedIndex
         ].value;
-
         if (state.perfilIdSelectedNewSolicitar == 0) {
           swal(
             "Registro usuario",
@@ -1412,7 +1348,6 @@ export default {
           //showSpining(false);
           return;
         }
-
         if (!emailSolicitud || !validateEmail(emailSolicitud)) {
           swal(
             "Solicitar Registro Usuario",
@@ -1422,7 +1357,6 @@ export default {
           //showSpining(false);
           return;
         }
-
         if (!nombreDestinatario) {
           swal(
             "Solicitar Registro Usuario",
@@ -1433,14 +1367,12 @@ export default {
           return;
         }
         let idusuario = localStorage.iduser;
-
         let bodySolicitud = {
           idusuario: idusuario,
           emailDestinatario: emailSolicitud,
           destinatarioAlias: nombreDestinatario,
           perfilId: state.perfilIdSelectedNewSolicitar,
         };
-
         ApiNeva.post("Usuario/SolicitudCreacionUsuario", bodySolicitud, {
           headers: header,
         }).then((response) => {
@@ -1459,7 +1391,6 @@ export default {
         });
         return;
       }
-
       let nombres = document.getElementById("nombresNew").value;
       let apellidos = document.getElementById("apellidosNew").value;
       //let rut = document.getElementById('rutNew').value;
@@ -1479,31 +1410,26 @@ export default {
         //showSpining(false);
         return;
       }
-
       if (!email || !validateEmail(email)) {
         swal("Registro usuario", "Debe ingresar un email", "warning");
         //showSpining(false);
         return;
       }
-
       if (!nombres) {
         swal("Registro usuario", "Debe ingresar sus nombres", "warning");
         //showSpining(false);
         return;
       }
-
       if (!apellidos) {
         swal("Registro usuario", "Debe ingresar sus apellidos", "warning");
         //showSpining(false);
         return;
       }
-
       if (!password) {
         swal("Registro usuario", "Debe ingresar una password", "warning");
         //showSpining(false);
         return;
       }
-
       let bodyUser = {
         email: email,
         password: password,
@@ -1514,7 +1440,6 @@ export default {
         perfilId: state.perfilIdSelectedNew,
       };
       //console.log("route.query.uri", route.query.uri);
-
       ApiNeva.post(
         "Usuario/UsuarioCreate?token=" + localStorage.token,
         bodyUser,
@@ -1555,7 +1480,6 @@ export default {
         });
       // });
     };
-
     const showSpining = (isActivate) => {
       if (isActivate) {
         document.getElementById("loading").style.display = "inline-block";
@@ -1565,7 +1489,6 @@ export default {
         document.getElementById("btnGuardarOrSolicitar").disabled = false;
       }
     };
-
     //const onBoarding = async () => {
     //  let user = JSON.parse(localStorage.getItem("usuarioModel"));
     //  try {
@@ -1577,7 +1500,6 @@ export default {
     //  } catch (error) {
     //    console.log(error);
     //  }
-
      // if (!state.isonboarding) {
      //   state.steps = localMenuOnvoarding.map((x) => {
     //      return renderSteps(x);
@@ -1589,7 +1511,6 @@ export default {
      //   );
      // }
     //};*/
-
     onMounted(() => {
       getUsers();
       //getProfile();
@@ -1600,7 +1521,6 @@ export default {
         }, 500);
       }*/
     });
-
     return {
       cilPen,
       cilTrash,
@@ -1615,8 +1535,6 @@ export default {
       crearUser,
       modificarUser,
       asociarArea,
-
-
       /*getUserSelected,
       getUserDelete,
       ModalUserNuevo,

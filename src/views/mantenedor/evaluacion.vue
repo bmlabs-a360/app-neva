@@ -239,10 +239,9 @@
           </div>
         </div>-->
 
-        <div class="form-step">
+        <!--<div class="form-step">
           <CContainer
               class="pt-3"
-              :style="`background: ${tabs[2].color}; color: black;`"
             >
             <CRow>
               <CCol sm="6" md="6" lg="6">
@@ -354,6 +353,72 @@
               </div>
             </CRow>
             </CContainer>
+        </div>-->
+        <div class="form-step">
+          <div class="border-bottom p-3">
+            <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
+              <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1> 
+              <div class="btns-group">
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
+                <!--<button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn">Guardar</button>-->
+              </div>
+            </div>
+          </div>
+          <!--main-->
+          <div>
+            <table id="customers">
+              <tr>
+                <th>Área</th>
+                <th>Sub&aacute;rea</th>
+                <th class="text-center">Porcentaje</th>
+                <th class="text-end pe-4">Responder</th>
+              </tr>
+              <tr v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
+                <td>{{tablaSegmentacionArea.nombreArea}}</td>
+                <td>{{tablaSegmentacionArea.nombreSubArea}}</td>
+                <td class="table-progress" v-if="tablaSegmentacionArea.estado < 100">
+                  <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_376_6978)">
+                      <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M11 2.24194L6 7.24694L4.5 5.74694" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_376_6978">
+                        <rect width="13" height="13" fill="white" transform="translate(0 0.241943)"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <p>{{tablaSegmentacionArea.estado}}% Completado</p>
+                </td>
+                <td class="table-finish" v-if="tablaSegmentacionArea.estado == 100">
+                  <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_376_6978)">
+                      <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M11 2.24194L6 7.24694L4.5 5.74694" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_376_6978">
+                      <rect width="13" height="13" fill="white" transform="translate(0 0.241943)"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <p>{{tablaSegmentacionArea.estado}}% Completado</p>
+                </td>
+                <td class="text-end pe-4">
+                  <button type="button" class="button button is-bold is-raised is-primary btn-next" @click="getPregunta(tablaSegmentacionArea )">Responder</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="p-3">
+            <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
+              <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1> 
+              <div class="btns-group">
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
+                <!--<button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn">Guardar</button>-->
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -1517,8 +1582,9 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           response.data.forEach(x => {
+            console.log(" response.data",  response.data);
             state.allSegmentacionSubAreas.forEach(y => {
-              y.estado = "0";
+              //y.estado = "0";
               if (x.segmentacionSubAreaId == y.id){
                 y.estado = x.respuestaPorcentaje;
                 if (x.respuestaPorcentaje == '100') y.completado = true;

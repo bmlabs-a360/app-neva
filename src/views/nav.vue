@@ -13,7 +13,7 @@
                     <img :src="logoCubo" @click="ir('Mantenedor')" style="cursor:pointer" alt="">
                 </div>
                 <div>
-                    <img :src="logoMas" alt="">
+                    <img :src="logoMas" @click="ir('Reporte')" style="cursor:pointer" alt="">
                 </div>
                 <div>
                     <img :src="logoLupa" alt="">
