@@ -1,0 +1,30 @@
+.evaluation {
+    background-color: white;
+    color: $secundary-400;
+    padding: 1rem;
+    border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+    & .mb-4 {
+        padding: 1rem;
+        h5 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        label {
+            font-weight: 200;
+            font-size: .8rem;
+        }
+    }
+}
+
+.card-form {
+    background-color: $gris-300;
+    p {
+        color:$secundary-400;
+        font-weight: 200;
+        margin-bottom: 0rem;
+    }
+}
+
+h1 {
+    margin: 0;
+}

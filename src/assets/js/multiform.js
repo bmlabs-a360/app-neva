@@ -1,6 +1,7 @@
 const prevBtns = document.querySelectorAll(".btn-prev");
 const nextBtns = document.querySelectorAll(".btn-next");
 const progress = document.getElementById("progress");
+const progressBar = document.querySelector(".progressbar");
 const formSteps = document.querySelectorAll(".form-step");
 const progressSteps = document.querySelectorAll(".progress-step");
 let formStepsNum = 0;
@@ -10,6 +11,7 @@ nextBtns.forEach((btn) => {
     formStepsNum++;
     updateFormSteps();
     updateProgressbar();
+    statuss(formStepsNum);
   });
 });
 
@@ -18,6 +20,8 @@ prevBtns.forEach((btn) => {
     formStepsNum--;
     updateFormSteps();
     updateProgressbar();
+    statuss(formStepsNum);
+    
   });
 });
 
@@ -29,7 +33,6 @@ function updateFormSteps() {
 
   formSteps[formStepsNum].classList.add("form-step-active");
 }
-
 function updateProgressbar() {
   progressSteps.forEach((progressStep, idx) => {
     if (idx < formStepsNum + 1) {
@@ -43,4 +46,13 @@ function updateProgressbar() {
 
   progress.style.width =
     ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+}
+function statuss(formStepsNum) {
+
+  if (formStepsNum===3) {
+    progressBar.classList.add("none")
+  }
+  else if (formStepsNum<3) {
+    progressBar.classList.remove("none")
+  }
 }

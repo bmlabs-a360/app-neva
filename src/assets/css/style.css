@@ -12082,11 +12082,16 @@ p, a, span {
   border-color: transparent;
   color: white;
 }
+.button.is-secundary {
+  background-color: #ED9A37;
+  border-color: transparent;
+  color: white;
+}
 .button.v-button.is-bold {
   font-weight: 500;
 }
 
-.button.v-button.is-primary.is-raised:hover {
+.button.v-button.is-primary.is-raised:hover, .button.v-button.is-secundary.is-raised:hover {
   opacity: 0.9;
   box-shadow: 0 8px 16px -12px hsla(187deg, 80%, 42%, 0.171), 0 4px 12px 0 hsla(187deg, 80%, 42%, 0.171), 0 4px 5px -5px hsla(187deg, 100%, 73%, 0.208) !important;
 }
@@ -12303,11 +12308,15 @@ a {
 }
 
 .card {
-  border: 1px solid #EAEBEF;
+  border: 1px solid #F4F4F4;
 }
 .card h3, .card .h3 {
   font-size: 18px !important;
   color: #283252;
+}
+.card .form-step:last-child {
+  border: 2px solid #F4F4F4;
+  background-color: #F4F4F4;
 }
 
 .close {
@@ -12326,6 +12335,10 @@ a {
 .toast.danger {
   color: white;
   background-color: #DC3545;
+}
+
+.color-yellow {
+  color: #ED9A37 !important;
 }
 
 .body-login {
@@ -13027,6 +13040,9 @@ input[type=range] {
     margin: 2rem 1rem;
   }
 }
+.progressbar.none {
+  display: none;
+}
 
 .progressbar::before,
 .progress {
@@ -13172,6 +13188,21 @@ input[type=range] {
   margin-left: 2rem;
 }
 
+.form-check-input:checked {
+  background-color: #15ACC0;
+  border-color: #15ACC0;
+}
+
+.form-check-input:focus {
+  border-color: #BBFFE6;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem #BBFFE6;
+}
+
+.title-form {
+  color: #283252;
+}
+
 #customers {
   border-collapse: collapse;
   width: 100%;
@@ -13185,7 +13216,6 @@ input[type=range] {
 }
 
 #customers td, #customers th {
-  border-bottom: 1px solid #EAEBEF;
   padding: 12px;
 }
 
@@ -13231,6 +13261,102 @@ input[type=range] {
 }
 .table-finish p {
   margin-bottom: 0;
+}
+
+.circles {
+  border: solid 1px #15ACC0;
+  padding: 0.1rem 0.6rem;
+  border-radius: 2rem;
+}
+
+.tooltips {
+  font-weight: normal;
+  color: #15ACC0;
+  text-decoration: none;
+  position: relative;
+}
+.tooltips:hover {
+  cursor: pointer;
+}
+.tooltips:hover .tooltips-box {
+  display: inline-block;
+}
+
+.tooltips-box {
+  color: #f3f3f3;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: none;
+  position: absolute;
+  background: #283252;
+  line-height: 20px;
+  z-index: 500;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 5px;
+  top: 40px;
+  right: -45%;
+  width: 250px;
+}
+.tooltips-box::after {
+  content: "";
+  display: block;
+  border-top: 7px solid #283252;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  position: absolute;
+  top: -5px;
+  left: 215px;
+  transform: rotate(180deg);
+}
+@media screen and (min-width: 830px) {
+  .tooltips-box {
+    left: 40px;
+    right: 0;
+    top: -10px;
+    width: 280px;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .tooltips-box::after {
+    top: 43px;
+    left: -10px;
+    transform: rotate(90deg);
+  }
+}
+
+.evaluation {
+  background-color: white;
+  color: #283252;
+  padding: 1rem;
+  border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+}
+.evaluation .mb-4 {
+  padding: 1rem;
+}
+.evaluation .mb-4 h5, .evaluation .mb-4 .h5 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.evaluation .mb-4 label {
+  font-weight: 200;
+  font-size: 0.8rem;
+}
+
+.card-form {
+  background-color: #EAEBEF;
+}
+.card-form p {
+  color: #283252;
+  font-weight: 200;
+  margin-bottom: 0rem;
+}
+
+h1, .h1 {
+  margin: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

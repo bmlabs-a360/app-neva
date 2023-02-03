@@ -154,11 +154,16 @@ vertical-align: top;
         border-color: transparent;
         color: white;
     }
+    &.is-secundary {
+        background-color: $yellow-400;
+        border-color: transparent;
+        color: white;
+    }
     &.v-button.is-bold {
         font-weight: 500;
     }
 }
-.button.v-button.is-primary.is-raised:hover {
+.button.v-button.is-primary.is-raised:hover, .button.v-button.is-secundary.is-raised:hover {
     opacity: 0.9;
     box-shadow: $primary-box-shadow;
 }
@@ -390,10 +395,17 @@ a {
     color:$gris-400;
 }
 .card {
-    border: 1px solid $gris-300;
+    border: 1px solid $gris-200;
     & h3 {
         font-size: 18px!important;
         color:$secundary-400;
+    }
+    
+    & .form-step:last-child {
+        $type:true;
+        border:2px solid $gris-100;
+        background-color: $gris-200;
+
     }
 }
 .close {
@@ -413,3 +425,9 @@ a {
     background-color: $danger;
 }
 }
+
+  //color
+
+  .color-yellow {
+    color:$yellow-400!important;
+   } 

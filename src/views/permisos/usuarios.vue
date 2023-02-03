@@ -883,6 +883,7 @@ export default {
                 if (areaAsuario != undefined) {
                   x.idusuarioArea = areaAsuario.id;
                   x.activo = areaAsuario.activo;
+                  x.seleccionado = true;
                 } 
               });
               evaluacionEmpresa.segmentacionAreas = state.segmentacionAreas;
@@ -914,6 +915,11 @@ export default {
       state.evaluaciones.forEach(evaluacion => {
         var usuarioAreas = [];
         let UsuarioEvaluacion = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
+        state.usuarioEvaluacion.forEach(y => {
+          if (y.evaluacionId == state.evaluacion.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) {
+            state.usuarioAreas = y.usuarioAreas
+          }
+        });
         evaluacion.segmentacionAreas.forEach(segmentacionArea => {
             var usuarioArea =
             {

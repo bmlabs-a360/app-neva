@@ -17,11 +17,23 @@
           <!--header form-->
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
-              <h1 class="title-form text-center">Preparaci&oacute;n</h1> 
+              <div class="d-flex justify-content-center align-items-center">
+                <h1 class="title-form text-center mx-2">Preparaci&oacute;n</h1> 
+                <b class="tooltips">
+                    <p class="mb-0 circles">?</p>
+                    <span class="tooltips-box">El % de Importancia por área debe ser completada de
+                      manera precisa, reflejando la importancia de cada área en relación con
+                      la actividad de la empresa. Si una área no es relevante para su empresa
+                      y/o industria específica, se debe dejar con un 0%. Es importante
+                      asegurar que la suma total de todas las áreas alcance exactamente el
+                      100%.
+                    </span>
+                  </b>
+              </div> 
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-next" @click="irPaso2">Siguiente</button>
               </div>
-            </div>      
+            </div>     
           </div>
           <!--main form-->
           <div class="container">
@@ -68,7 +80,18 @@
         <div class="form-step">
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
-              <h1 class="title-form text-center">Importancia estrat&eacute;gica</h1> 
+              <div class="d-flex justify-content-center align-items-center">
+                <h1 class="title-form text-center">Importancia estrat&eacute;gica</h1> 
+                <b class="tooltips">
+                  <p class="mb-0 circles">?</p>
+                  <span class="tooltips-box">Importancia estratégica debe ser completada con un
+                    porcentaje que refleje la importancia de cada subárea en relación con
+                    el área en cuestión. Si una subárea no es relevante, debe ser registrada
+                    con un 0%. Es esencial asegurar que la sumatoria de todas las subáreas
+                    dentro de una área sea igual a 100%
+                  </span>
+                </b>
+              </div>
               <div class="btns-group">
                   <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" @click="SiguienteAtras(0)">Anterior</button>
                   <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-next" @click="irPaso3">Siguiente</button>
@@ -357,13 +380,24 @@
         <div class="form-step">
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
-              <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1> 
+              <div class="d-flex justify-content-center align-items-center">
+                <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1>
+                <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre != 'Usuario pro (empresa)' )" >Evaluaci&oacute;n</h1>
+                <b class="tooltips">
+                  <p class="mb-0 circles">?</p>
+                  <span class="tooltips-box">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  </span>
+                </b> 
+              </div>
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
                 <!--<button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn">Guardar</button>-->
               </div>
             </div>
           </div>
+
           <!--main-->
           <div>
             <table id="customers">
@@ -427,6 +461,13 @@
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
               <div class="d-flex justify-content-center align-items-center">
                 <h1 class="title-form text-center mx-2">{{preguntaSelected.nombreEvaluacion}}</h1>
+                <b class="tooltips">
+                  <p class="mb-0 circles">?</p>
+                  <span class="tooltips-box">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  </span>
+                </b>
               </div>
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" @click="SiguienteAtras(2)">Volver</button>
