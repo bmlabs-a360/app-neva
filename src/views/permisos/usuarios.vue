@@ -883,7 +883,6 @@ export default {
                 if (areaAsuario != undefined) {
                   x.idusuarioArea = areaAsuario.id;
                   x.activo = areaAsuario.activo;
-                  x.seleccionado = true;
                 } 
               });
               evaluacionEmpresa.segmentacionAreas = state.segmentacionAreas;
@@ -909,19 +908,15 @@ export default {
           return false;
       }
 
-      console.log("state.userSelected", state.userSelected);
       state.usuarioEvaluacion = state.userSelected.usuarioEvaluacions;
       state.userSelected.usuarioEvaluacions = [];
+      var usuarioArea = {};
       state.evaluaciones.forEach(evaluacion => {
         var usuarioAreas = [];
-        let UsuarioEvaluacion = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
-        state.usuarioEvaluacion.forEach(y => {
-          if (y.evaluacionId == state.evaluacion.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) {
-            state.usuarioAreas = y.usuarioAreas
-          }
-        });
+        var UsuarioEvaluacion = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
         evaluacion.segmentacionAreas.forEach(segmentacionArea => {
-            var usuarioArea =
+          if (segmentacionArea.idusuarioArea){
+            usuarioArea =
             {
                 "id": segmentacionArea.idusuarioArea,
                 "usuarioEvaluacionId": UsuarioEvaluacion.id, 
@@ -929,7 +924,7 @@ export default {
                 "activo": segmentacionArea.activo
             }
             usuarioAreas.push(usuarioArea);
-            console.log("usuarioAreas", usuarioAreas);
+          }
         });
         var usuarioEvaluacion =
         {
