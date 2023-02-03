@@ -43,7 +43,7 @@
                 <div v-for="area in segmentacionAreasByEvaluacion" :key="area.id">
                   <label class="form-label"> {{area.nombreArea}}</label>
                   <div class="d-flex">
-                    <CFormInput :id="area.id" type="range" class="slider" name="porcentajeAreas" min="1" max="100" :value="area.valor" @change="CambioPorcentajePaso1(area.id)"/>
+                    <CFormInput :id="area.id" type="range" class="slider" name="porcentajeAreas" min="0" max="100" :value="area.valor" @change="CambioPorcentajePaso1(area.id)"/>
                     <span :id="'porc-'+ area.id"> {{area.valor}}%</span>
                   </div>
                 </div>
@@ -104,7 +104,7 @@
                 <div v-for="subArea in segmentacionSubAreasbyAreaSelected" :key="subArea.id">
                   <label class="form-label">{{subArea.nombreSubArea}}</label>
                   <div class="d-flex">
-                    <CFormInput :id="subArea.id" type="range" class="slider" min="1" max="100" name="porcentajeSubAreas" :value="subArea.valor" @change="CambioPorcentajePaso2(subArea.id)"/>
+                    <CFormInput :id="subArea.id" type="range" class="slider" min="0" max="100" name="porcentajeSubAreas" :value="subArea.valor" @change="CambioPorcentajePaso2(subArea.id)"/>
                     <span :id="'porcPaso2-'+ subArea.id"> {{subArea.valor}}%</span>
                   </div>
                 </div>
@@ -369,13 +369,13 @@
             <table id="customers">
               <tr>
                 <th>Área</th>
-                <th>Sub&aacute;rea</th>
+                <!--<th>Sub&aacute;rea</th>-->
                 <th class="text-center">Porcentaje</th>
                 <th class="text-end pe-4">Responder</th>
               </tr>
               <tr v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
                 <td>{{tablaSegmentacionArea.nombreArea}}</td>
-                <td>{{tablaSegmentacionArea.nombreSubArea}}</td>
+                <!--<td>{{tablaSegmentacionArea.nombreSubArea}}</td>-->
                 <td class="table-progress" v-if="tablaSegmentacionArea.estado < 100">
                   <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_376_6978)">
@@ -405,7 +405,7 @@
                   <p>{{tablaSegmentacionArea.estado}}% Completado</p>
                 </td>
                 <td class="text-end pe-4">
-                  <button type="button" class="button button is-bold is-raised is-primary btn-next" @click="getPregunta(tablaSegmentacionArea )">Responder</button>
+                  <button type="button" class="button button is-bold is-raised is-primary btn-next" @click="SiguienteAtras(3);getPregunta(tablaSegmentacionArea)">Responder</button>
                 </td>
               </tr>
             </table>
@@ -420,9 +420,77 @@
             </div>
           </div>
         </div>
+
+        <div class="form-step">
+          <!--header form-->
+          <div class="px-3">
+            <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
+              <div class="d-flex justify-content-center align-items-center">
+                <h1 class="title-form text-center mx-2">{{preguntaSelected.nombreEvaluacion}}</h1>
+              </div>
+              <div class="btns-group">
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" @click="SiguienteAtras(2)">Volver</button>
+              </div>
+            </div>     
+          </div>
+          <!--main form-->
+          <div class="p-3">
+            <h3 class="mb-3 color-yellow" >{{preguntaSelected.nombreArea}}</h3>
+            <div class="evaluation">
+              <div>
+                <h4>{{preguntaSelected.nombreSubArea}}</h4>
+              </div>
+              <form>
+                <div class="mb-4">
+                  <h5>{{preguntaSelected.detalle}}</h5>
+                  <div class="d-flex flex-column">
+                    <div class="form-check form-check-inline" v-for="alternativa in preguntaSelected.alternativas" :key="alternativa.id">
+                      <input class="form-check-input" type="radio" name="alternativas" :value="alternativa.id" v-model="alternativaSelected">
+                      <label class="form-check-label" >{{alternativa.detalle}}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <h5>Importancia</h5>
+                  <div class="d-flex flex-column">
+                    <div class="form-check form-check-inline" v-for="tipoImportancia in tiposImportancia" :key="tipoImportancia.id">
+                      <input class="form-check-input" type="radio" name="tipoImportancias" :value="tipoImportancia.id" v-model="tipoImportanciaSelected">
+                      <label class="form-check-label" >{{tipoImportancia.nombre}}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <h5>Deficiencia relacionada con</h5>
+                  <div class="d-flex flex-column">
+                    <div class="form-check form-check-inline" v-for="defRelacionada in defRelacionadas" :key="defRelacionada.id">
+                      <input class="form-check-input" type="radio" name="defRelacionada" :value="defRelacionada.id" v-model="defRelacionadaSelected">
+                      <label class="form-check-label" >{{defRelacionada.nombre}} </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!--footer form-->
+          <div class="card-form m-3 p-3">
+            <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
+              <p class="text-center">
+                <span>{{preguntaSelected.orden}}</span> de <span>{{preguntasTotal}}</span> preguntas
+              </p> 
+              <div class="btns-group">
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-secundary btn-prev" @click="pasosPreguntas('atras') ; getRespuesta();">Anterior</button>
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-next"  @click="addRespuesta();">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </form>
     </div>
   </div>
+
+
 
   <!--
   <CRow>
@@ -847,7 +915,7 @@
   </CRow>
   -->
   <!-- MODAL PREGUNTAS -->
-  <CModal
+  <!--<CModal
     backdrop="static"
     size="xl"
     alignment="center"
@@ -961,7 +1029,7 @@
         Siguiente
       </CButton>
     </CModalFooter>
-  </CModal>
+  </CModal>-->
   <!-- MODAL PREGUNTAS -->
 
 </template>
@@ -1044,7 +1112,7 @@ export default {
       tablaSegmentacionAreas: [],
       allSegmentacionSubAreasByIdArea: [],
 
-      visibleModalPreguntas : false,
+      //visibleModalPreguntas : false,
       idAreaPaso3: "0",
       idTipoSubAreaPaso3: "0",
       evaluacionPaso3: [],
@@ -1147,6 +1215,7 @@ export default {
 
   const SiguienteAtras = async (formStepsNum) => {
     const formSteps = document.querySelectorAll(".form-step");
+    const progressBar = document.querySelector(".progressbar");
     formSteps.forEach((formStep) => {
       formStep.classList.contains("form-step-active") &&
         formStep.classList.remove("form-step-active");
@@ -1155,18 +1224,25 @@ export default {
 
     const progressSteps = document.querySelectorAll(".progress-step");
     progressSteps.forEach((progressStep, idx) => {
-    if (idx < formStepsNum + 1) {
-      progressStep.classList.add("progress-step-active");
-    } else {
-      progressStep.classList.remove("progress-step-active");
+      if (idx < formStepsNum + 1) {
+        progressStep.classList.add("progress-step-active");
+      } else {
+        progressStep.classList.remove("progress-step-active");
+      }
+    });
+
+    const progressActive = document.querySelectorAll(".progress-step-active");
+
+    progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+    
+    if (formStepsNum===3) {
+      progressBar.classList.add("d-none")
     }
-  });
+    else if (formStepsNum<3) {
+      progressBar.classList.remove("d-none")
+    }
 
-  const progressActive = document.querySelectorAll(".progress-step-active");
-
-  progress.style.width =
-    ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
-    };
+  };
 
     const getEvaluaciones = async () => {
       state.evaluaciones = [];
@@ -1415,12 +1491,12 @@ export default {
         state.segmentacionAreaSelected.segmentacionSubAreas.forEach( x => {
             if (state.porcentajesSubAreasSelected.length == 0) x.valor = 0;
             state.porcentajesSubAreasSelected.forEach( y => {
-            if (y.segmentacionSubAreaId == x.id ){
+              if (y.segmentacionSubAreaId == x.id ){
                 if ( y.valor != undefined) {
                   x.valor = y.valor;
                   state.totalPorcentajeSubAreas += parseInt(y.valor);
                 }else {
-                   x.valor = 0;
+                  x.valor = 0;
                 }
               }
             });
@@ -1509,9 +1585,10 @@ export default {
       state.evaluacionPaso3.push(state.evaluacionSelected);
       state.allSegmentacionAreas = state.segmentacionAreasByEvaluacion;
       state.allSegmentacionAreas.forEach(x => {
-          state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
-        });
-        
+        state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
+      }); 
+      
+      console.log("state.allSegmentacionAreas ****", state.allSegmentacionAreas);
       state.tablaSegmentacionAreas = [];
       getEstadoSubArea();
     };
@@ -1587,7 +1664,6 @@ export default {
               //y.estado = "0";
               if (x.segmentacionSubAreaId == y.id){
                 y.estado = x.respuestaPorcentaje;
-                if (x.respuestaPorcentaje == '100') y.completado = true;
               }
             });
           });
@@ -1600,29 +1676,42 @@ export default {
 
     const cargarTablaPaso3 = async () => {
       state.tablaSegmentacionAreas = [];
-      state.allSegmentacionSubAreasByIdArea = [];
+      //state.allSegmentacionSubAreasByIdArea = [];
+      let contador = 0;
+      state.allSegmentacionAreas.forEach (x => {
+        x.estado = 0;
+        contador = 0;
+        state.allSegmentacionSubAreas.forEach(y => {
+            if (y.segmentacionAreaId == x.id){
+              contador++;
+              x.estado = (x.estado + parseInt(y.estado)) / contador;
+              //x.nombreArea = y.nombreArea;
+            };
+        });
+        state.tablaSegmentacionAreas.push(x);
+      });
 
-      state.allSegmentacionSubAreas.forEach (x => {
+      /*state.allSegmentacionSubAreas.forEach (x => {
         state.allSegmentacionAreas.forEach(y => {
             if (x.segmentacionAreaId == y.id){
               x.nombreArea = y.nombreArea;
             };
         });
         state.tablaSegmentacionAreas.push(x);
-      });
-      state.allSegmentacionSubAreasByIdArea = state.allSegmentacionSubAreas;
+      });*/
+      //state.allSegmentacionSubAreasByIdArea = state.allSegmentacionSubAreas;
       console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
       SiguienteAtras(2); //Se avanza a Paso Evaluacion
     };
 
-    const changeSegmentacionAreaPaso3 = async () => {
+    /*const changeSegmentacionAreaPaso3 = async () => {
        let idAreaPaso3 = document.getElementById("idAreaPaso3")
         .options[
         document.getElementById("idAreaPaso3").selectedIndex
       ].value;
 
       state.idTipoSubAreaPaso3 = "0";
-      state.allSegmentacionSubAreasByIdArea = [];
+      //state.allSegmentacionSubAreasByIdArea = [];
       state.tablaSegmentacionAreas = [];
 
       if (idAreaPaso3 == "0"){
@@ -1638,11 +1727,11 @@ export default {
               };
           });
           state.tablaSegmentacionAreas.push(x);
-          state.allSegmentacionSubAreasByIdArea.push(x);
+          //state.allSegmentacionSubAreasByIdArea.push(x);
         }
       });
       console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
-    };
+    };*/
 
     const changeSegmentacionSubAreaPaso3 = async () => {
       let idTipoSubAreaPaso3 = document.getElementById("idTipoSubAreaPaso3")
@@ -1685,13 +1774,18 @@ export default {
       state.preguntasTotal = [];
       state.nombreAreaSelected = segmentacionArea.nombreArea;
       state.nombreSubAreaSelected = segmentacionArea.nombreSubArea;
-      ApiNeva.get("Pregunta/GetPreguntasByIdsSegmentacionAreaSubArea?idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
+      /*ApiNeva.get("Pregunta/GetPreguntasByIdsSegmentacionAreaSubArea?idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
+        headers: header,
+      })*/
+      let bodySegmentacionArea = {
+        id: segmentacionArea.id
+      };
+      ApiNeva.post("Pregunta/GetPreguntasBySegmentacionAreaId" , bodySegmentacionArea,  {
         headers: header,
       })
         .then((response) => {
           if (response.status != 200) return false;;
           state.preguntas = response.data;
-          state.preguntaSelected = response.data[0];
           state.preguntasTotal = response.data.length;
           if (!state.preguntaSelected){
             swal.fire({
@@ -1702,12 +1796,21 @@ export default {
             return false;
           }
           let orden = 0;
+          let segmentacionArea = [];
+          let segmentacionSubArea = [];
+          let evaluacion = [];
           state.preguntas.forEach((element) => {
             orden++;
             element.orden = orden;
+            segmentacionArea = state.allSegmentacionAreas.find((y) => y.id == element.segmentacionAreaId);
+            element.nombreArea = segmentacionArea.nombreArea;
+            segmentacionSubArea = state.allSegmentacionSubAreas.find((y) => y.id == element.segmentacionSubAreaId);
+            element.nombreSubArea = segmentacionSubArea.nombreSubArea;
+            evaluacion = state.evaluaciones.find((y) => y.id == element.evaluacionId);
+            element.nombreEvaluacion = evaluacion.nombre;
           });
-
-          state.visibleModalPreguntas = true;
+          state.preguntaSelected = state.preguntas[0];
+          //state.visibleModalPreguntas = true;
           console.log("state.preguntas", state.preguntas);
           getTipoimportancia();
         })
@@ -2113,7 +2216,8 @@ export default {
 
     const oncreated = () => {
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
-      state.selectedTab = 1;
+      SiguienteAtras(0);
+      //state.selectedTab = 1;
       if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
         SiguienteAtras(2);
         getUsuarioAreas();
@@ -2206,7 +2310,7 @@ export default {
 
       changeEvaluacion,
       changeSegmentacionArea,
-      changeSegmentacionAreaPaso3,
+      //changeSegmentacionAreaPaso3,
       changeSegmentacionSubAreaPaso3,
       getPregunta,
       cilPen,

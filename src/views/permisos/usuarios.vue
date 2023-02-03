@@ -12,7 +12,7 @@
             <CCol :sm="6" :md="3" :xs="6" :lg="3">
               <div class="d-grid flex">
                 <strong>Crear usuario 
-                    <CButton  @click="visibleModalNuevoUser = true;">
+                    <CButton  @click="visibleModalNuevoUser = true; evaluaciones.forEach(element => {element.asociar = false;});">
                       <CIcon icon="cib-addthis" id="crear_usuario"/>
                     </CButton>
                   </strong>
@@ -92,11 +92,17 @@
           <div style="display: flex">
             <CFormLabel >Baja/Alta </CFormLabel>
             <div>
-              <CFormSwitch
+              <!--<CFormSwitch
                 style="cursor: pointer"
                 id="activoNew"
                 :checked="true"
                 v-model="activoUserNew"
+              />-->
+              <CFormSwitch
+                style="cursor: pointer"
+                id="activoNew"
+                :checked="true"
+                v-model="usuarioNuevo.activo"
               />
             </div>
           </div>
@@ -107,13 +113,21 @@
                 <CInputGroupText>
                   <CIcon icon="cil-user" />
                 </CInputGroupText>
-                <CFormInput
+                <!--<CFormInput
                   type="text"
                   id="nombreNew"
                   placeholder="Nombre"
                   size="sm"
                   maxlength="255"
                   v-model="nombreUserNew"
+                />-->
+                <CFormInput
+                  type="text"
+                  id="nombreNew"
+                  placeholder="Nombre"
+                  size="sm"
+                  maxlength="255"
+                  v-model="usuarioNuevo.nombres"
                 />
               </CInputGroup>
             </div>
@@ -162,12 +176,20 @@
                       </i>
                     </div>
                   </CInputGroupText>
-                  <CFormInput
+                  <!--<CFormInput
                     id="passwordNew"
                     :type="passwordFieldType"
                     size="sm"
                     maxlength="255"
                     v-model="passUserNew"
+                    placeholder="Contraseña"
+                  ></CFormInput>-->
+                  <CFormInput
+                    id="passwordNew"
+                    :type="passwordFieldType"
+                    size="sm"
+                    maxlength="255"
+                    v-model="usuarioNuevo.password"
                     placeholder="Contraseña"
                   ></CFormInput>
                 </CInputGroup>
@@ -181,13 +203,21 @@
                 <CInputGroupText>
                   <CIcon icon="cil-mail" />
                 </CInputGroupText>
-                <CFormInput
+                <!--<CFormInput
                   type="text"
                   id="emailNew"
                   maxlength="255"
                   size="sm"
                   placeholder="Correo"
                   v-model="emailUserNew"
+                />-->
+                <CFormInput
+                  type="text"
+                  id="emailNew"
+                  maxlength="255"
+                  size="sm"
+                  placeholder="Correo"
+                  v-model="usuarioNuevo.email"
                 />
               </CInputGroup>
             </div>
@@ -198,13 +228,21 @@
                 <CInputGroupText>
                   <CIcon icon="cil-mail" />
                 </CInputGroupText>
-                <CFormInput
+                <!--<CFormInput
                   type="text"
                   id="telefonoNew"
                   maxlength="255"
                   size="sm"
                   placeholder="telefono"
                   v-model="telefonoUserNew"
+                />-->
+                <CFormInput
+                  type="text"
+                  id="telefonoNew"
+                  maxlength="255"
+                  size="sm"
+                  placeholder="telefono"
+                  v-model="usuarioNuevo.telefono"
                 />
               </CInputGroup>
             </div>
@@ -235,10 +273,10 @@
                   {{evaluacion.nombre}}
                 </CTableDataCell>
                 <CTableDataCell class="text-center">
-                  <CFormCheck name="chkAsociarNew" :value="evaluacion.id" />
+                  <CFormCheck name="chkAsociarNew" :value="evaluacion.id" v-model="evaluacion.asociar" />
                 </CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuarionew">
-                  <CButton @click="getSegmentacionAreaNew(evaluacion)" disabled>
+                  <CButton :disabled="!evaluacion.asociar" @click="getSegmentacionAreaNew(evaluacion)">
                     <CIcon :icon="cilPen" size="lg" />
                   </CButton>
                 </CTableDataCell>
@@ -273,7 +311,7 @@
     :visible="visibleModalSegmentacionAreaNew"
     @close="
       () => {
-        resetAsociarArea();
+        //resetAsociarArea();
         visibleModalSegmentacionAreaNew = false;
         visibleModalNuevoUser = true;
       }
@@ -295,7 +333,7 @@
                   size="sm"
                   disabled
                   maxlength="255"
-                  v-model="evaluacionNewUserSelected"
+                  v-model="evaluacion.nombre"
                 />
             </div>
           </div>
@@ -310,10 +348,9 @@
               <div v-for="area in segmentacionAreas" :key="area.id">
                 <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
                 <CFormSwitch style="cursor: pointer"
-                              v-model="area.activo"
-                              :checked="area.activo"
-                              name="checkAreaNewUser" 
-                              :value="area.id"/>
+                            name="checkAreaNewUser"
+                            v-model="area.activoSegmentacionAreas"
+                            :checked="area.activoSegmentacionAreas"/>
               </div>
             </div>
           </CCol>
@@ -325,7 +362,7 @@
         color="secondary"
         @click="
           () => {
-            resetAsociarArea();
+            //resetAsociarArea();
             visibleModalSegmentacionAreaNew = false;
             visibleModalNuevoUser = true;
           }
@@ -333,7 +370,8 @@
       >
         Cerrar
       </CButton>
-      <CButton color="primary" @click="asociarArea()">Guardar</CButton>
+      <!--<CButton color="primary" @click="asociarArea()">Guardar</CButton>-->
+      <CButton color="primary" @click="visibleModalSegmentacionAreaNew = false; visibleModalNuevoUser = true;">Listo</CButton>
     </CModalFooter>
   </CModal>
   <!-- FIN MODAL SEGMENTACION AREA CREAR-->
@@ -497,15 +535,15 @@
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              <CTableRow v-for="evaluacionEmpresa in evaluacionEmpresaSelected" :key="evaluacionEmpresa.id">
+              <CTableRow v-for="evaluacion in evaluaciones" :key="evaluacion.id">
                 <CTableDataCell class="text-center">
-                  {{evaluacionEmpresa.nombre}}
+                  {{evaluacion.nombre}}
                 </CTableDataCell>
                 <CTableDataCell class="text-center">
-                   <CFormCheck name="chkAsociar" :value="evaluacionEmpresa.id" :checked="evaluacionEmpresa.activo"  v-model="evaluacionEmpresa.activo" />
+                   <CFormCheck name="chkAsociar" :checked="evaluacion.asociar"  v-model="evaluacion.asociar" />
                 </CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuario">
-                  <CButton @click="getSegmentacionArea(evaluacionEmpresa)">
+                  <CButton :disabled="!evaluacion.asociar" @click="getSegmentacionArea(evaluacion)">
                     <CIcon :icon="cilPen" size="lg" />
                   </CButton>
                 </CTableDataCell>
@@ -540,7 +578,7 @@
     :visible="visibleModalSegmentacionArea"
     @close="
       () => {
-        resetAsociarArea();
+        //resetAsociarArea();
         visibleModalSegmentacionArea = false;
         visibleModalUser = true;
       }
@@ -562,8 +600,8 @@
                   size="sm"
                   disabled
                   maxlength="255"
-                  :v-model="evaluacionSelected"
-                  :value="evaluacionSelected"
+                  :v-model="evaluacion.nombre"
+                  :value="evaluacion.nombre"
                 />
             </div>
           </div>
@@ -580,7 +618,6 @@
                   <CFormSwitch style="cursor: pointer"
                                 v-model="area.activo"
                                 :checked="area.activo" 
-                                :value="area.id"
                                 name="checkArea"/>
                 </div>
             </div>
@@ -593,7 +630,7 @@
         color="secondary"
         @click="
           () => {
-            resetAsociarArea();
+            //resetAsociarArea();
             visibleModalSegmentacionArea = false;
             visibleModalUser = true;
           }
@@ -601,7 +638,8 @@
       >
         Cerrar
       </CButton>
-      <CButton color="primary" @click="asociarArea()">Guardar</CButton>
+      <!--<CButton color="primary" @click="asociarArea()">Guardar</CButton>-->
+      <CButton color="primary" @click="visibleModalSegmentacionArea = false; visibleModalUser = true;">Listo</CButton>
     </CModalFooter>
   </CModal>
   <!-- MODAL SEGMENTACION AREA EDITAR-->
@@ -613,30 +651,20 @@ import { cilPen, cilTrash} from "@coreui/icons";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { validateEmail, Fn, checkAll } from "@/Helper/util";
-//import { useRoute } from "vue-router";
-import { useReCaptcha } from "vue-recaptcha-v3";
-//import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
-import { permisosUsuario } from "@/_menuOnboarding.js";
-//import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
+
 export default {
   name: "Usuario",
   methods: {
     validateEmail,
     Fn,
     checkAll,
-    //renderSteps,
   },
   components: {
-    //VOnboardingWrapper,
   },
   setup() {
-    //const wrapper = ref(null);
-    //const { start } = useVOnboarding(wrapper);
-    //const localMenuOnvoarding = permisosUsuario;
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
     const ApiKey = globalProperties.$apiKey;
-    //const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
     const header = {
       Authorization: "Bearer " + localStorage.token,
       ApiKey,
@@ -644,84 +672,30 @@ export default {
     const headerRecaptcha = {
       ApiKey,
     };
-    //const route = useRoute();
-    //const uri = route.query.uri;
-    //const email = route.query.email;
+
     const state = reactive({
+      usuarioNuevo: [],
+      passwordFieldType: "password",
+      clave: "",
       usuarios: [],
       evaluaciones: [],
       userSelected: [],
+      segmentacionAreas: [],
+      evaluacion: [],
       visibleModalUser: false,
-      evaluacionEmpresaSelected : [],
-      passwordFieldType: "password",
-      clave: "",
-      usuarioAreas: [],
-      segmentacionAreas: [],
-      visibleModalSegmentacionArea: false,
-      evaluacionSelected: "",
-      visibleModalNuevoUser: false,
-      activoUserNew: true,
-      nombreUserNew: "",
-      passUserNew: "",
-      emailUserNew: "",
-      telefonoUserNew: "",
-      evaluacionNewUserSelected: "",
-      visibleModalSegmentacionAreaNew: false,
-      UsuarioEvaluacionSelected: [],
-      //isonboarding: false,
-      //wrapper,
-      //steps: [],
-      //uri: uri,
-      /*empresas: [],
-      usuarioEvaluacions: [],
-      evaluacionEmpresas: [],
-      empresaSelected: [],
-      segmentacionAreas: [],
-      evaluacion:null,
-      usuarioAreas: [],
-      userSelected: {},
-      //segmentacionAreas :[],
-      tabPaneActiveKey: 1,
-      usuarios: [],
-      //evaluaciones: [],
-      //evaluaciones: [],
-      nombreEvaluacion : "",
-      //areas: [],
-      evaluacionSelected: {},
-      perfiles: [],
-      visibleModalNuevoUser: false,
       visibleModalSegmentacionArea: false,
       visibleModalSegmentacionAreaNew: false,
-      visibleModalUser: false,
-      passwordFieldType: "password",
-      clave: "",
-      perfilIdSelectedNew: 0,
-      perfilIdSelectedEdit: [],
-      perfilIdSelectedNewSolicitar: 0, */
+      visibleModalNuevoUser: false,
+      usuarioAreas: [],
+      usuarioEvaluacion: [],
     });
-    const resetUser = () => {
-      state.passwordFieldType = "password";
-      state.clave = "";
-      state.userSelected = [];
-      state.UsuarioEvaluacionSelected = [];
-    };
-    const resetAsociarArea = () => {
-      state.evaluacionSelected = "";
-      state.segmentacionAreas = [];
-    };
-    const resetNewUser = () => {
-      state.passwordFieldType = "password";
-      state.activoUserNew = true;
-      state.nombreUserNew = "";
-      state.passUserNew = "";
-      state.emailUserNew = "";
-      state.telefonoUserNew = "";
-      state.evaluacionNewUserSelected = "";
-    };
+
+
     const switchVisibility = (tipo) => {
       state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
       state.clave = document.getElementById(tipo).value;
     };
+
     const getUsers = async () => {
       state.usuarios = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -736,6 +710,7 @@ export default {
         })
         .catch((error) => console.log(error));
     };
+
     const getEvaluaciones = async () => {
       state.evaluaciones = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -744,136 +719,182 @@ export default {
       })
         .then((response) => {
           if (response.status != 200) return false;
+          response.data.forEach(element => {
+            element.asociar = false;
+          });
           state.evaluaciones = response.data;
           console.log("state.evaluaciones", state.evaluaciones);
         })
         .catch((error) => console.log(error));
     };
+
+    const getSegmentacionAreaNew = (evaluacionEmpresa) => {
+      state.evaluacion = evaluacionEmpresa;
+      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.segmentacionAreas = response.data;
+          state.segmentacionAreas.forEach(x => {
+            x.activoSegmentacionAreas = false;
+          });
+          state.evaluaciones.forEach(element => {
+              if (element.id == evaluacionEmpresa.id) {
+                  element.segmentacionAreas = [];
+                  element.segmentacionAreas = state.segmentacionAreas
+              }
+          });
+          console.log("state.evaluaciones", state.evaluaciones);
+          state.visibleModalNuevoUser = false;
+          state.visibleModalSegmentacionAreaNew = true;
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const crearUser = () => {
+      state.usuarioNuevo.empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
+      state.usuarioNuevo.empresa =  JSON.parse(localStorage.usuarioModel).empresa;
+
+      if (!state.usuarioNuevo.nombres) {
+          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
+          return false;
+      }
+      if (!state.usuarioNuevo.password) {
+          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
+          return false;
+      }
+      if (!state.usuarioNuevo.email || !validateEmail(state.usuarioNuevo.email)) {
+          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
+          return false;
+      }
+      if (!state.usuarioNuevo.activo) state.usuarioNuevo.activo = true;
+
+      state.usuarioNuevo.usuarioEvaluacions = [];
+      state.evaluaciones.forEach(evaluacion => {
+        var usuarioAreas = [];
+        evaluacion.segmentacionAreas.forEach(segmentacionArea => {
+          let activoSegmentacionAreas = (segmentacionArea.activoSegmentacionAreas) ? segmentacionArea.activoSegmentacionAreas : false;
+          var usuarioArea =
+          {
+              "segmentacionAreaId": segmentacionArea.id,
+              "activo": activoSegmentacionAreas
+          }
+          usuarioAreas.push(usuarioArea);
+        });
+        var usuarioEvaluacion =
+        {
+            "empresaId": state.usuarioNuevo.empresaId,
+            "evaluacionId": evaluacion.id,
+            "activo": evaluacion.asociar,
+            "usuarioAreas": usuarioAreas
+        };
+        state.usuarioNuevo.usuarioEvaluacions.push(usuarioEvaluacion);
+      });
+      let usuarioInsert = {
+          "perfilId": '00000000-0000-0000-0000-000000000000',
+          "empresaId": state.usuarioNuevo.empresaId,
+          "email": state.usuarioNuevo.email,
+          "password": state.usuarioNuevo.password,
+          "nombres": state.usuarioNuevo.nombres,
+          "telefono": state.usuarioNuevo.telefono,
+          "activo": state.usuarioNuevo.activo,
+          "usuarioEmpresas": [
+            {
+              "empresaId": state.usuarioNuevo.empresaId,
+              "activo": true
+            }
+          ],
+          "usuarioEvaluacions": state.usuarioNuevo.usuarioEvaluacions
+      };
+      console.log("usuarioInsert", usuarioInsert);
+      ApiNeva.post("Usuario/InsertUser", usuarioInsert,
+        { headers: header }
+      )
+      .then((response) => {
+        if (response.status != 200) return false;
+        var usuario = response.data;
+        console.log("usuario", usuario);
+        getUsers();
+        swal.fire(
+            "Guardar usuario",
+            "Se guardo el usuario",
+            "success"
+        );
+        resetNewUser();
+        state.visibleModalNuevoUser = false;
+      }).catch((error) => {
+        if (error.response.data.detail.includes("llave duplicada") || error.response.data.detail.includes("duplicate key") || error.response.data.detail.includes("pk_empresa_id")) {
+          swal.fire(
+              "Guardar usuario",
+              "Por favor, verifique los datos ingresados son válidos. Mas detalle: " + error.response.data.detail,
+              "warning"
+          );
+        } else {
+          swal.fire(
+            "Guardar usuario",
+            "Por favor, verifique los datos ingresados son válidos. Mas detalle: " + error.response.data.detail,
+            "warning"
+          );
+          return;
+        }
+      });
+    };
+
+    const resetNewUser = () => {
+      state.passwordFieldType = "password";
+      state.segmentacionAreas = [];
+      state.usuarioNuevo = [];
+      state.evaluaciones.forEach(element => {
+        element.asociar = false;
+      });
+    };
+
     const getUserSelected = (idusuario) => {
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
       console.log("state.userSelected", state.userSelected);
       state.visibleModalUser = true;
       getUsuarioEvaluacionByEvaluacionEmpresa();
     };
+
     const getUsuarioEvaluacionByEvaluacionEmpresa = () => {
-      state.evaluacionEmpresaSelected = state.evaluaciones;
-      state.evaluacionEmpresaSelected.forEach(element => {
+      state.evaluaciones.forEach(element => {
         var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
-        element.activo = false;
-        if (evaluacion != undefined) element.activo = evaluacion.activo;
+        element.asociar = false;
+        if (evaluacion != undefined) element.asociar = evaluacion.activo;
       });
-      console.log("state.evaluacionEmpresaSelected", state.evaluacionEmpresaSelected);
+      console.log("state.evaluaciones", state.evaluaciones);
     };
+
     const getSegmentacionArea = (evaluacionEmpresa) =>{
-      state.evaluacionSelected = evaluacionEmpresa.nombre;
-      let evaluacionEmpresaSelected = evaluacionEmpresa;
-      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresa, { headers: header, })
-        .then((response) => {
-            if (response.status != 200) return false;
-            state.usuarioAreas = [];
-            state.userSelected.usuarioEvaluacions.forEach(y => {
-              if (y.evaluacionId == evaluacionEmpresaSelected.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) {
+      state.evaluacion = evaluacionEmpresa;
+        ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresa, { headers: header, })
+          .then((response) => {
+              if (response.status != 200) return false;
+              state.usuarioAreas = [];
+              evaluacionEmpresa.segmentacionAreas = [];
+              state.userSelected.usuarioEvaluacions.forEach(y => {
+                if (y.evaluacionId == state.evaluacion.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) {
                   state.usuarioAreas = y.usuarioAreas
-              }
-            });
-            state.segmentacionAreas = response.data;
-            state.segmentacionAreas.forEach(x => {
+                }
+              });
+              state.segmentacionAreas = response.data;
+              state.segmentacionAreas.forEach(x => {
                 var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
                 x.activo = false;
-                if (areaAsuario != undefined)  x.activo = areaAsuario.activo;
-            });
-            console.log("state.segmentacionAreas", state.segmentacionAreas);
-            state.visibleModalUser = false;
-            state.visibleModalSegmentacionArea = true;
-            state.UsuarioEvaluacionSelected = [];
-            state.UsuarioEvaluacionSelected = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == evaluacionEmpresa.id);
-            console.log("state.UsuarioEvaluacionSelected", state.UsuarioEvaluacionSelected);
-        })
-        .catch((error) => console.log(error));
-      
+                if (areaAsuario != undefined) {
+                  x.idusuarioArea = areaAsuario.id;
+                  x.activo = areaAsuario.activo;
+                } 
+              });
+              evaluacionEmpresa.segmentacionAreas = state.segmentacionAreas;
+              console.log("state.segmentacionAreas", state.segmentacionAreas);
+              state.visibleModalUser = false;
+              state.visibleModalSegmentacionArea = true;
+          })
+          .catch((error) => console.log(error));
     };
-    const getSegmentacionAreaNew = (evaluacionEmpresa) => {
-      state.evaluacionNewUserSelected= evaluacionEmpresa.nombre;
-      let evaluacionEmpresaSelected = evaluacionEmpresa;
-      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresaSelected, { headers: header, })
-        .then((response) => {
-            if (response.status != 200) return false;
-            state.segmentacionAreas = response.data;
-            state.segmentacionAreas.forEach(x => {
-                x.activo = false;
-            });
-            state.visibleModalNuevoUser = false;
-            state.visibleModalSegmentacionAreaNew = true;
-        })
-        .catch((error) => console.log(error));
-    };
-    const crearUser = () => {
-      if (state.nombreUserNew == "") {
-          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
-          return false;
-      }
-      if (state.passUserNew == "") {
-          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
-          return false;
-      }
-      if (state.emailUserNew == "" || !validateEmail(state.emailUserNew)) {
-          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
-          return false;
-      }
-      let bodyUser = {
-        nombres: state.nombreUserNew,
-        password: state.passUserNew,
-        email: state.emailUserNew,
-        telefono: state.telefonoUserNew,
-        activo: state.activoUserNew,
-        EmpresaId: JSON.parse(localStorage.empresaModel).id,
-      };
-      ApiNeva.post("Usuario/InsertUser", bodyUser, { headers: header }
-        ).then((response) => {
-          if (response.status != 200)  return false;
-          swal.fire(
-            "Registro usuario",
-            "Se agregó usuario",
-            "success"
-          );
-          AsociarEvaluacionNewUser(response.data.id);
-          state.visibleModalNuevoUser = false;
-          return;
-      });
-    };
-    const AsociarEvaluacionNewUser = async (idUsuario) => {
-      let chkAsociarNew = document.getElementsByName("chkAsociarNew");
-      var largo = 0;
-      chkAsociarNew.forEach((element) => {
-        let bodyUsuarioEvaluacion = {
-          usuarioId: idUsuario,
-          empresaId: JSON.parse(localStorage.empresaModel).id,
-          evaluacionId: element.value,
-          activo: element.checked,
-        };
-        
-        ApiNeva.post("UsuarioEvaluacion/UsuarioEvaluacionInsertOrUpdate", bodyUsuarioEvaluacion , {
-          headers: header,
-        })
-        .then((response) => {
-          largo++;
-          if (response.status != 200){
-            swal.fire({
-              title: "Registro usuario",
-              text: "Error al guardar evaluación",
-              icon: "warning",
-            });
-            return false;
-          }
-          if (largo >= chkAsociarNew.length){
-            getUsers();
-            resetNewUser();
-          }
-        })
-        .catch((error) => console.log(error));
-      });
-    };
+
     const modificarUser = () => {
+
       if (state.userSelected.nombres == "") {
           swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
           return false;
@@ -886,641 +907,104 @@ export default {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
       }
-      let bodyUser = {
-        id: state.userSelected.id,
-        nombres: state.userSelected.nombres,
-        password: state.clave,
-        email: state.userSelected.email,
-        telefono: state.userSelected.telefono,
-        activo: state.userSelected.activo,
-        EmpresaId: JSON.parse(localStorage.empresaModel).id,
+
+      console.log("state.userSelected", state.userSelected);
+      state.usuarioEvaluacion = state.userSelected.usuarioEvaluacions;
+      state.userSelected.usuarioEvaluacions = [];
+      state.evaluaciones.forEach(evaluacion => {
+        var usuarioAreas = [];
+        let UsuarioEvaluacion = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
+        evaluacion.segmentacionAreas.forEach(segmentacionArea => {
+            var usuarioArea =
+            {
+                "id": segmentacionArea.idusuarioArea,
+                "usuarioEvaluacionId": UsuarioEvaluacion.id, 
+                "segmentacionAreaId": segmentacionArea.id,
+                "activo": segmentacionArea.activo
+            }
+            usuarioAreas.push(usuarioArea);
+            console.log("usuarioAreas", usuarioAreas);
+        });
+        var usuarioEvaluacion =
+        {
+            "id" : UsuarioEvaluacion.id,
+            "usuarioId": state.userSelected.id,
+            "empresaId": state.userSelected.empresaId,
+            "evaluacionId": evaluacion.id,
+            "activo": evaluacion.asociar,
+            "usuarioAreas": usuarioAreas
+        };
+        state.userSelected.usuarioEvaluacions.push(usuarioEvaluacion);
+      });
+      console.log("state.userSelected.usuarioEvaluacions", state.userSelected.usuarioEvaluacions);
+      let usuarioEdit = {
+          "id": state.userSelected.id,
+          "perfilId": state.userSelected.perfilId,
+          "empresaId": state.userSelected.empresaId,
+          "email": state.userSelected.email,
+          "telefono": state.userSelected.telefono,
+          "password": state.userSelected.password,
+          "nombres": state.userSelected.nombres,
+          "activo": state.userSelected.activo,
+          "usuarioEmpresas": [
+            {
+                "usuarioId": state.userSelected.id,
+                "empresaId": state.userSelected.empresaId,
+                "activo": true
+            }
+          ],
+          "usuarioEvaluacions": state.userSelected.usuarioEvaluacions
       };
-      ApiNeva.post("Usuario/UpdateUser", bodyUser, { headers: header }
-        ).then((response) => {
-          if (response.status != 200)  return false;
+      console.log("usuarioEdit", usuarioEdit);
+      ApiNeva.post("Usuario/UpdateUser", usuarioEdit,
+        { headers: header }
+      )
+      .then((response) => {
+          if (response.status != 200) return false;
+          var usuario = response.data;
+          console.log("Update", usuario)
+          getUsers();
           swal.fire(
-            "Registro usuario",
-            "Se modificó usuario",
-            "success"
-          );
-          AsociarEvaluacion();
-          return;
-      });
-    };
-    const AsociarEvaluacion = async () => {
-      let chkAsociar = document.getElementsByName("chkAsociar");
-      var largo = 0;
-      chkAsociar.forEach((element) => {
-        var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.value);
-        let idEvaluacion = evaluacion ? evaluacion.id : "00000000-0000-0000-0000-000000000000";
-        
-        let bodyUsuarioEvaluacion = {
-          id: idEvaluacion,
-          usuarioId: state.userSelected.id,
-          empresaId: JSON.parse(localStorage.empresaModel).id,
-          evaluacionId: element.value,
-          activo: element.checked,
-        };
-        
-        ApiNeva.post("UsuarioEvaluacion/UsuarioEvaluacionInsertOrUpdate", bodyUsuarioEvaluacion , {
-          headers: header,
-        })
-        .then((response) => {
-          largo++;
-          if (response.status != 200){
-            swal.fire({
-              title: "Registro usuario",
-              text: "Error al guardar evaluación",
-              icon: "warning",
-            });
-            return false;
-          }
-          if (largo >= chkAsociar.length){
-            state.visibleModalUser = false;
-            resetUser();
-            getUsers();
-          }
-        })
-        .catch((error) => console.log(error));
-      });
-    };
-    const asociarArea = () => {
-      let checkArea = document.getElementsByName("checkArea");
-      let largo = 0;
-      //revisar por que se estan insertando en vez de actualizar
-      checkArea.forEach((element) => {
-        var segmentacionArea = state.UsuarioEvaluacionSelected.usuarioAreas.find((y) => y.segmentacionAreaId == element.value);
-        let idUsuarioArea = segmentacionArea ? segmentacionArea.id : "00000000-0000-0000-0000-000000000000";
-        
-        let bodyUsuarioArea = {
-          id: idUsuarioArea,
-          usuarioEvaluacionId: state.UsuarioEvaluacionSelected.id,
-          segmentacionAreaId: element.value,
-          activo: element.checked
-        };
-       
-        ApiNeva.post("UsuarioArea/UsuarioAreaInsertOrUpdate", bodyUsuarioArea , {
-          headers: header,
-        })
-        .then((response) => {
-          largo++;
-          if (response.status != 200){
-            swal.fire({
-              title: "Registro usuario",
-              text: "Error al guardar áreas",
-              icon: "warning",
-            });
-            return false;
-          }
-          if (largo >= checkArea.length){
-            state.visibleModalSegmentacionArea = false;
-           // state.visibleModalUser = true;
-            //state.segmentacionAreas = [];
-           // getEvaluaciones();
-            swal.fire(
-              "Registro usuario",
-              "Se asociaron areas correctamente",
+              "Editar usuario",
+              "Se modifico el usuario",
               "success"
-            );
-            resetUser();
-            getUsers();
-            return;
-            //getUsers();
-          }
-        })
-        .catch((error) => console.log(error));
+          );
+          resetUser();
+          state.visibleModalUser = false;
+          return;
+      })
+      .catch((error) => {
+        if (error.response.data.detail.includes("llave duplicada") || error.response.data.detail.includes("duplicate key") || error.response.data.detail.includes("pk_empresa_id")) {
+          swal.fire(
+              "Editar usuario",
+              "Por favor, verifique los datos ingresados son válidos. Mas detalle: " + error.response.data.detail,
+              "warning"
+          );
+          return;
+        } else {
+          swal.fire(
+              "Guardar usuario",
+              "Por favor, verifique los datos ingresados son válidos. Mas detalle: " + error.response.data.detail,
+              "warning"
+          );
+          return;
+        }
+      });
+    };
+
+    const resetUser = () => {
+      state.passwordFieldType = "password";
+      state.clave = "";
+      state.segmentacionAreas = [];
+      state.evaluaciones.forEach(element => {
+        element.asociar = false;
       });
     };
     
-    /*const switchVisibility = () => {
-      state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
-      state.clave = document.getElementById("password").value;
-    };
-    const switchVisibilityNew = () => {
-      state.passwordFieldType = state.passwordFieldType === "password" ? "text" : "password";
-      state.clave = document.getElementById("passwordNew").value;
-    };
-    const getProfile = () => {
-      state.perfiles = [];
-      ApiNeva.get("Perfil/GetPerfils", { headers: header })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.perfiles = response.data;
-          //console.log(" state.perfiles ", state.perfiles);
-          getUsers();
-        })
-        .catch((error) => console.log(error));
-    };
-    const getUsers = async () => {
-      state.usuarios = [];
-      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      ApiNeva.get("Usuario/GetUsuarioByIdEmpresa?empresaId=" + empresaId, {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.usuarios = response.data;
-          //console.log("state.usuarios 1  ", state.usuarios);
-          state.usuarios.forEach((element) => {
-            if (element.perfilId == null) {
-              element.perfil = { nombre: "sin definir", id: 0 };
-            } else
-              element.perfil = state.perfiles.find(
-                (x) => x.id == element.perfilId
-              );
-          });
-          getEmpresas();
-          //getEvaluacion();
-        })
-        .catch((error) => console.log(error));
-    };
-    const getEmpresas = async () => {
-      console.log("getEmpresas ");
-      state.empresas = [];
-      ApiNeva.post("Empresa/GetEmpresaById", JSON.parse(localStorage.empresaModel), { headers: header })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.empresas = response.data;
-          console.log("state.empresas",state.empresas);
-        })
-        .catch((error) => console.log(error));
-    };
-    const segmentacionArea = (evaluacionEmpresa) =>{
-      state.evaluacion = evaluacionEmpresa;
-      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
-        .then((response) => {
-            if (response.status != 200) return false;
-            state.usuarioAreas = [];
-            state.userSelected.usuarioEvaluacions.forEach(y => {
-                if (y.evaluacionId == state.evaluacion.id && y.empresaId == state.evaluacion.empresaId) {
-                    state.usuarioAreas = y.usuarioAreas
-                }
-            });
-            state.segmentacionAreas = response.data;
-            state.segmentacionAreas.forEach(x => {
-                var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
-                x.activo = false;
-                if (areaAsuario != undefined)  x.activo = areaAsuario.activo;
-            });
-            state.visibleModalUser = false;
-            state.visibleModalSegmentacionArea = true;
-        })
-        .catch((error) => console.log(error));
-    };
-    const segmentacionAreaNew = (evaluacionEmpresa) => {
-      state.evaluacion = evaluacionEmpresa;
-      ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", state.evaluacion, { headers: header, })
-        .then((response) => {
-            if (response.status != 200) return false;
-            state.segmentacionAreas = response.data;
-            state.segmentacionAreas.forEach(x => {
-                x.activo = false;
-            });
-            state.visibleModalNuevoUser = false;
-            state.visibleModalSegmentacionAreaNew = true;
-        })
-        .catch((error) => console.log(error));
-    };
-    const getUserSelected = (idusuario) => {
-      state.userSelected = state.usuarios.find((c) => c.id === idusuario);
-      state.visibleModalUser = true;
-      //state.perfilIdSelectedEdit = state.userSelected.perfil;
-      state.usuarioEvaluacions=[];
-      state.empresaSelected =  state.empresas;
-       cargarEvaluacion();
-    };
-    const cargarEvaluacion =  () => {
-      state.empresaSelected.evaluacionEmpresas.forEach(element => {
-          element.evaluacion.empresaId=element.empresaId
-          state.evaluacionEmpresas.push(element.evaluacion);
-      });
-      state.evaluacionEmpresas.forEach(element => {
-        var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
-        element.activo = false;
-        if (evaluacion != undefined) element.activo = evaluacion.activo;
-          
-      });
-    };
-    const ModalUserNuevo = () => {
-      state.visibleModalNuevoUser = true;
-      resetUser();
-      state.evaluacionEmpresas = [];
-      state.evaluacionEmpresas = state.empresas.evaluacionEmpresas;
-    };
-    const resetUser = () => {
-      state.userSelected = {
-        id: "",
-        perfilId: "",
-        empresaId: "",
-        telefono: "",
-        email: "",
-        password: "",
-        nombres: "",
-        fechaUltimoAcceso: null,
-        fechaCreacion: null,
-        activo: true,
-        empresa: [],
-        perfil: [],
-        usuarioEmpresas: [],
-        usuarioEvaluacions: [
-          {
-            
-            activo: true,
-            empresaId: "",
-            evaluacion: null,
-            evaluacionId: "",
-            fechaCreacion: null,
-            id: "",
-            usuarioAreas: [],
-            usuarioId: "",
-          }
-        ]
-      };
-      state.clave = "";
-      state.passwordFieldType = "password";
-    }
-    const resetAsociarArea = () => {
-      let boxes = document.getElementsByName("check");
-      for (let x = 0; x < boxes.length; x++) {
-        let obj = boxes[x];
-        if (obj.type == "checkbox") {
-            obj.checked = false;
-        }
-      }
-    };
-    const crearUser = () => {
-      //let nombre = document.getElementById("nombreNew").value;
-      //let pass = document.getElementById("passwordNew").value;
-      //let email = document.getElementById("emailNew").value;
-      //let activo = document.getElementById("activoNew").checked; 
-      //let idempresa = JSON.parse(localStorage.usuarioModel).empresaId;
-      
-      let asociar = document.getElementsByName("chkAsociarNew");
-      let asociarId = [];
-      for (let x = 0; x < asociar.length; x++) {
-        let obj = asociar[x];
-        if (obj.checked) {
-          asociarId.push(obj.id);
-        }
-      }
-      if (!state.userSelected.nombres) {
-          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
-          return false;
-      }
-      if (!state.userSelected.password) {
-          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
-          return false;
-      }
-      if (!state.userSelected.email || !validateEmail(state.userSelected.email)) {
-          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
-          return false;
-      }
-      
-      //state.userSelected.perfil = state.perfiles;
-      //state.userSelected.perfilId = state.perfiles.id;
-      state.userSelected.empresa = state.empresas;
-      state.userSelected.empresaId = state.empresas.id;
-      InsertOrUpdateUser(asociarId);
-    };
-    const InsertOrUpdateUser = (asociarId) => {
-      ApiNeva.post(
-        "Usuario/InsertOrUpdateUser?asociarIds=" + asociarId,
-        state.userSelected,
-        { headers: header }
-      ).then((response) => {
-        if (response.status != 200) return false;
-        swal.fire(
-          "Registro usuario",
-          "Se agregó usuario",
-          "success"
-        );
-        state.visibleModalNuevoUser = false;
-        getProfile();
-        return;
-      });
-    };
-    const modificarUser = () => {
-      //COMENTAR LOS DOCUMENT YA QUE SE ESTA VIENDO POR V-MODEL
-      let idusuario = state.userSelected.id.toString();
-      let nombre = document.getElementById("nombre").value;
-      let pass = document.getElementById("password").value;
-      let email = document.getElementById("email").value;
-      let activo = document.getElementById("activo").checked;
-      let asociar = document.getElementsByName("chkAsociar");
-      let idempresa = JSON.parse(localStorage.usuarioModel).empresaId;
-      let asociarId = [];
-      for (let x = 0; x < asociar.length; x++) {
-        let obj = asociar[x];
-        if (obj.checked) {
-          asociarId.push(obj.id);
-        }
-      }
-      if (!state.userSelected.nombres) {
-          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
-          return false;
-      }
-      if (!state.userSelected.password) {
-          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
-          return false;
-      }
-      if (!state.userSelected.email || !validateEmail(state.userSelected.email)) {
-          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
-          return false;
-      }
-      if (state.userSelected.id == localStorage.iduser) {
-        swal.fire({
-          title: "Modificar Usuario",
-          text: "¿Está seguro de modificar el estado del usuario en cesión?",
-          icon: "warning",
-          buttons: true,
-          showDenyButton: true,
-          confirmButtonText: 'Si',
-          denyButtonText: 'No',
-          customClass: {
-            actions: 'my-actions',
-            confirmButton: 'order-2',
-            denyButton: 'order-3',
-          }
-        }).then((resp) => {
-          if (!resp.isConfirmed) return;
-          Modificar(idusuario, idempresa, nombre, email, pass, activo, asociarId);
-        });
-        return;
-      }
-      Modificar(idusuario, idempresa, nombre, email, pass, activo, asociarId);
-    };
-    const Crear = (idempresa, nombre, email, pass, activo, asociarId) => {
-      ApiNeva.post(
-        "Usuario/InsertUser?&idempresa=" + idempresa + "&nombres="+ nombre +"&email=" + email +"&pass=" + pass + "&activo=" + activo + "&asociarIds=" + asociarId,
-        null,
-        { headers: header }
-      ).then((response) => {
-        if (response.status != 200) return false;
-        swal.fire(
-          "Registro usuario",
-          "Se agregó usuario",
-          "success"
-        );
-        state.visibleModalNuevoUser = false;
-        getProfile();
-        return;
-      });
-    };
-     const Modificar = (idusuario, idempresa, nombre, email, pass, activo, asociarId) => {
-      ApiNeva.post(
-        "Usuario/UpdateUser?&idusuario=" + idusuario+ "&idempresa=" + idempresa + "&nombres=" + nombre + "&email=" + email + "&pass=" + pass + "&activo=" + activo + "&asociarIds=" + asociarId,
-        null,
-        { headers: header }
-      ).then((response) => {
-        if (response.status != 200) return false;
-        swal.fire(
-          "Registro usuario",
-          "Se actualizó usuario",
-          "success"
-        );
-        state.visibleModalUser = false;
-        getProfile();
-        return;
-      });
-    };
-    const getUserDelete = (idusuario) => {
-      let mensaje = "¿Está seguro de eliminar el usuario?";
-      if (idusuario == localStorage.iduser) {
-        mensaje = "¿Está seguro de eliminar el usuario en cesión?";
-      }
-      swal.fire({
-        title: "Eliminar Usuario",
-        text: mensaje,
-        icon: "warning",
-        buttons: true,
-        showDenyButton: true,
-        confirmButtonText: 'Si',
-        denyButtonText: 'No',
-        customClass: {
-          actions: 'my-actions',
-          confirmButton: 'order-2',
-          denyButton: 'order-3',
-        }
-      }).then((resp) => {
-        if (!resp.isConfirmed) return;
-        Eliminar(idusuario);
-      });
-    };
-    const Eliminar = (idusuario) => {
-      ApiNeva.get(
-        "Usuario/DeleteUser?&idusuario=" + idusuario ,
-        null,
-        { headers: header }
-      ).then((response) => {
-        if (response.status != 200) return false;
-        swal.fire(
-          "Registro usuario",
-          "Se elimino usuario correctamente",
-          "success"
-        );
-        getProfile();
-        return;
-      });
-    };
-    const asociarArea = () => {
-    };
-    const setTextGuardarOrSolicitar = (text) => {
-      document.getElementById("btnGuardarOrSolicitar").innerText = "";
-      document.getElementById("btnGuardarOrSolicitar").innerText = text;
-    };
-    const guardarOrSolicitar = async () => {
-      //showSpining(true)
-      if (state.tabPaneActiveKey == 1) {
-        let emailSolicitud = document.getElementById("emailSolicitud").value;
-        let nombreDestinatario =
-          document.getElementById("NombreDestinatario").value;
-        state.perfilIdSelectedNewSolicitar = document.getElementById(
-          "perfilIdSelectedNewSolicitar"
-        ).options[
-          document.getElementById("perfilIdSelectedNewSolicitar").selectedIndex
-        ].value;
-        if (state.perfilIdSelectedNewSolicitar == 0) {
-          swal(
-            "Registro usuario",
-            "Debe seleccionar un tipo de perfil",
-            "warning"
-          );
-          //showSpining(false);
-          return;
-        }
-        if (!emailSolicitud || !validateEmail(emailSolicitud)) {
-          swal(
-            "Solicitar Registro Usuario",
-            "Debe ingresar un email válido",
-            "warning"
-          );
-          //showSpining(false);
-          return;
-        }
-        if (!nombreDestinatario) {
-          swal(
-            "Solicitar Registro Usuario",
-            "Debe ingresar nombre del destinatario",
-            "warning"
-          );
-          //showSpining(false);
-          return;
-        }
-        let idusuario = localStorage.iduser;
-        let bodySolicitud = {
-          idusuario: idusuario,
-          emailDestinatario: emailSolicitud,
-          destinatarioAlias: nombreDestinatario,
-          perfilId: state.perfilIdSelectedNewSolicitar,
-        };
-        ApiNeva.post("Usuario/SolicitudCreacionUsuario", bodySolicitud, {
-          headers: header,
-        }).then((response) => {
-          if (response.status != 200) {
-            //showSpining(false);
-            return false;
-          }
-          swal(
-            "Solicitar Registro Usuario",
-            "Se ha enviado al email indicado una solicitud de registro",
-            "success"
-          );
-          state.visibleModalNuevoUser = false;
-          getProfile();
-          return;
-        });
-        return;
-      }
-      let nombres = document.getElementById("nombresNew").value;
-      let apellidos = document.getElementById("apellidosNew").value;
-      //let rut = document.getElementById('rutNew').value;
-      let email = document.getElementById("emailNew").value;
-      let password = document.getElementById("passNew").value;
-      state.perfilIdSelectedNew = document.getElementById(
-        "perfilIdSelectedNew"
-      ).options[
-        document.getElementById("perfilIdSelectedNew").selectedIndex
-      ].value;
-      if (state.perfilIdSelectedNew == 0) {
-        swal(
-          "Registro usuario",
-          "Debe seleccionar un tipo de perfil",
-          "warning"
-        );
-        //showSpining(false);
-        return;
-      }
-      if (!email || !validateEmail(email)) {
-        swal("Registro usuario", "Debe ingresar un email", "warning");
-        //showSpining(false);
-        return;
-      }
-      if (!nombres) {
-        swal("Registro usuario", "Debe ingresar sus nombres", "warning");
-        //showSpining(false);
-        return;
-      }
-      if (!apellidos) {
-        swal("Registro usuario", "Debe ingresar sus apellidos", "warning");
-        //showSpining(false);
-        return;
-      }
-      if (!password) {
-        swal("Registro usuario", "Debe ingresar una password", "warning");
-        //showSpining(false);
-        return;
-      }
-      let bodyUser = {
-        email: email,
-        password: password,
-        nombres: nombres,
-        apellidos: apellidos,
-        //rut: rut,
-        fechaCreacion: null,
-        perfilId: state.perfilIdSelectedNew,
-      };
-      //console.log("route.query.uri", route.query.uri);
-      ApiNeva.post(
-        "Usuario/UsuarioCreate?token=" + localStorage.token,
-        bodyUser,
-        { headers: header }
-      )
-        .then((response) => {
-          if (response.status != 200) return false;
-          //showSpining(false);
-          swal(
-            "Registro usuario",
-            "Se ha enviado un email al usuario para confirmar el registro",
-            "success"
-          );
-          state.visibleModalNuevoUser = false;
-          return;
-        })
-        .catch((error) => {
-          //showSpining(false);
-          if (
-            error.response.data.detail.includes("llave duplicada") ||
-            error.response.data.detail.includes("duplicate key")
-          ) {
-            swal(
-              "Registro usuario",
-              "El email ya se encuentran registrados",
-              "warning"
-            );
-            state.visibleModalNuevoUser = false;
-            getProfile();
-            return;
-          }
-          swal(
-            "Registro usuario",
-            "Por favor, verifique los datos ingresados son válidos.",
-            "warning"
-          );
-          return;
-        });
-      // });
-    };
-    const showSpining = (isActivate) => {
-      if (isActivate) {
-        document.getElementById("loading").style.display = "inline-block";
-        document.getElementById("btnGuardarOrSolicitar").disabled = true;
-      } else {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("btnGuardarOrSolicitar").disabled = false;
-      }
-    };
-    //const onBoarding = async () => {
-    //  let user = JSON.parse(localStorage.getItem("usuarioModel"));
-    //  try {
-    //    state.isonboarding = await onBoardingHelper.getUserSeeMenu(
-    //      user.id,
-     //     "permisosUsuario",
-     //     header
-    //    );
-    //  } catch (error) {
-    //    console.log(error);
-    //  }
-     // if (!state.isonboarding) {
-     //   state.steps = localMenuOnvoarding.map((x) => {
-    //      return renderSteps(x);
-    //    });
-    //    await onBoardingHelper.setUserSeeMenu(
-    //      user.id,
-     //     "permisosUsuario",
-     //     header
-     //   );
-     // }
-    //};*/
     onMounted(() => {
       getUsers();
-      //getProfile();
-      //onBoarding();
-      /*if (!state.isonboarding) {
-        setTimeout(() => {
-          start();
-        }, 500);
-      }*/
     });
+
     return {
       cilPen,
       cilTrash,
@@ -1530,26 +1014,9 @@ export default {
       resetUser,
       resetNewUser,
       getSegmentacionArea,
-      resetAsociarArea,
       getSegmentacionAreaNew,
       crearUser,
       modificarUser,
-      asociarArea,
-      /*getUserSelected,
-      getUserDelete,
-      ModalUserNuevo,
-      resetUser,
-      InsertOrUpdateUser,
-      guardarOrSolicitar,
-      asociarArea,
-      modificarUser,
-      setTextGuardarOrSolicitar,
-      resetAsociarArea,
-      showSpining,
-      switchVisibility,
-      switchVisibilityNew,
-      segmentacionArea,
-      segmentacionAreaNew,*/
     };
   },
 };

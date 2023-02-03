@@ -116,121 +116,155 @@
         </div>
 
         <div id="resultadosPorArea">
-            <div class="p-1 mt-5 bg-secondary text-white d-flex justify-content-center bd-highlight " >  
-                <h4>Resultados por &aacute;reas</h4> 
-            </div>
+            <CRow class="mt-5">
+                <CCol :md="12">
+                    <div class="p-1 mt-5 bg-secondary text-white d-flex justify-content-center bd-highlight " >  
+                        <h4>Resultados por &aacute;reas</h4> 
+                    </div>
+
+                    <div id="Areas">
+                        <div  v-for="ima in IMA" :key="ima.id">
+                            <CRow class="mt-3">
+                                <CCol :md="4">
+                                    <CRow>
+                                        <CCol :md="12" class="text-start text-secondary">
+                                            <h1><strong>{{ima.nombreArea}}</strong></h1>
+                                        </CCol>
+                                    </CRow>
+                                    <CRow>
+                                        <CCol :md="12">
+                                            <CChart type="doughnut" :data="ima.nivelMadurezAreas" labels="madurez"/>
+                                        </CCol>
+                                    </CRow>
+                                </CCol>
+
+                                <CCol :md="8">
+                                    <CRow>
+                                        <CCol :md="11" class="text-start d-flex text-center mt-5">
+                                            <h4>Aporte IM</h4>
+                                            <div style="width: 2.5rem;height: 2.5rem;border-radius: 50%;background: #00b050;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:5px">
+                                                <b style="color:white">{{ima.imaValor}}</b>
+                                            </div>
+                                            <h4>Cumplimiento</h4>
+                                            <div style="width: 2.5rem;height: 2.5rem;border-radius: 50%;background: #4472c4;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:5px">
+                                                <b style="color:white">{{ima.cumplimiento}}%</b>
+                                            </div>
+                                            <h4>Brecha</h4>
+                                            <div style="width: 2.5rem;height: 2.5rem;border-radius: 50%;background: #ff0000;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:5px">
+                                                <b style="color:white">{{ima.brecha}}%</b>
+                                            </div>
+                                        </CCol>
+                                    </CRow>
+                                    <CRow>
+                                        <CCol :md="11" class="d-flex mt-2">
+                                        <CTable  class="w-50">
+                                                <CTableHead class="bg-primary text-white">
+                                                    <CTableRow>
+                                                        <CTableHeaderCell class="text-center" scope="col">Sub&aacute;reas maduras</CTableHeaderCell>
+                                                    </CTableRow>
+                                                </CTableHead>
+                                                <CTableBody>
+                                                    <CTableRow v-for="imsa in IMSA" :key="imsa.id">
+                                                        <CTableDataCell class="text-center" v-if="imsa.segmentacionAreaId == ima.segmentacionAreaId && imsa.SubAreaMadura != null">{{imsa.SubAreaMadura}}</CTableDataCell>
+                                                    </CTableRow>
+                                                </CTableBody>
+                                            </CTable>
+
+                                            <CTable  class="w-50">
+                                                <CTableHead class="bg-primary text-white">
+                                                    <CTableRow>
+                                                        <CTableHeaderCell class="text-center" scope="col">Sub&aacute;reas a mejorar</CTableHeaderCell>
+                                                    </CTableRow>
+                                                </CTableHead>
+                                                <CTableBody>
+                                                    <CTableRow v-for="imsa in IMSA" :key="imsa.id">
+                                                        <CTableDataCell class="text-center" v-if="imsa.segmentacionAreaId == ima.segmentacionAreaId && imsa.SubAreaMejorar != null">{{imsa.SubAreaMejorar}}</CTableDataCell>
+                                                    </CTableRow>
+                                                </CTableBody>
+                                            </CTable>
+                                        </CCol>
+                                    </CRow>
+                                </CCol>
+                            </CRow>
+
+                            <div id="capacidades" >
+                                <CRow class="mt-5">
+                                    <CCol :md="7">
+                                        <CRow>
+                                            <CCol :md="12" class="d-flex mt-2">
+                                                <CTable  class="w-60">
+                                                    <CTableHead class="bg-primary text-white">
+                                                        <CTableRow>
+                                                            <CTableHeaderCell class="text-center" scope="col">Top 3 capacidades</CTableHeaderCell>
+                                                        </CTableRow>
+                                                    </CTableHead>
+                                                    <CTableBody>
+                                                        <CTableRow v-for="capacidadvalorMayor in ima.capacidadvalorMayor" :key="capacidadvalorMayor.id" >
+                                                            <CTableDataCell class="text-center" >{{capacidadvalorMayor.nombre}}</CTableDataCell>
+                                                        </CTableRow>
+                                                    </CTableBody>
+                                                </CTable>
+
+                                                <CTable  class="w-60">
+                                                    <CTableHead class="bg-primary text-white">
+                                                        <CTableRow>
+                                                            <CTableHeaderCell class="text-center" scope="col">Top 3 peores capacidades</CTableHeaderCell>
+                                                        </CTableRow>
+                                                    </CTableHead>
+                                                    <CTableBody>
+                                                        <CTableRow v-for="capacidadvalorMenor in ima.capacidadvalorMenor" :key="capacidadvalorMenor.id" >
+                                                            <CTableDataCell class="text-center"> {{capacidadvalorMenor.nombre}}</CTableDataCell>
+                                                        </CTableRow>
+                                                    </CTableBody>
+                                                </CTable>
+                                            </CCol>
+                                        </CRow>
+                                    </CCol>
+
+                                    <CCol :md="5">
+                                        <CRow>
+                                            <CCol :md="12" >
+                                                <CChart type="bar" :data="ima.resumenCapacidad" labels="resumenCapacidad"/>
+                                            </CCol>
+                                        </CRow>
+                                    </CCol>
+
+                                </CRow>
+                            </div>
+                        </div>
+                    </div>
+                </CCol>
+            </CRow>
         </div>
 
-        <div id="Areas">
-            <div  v-for="ima in IMA" :key="ima.id">
-                <CRow class="mt-3">
-                    <CCol :md="4">
-                        <CRow>
-                            <CCol :md="12" class="text-start text-secondary">
-                                <h1><strong>{{ima.nombreArea}}</strong></h1>
-                            </CCol>
-                        </CRow>
-                        <CRow>
-                            <CCol :md="12">
-                                <CChart type="doughnut" :data="ima.nivelMadurezAreas" labels="madurez"/>
-                            </CCol>
-                        </CRow>
-                    </CCol>
-
-                     <CCol :md="8">
-                        <CRow>
-                            <CCol :md="11" class="text-start d-flex text-center mt-5">
-                                <h4>Aporte IM</h4>
-                                <div style="width: 2.5rem;height: 2.5rem;border-radius: 50%;background: #00b050;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:5px">
-                                    <b style="color:white">{{ima.imaValor}}</b>
-                                </div>
-                                <h4>Cumplimiento</h4>
-                                <div style="width: 2.5rem;height: 2.5rem;border-radius: 50%;background: #4472c4;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:5px">
-                                    <b style="color:white">{{ima.cumplimiento}}%</b>
-                                </div>
-                                <h4>Brecha</h4>
-                                <div style="width: 2.5rem;height: 2.5rem;border-radius: 50%;background: #ff0000;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:5px">
-                                    <b style="color:white">{{ima.brecha}}%</b>
-                                </div>
-                            </CCol>
-                        </CRow>
-                        <CRow>
-                            <CCol :md="11" class="d-flex mt-2">
-                               <CTable  class="w-50">
-                                    <CTableHead class="bg-primary text-white">
-                                        <CTableRow>
-                                            <CTableHeaderCell class="text-center" scope="col">Sub&aacute;reas maduras</CTableHeaderCell>
-                                        </CTableRow>
-                                    </CTableHead>
-                                    <CTableBody>
-                                        <CTableRow v-for="imsa in IMSA" :key="imsa.id">
-                                            <CTableDataCell class="text-center" v-if="imsa.segmentacionAreaId == ima.segmentacionAreaId && imsa.SubAreaMadura != null">{{imsa.SubAreaMadura}}</CTableDataCell>
-                                        </CTableRow>
-                                    </CTableBody>
-                                </CTable>
-
-                                <CTable  class="w-50">
-                                    <CTableHead class="bg-primary text-white">
-                                        <CTableRow>
-                                            <CTableHeaderCell class="text-center" scope="col">Sub&aacute;reas a mejorar</CTableHeaderCell>
-                                        </CTableRow>
-                                    </CTableHead>
-                                    <CTableBody>
-                                        <CTableRow v-for="imsa in IMSA" :key="imsa.id">
-                                            <CTableDataCell class="text-center" v-if="imsa.segmentacionAreaId == ima.segmentacionAreaId && imsa.SubAreaMejorar != null">{{imsa.SubAreaMejorar}}</CTableDataCell>
-                                        </CTableRow>
-                                    </CTableBody>
-                                </CTable>
-                            </CCol>
-                        </CRow>
-                    </CCol>
-                </CRow>
-
-                <div id="capacidades" >
-                    <CRow class="mt-5">
-                        <CCol :md="7">
-                            <CRow>
-                                <CCol :md="12" class="d-flex mt-2">
-                                    <CTable  class="w-60">
-                                        <CTableHead class="bg-primary text-white">
-                                            <CTableRow>
-                                                <CTableHeaderCell class="text-center" scope="col">Top 3 capacidades</CTableHeaderCell>
-                                            </CTableRow>
-                                        </CTableHead>
-                                        <CTableBody>
-                                            <CTableRow v-for="capacidadvalorMayor in ima.capacidadvalorMayor" :key="capacidadvalorMayor.id" >
-                                                <CTableDataCell class="text-center" >{{capacidadvalorMayor.nombre}}</CTableDataCell>
-                                            </CTableRow>
-                                        </CTableBody>
-                                    </CTable>
-
-                                    <CTable  class="w-60">
-                                        <CTableHead class="bg-primary text-white">
-                                            <CTableRow>
-                                                <CTableHeaderCell class="text-center" scope="col">Top 3 peores capacidades</CTableHeaderCell>
-                                            </CTableRow>
-                                        </CTableHead>
-                                        <CTableBody>
-                                            <CTableRow v-for="capacidadvalorMenor in ima.capacidadvalorMenor" :key="capacidadvalorMenor.id" >
-                                                <CTableDataCell class="text-center"> {{capacidadvalorMenor.nombre}}</CTableDataCell>
-                                            </CTableRow>
-                                        </CTableBody>
-                                    </CTable>
-                                </CCol>
-                            </CRow>
-                        </CCol>
-
-                         <CCol :md="5">
-                            <CRow>
-                                <CCol :md="12" >
-                                    <CChart type="bar" :data="ima.resumenCapacidad" labels="resumenCapacidad"/>
-                                </CCol>
-                            </CRow>
-                        </CCol>
-
-                    </CRow>
-                </div>
+        <div id="recomendaciones">
+            <div class="p-1 mt-5 bg-secondary text-white d-flex justify-content-center bd-highlight " >  
+                <h4>Recomendaciones</h4> 
             </div>
+            <CRow class="mt-5">
+                <CCol :md="12">
+                    <CTable>
+                        <CTableHead class="bg-primary text-white">
+                            <CTableRow>
+                                <CTableHeaderCell class="text-center" scope="col">Capacidad</CTableHeaderCell>
+                                <CTableHeaderCell class="text-center" scope="col">&Aacute;rea / Sub&aacute;rea</CTableHeaderCell>
+                                <CTableHeaderCell class="text-center" scope="col">Recomendaci&oacute;n</CTableHeaderCell>
+                                <CTableHeaderCell class="text-center" scope="col">Importancia para la empresa</CTableHeaderCell>
+                                <CTableHeaderCell class="text-center" scope="col">Evaluaci&oacute;n</CTableHeaderCell>
+                            </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                            <CTableRow v-for="recomendacion in recomendaciones " :key="recomendacion.id" >
+                                <CTableDataCell class="text-center"> {{recomendacion.preguntaCapacidad}}</CTableDataCell>
+                                <CTableDataCell class="text-center"> {{recomendacion.nombreArea}} / {{recomendacion.nombreSubArea}}</CTableDataCell>
+                                <CTableDataCell class="text-center"> {{recomendacion.respuestaRealimentacion}}</CTableDataCell>
+                                <CTableDataCell class="text-center"> {{recomendacion.tipoImportanciaNombre}}</CTableDataCell>
+                                <CTableDataCell class="text-center"> </CTableDataCell>
+                            </CTableRow>
+                        </CTableBody>
+                    </CTable>
+                </CCol>
+            </CRow>
         </div>
     </div>
     <button @click="exportToPDF">Export to PDF</button>
@@ -274,7 +308,7 @@ export default {
         resumenImportanciaRelativa: [],
         evaluacionSelected: [],
         resumenPuntuacionArea: [],
-        
+        recomendaciones: [],
     });
 
     
@@ -384,6 +418,7 @@ export default {
                         graficoMadurezGeneral();
                         getGraficoImportanciaRelativa();
                         getPuntuacionArea();
+                        getRecomendacionArea();
                         return;
                     })
                     .catch((error) => {
@@ -672,7 +707,7 @@ export default {
         });
     };
 
-    const getPuntuacionArea = () => {  //VERIFICAr como OBTENER PUNTUADCION DE AREAS
+    const getPuntuacionArea = () => { 
       let dataSet = [];
       let labels = [];
       let valorDataList = [];
@@ -693,6 +728,24 @@ export default {
         labels: labels,
         datasets: dataSet,
       };
+    };
+
+    const getRecomendacionArea = () => {  //VERIFICAr como OBTENER PUNTUADCION DE AREAS
+        let filtro = {
+            id: state.IM[0].evaluacionEmpresaId
+        };
+        ApibackOffice.post("EvaluacionEmpresa/GetPlanMejoras", filtro,
+            { headers: header }
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.recomendaciones = response.data
+            console.log("state.recomendaciones", state.recomendaciones);
+            return;
+        })
+        .catch((error) => {
+            console.log("error->", error);
+        });
     };
 
     onMounted(() => {
