@@ -12,7 +12,7 @@
     <link rel="stylesheet" :href="style">
 </head>
 
-<body class="body-login w-100">
+<div class="body-login">
     <header class=" py-2 nav-header">
       <div class="container">
         <div class="d-flex justify-content-between">
@@ -40,7 +40,7 @@
             <div class="col-12 col-sm-5 col-lg-6 d-flex justify-content-center align-items-center p-md-2 p-lg-5">
                 <div class="container m-md-2 m-lg-5 center-form">
                     <div class="mb-4">
-                        <img class="mb-md-3" :src="imgLogo" alt="">
+                        <img class="mb-md-3 mt-5" :src="imgLogo" alt="">
                     <h2 class="mb-2">Ingresar</h2>
                     <p class="gris-400 p-10">Bienvenido de nuevo a su cuenta.</p>
                     </div>
@@ -81,7 +81,7 @@
             </div>
         </div>
     </div>
-</body>
+</div>
 </html>
 
   <!-- MODAL LOGIN ADMINISTRADOR O CONSULTOR-->
