@@ -15,7 +15,7 @@
     <div class="container">
       <div class="d-flex justify-content-between">
         <div class="nav-login">
-          <img class="img-logo" :src="imgIcon" alt="simbolo neva360">
+          <img class="img-logo" @click="ir('Login')" style="cursor:pointer" :src="imgIcon" alt="simbolo neva360">
         </div>
         <nav class="d-flex">
             <ul class="navbar">
@@ -100,7 +100,7 @@
                   <div class="col-12 field">
                       <div class="control has-icon">
                           <label for="">Email</label>
-                          <input class="input w-100" type="email" v-model="email" placeholder="Email" >
+                          <input class="input w-100" type="email" v-model="email" placeholder="Email" title="">
                           <div class="registro-icon" for="">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
                           </div>

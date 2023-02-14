@@ -1125,7 +1125,7 @@ export default {
 
     const cargarTablaPaso3 = async () => {
       state.tablaSegmentacionAreas = [];
-       state.estadoGeneral = 0;
+      state.estadoGeneral = 0;
       //state.allSegmentacionSubAreasByIdArea = [];
       let contador = 0;
       let contadorArea = 0;
@@ -1137,10 +1137,11 @@ export default {
         state.allSegmentacionSubAreas.forEach(y => {
             if (y.segmentacionAreaId == x.id){
               contador++;
-              x.estado = (x.estado + parseInt(y.estado)) / contador;
+              x.estado = (x.estado + parseInt(y.estado));
               //x.nombreArea = y.nombreArea;
             };
         });
+        x.estado = x.estado / contador;
         estadoGeneral = (estadoGeneral + x.estado);
         state.tablaSegmentacionAreas.push(x);
       });
