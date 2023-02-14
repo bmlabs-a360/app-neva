@@ -5,9 +5,9 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm install --loglevel=verbose
 COPY . .
-RUN npm run build
+RUN npx vue-cli-service build --mode=development
 
 # production stage
 FROM nginx:1.13.12-alpine as production-stage
