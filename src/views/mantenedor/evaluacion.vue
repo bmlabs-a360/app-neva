@@ -607,36 +607,36 @@ export default {
       nombreSubAreaSelected: "",
     });
 
-  const SiguienteAtras = async (formStepsNum) => {
-    const formSteps = document.querySelectorAll(".form-step");
-    const progressBar = document.querySelector(".progressbar");
-    formSteps.forEach((formStep) => {
-      formStep.classList.contains("form-step-active") &&
-        formStep.classList.remove("form-step-active");
-    });
-    formSteps[formStepsNum].classList.add("form-step-active");
+    const SiguienteAtras = async (formStepsNum) => {
+      const formSteps = document.querySelectorAll(".form-step");
+      const progressBar = document.querySelector(".progressbar");
+      formSteps.forEach((formStep) => {
+        formStep.classList.contains("form-step-active") &&
+          formStep.classList.remove("form-step-active");
+      });
+      formSteps[formStepsNum].classList.add("form-step-active");
 
-    const progressSteps = document.querySelectorAll(".progress-step");
-    progressSteps.forEach((progressStep, idx) => {
-      if (idx < formStepsNum + 1) {
-        progressStep.classList.add("progress-step-active");
-      } else {
-        progressStep.classList.remove("progress-step-active");
+      const progressSteps = document.querySelectorAll(".progress-step");
+      progressSteps.forEach((progressStep, idx) => {
+        if (idx < formStepsNum + 1) {
+          progressStep.classList.add("progress-step-active");
+        } else {
+          progressStep.classList.remove("progress-step-active");
+        }
+      });
+
+      const progressActive = document.querySelectorAll(".progress-step-active");
+
+      progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+      
+      if (formStepsNum===3) {
+        progressBar.classList.add("d-none")
       }
-    });
+      else if (formStepsNum<3) {
+        progressBar.classList.remove("d-none")
+      }
 
-    const progressActive = document.querySelectorAll(".progress-step-active");
-
-    progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
-    
-    if (formStepsNum===3) {
-      progressBar.classList.add("d-none")
-    }
-    else if (formStepsNum<3) {
-      progressBar.classList.remove("d-none")
-    }
-
-  };
+    };
 
     const getEvaluaciones = async () => {
       state.evaluaciones = [];
@@ -1288,7 +1288,7 @@ export default {
            if (state.perfilSelected.nombre == "Consultor") {
             getDeficienciaRelacionada();
            } else {
-             getRespuesta();
+            getRespuesta();
            }
         })
         .catch((error) => console.log(error));

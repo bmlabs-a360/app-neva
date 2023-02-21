@@ -15,12 +15,12 @@
 </head>
 -->
 <!--Contenido-->
-<section class="cards mb-4">
+<!--<section class="cards mb-4">
     <div class="cards-hello">
         <h2>Hola {{userSelected.nombres}}, lo estás haciendo muy bien</h2>
         <p>Empiece a utilizar nuestras herramientas de gestión de equipos y proyectos Aprende más</p>
     </div>
-    <!--<div class="cards-message flex-column">
+    <div class="cards-message flex-column">
         <div class="d-flex w-100  justify-content-between">
             <p>Inbox</p>
             <div>
@@ -47,8 +47,8 @@
         <div>
 
         </div>
-    </div>-->
-</section>
+    </div>
+</section>-->
 <div class="col-12 d-flex mt-3 mt-sm-0 flex-column flex-sm-row justify-content-between align-items-center">
     <!--<ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -77,7 +77,7 @@
     </div>-->
 </div>
 <!--content tabs-->
-<div class="tab-content pb-2" id="pills-tabContent">
+<div class="tab-content pb-2" id="pills-tabContent" v-if="perfil == 'Usuario básico'">
     <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
         <!--content tabs-->
         <div class="tab-content pb-2" id="pills-tabContent">
@@ -86,9 +86,9 @@
 
                 <div class="card my-3 p-3 d-flex flex-column flex-lg-row align-items-center justify-content-between" v-for="empresa in empresas" :key="empresa.id">
                     <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
-                        <div class="img-left me-lg-3" style="width: 5rem;height: 5rem;border-radius: 50%;background: #15acc0;display: flex;justify-content: center;align-items: center;text-align: center;margin:0px auto;padding:3%">
+                        <div class="img-left me-lg-3 btn circle-two-n2">
                             <!--<img class="company" :src="logoLatam" alt="">-->
-                            <b style="color:white">{{empresa.iniciales}}</b>
+                            {{empresa.iniciales}}
                         </div>
                         <div class="me-md-3">
                             <h3 class="my-3 my-md-0 text-center text-md-start">{{empresa.razonSocial}}</h3>
@@ -367,10 +367,12 @@ export default {
     const state = reactive({
         userSelected : [],
         empresas : [],
+        perfil : [],
     });
 
     const getUsuario = () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
+        state.perfil = state.userSelected.perfil.nombre;
         getEmpesas();
     };
 

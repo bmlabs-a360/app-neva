@@ -1,146 +1,129 @@
 <template>
-  <!--<CHeader position="sticky" class="mb-4">
-    <CContainer fluid>
-      --<CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
-        <CIcon icon="cil-menu" size="lg" />
-      </CHeaderToggler>--
-      <--CImage  width="140" height="60" fluid rounded alt="Logo Neva" :src="imgLogo"/--
-
-      <CHeaderBrand class="mx-auto d-lg-none" to="/">
-        <--CIcon :icon="logo" height="48" alt="Logo" /--
-      </CHeaderBrand>
-      <CHeaderNav class="d-none d-md-flex me-auto">
-        <div></div>
-        <CNavItem>
-          <CNavLink id="dashboard" @click="ir('Dashboard')" href="#">
-            Dashboard
-          </CNavLink>
-        </CNavItem>
-         <CNavItem>
-          <CNavLink @click="ir('Mantenedor')" href="#">Evaluacion</CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink @click="ir('Permisos')" href="#">Usuario</CNavLink>
-        </CNavItem>
-      </CHeaderNav>
-      <CHeaderNav>
-        <CNavItem>
-          <CNavLink href="#" @click="logout">
-            <CIcon icon="cil-lock-locked" /> Logout
-          </CNavLink>
-        </CNavItem>
-      </CHeaderNav>
-    </CContainer>
-    <CHeaderDivider />
-    <CContainer fluid>
-      <AppBreadcrumb />
-    </CContainer>
-  </CHeader>-->
-
   <!--Header-->
- 
-  <div class="col-12 d-flex justify-content-between">
-    <div class="page-title mt-5 pt-5 pt-sm-0 mt-sm-0">
+  <div class="col-12 d-flex justify-content-between" v-if="perfil == 'Consultor' || perfil == 'Usuario pro (empresa)'">
+    <div class="page-title mt-5 pt-5 pt-sm-0 mt-sm-0" >
         <div class="py-3 d-flex align-items-center">
-          <!--<div class="nav-media img-left">
-            <span class="me-3 menu-toggle has-chevron">
-                <span class="icon-box-toggle">
-                    <span class="rotate"><i aria-hidden="true" class="icon-line-top"></i><i aria-hidden="true" class="icon-line-center"></i><i aria-hidden="true" class="icon-line-bottom"></i>
+            <div class="nav-media img-left">
+                <span class="me-3 menu-toggle has-chevron">
+                    <span class="icon-box-toggle" @click="AbrirMenu">
+                        <span class="rotate"><i aria-hidden="true" class="icon-line-top"></i><i aria-hidden="true" class="icon-line-center"></i><i aria-hidden="true" class="icon-line-bottom"></i>
+                        </span>
                     </span>
                 </span>
-            </span>
-            <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
-            <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
-          </div>-->
-          <!--<h1 class="title">
-              Tus Clientes
-          </h1>-->
-        </div>
-        <!--<div class="toolbar ml-auto desktop-toolbar">
-            <div class="dropdown is-spaced is-dots is-right dropdown-trigger">
-                <div tabindex="0" class="is-trigger" aria-haspopup="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:bell" class="iconify iconify--feather"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9m-4.27 13a2 2 0 0 1-3.46 0"></path></svg>
-                    <span class="new-indicator pulsate"></span>
-                </div>
-                <div class="dropdown-menu">
-                    <div class="dropdown-content">
-                        <div class="heading">
-                            <div class="heading-left">
-                                <h6 class="heading-title">Notificación</h6>
-                            </div>
-                            <div class="heading-right">
-                                <a href="#" class="notification-link"> Ver todas </a>
-                            </div>
-                        </div>
-                        <ul class="notification-list">
-                            <li>
-                                <a class="notification-item">
-                                    <div class="img-left me-2">
-                                        <img class="user-photo" alt="" src="assets/img/nav/pers/02.png">
-                                    </div>
-                                    <div class="user-content">
-                                        <p class="user-info"><span class="name">Maria C.</span> Dejó un comentario. </p>
-                                        <p class="time">1 hora antes</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="notification-item">
-                                    <div class="img-left me-2">
-                                        <img class="user-photo" alt="" src="assets/img/nav/pers/01.jpg">
-                                    </div>
-                                    <div class="user-content">
-                                        <p class="user-info"><span class="name">Pamela S.</span> Subido un archivo. </p>
-                                        <p class="time">1 hora antes</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="notification-item">
-                                    <div class="img-left me-2">
-                                        <img class="user-photo" alt="" src="assets/img/nav/pers/01.jpg">
-                                    </div>
-                                    <div class="user-content">
-                                        <p class="user-info"><span class="name">Tara S.</span> Te envié un mensaje </p>
-                                        <p class="time">3 hora antes</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="notification-item">
-                                    <div class="img-left me-2">
-                                        <img class="user-photo" alt="" src="assets/img/nav/pers/02.png">
-                                    </div>
-                                    <div class="user-content">
-                                        <p class="user-info"><span class="name">Francisca M.</span> Dejó un comentario. </p>
-                                        <p class="time">3 hora antes</p>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+                <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
             </div>
-        </div>-->
-    </div>
+            <h1 class="title">
+                Usuarios
+            </h1>
+        </div>
+        <div class="toolbar ml-auto desktop-toolbar">
+          <!-- Icono 3-->
+          <div class="dropdown is-spaced is-dots is-right dropdown-trigger">
+              <div tabindex="0" class="is-trigger" aria-haspopup="true">
+              <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" @click="logout" style="cursor:pointer">
+                  <path d="M2.93266 2.62109H7.59933V7.28776H2.93266V2.62109ZM10.266 2.62109H14.9327V7.28776H10.266V2.62109ZM10.266 9.95443H14.9327V14.6211H10.266V9.95443ZM2.93266 9.95443H7.59933V14.6211H2.93266V9.95443Z" stroke="#6E787C" stroke-width="1.65337" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>                              
+                <span class="new-indicator pulsate"></span>
+              </div>
+          </div>
+          <!--Fin Icono 3-->
+        </div>
+    </div> 
+  </div>
+
+  <div class="col-12 d-flex justify-content-between" v-if="perfil == 'Usuario básico'">
+    <div class="page-title mt-5 pt-5 pt-sm-0 mt-sm-0" >
+        <div class="py-3 d-flex align-items-center">
+            <div class="nav-media img-left">
+                <span class="me-3 menu-toggle has-chevron">
+                    <span class="icon-box-toggle">
+                        <span class="rotate"><i aria-hidden="true" class="icon-line-top"></i><i aria-hidden="true" class="icon-line-center"></i><i aria-hidden="true" class="icon-line-bottom"></i>
+                        </span>
+                    </span>
+                </span>
+                <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+                <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
+            </div>
+            <h1 class="title">
+              Tus Clientes
+            </h1>
+        </div>
+        <div class="toolbar ml-auto desktop-toolbar">
+          <!-- Icono 3-->
+          <div class="dropdown is-spaced is-dots is-right dropdown-trigger">
+              <div tabindex="0" class="is-trigger" aria-haspopup="true">
+              <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" @click="logout" style="cursor:pointer">
+                  <path d="M2.93266 2.62109H7.59933V7.28776H2.93266V2.62109ZM10.266 2.62109H14.9327V7.28776H10.266V2.62109ZM10.266 9.95443H14.9327V14.6211H10.266V9.95443ZM2.93266 9.95443H7.59933V14.6211H2.93266V9.95443Z" stroke="#6E787C" stroke-width="1.65337" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>                              
+                <span class="new-indicator pulsate"></span>
+              </div>
+          </div>
+          <!--Fin Icono 3-->
+        </div>
+    </div> 
+  </div>
+
+  <div class="col-12 d-flex justify-content-between" v-if="perfil == 'Gran empresa'">
+    <div class="page-title mt-5 pt-5 pt-sm-0 mt-sm-0" >
+        <div class="py-3 d-flex align-items-center">
+            <div class="nav-media img-left">
+                <span class="me-3 menu-toggle has-chevron">
+                    <span class="icon-box-toggle">
+                        <span class="rotate"><i aria-hidden="true" class="icon-line-top"></i><i aria-hidden="true" class="icon-line-center"></i><i aria-hidden="true" class="icon-line-bottom"></i>
+                        </span>
+                    </span>
+                </span>
+                <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+                <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
+            </div>
+            <h1 class="title">
+              Gran Empresa
+            </h1>
+        </div>
+        <div class="toolbar ml-auto desktop-toolbar">
+          <!-- Icono 3-->
+          <div class="dropdown is-spaced is-dots is-right dropdown-trigger">
+              <div tabindex="0" class="is-trigger" aria-haspopup="true">
+              <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" @click="logout" style="cursor:pointer">
+                  <path d="M2.93266 2.62109H7.59933V7.28776H2.93266V2.62109ZM10.266 2.62109H14.9327V7.28776H10.266V2.62109ZM10.266 9.95443H14.9327V14.6211H10.266V9.95443ZM2.93266 9.95443H7.59933V14.6211H2.93266V9.95443Z" stroke="#6E787C" stroke-width="1.65337" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>                              
+                <span class="new-indicator pulsate"></span>
+              </div>
+          </div>
+          <!--Fin Icono 3-->
+        </div>
+    </div> 
   </div>
   <!--Termino Header-->
 </template> 
 
 <script>
+import { reactive, onMounted, toRefs} from "vue";
 import AppBreadcrumb from "./AppBreadcrumb";
 
 import imgLogo from "@/assets/images/neva_login.png";
 import router from "@/router/index";
 import logoNegro from "@/assets/img/nav/logos/logo-negro.svg";
 import logoPers from "@/assets/img/nav/pers/02.png";
+import bootstrap from "@/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 export default {
   name: "AppHeader",
   components: {
     AppBreadcrumb,
+    bootstrap,
   },
   setup() {
+
+    const state = reactive({
+        userSelected : [],
+        empresas : [],
+        perfil : [],
+        menuOpen: false,
+        dropdown: false,
+    });
+
     const logout = () => {
       localStorage.token = null;
       return router.push({
@@ -153,12 +136,41 @@ export default {
       return router.push({ name: namePageDestiny });
     };
 
+    const getUsuario = () => {
+        state.userSelected = JSON.parse(localStorage.usuarioModel);
+        state.userSelected.iniciales =  state.userSelected.nombres.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+        state.perfil = state.userSelected.perfil.nombre;
+    };
+
+    const AbrirMenu = () => {
+        const sider = document.querySelector('.sidebar-panel');
+        const viewWrapper = document.querySelector('.view-wrapper');
+        const colorNav =document.querySelector('.color-nav');
+        if (!state.menuOpen) {
+          sider.classList.add('active');
+          colorNav.classList.add('active');
+          viewWrapper.classList.add('is-pushed-full');
+          state.menuOpen=true;  
+        }else {
+            sider.classList.remove('active');
+            viewWrapper.classList.remove('is-pushed-full');
+            colorNav.classList.remove('active');
+            state.menuOpen=false;
+        }
+    };
+
+    onMounted(() => {
+      getUsuario();
+    });
+
     return {
+      ...toRefs(state),
       imgLogo,
       logoNegro,
       logoPers,
       logout,
       ir,
+      AbrirMenu
     };
   },
 };

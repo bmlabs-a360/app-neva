@@ -1,11 +1,12 @@
 .cards {
-    &-none {
-        padding: 0px!important;
-    }
-    @include mv(576px){display: none!important;}
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    &-none {
+        padding: 0px!important;
+    }
+   // @include mv(576px){display: none!important;}
+    
     &-hello {
         @include mv(768px){width: calc(1000% - 10px);}
         border-radius: 8px;
@@ -31,7 +32,7 @@
         }
     }
     &-message {
-        @include mv(768px){width: calc(1000% - 10px);}
+        @include mv(768px){width: calc(100% - 10px);}
         padding: 40px 16px;
         border-radius: 8px;
         background-color: white;
@@ -40,4 +41,64 @@
         justify-content: center;
         align-items: center;
     }  
+    &-grafic {
+        width: 100%;
+        @include min-mv(520px){width: calc(50% - 10px);}
+        @include min-mv(780px){width: calc(32% - 10px);} 
+        @include min-mv(1100px){width: calc(24% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        color: black;
+        padding: 24px 16px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: $secundary-400;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+
+    }
+    &-hello-2 {
+     //   @include mv(768px){width: calc(1000% - 10px);}
+        @include mv(1100px){display: none!important;}
+        border-radius: 8px;
+        background-color: $aqua-500;
+        width: calc(19% - 20px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        padding: 40px 16px;
+        text-align: center;
+        & h2 {
+            font-size: 18px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 16px;
+            
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+    }
 }

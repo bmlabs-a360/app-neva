@@ -27,12 +27,19 @@
 
 .table
 {
+    min-width: 700px!important;
+    & .icons {
+        border: none;
+        background-color: white;
+
+    } 
     &-progress {
         display: flex;
         color:$yellow-400;
         justify-content: center;
         align-items: center;
         width: 100%;
+        
         svg {
             margin-right: .4rem;
             g {
@@ -64,4 +71,26 @@
             margin-bottom: 0;
         }
     }
+}
+.table-hover > tbody > tr:hover {
+    
+    & .icons {
+        background-color: $gris-300;
+    }
+}
+
+.table-hover > tbody > tr:hover > * {
+    background-color: $gris-300;
+    --bs-table-accent-bg:$gris-300!important;
+}
+thead, tbody td, th {
+    vertical-align:middle;
+    border-style: none;
+    
+}
+tr:not(:last-child) {
+    border-bottom:solid $gris-300 1px;
+} 
+table > :not(caption) > * > * {
+    border-bottom-width: none;
 }

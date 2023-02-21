@@ -40,7 +40,7 @@
             <div class="col-12 col-sm-5 col-lg-6 d-flex justify-content-center align-items-center p-md-2 p-lg-5">
                 <div class="container m-md-2 m-lg-5 center-form">
                     <div class="mb-4">
-                        <img class="mb-md-3 mt-5" :src="imgLogo" alt="">
+                        <img class="img-logo mb-md-3" :src="imgLogo" alt="">
                     <h2 class="mb-2">Ingresar</h2>
                     <p class="gris-400 p-10">Bienvenido de nuevo a su cuenta.</p>
                     </div>
@@ -209,7 +209,7 @@ import { useRoute } from "vue-router";
 import { useReCaptcha } from "vue-recaptcha-v3";
 import { style } from "@/assets/css/style.css";
 import imgLogin from "@/assets/img/ilustraciones/login.svg";
-import imgLogo from "@/assets/img/logo.svg";
+import imgLogo from "@/assets/img/nav/logos/logo-negro.svg";
 import imgIcon from "@/assets/img/neva-logo.svg";
 export default {
   name: "Login",
@@ -234,6 +234,7 @@ export default {
       clave: "",
       visibleModalLoginConsultor: false,
       empresas: [],
+      dashboard: "Dashboard"
 
     });
 
@@ -356,6 +357,7 @@ export default {
     const accesosValidacion = (response) => {
       localStorage.token = response.data.tokenBearer;
       localStorage.iduser = response.data.usuarioModel.id;
+      state.dashboard = response.data.dashboard;
       localStorage.setItem(
         "usuarioModel",
         JSON.stringify(response.data.usuarioModel)
@@ -409,7 +411,8 @@ export default {
           return false;
         }
       });
-      return router.push({ name: "Dashboard" });
+      //return router.push({ name: "Dashboard" });
+      return router.push({ name: response.data.dashboard });
     };
 
    
@@ -467,7 +470,7 @@ export default {
           return false;
         }
       });
-      return router.push({ name: "Dashboard" });
+      return router.push({ name: state.dashboard });
     };
     
     const buscarEnter = (elemento) => {

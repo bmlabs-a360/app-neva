@@ -22,6 +22,24 @@ const routes = [
           import(/* webpackChunkName: "dashboard" */ "@/views/Dashboard.vue"),
       },
       {
+        path: "/homedashboard",
+        name: "HomeDashboard",
+        meta: {
+          middleware: [auth, log],
+        },
+        component: () =>
+          import(/* webpackChunkName: "dashboard" */ "@/views/HomeDashboard.vue"),
+      },
+      {
+        path: "/homedashboardgranempresa",
+        name: "HomeDashboardGranEmpresa",
+        meta: {
+          middleware: [auth, log],
+        },
+        component: () =>
+          import(/* webpackChunkName: "dashboard" */ "@/views/HomeDashboardGranEmpresa.vue"),
+      },
+      {
         path: "/mantenedor",
         name: "Mantenedor",
         component: {

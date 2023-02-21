@@ -368,6 +368,10 @@
 & p {
   margin-bottom: 0;
   color: $gris-400;
+  font-size: 12px;
+}
+& .responsible-table{
+  color: $aqua-40;
 }
 
 }
@@ -384,6 +388,15 @@
       border:solid 1px $aqua-400;
       box-shadow: $sucess-box-shadow;
     }
+  }
+  &.orange{
+    color: white;
+    background-color:$yellow-400;
+  }
+  &.disabled{
+    background-color: $gris-300;
+    border-color: $gris-300;
+    color: $gris-400;
   }
   &.circle {
     padding:8px 12px;
@@ -408,6 +421,79 @@
       border:solid 1px $yellow-400;
     }
   }
+  &.circle-two-n1 {
+    font-size: 21px;
+    padding:8px 12px;
+    border:solid 1px $yellow-100;
+    border-radius: 50%;
+    color:$secundary-400;
+    font-weight: 600;
+    background-color: $yellow-100;
+    margin-bottom: 0;
+    @include mv(992px){
+      top: 10px;
+      right: 10px;}
+    &.active {
+      color:white;
+      background-color: $yellow-400;
+      border:solid 1px $yellow-400;
+    }
+  }
+  &.circle-two-n2 {
+    font-size: 21px;
+    padding:8px 12px;
+    border:solid 1px $aqua-50;
+    border-radius: 50%;
+    color:$secundary-400;
+    font-weight: 600;
+    background-color: $aqua-50;
+    margin-bottom: 0;
+    &.active {
+      color:white;
+      background-color: $yellow-400;
+      border:solid 1px $yellow-400;
+    }
+  }
+  &.circle-two-n3 {
+    font-size: 21px;
+    padding:8px 12px;
+    border:solid 1px $yellow-50;
+    border-radius: 50%;
+    color:$secundary-400;
+    font-weight: 600;
+    background-color: $yellow-50;
+    margin-bottom: 0;
+    @include mv(992px){
+      top: 10px;
+      right: 10px;}
+    &.active {
+      color:white;
+      background-color: $yellow-400;
+      border:solid 1px $yellow-400;
+    }
+  }
+  &.circle-two-n4 {
+    font-size: 21px;
+    padding:8px 12px;
+    border:solid 1px $aqua-25;
+    border-radius: 50%;
+    color:$secundary-400;
+    font-weight: 600;
+    font-size: 21;
+    background-color: $aqua-25;
+    margin-bottom: 0;
+    @include mv(992px){
+      top: 10px;
+      right: 10px;}
+    &.active {
+      color:white;
+      background-color: $yellow-400;
+      border:solid 1px $yellow-400;
+    }
+  }
+  &.grafica{
+    gap: 10px;
+  }
 }
 
 .nav-media {
@@ -430,7 +516,7 @@
     & .user-photo {
     position: absolute;
     top: 14px;
-    right: 30px;
+    right: 90px;
     height: 1.8rem;
     width: 1.8rem;
     }
@@ -439,3 +525,44 @@
 
 }
 
+  .pagination{
+    gap: 5px;
+  }
+  .page-item:last-child .page-link{
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+  .page-item:first-child .page-link{
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+  .page-link{
+  border-radius: 50px;
+  border: 50px;
+  background-color: white;
+  color: black;
+  &.active, .active > & {
+    background-color: $success;
+  }
+}
+.controls{
+  a{
+    span{
+      color: $success;
+    }
+  }
+}
+
+.pie-table .table {
+    &:last-child{
+      margin-bottom: 0px !important;
+    }
+}
+
+.mainregister{
+  flex-direction: column;
+}
