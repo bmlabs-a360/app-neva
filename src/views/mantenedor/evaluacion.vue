@@ -167,7 +167,7 @@
               </div>
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" v-if="estadoGeneral == 100" @click="ir('Reporte')">Guardar</button>
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" @click="() => { modalGuardarRespuestas = true; }">Guardar</button>
               </div>
             </div>
           </div>
@@ -223,7 +223,7 @@
               <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1> 
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" v-if="estadoGeneral == 100" @click="ir('Reporte')">Guardar</button>
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" v-if="estadoGeneral == 100" @click="ir('Reporte')">Enviar</button>
               </div>
             </div>
           </div>
@@ -304,6 +304,35 @@
     </div>
   </div>
 
+  
+  <!-- MODAL RECUPERACION-->
+  <CModal
+    backdrop="static"
+    size="lg"
+    alignment="center"
+    :visible="modalGuardarRespuestas"
+    @close="() => { modalGuardarRespuestas = false; }"
+  >
+    <CModalHeader>
+      <CModalTitle>Guardar Respuestas</CModalTitle>
+    </CModalHeader>
+    <CModalBody>
+      <CContainer>
+        <CRow>
+          <CCol sm="8">
+            <CFormLabel  >Se ha guardado con exito respuestas</CFormLabel>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </CModalBody>
+    <CModalFooter>
+      <CButton color="secondary" @click="() => { modalGuardarRespuestas = false; }">
+        Cerrar
+      </CButton>
+    </CModalFooter>
+  </CModal>
+  <!-- FIN MODAL RECUPERACION-->
+
 </template>
 
 
@@ -314,6 +343,7 @@ import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { cilPen } from "@coreui/icons";
 import router from "@/router/index";
+import { useRoute } from "vue-router";
 
 export default {
   name: "Evaluacion",
@@ -369,7 +399,13 @@ export default {
       respuestaSelected: [],
       nombreAreaSelected: "",
       nombreSubAreaSelected: "",
+      modalGuardarRespuestas: false,
     });
+
+    const route = useRoute();
+      if (route.query.evaluacionId){
+      state.idEvaluacionSelected = route.query.evaluacionId;
+    }
 
     const SiguienteAtras = async (formStepsNum) => {
       const formSteps = document.querySelectorAll(".form-step");
@@ -399,13 +435,12 @@ export default {
       else if (formStepsNum<3) {
         progressBar.classList.remove("d-none")
       }
-
     };
 
     const getEvaluaciones = async () => {
       state.evaluaciones = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
+      return ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
         headers: header,
       })
         .then((response) => {
@@ -501,15 +536,20 @@ export default {
       document.getElementById("totalporcentaje").classList.add("text-success");
     };
 
-    const RegresarPaso1 = async () => {
+    /*const RegresarPaso1 = async () => {
       state.idTipoAreaSelected = "0";
       state.idEvaluacionSelected = state.evaluacionSelected.id;
       state.segmentacionAreaSelected = [];
       state.segmentacionSubAreasbyAreaSelected = [];
       document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
-    };
+    };*/
 
     const irPaso2 = async () => {
+      state.idTipoAreaSelected = "0";
+      state.idEvaluacionSelected = state.evaluacionSelected.id;
+      state.segmentacionAreaSelected = [];
+      state.segmentacionSubAreasbyAreaSelected = [];
+      document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
       if (state.idEvaluacionSelected == "0"){
         swal.fire({
           title: "Preparación de áreas",
@@ -932,12 +972,12 @@ export default {
 
     };
 
-    const RegresarPaso2 = async () => {
+    /*const RegresarPaso2 = async () => {
       state.idAreaPaso3 = "0";
       state.idTipoSubAreaPaso3 = "0";
       state.allSegmentacionAreas = [];
       state.allSegmentacionSubAreas = [];
-    };
+    };*/
 
     const getPregunta = (segmentacionArea) => {
       state.preguntas = [];
@@ -1200,6 +1240,9 @@ export default {
     };
 
     const oncreated = () => {
+      if (route.query.evaluacionId){
+        changeEvaluacion();
+      }
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       SiguienteAtras(0);
       if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
@@ -1213,8 +1256,8 @@ export default {
       return router.push({ name: namePageDestiny, query: {evaluacionId: state.evaluacionSelected.id, evaluacionNombre: state.evaluacionSelected.nombre } });
     };
 
-    onMounted(() => {
-      getEvaluaciones();
+    onMounted(async () => {
+      await getEvaluaciones();
       oncreated();
     });
 
@@ -1233,8 +1276,8 @@ export default {
       changeSegmentacionSubAreaPaso3,
       getPregunta,
       cilPen,
-      RegresarPaso1,
-      RegresarPaso2,
+      //RegresarPaso1,
+      //RegresarPaso2,
       CambioPorcentajePaso1,
       CambioPorcentajePaso2,
       addRespuesta,

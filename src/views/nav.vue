@@ -51,7 +51,7 @@
     <aside class="color-nav d-flex flex-column" v-if="perfil == 'Usuario básico'">
         <div class="d-flex flex-column align-items-center">
             <div class="logo">
-                <img  class="w-100 logo" :src="logoNeva" @click="ir('Dashboard')" style="cursor:pointer" alt="">
+                <img  class="w-100 logo" :src="logoNevaNegro" @click="ir('Dashboard')" style="cursor:pointer" alt="">
             </div>
             <div>
             </div>
@@ -99,6 +99,7 @@
 import { reactive, toRefs, onMounted } from "vue";
 import { style } from "@/assets/css/style.css";
 import logoNeva from "@/assets/img/nav/logos/logo-blanco.svg";
+import logoNevaNegro from "@/assets/img/nav/logos/logo-negro.svg";
 import logoConfiguracion from "@/assets/img/nav/config.svg";
 import logoCubo from "@/assets/img/nav/cubo.svg";
 import router from "@/router/index";
@@ -172,6 +173,7 @@ export default {
       logoCubo,
       logoLupa,
       logoMas,
+      logoNevaNegro,
       ir,
       logout,
       AbrirMenu,

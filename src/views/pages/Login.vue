@@ -246,7 +246,6 @@ export default {
       state.visibleModalRecuperacion = true;
     };
     const solicitarRecuperacion = async () => {
-      //showSpining(true, "btnRecuperar", "loadingRecuperar");
       let email = document.getElementById("emailRecuperar").value;
       if (!email || !validateEmail(email)) {
         swal.fire(
@@ -254,7 +253,6 @@ export default {
           "Debe ingresar un email válido",
           "warning"
         );
-        //showSpining(false, "btnRecuperar", "loadingRecuperar");
         return false;
       }
       await recaptchaLoaded();
@@ -277,7 +275,6 @@ export default {
               "success"
             ).then(() => {
               state.visibleModalRecuperacion = false;
-              //showSpining(false, "btnRecuperar", "loadingRecuperar");
             });
           })
           .catch((error) => {
@@ -287,23 +284,19 @@ export default {
               "Ha ocurrido un problema durante el proceso, por favor intente nuevamente o verifique con su administrador que el usuario existe registrado en el sistema",
               "warning"
             );
-            //showSpining(false, "btnRecuperar", "loadingRecuperar");
           });
       });
     };
 
     const login = async () => {
-      //showSpining(true, "btnLogin", "loading");
       let email = document.getElementById("email").value;
       let pass = document.getElementById("password").value;
       if (!email || !validateEmail(email)) {
         swal.fire("Login", "Debe ingresar email y password", "warning");
-        //showSpining(false, "btnLogin", "loading");
         return false;
       }
       if (!pass) {
         swal.fire("Login", "Debe ingresar email y password", "warning");
-        //showSpining(false, "btnLogin", "loading");
         return false;
       }
       let bodyLogin = {
@@ -324,18 +317,15 @@ export default {
               if (response.status == 200) {
                 accesosValidacion(response);
               } else {
-                //showSpining(false, "btnLogin", "loading");
                 swal.fire("Login", "El email o password es incorrecto.", "warning");
               }
               return false;
             })
             .catch(() => {
-              //showSpining(false, "btnLogin", "loading");
               swal.fire("Login", "El email o password es incorrecto.", "warning");
             });
         })
         .catch(() => {
-          //showSpining(false, "btnLogin", "loading");
           swal.fire(
             "ReCaptcha ha detectado un uso abusivo y ha denegado el acceso.",
             {
@@ -402,7 +392,6 @@ export default {
           });
           localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
         } else {
-          //showSpining(false, "btnLogin", "loading");
           swal.fire(
             "Login",
             "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
@@ -411,7 +400,6 @@ export default {
           return false;
         }
       });
-      //return router.push({ name: "Dashboard" });
       return router.push({ name: response.data.dashboard });
     };
 
@@ -461,7 +449,6 @@ export default {
           });
           localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
         } else {
-          //showSpining(false, "btnLogin", "loading");
           swal.fire(
             "Login",
             "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
@@ -568,7 +555,6 @@ export default {
                   JSON.stringify(swaggerList)
                 );
               } else {
-                //showSpining(false, "btnLogin", "loading");
                 swal.fire(
                   "Login",
                   "Problemas al obtener swagger.json. Contacte al administrador del sistema.",

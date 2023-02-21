@@ -134,7 +134,7 @@
                                         <button class="btn disabled orange order-md-1 me-lg-4 mt-lg-0" aria-disabled="true">Terminado</button>
                                     </td>
                                     <td v-else>
-                                        <button class="btn orange order-md-1 me-lg-4 mt-lg-0">Responder</button>
+                                        <button class="btn orange order-md-1 me-lg-4 mt-lg-0" @click="ir('Evaluacion', evaluacion.id)">Responder</button>
                                     </td>
                                     <td>
                                         <button class="icons">
@@ -305,22 +305,6 @@ export default {
         getEvaluaciones();
     };
 
-    /*const getEmpesas = () => {
-        state.empresas = [];
-        ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + JSON.parse(localStorage.usuarioModel).id , null, { headers: header })
-          .then((response) => {
-            if (response.status != 200) return false;
-            state.empresas = response.data;
-            state.empresas.forEach((m) => {
-              m.fechaCreacion = m.fechaCreacion.substring(0, '10');
-              m.iniciales = m.razonSocial.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-            });
-            console.log("state.empresas",state.empresas);
-          })
-          .catch((error) => console.log(error));
-        return false;
-    }*/
-
     const getEvaluaciones = () => {
         state.evaluaciones = [];
         let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -332,7 +316,6 @@ export default {
             state.evaluaciones = response.data;
             console.log("state.evaluaciones", state.evaluaciones);
             state.evaluaciones.forEach((m) => {
-                //m.fechaCreacion = m.fechaCreacion.substring(0, '10');
                 m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
                 if (m.iniciales.length < 2){
                     m.iniciales =  m.nombre.substring("0", "2");
@@ -432,6 +415,10 @@ export default {
         .catch((error) => console.log(error));
     };
 
+    const ir = (namePageDestiny, idEvaluacion) => {
+      return router.push({ name: namePageDestiny , query : {evaluacionId : idEvaluacion} });
+    };
+
     onMounted(() => {
       getUsuario();
     });
@@ -444,6 +431,7 @@ export default {
       logoCubo,
       logoLatam,
       logoPersona,
+      ir,
     };
   },
 };
