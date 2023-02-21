@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --loglevel=verbose
 COPY . .
-RUN npx vue-cli-service build --mode=development
+RUN npx vue-cli-service build --mode=production
 
 # production stage
 FROM nginx:1.13.12-alpine as production-stage
