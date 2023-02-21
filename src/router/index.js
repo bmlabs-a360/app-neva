@@ -62,79 +62,6 @@ const routes = [
             name: "Reporte",
             component: () => import("@/views/mantenedor/reporte.vue"),
           },
-          /*
-          {
-            path: "/mantenedor/configuracion",
-            name: "Configuracion",
-            component: () => import("@/views/mantenedor/configuracion.vue"),
-          },
-          {
-            path: "/mantenedor/moneda",
-            name: "Moneda",
-            component: () => import("@/views/mantenedor/moneda.vue"),
-          },
-          {
-            path: "/mantenedor/formapagoMoneda",
-            name: "Forma Pago - Moneda",
-            component: () => import("@/views/mantenedor/formapagoMoneda.vue"),
-          },*/
-        ],
-      },
-      /*{
-        path: "/conciliacion",
-        name: "Conciliacion",
-        component: {
-          render() {
-            return h(resolveComponent("router-view"));
-          },
-        },
-        redirect: "/conciliacion/conciliar",
-        meta: {
-          middleware: [auth, log],
-        },
-        children: [
-          {
-            path: "/conciliacion/conciliarAutomatico",
-            name: "Conciliar Automático",
-            component: () =>
-              import("@/views/conciliacion/conciliarAutomatico.vue"),
-          },
-          {
-            path: "/conciliacion/conciliarAsistente",
-            name: "Asistente",
-            component: () =>
-              import("@/views/conciliacion/conciliarAsistente.vue"),
-          },
-          {
-            path: '/conciliacion/conciliarAsistente',
-            name: 'Asistente',
-            component: () => import('@/views/conciliacion/ejemplo.txt')
-          },
-        ],
-      },*/
-      {
-        path: "/buscador",
-        name: "Buscador",
-        component: {
-          render() {
-            return h(resolveComponent("router-view"));
-          },
-        },
-        redirect: "/buscador/transaccion",
-        meta: {
-          middleware: [auth, log],
-        },
-        children: [
-          {
-            path: "/buscador/transaccion",
-            name: "Transaccion",
-            component: () => import("@/views/buscador/transaccion.vue"),
-          },
-          {
-            path: "/buscador/conciliar",
-            name: "Conciliar",
-            component: () => import("@/views/buscador/conciliar.vue"),
-          },
         ],
       },
       {
@@ -155,43 +82,8 @@ const routes = [
             name: "Usuarios",
             component: () => import("@/views/permisos/usuarios.vue"),
           },
-         /* {
-            path: "/permisos/perfiles",
-            name: "Perfiles",
-            component: () => import("@/views/permisos/perfiles.vue"),
-          },
-          {
-            path: "/permisos/roles",
-            name: "roles",
-            component: () => import("@/views/permisos/roles.vue"),
-          },
-          {
-            path: "/permisos/privilegios",
-            name: "privilegios",
-            component: () => import("@/views/permisos/privilegios.vue"),
-          },*/
         ],
       },
-      /*{
-        path: "/simulacion",
-        name: "Simulación",
-        component: {
-          render() {
-            return h(resolveComponent("router-view"));
-          },
-        },
-        redirect: "/simulacion/linkPago",
-        meta: {
-          middleware: [auth, log],
-        },
-        children: [
-          {
-            path: "/simulacion/linkPago",
-            name: "Crear link de pago",
-            component: () => import("@/views/simulacion/linkPago.vue"),
-          },
-        ],
-      },*/
     ],
   },
   {
@@ -208,12 +100,7 @@ const routes = [
         path: "login",
         name: "Login",
         component: () => import("@/views/pages/Login"),
-      },/*
-      { //eliminar register 2
-        path: "register2",
-        name: "Register2",
-        component: () => import("@/views/pages/Register2"),
-      },*/
+      },
       {
         path: "recuperar",
         name: "Recuperar",

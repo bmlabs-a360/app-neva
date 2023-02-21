@@ -37,7 +37,7 @@
             <div class="img-login col-sm-7 col-lg-6 d-flex justify-content-center align-items-center">
                 <img class="w-100 m-5" :src="imgLogin" alt="persona manipulando una interfaz">
             </div>
-            <div class="col-12 col-sm-5 col-lg-6 d-flex justify-content-center align-items-center p-md-2 p-lg-5">
+            <div class="col-12 col-sm-5 col-lg-6 d-flex justify-content-center align-items-center p-md-2 p-lg-5 mt-5">
                 <div class="container m-md-2 m-lg-5 center-form">
                     <div class="mb-4">
                         <img class="img-logo mb-md-3" :src="imgLogo" alt="">

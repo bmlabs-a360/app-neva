@@ -150,233 +150,6 @@
           </div>
         </div>
 
-        <!--
-        <div class="form-step">
-          <div class="border-bottom p-3">
-            <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
-              <h1 class="title-form text-center">Nombre de la Evaluación</h1> 
-              <div class="btns-group">
-                <button class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev">anterior</button>
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn">Guardar</button>
-              </div>
-            </div> 
-          </div>
-          <--main--
-          <div>
-            <table id="customers">
-              <tr>
-                <th>Área</th>
-                <th class="text-center">Porcentaje</th>
-                <th class="text-end pe-4">Responder</th>
-              </tr>
-              <tr>
-                <td>Estrategia</td>
-                <td class="table-progress">
-                  <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_376_6978)">
-                      <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M11 2.24194L6 7.24694L4.5 5.74694" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_376_6978">
-                        <rect width="13" height="13" fill="white" transform="translate(0 0.241943)"/>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                  <p>20% Completado</p>
-                </td>
-                <td class="text-end pe-4">
-                  <button class="button button is-bold is-raised is-primary btn-next">Responder</button>
-                </td>
-              </tr>
-              <tr>
-                <td>finanzas</td>
-                <td class="table-finish">
-                  <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_376_6978)">
-                      <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M11 2.24194L6 7.24694L4.5 5.74694" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_376_6978">
-                        <rect width="13" height="13" fill="white" transform="translate(0 0.241943)"/>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                  <p>100% Completado</p>
-                </td>
-                <td class="text-end pe-4">
-                  <button class="button button v-button is-bold is-raised is-primary btn-next">Responder</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Comercial y ventas</td>
-                <td class="table-finish">
-                  <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_376_6978)">
-                      <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M11 2.24194L6 7.24694L4.5 5.74694" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_376_6978">
-                        <rect width="13" height="13" fill="white" transform="translate(0 0.241943)"/>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                  <p>100% Completado</p>
-                </td>
-                <td class="text-end pe-4">
-                  <button class="button button v-button is-bold is-raised is-primary btn-next">Responder</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Operaciones</td>
-                <td class="table-finish">
-                  <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_376_6978)">
-                      <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M11 2.24194L6 7.24694L4.5 5.74694" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_376_6978">
-                        <rect width="13" height="13" fill="white" transform="translate(0 0.241943)"/>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                  <p>100% Completado</p>
-                </td>
-                <td class="text-end pe-4">
-                  <button class="button button v-button is-bold is-raised is-primary btn-next">Responder</button>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="p-3">
-            <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
-              <h1 class="title-form text-center">Nombre de la Evaluación</h1> 
-              <div class="btns-group">
-                <button class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev">anterior</button>
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn">Guardar</button>
-              </div>
-            </div>
-          </div>
-        </div>-->
-
-        <!--<div class="form-step">
-          <CContainer
-              class="pt-3"
-            >
-            <CRow>
-              <CCol sm="6" md="6" lg="6">
-                    <CFormLabel class="mt-2">3 {{tabs[2].description}}</CFormLabel>
-              </CCol>
-            </CRow>
-            <CModalTitle class="text-center">
-            </CModalTitle>
-            <CRow>
-              <CCol sm="6" md="6" lg="6">
-                    <CFormLabel for="nombreAreaPaso3" class="mt-2">Nombre área</CFormLabel>
-              </CCol>     
-              <CCol sm="6" md="6" lg="6">
-                <CFormSelect
-                  id="idAreaPaso3"
-                  size="sm"
-                  @change="changeSegmentacionAreaPaso3"
-                  v-model="idAreaPaso3"
-                >
-                  <option value="0" :key="0">Todos</option>
-                  <option v-for="segmentacionArea in allSegmentacionAreas" :key="segmentacionArea.id" :value="segmentacionArea.id">
-                    {{ segmentacionArea.nombreArea }}
-                  </option>
-                </CFormSelect>
-              </CCol>
-            </CRow>
-
-            <CRow>
-              <CCol sm="6" md="6" lg="6">
-                    <CFormLabel for="tipoSubAreaPaso3" class="mt-2">Nombre Sub área</CFormLabel>
-              </CCol>     
-              <CCol sm="6" md="6" lg="6">
-                    <CFormSelect
-                        id="idTipoSubAreaPaso3"
-                        size="sm"
-                        class="mt-2"
-                        @change="changeSegmentacionSubAreaPaso3"
-                        v-model="idTipoSubAreaPaso3"
-                    >
-                      <option value="0" :key="0">Todos</option>
-                      <option v-for="segmentacionSubArea in allSegmentacionSubAreasByIdArea" :value="segmentacionSubArea.id" :key="segmentacionSubArea.id">
-                        {{ segmentacionSubArea.nombreSubArea }}
-                      </option>
-                    </CFormSelect>
-              </CCol>
-            </CRow>
-
-            <CTable responsive class="mt-4">
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell class="text-center" scope="col">
-                    Área
-                  </CTableHeaderCell>
-                  <CTableHeaderCell class="text-center" scope="col">
-                    Sub Área
-                  </CTableHeaderCell>
-                  <CTableHeaderCell class="text-center" scope="col">
-                    Estado
-                  </CTableHeaderCell>
-                  <CTableHeaderCell class="text-center" scope="col">
-                    Completado
-                  </CTableHeaderCell>
-                  <CTableHeaderCell class="text-center" scope="col">
-                    Preguntas
-                  </CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                <CTableRow v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
-                  <CTableDataCell class="text-center">
-                    {{tablaSegmentacionArea.nombreArea}}
-                  </CTableDataCell>
-                    <CTableDataCell class="text-center">
-                    {{tablaSegmentacionArea.nombreSubArea}}
-                  </CTableDataCell>
-                  <CTableDataCell class="text-center">
-                    <input type="checkbox" name="chkEstado" :checked="tablaSegmentacionArea.completado" disabled  />
-                  </CTableDataCell>
-                  <CTableDataCell class="text-center">
-                    <CFormLabel> {{tablaSegmentacionArea.estado}}%</CFormLabel>
-                  </CTableDataCell>
-                  <CTableDataCell class="text-center">
-                    <CButton @click="getPregunta(tablaSegmentacionArea )">
-                      <CIcon :icon="cilPen" size="lg" />
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-              </CTableBody>
-            </CTable>
-
-              <CRow>
-              <div class="mt-3 d-flex flex-row" style="justify-content: center;" >
-                <CCol v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" sm="6" md="6" lg="6">
-                    <CButton
-                      :disabled="isLoadingColumns"
-                      color="primary"
-                      @click="selectedTab = 2; RegresarPaso2"
-                      >Anterior
-                    </CButton>
-                </CCol>
-                <CCol sm="6" md="6" lg="6">
-                  <CButton
-                      :disabled="isLoadingColumns"
-                      color="primary"
-                      @click="irPaso4"
-                      >Siguiente
-                    </CButton>
-                </CCol>
-              </div>
-            </CRow>
-            </CContainer>
-        </div>-->
         <div class="form-step">
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
@@ -385,9 +158,10 @@
                 <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre != 'Usuario pro (empresa)' )" >Evaluaci&oacute;n</h1>
                 <b class="tooltips p-2">
                   <p class="mb-0 circles">?</p>
-                  <span class="tooltips-box">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  <span class="tooltips-box">Para comenzar esta evaluación, es necesario ingresar a cada área y contestar las 
+                    preguntas que se desplegarán.
+                    Para que Neva logre entregar su máxima efectividad, es necesario que las preguntas sean 
+                    respondidas con la máxima honestidad.
                   </span>
                 </b> 
               </div>
@@ -463,9 +237,8 @@
                 <h1 class="title-form text-center mx-2">{{preguntaSelected.nombreEvaluacion}}</h1>
                 <b class="tooltips">
                   <p class="mb-0 circles">?</p>
-                  <span class="tooltips-box">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  <span class="tooltips-box">Contesta cada pregunta con la mayor honestidad posible y analiza que 
+                    tan importante es para la organización.
                   </span>
                 </b>
               </div>
@@ -541,19 +314,14 @@ import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { cilPen } from "@coreui/icons";
 import router from "@/router/index";
-//import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
 
 export default {
   name: "Evaluacion",
   components: {
-    //VOnboardingWrapper,
   },
   methods: {
   },
   setup() {
-    //const wrapper = ref(null);
-    //const { start } = useVOnboarding(wrapper);
-
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
     const formatterMoney = globalProperties.$formatterMoney;
@@ -566,8 +334,6 @@ export default {
 
     const state = reactive({
       isonboarding: false,
-     // wrapper,
-      //steps: [],
       perfilSelected: [],
       idEvaluacionSelected: "0",
       evaluaciones : [],
@@ -586,8 +352,6 @@ export default {
       allSegmentacionSubAreas: [],
       tablaSegmentacionAreas: [],
       allSegmentacionSubAreasByIdArea: [],
-
-      //visibleModalPreguntas : false,
       idAreaPaso3: "0",
       idTipoSubAreaPaso3: "0",
       evaluacionPaso3: [],
@@ -718,13 +482,6 @@ export default {
             state.segmentacionAreasByEvaluacion.push(x);
           }
         });
-        /*if (state.totalPorcentaje == 100){
-          document.getElementById("totalporcentaje").classList.remove("text-danger");
-          document.getElementById("totalporcentaje").classList.add("text-success");
-        }else{
-          document.getElementById("totalporcentaje").classList.remove("text-success");
-          document.getElementById("totalporcentaje").classList.add("text-danger");
-        }*/
       });
     };
 
@@ -790,8 +547,6 @@ export default {
       }
       
       guardarPorcentajeAreas();
-      //state.selectedTab = 2;
-      //state.tabs[0].colorTab = "black";
     };
 
     const guardarPorcentajeAreas = async () => {
@@ -816,7 +571,7 @@ export default {
             });
             return false;
           }
-          SiguienteAtras(1); //Se avanza a Paso Importancia Estreategica
+          SiguienteAtras(1); //Se avanza a Paso Importancia Estrategica
         })
         .catch((error) => console.log(error));
       });
@@ -935,8 +690,6 @@ export default {
       guardarPorcentajeSubAreas();
       state.idAreaPaso3 = "0";
       state.idTipoSubAreaPaso3 = "0";
-      //state.selectedTab = 3;
-      //state.tabs[0].colorTab = "black";
     };
 
     const guardarSubAreasChange = async () => {
@@ -987,7 +740,6 @@ export default {
               return false;
             }
             if (largo >= idSubAreasPorcentajes.length){
-              //getUsuarioAreasByEvaluacionSelected();
             }
           })
           .catch((error) => console.log(error));
@@ -1126,7 +878,6 @@ export default {
     const cargarTablaPaso3 = async () => {
       state.tablaSegmentacionAreas = [];
       state.estadoGeneral = 0;
-      //state.allSegmentacionSubAreasByIdArea = [];
       let contador = 0;
       let contadorArea = 0;
       let estadoGeneral = 0;
@@ -1138,7 +889,6 @@ export default {
             if (y.segmentacionAreaId == x.id){
               contador++;
               x.estado = (x.estado + parseInt(y.estado));
-              //x.nombreArea = y.nombreArea;
             };
         });
         x.estado = x.estado / contador;
@@ -1150,47 +900,9 @@ export default {
       
       console.log("state.estadoGeneral", state.estadoGeneral);
 
-      /*state.allSegmentacionSubAreas.forEach (x => {
-        state.allSegmentacionAreas.forEach(y => {
-            if (x.segmentacionAreaId == y.id){
-              x.nombreArea = y.nombreArea;
-            };
-        });
-        state.tablaSegmentacionAreas.push(x);
-      });*/
-      //state.allSegmentacionSubAreasByIdArea = state.allSegmentacionSubAreas;
       console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
       SiguienteAtras(2); //Se avanza a Paso Evaluacion
     };
-
-    /*const changeSegmentacionAreaPaso3 = async () => {
-       let idAreaPaso3 = document.getElementById("idAreaPaso3")
-        .options[
-        document.getElementById("idAreaPaso3").selectedIndex
-      ].value;
-
-      state.idTipoSubAreaPaso3 = "0";
-      //state.allSegmentacionSubAreasByIdArea = [];
-      state.tablaSegmentacionAreas = [];
-
-      if (idAreaPaso3 == "0"){
-        cargarTablaPaso3();
-        return false;
-      }
-
-      state.allSegmentacionSubAreas.forEach (x => {
-        if (x.segmentacionAreaId == idAreaPaso3){
-          state.allSegmentacionAreas.forEach(y => {
-              if (x.segmentacionAreaId == y.id){
-                x.nombreArea = y.nombreArea;
-              };
-          });
-          state.tablaSegmentacionAreas.push(x);
-          //state.allSegmentacionSubAreasByIdArea.push(x);
-        }
-      });
-      console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
-    };*/
 
     const changeSegmentacionSubAreaPaso3 = async () => {
       let idTipoSubAreaPaso3 = document.getElementById("idTipoSubAreaPaso3")
@@ -1233,9 +945,7 @@ export default {
       state.preguntasTotal = [];
       state.nombreAreaSelected = segmentacionArea.nombreArea;
       state.nombreSubAreaSelected = segmentacionArea.nombreSubArea;
-      /*ApiNeva.get("Pregunta/GetPreguntasByIdsSegmentacionAreaSubArea?idArea=" + segmentacionArea.segmentacionAreaId + "&idSubArea=" + segmentacionArea.id , null,  {
-        headers: header,
-      })*/
+
       let bodySegmentacionArea = {
         id: segmentacionArea.id
       };
@@ -1269,7 +979,6 @@ export default {
             element.nombreEvaluacion = evaluacion.nombre;
           });
           state.preguntaSelected = state.preguntas[0];
-          //state.visibleModalPreguntas = true;
           console.log("state.preguntas", state.preguntas);
           getTipoimportancia();
         })
@@ -1493,11 +1202,9 @@ export default {
     const oncreated = () => {
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       SiguienteAtras(0);
-      //state.selectedTab = 1;
       if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
         SiguienteAtras(2);
         getUsuarioAreas();
-        //state.selectedTab = 3;
       }
     };
 
@@ -1523,7 +1230,6 @@ export default {
 
       changeEvaluacion,
       changeSegmentacionArea,
-      //changeSegmentacionAreaPaso3,
       changeSegmentacionSubAreaPaso3,
       getPregunta,
       cilPen,
