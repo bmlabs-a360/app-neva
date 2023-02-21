@@ -106,13 +106,13 @@ import imgLogo from "@/assets/images/neva_login.png";
 import router from "@/router/index";
 import logoNegro from "@/assets/img/nav/logos/logo-negro.svg";
 import logoPers from "@/assets/img/nav/pers/02.png";
-import bootstrap from "@/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"
+//import bootstrap from "@/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 export default {
   name: "AppHeader",
   components: {
     AppBreadcrumb,
-    bootstrap,
+    //bootstrap,
   },
   setup() {
 

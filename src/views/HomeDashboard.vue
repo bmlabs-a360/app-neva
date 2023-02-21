@@ -275,12 +275,10 @@ import logoCubo from "@/assets/img/nav/cubo.svg";
 import logoLatam from "@/assets/img/clientes/logo_latam.jpg";
 import logoPersona from "@/assets/img/nav/pers/02.png";
 import router from "@/router/index";
-import bootstrap from "@/assets/node_modules/bootstrap/dist/js/bootstrap.min.js";
 
 export default {
   name: "Login",
   components:{
-    bootstrap,
   },
   methods: {
   },
