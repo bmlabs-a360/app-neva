@@ -17,7 +17,7 @@
       <div class="container">
         <div class="d-flex justify-content-between">
           <div class="nav-login">
-            <img class="img-logo" @click="ir('Login')" style="cursor:pointer" :src="imgIcon" alt="simbolo neva360">
+            <img class="img-logo cursor-pointer" @click="ir('Login')" :src="imgIcon" alt="simbolo neva360">
           </div>
           <nav class="d-flex">
               <ul class="navbar">
@@ -73,7 +73,7 @@
                           <button type="button" @click="login" aria-hidden="false" class="button button v-button is-bold is-fullwidth is-raised is-primary"><span> Ingresar </span></button>
                         </div>
                         <div class="d-flex flex-column align-items-center mt-4">
-                            <a class="link-primary" @click="ir('Register')" style="cursor:pointer">Crear una cuenta.</a>
+                            <a class="link-primary cursor-pointer" @click="ir('Register')">Crear una cuenta.</a>
                             <!--<a class="link-secundary" @click="abirModalRecuperacion" style="cursor:pointer;display: none;">¿Has olvidado tu contraseña?</a>-->
                         </div>
                     </form>

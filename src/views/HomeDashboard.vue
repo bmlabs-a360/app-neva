@@ -38,10 +38,10 @@
                     <div class="table-responsive pie-table">
                         <table class="table table-hover">
                             <tbody>
-                                <tr v-for="evaluacion in evaluaciones" :key="evaluacion.id">
+                                <tr v-for="evaluacion in evaluaciones" :key="evaluacion.id" @click="cargarGraficos(evaluacion)" class="cursor-pointer">
                                     <th scope="row">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                            <input class="form-check-input cursor-pointer" type="radio" name="evaluacionSelected" @click="cargarGraficos(evaluacion)" value="" :id="evaluacion.id">
                                             <label class="form-check-label" for="flexCheckDefault">
                                             </label>
                                         </div>
@@ -134,14 +134,31 @@
                                         <button class="btn disabled orange order-md-1 me-lg-4 mt-lg-0" aria-disabled="true">Terminado</button>
                                     </td>
                                     <td v-else>
-                                        <button class="btn orange order-md-1 me-lg-4 mt-lg-0" @click="ir('Evaluacion', evaluacion.id)">Responder</button>
+                                        <button class="btn orange order-md-1 me-lg-4 mt-lg-0" @click="ir('Evaluacion', evaluacion)">Responder</button>
                                     </td>
-                                    <td>
+                                    <td v-if="evaluacion.estado == 100"> 
                                         <button class="icons">
-                                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:eye" class="iconify iconify--feather"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></g></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" @click="ir('Reporte', evaluacion)" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:eye" class="iconify iconify--feather cursor-pointer"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3">
+                                                </circle>
+                                                </g>
+                                            </svg>
                                         </button>
                                     </td>
-                                    <td>
+                                    <td v-else> 
+                                        <button class="icons" disabled>
+                                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:eye" class="iconify iconify--feather"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3">
+                                                </circle>
+                                                </g>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                    <!--<td>
                                         <div>
                                             <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <circle cx="12.9787" cy="5.15581" r="1.65337" fill="#283252"/>
@@ -149,7 +166,7 @@
                                                 <circle cx="12.9786" cy="16.7295" r="1.65337" fill="#283252"/>
                                             </svg>   
                                         </div>
-                                    </td>
+                                    </td>-->
                                 </tr>
                             </tbody>
                         </table>  
@@ -191,25 +208,49 @@
         <section class="cards mb-4 justify-content-between">
             <div class="cards-grafic p-3 d-flex">
                 <div class="w-100">
-                    <h2>Puntuación entre area</h2>
-                    <div id="dataColor">
+                    <h2>Indice de madurez entre area</h2>
+                    <!--<div id="dataColor">-->
+                    <div >
+                        <div :md="12">
+                            <CCard class="mb-4">
+                                <CCardBody >
+                                    <CChart
+                                        type="bar"
+                                        :data="resumenIM"
+                                    />
+                                </CCardBody>
+                            </CCard>
+                        </div>
                     </div>
+                    <!--</div>-->
                 </div>
             </div>
         
             <div class="cards-grafic p-3">
                 <div class="w-100">
-                    <h2>Importancia por subárea</h2>
-                    <div id="linearGradient_1">
+                    <h2>Puntuación entre area</h2>
+                    <!--<div id="linearGradient_1">-->
+                    <div>
+                        <div :md="12">
+                            <CCard class="mb-4">
+                                <CCardBody >
+                                    <CChart
+                                        type="bar"
+                                        :data="resumenPuntuacionArea"
+                                    />
+                                </CCardBody>
+                            </CCard>
+                        </div>
                     </div>
+                    <!--</div>-->
                 </div>
             </div>
 
-            <div class="cards-grafic p-3">
-                <div class="w-100">
-                    <h3>Promedio de completado</h3>
+            <div class="cards-grafic p-3" style="visibility: hidden;">
+                <div class="w-100" >
+                    <!--<h3>Promedio de completado</h3>-->
                     <div class="d-flex btn grafica justify-content-around">
-                        <button class="btn circle-two-n2 order-md-2 ">
+                        <!--<button class="btn circle-two-n2 order-md-2 ">
                             SG
                         </button>
                         <button class="btn circle-two-n4 order-md-2 ">
@@ -217,7 +258,7 @@
                         </button>
                         <button class="btn circle-two-n1 order-md-2 ">
                             SG
-                        </button>
+                        </button>-->
                     </div>
                     <div id="gaugeCornerRadius_1">
                     </div>
@@ -275,12 +316,16 @@ import logoCubo from "@/assets/img/nav/cubo.svg";
 import logoLatam from "@/assets/img/clientes/logo_latam.jpg";
 import logoPersona from "@/assets/img/nav/pers/02.png";
 import router from "@/router/index";
+import { CChart } from "@coreui/vue-chartjs";
+import { colorAleatorio } from "@/Helper/util";
 
 export default {
   name: "Login",
   components:{
+    CChart,
   },
   methods: {
+    colorAleatorio,
   },
   setup() {
     const globalProperties =
@@ -296,6 +341,15 @@ export default {
         evaluaciones : [],
         SegmentacionAreas : [],
         SegmentacionSubAreas : [],
+        evaluacionSelected : [],
+        evaluacionEmpresa : [],
+
+        IMA: [],
+        resumenIM: [],
+        resumenPuntuacionArea:[],
+
+        //resumenImportanciaEstrategica: [],
+        //segmentacionAreaSelected : [],
     });
 
     const getUsuario = () => {
@@ -358,7 +412,7 @@ export default {
         });
     };
 
-     const getEstadoSubArea = async () => {
+    const getEstadoSubArea = async () => {
         state.SegmentacionAreas.forEach(x => {
             state.SegmentacionSubAreas = state.SegmentacionSubAreas.concat(x.segmentacionSubAreas);
         });
@@ -373,7 +427,6 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             response.data.forEach(x => {
-                console.log("SUBESTADO",  response.data);
                 state.SegmentacionSubAreas.forEach(y => {
                     if (x.segmentacionSubAreaId == y.id){
                         y.estado = x.respuestaPorcentaje;
@@ -396,7 +449,6 @@ export default {
                 x.estado = x.estado / contador;
                 estadoGeneral = (estadoGeneral + x.estado);
             });
-            console.log("ESTADO",  state.SegmentacionAreas);
             state.evaluaciones.forEach (x => {
                 x.estado = 0;
                 contador = 0;
@@ -415,8 +467,280 @@ export default {
         .catch((error) => console.log(error));
     };
 
-    const ir = (namePageDestiny, idEvaluacion) => {
-      return router.push({ name: namePageDestiny , query : {evaluacionId : idEvaluacion} });
+    const cargarGraficos = async (evaluacionSelected) => {
+        document.getElementById(evaluacionSelected.id).checked = true;
+        state.evaluacionSelected = evaluacionSelected;
+        console.log("evaluacionSelected: ",  state.evaluacionSelected);
+        await getIMA();
+        getGraficoPuntuacionArea();
+        //await getGraficoImportanciaEstrategica();
+        //getGraficoPorcentajeTotalEvaluacion();
+    };
+
+
+    //areas
+    const getIMA = async () => {
+        var filtro = {
+            "evaluacionId":   state.evaluacionSelected.id,
+            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+        }
+        return ApibackOffice.post("Madurez/GetIMA", filtro,
+            { headers: header }
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.IMA = response.data;
+            console.log("state.IMA", response.data);
+            let dataSet = [];
+            let labels = [];
+            let valorDataList = [];
+            state.IMA.forEach((element) => {
+                labels.push(element.nombreArea);
+                valorDataList.push((element.imaValor).toFixed(2));
+            });
+
+            let elemento = {
+                label: state.evaluacionSelected.nombre,
+                backgroundColor:   colorAleatorio(),
+                data: valorDataList
+            }
+
+            dataSet.push(elemento);
+
+            state.resumenIM = {
+                labels: labels,
+                datasets: dataSet
+            };
+        })
+        .catch((error) => {
+            console.log("error->", error);
+        });
+    };
+
+    const getGraficoPuntuacionArea = () => {
+        let dataSet = [];
+        let labels = [];
+        let valorDataList = [];
+        state.IMA.forEach((element) => {
+            labels.push(element.nombreArea);
+            valorDataList.push((element.imaValor / 5) * 100);
+        });
+
+        let elemento = {
+            label: state.evaluacionSelected.nombre,
+            backgroundColor:   colorAleatorio(),
+            data: valorDataList
+        }
+
+        dataSet.push(elemento);
+
+        state.resumenPuntuacionArea = {
+            labels: labels,
+            datasets: dataSet
+        };
+    };
+
+    const test = () => {
+        debugger;
+    };
+
+    //subareas
+    const getGraficoImportanciaEstrategica = () => {
+        state.evaluacionEmpresa = [];
+        state.resumenImportanciaEstrategica = [];
+        state.segmentacionAreaSelected = [];
+        return ApibackOffice.get(
+            "EvaluacionEmpresa/GetEvaluacionEmpresasByEvaluacionIdEmpresaId?evaluacionId=" + state.evaluacionSelected.id + "&empresaId=" + JSON.parse(localStorage.usuarioModel).empresaId , null ,
+            { headers: header }
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            console.log("response.data", response.data);
+            state.evaluacionEmpresa = response.data.find((c) => c.evaluacionId === state.evaluacionSelected.id);
+            console.log("evaluacionEmpresa: ",  state.evaluacionEmpresa);
+            /*state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
+                valorDataList.push(element.valor);
+            });*/
+            let labels = [];
+            let dataSet = [];
+
+            state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
+                element.segmentacionArea.segmentacionSubAreas.forEach((x) => {
+                    x.importanciaEstrategicas.forEach((y) => {
+                        if (element.id == y.importanciaRelativaId){
+                            if (state.segmentacionAreaSelected.find((m) => m.nombreSubArea == x.nombreSubArea) == undefined){
+                                labels.push(x.nombreSubArea);
+                            }
+                            state.segmentacionAreaSelected.push( 
+                                { 
+                                    "id" : element.segmentacionArea.id,
+                                    "nombreArea" : element.segmentacionArea.nombreArea,
+                                    "idSubArea" : x.id,
+                                    "nombreSubArea" : x.nombreSubArea,
+                                    "valorImportanciaEstrategica" : [y.valor]
+                                }
+                            ); 
+                        }
+                    });
+                });
+            });
+
+            console.log("segmentacionAreaSelected: ",  state.segmentacionAreaSelected);
+
+            let datos = [];
+            let index = 0;
+
+            for (let i = 0; i < state.segmentacionAreaSelected.length; i++) { 
+                if (datos.find((m) => m.label == state.segmentacionAreaSelected[i].nombreArea) == undefined){
+                    datos.push({
+                        "label" : state.segmentacionAreaSelected[i].nombreArea,
+                        "backgroundColor" : colorAleatorio(),
+                        "data" : state.segmentacionAreaSelected[i].valorImportanciaEstrategica,
+                    });
+                } else {
+                    index = datos.findIndex((m) => m.label == state.segmentacionAreaSelected[i].nombreArea); 
+                    datos[index].data = datos[index].data.concat(state.segmentacionAreaSelected[i].valorImportanciaEstrategica);
+                }
+            }
+
+            for (let i = 0; i < datos.length; i++) { 
+                dataSet.push(datos[i]);
+            }
+
+            console.log("labels: ",  labels);
+            state.resumenImportanciaEstrategica = {
+                labels: labels,
+                datasets: dataSet,
+            };
+        
+            console.log("resumenImportanciaEstrategica: ",  state.resumenImportanciaEstrategica);
+        })
+        .catch((error) => console.log(error));
+
+/*
+        state.resumenImportanciaEstrategica = [];
+        state.segmentacionAreaSelected = [];
+        
+        let labels = [];
+
+
+        console.log("state.evaluacionEmpresa.importanciaRelativas: ",  state.evaluacionEmpresa.importanciaRelativas);
+        state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
+            element.segmentacionArea.segmentacionSubAreas.forEach((x) => {
+                x.importanciaEstrategicas.forEach((y) => {
+                    if (element.id == y.importanciaRelativaId){
+                        if (state.segmentacionAreaSelected.find((m) => m.nombreArea == element.nombreArea) == undefined){
+                            labels.push(element.nombreSubArea);
+                        }
+                        state.segmentacionAreaSelected.push( 
+                            { 
+                                "id" : element.segmentacionArea.id,
+                                "nombreArea" : element.segmentacionArea.nombreArea,
+                                "idSubArea" : x.id,
+                                "nombreSubArea" : x.nombreSubArea,
+                                "valorImportanciaEstrategica" : y.valor
+                            }
+                        );
+                        
+                        
+                    }
+                });
+            });
+        });
+        console.log("segmentacionAreaSelected: ",  state.segmentacionAreaSelected);
+
+        let valorDataList = [];
+        let dataSet = [];
+        */
+        /*state.segmentacionAreaSelected.forEach((a) => {
+            a.segmentacionSubAreas.forEach((element) => {
+                labels.push(element.nombreSubArea);
+            });
+        });*.
+        console.log("labels: ",  labels);
+
+    
+        let datos = [];
+        let index = 0;
+        let dataset = {}; 
+
+    
+
+        /*for (let i = 0; i < state.segmentacionAreaSelected.length; i++) { 
+            for (let j = 0; j < state.segmentacionAreaSelected[i].segmentacionSubAreas.length; j++) {
+                if (state.segmentacionAreaSelected[i].id == state.segmentacionAreaSelected[i].segmentacionSubAreas[j].segmentacionAreaId){
+                    for (let x = 0; x < state.segmentacionAreaSelected[i].segmentacionSubAreas[j].importanciaEstrategicas.length; x++) {
+                        if (datos.find((m) => m.label == state.segmentacionAreaSelected[i].nombreArea) == undefined){
+                            datos.push({
+                                "label" : state.segmentacionAreaSelected[i].nombreArea,
+                                "backgroundColor" : colorAleatorio(),
+                                "data" : state.segmentacionAreaSelected[i].segmentacionSubAreas[j].importanciaEstrategicas[x].valor
+                            });
+                        } else {
+                            index = datos.findIndex((m) => m.label == state.segmentacionAreaSelected[i].nombreArea); 
+                            debugger;
+                            datos[index].data = datos[index].data.concat(state.segmentacionAreaSelected[i].segmentacionSubAreas[j].importanciaEstrategicas[x].valor);
+                        }
+                    }
+                }
+            }
+        }*/
+         //console.log("DATOS: ",  datos);
+        /*state.segmentacionAreaSelected.forEach((a) => {
+            a.segmentacionSubAreas.forEach((element) => {
+                if (a.id == element.segmentacionAreaId){
+                    element.importanciaEstrategicas.forEach((m) => {
+                        //valorDataList.push(m.valor);
+                    });
+                }
+            });
+        });*/
+        //console.log("valorDataList: ",  valorDataList);
+
+        /*let elemento = {
+            label: "Evaluacion " +  state.evaluacionEmpresa.evaluacion.nombre,
+            backgroundColor:  "#41B883",
+            data: valorDataList
+        }
+
+        dataSet.push(elemento);
+
+        state.resumenImportanciaEstrategica = {
+            labels: labels,
+            datasets: dataSet,
+        };
+        console.log("resumenImportanciaEstrategica: ",    state.resumenImportanciaEstrategica);*/
+    };
+
+   /* const getGraficoPorcentajeTotalEvaluacion = () => {
+        var chart = bb.generate({
+            data: {
+                columns: [
+                ["data", 77]
+                ],
+                type: "gauge",
+                colors: {
+                    data: "#16C59B",
+                }, // for ESM specify as: gauge()
+            },
+            arc: {
+                cornerRadius: 15
+            },
+            gauge: {
+                arcLength: 70,
+                fullCircle: true,
+                label: {
+                extents: function() { return ""; }
+                },
+                startingAngle: -2.2,
+                width: 25
+            },
+            bindto: "#gaugeCornerRadius_1"
+        });
+    };*/
+
+    const ir = (namePageDestiny, evaluacion) => {
+        return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
     };
 
     onMounted(() => {
@@ -432,6 +756,7 @@ export default {
       logoLatam,
       logoPersona,
       ir,
+      cargarGraficos,
     };
   },
 };

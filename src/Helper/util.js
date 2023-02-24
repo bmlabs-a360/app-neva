@@ -293,3 +293,14 @@ export function checkAll(name) {
     }
   }
 }
+
+export function colorAleatorio(){
+	let simbolos, color;
+	simbolos = "0123456789ABCDEF";
+	color = "#";
+
+	for(var i = 0; i < 6; i++){
+		color = color + simbolos[Math.floor(Math.random() * 16)];
+	}
+  return color;
+}

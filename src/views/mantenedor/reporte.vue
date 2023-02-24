@@ -370,9 +370,6 @@ export default {
     });
 
     const route = useRoute();
-    state.idEvaluacion = route.query.evaluacionId;
-    state.nombreEvaluacion = route.query.evaluacionNombre;
-;
     
     const exportToPDF = () => {
         /*html2pdf(document.getElementById("document_container"), {
@@ -470,6 +467,8 @@ export default {
     };
 
     const getInfo = () => {
+        state.idEvaluacion = route.query.evaluacion.id;
+        state.nombreEvaluacion = route.query.evaluacion.nombre;
         const fecha = new Date();
         const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
         let month = months[fecha.getMonth()];

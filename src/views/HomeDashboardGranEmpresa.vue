@@ -22,7 +22,7 @@
               </label>
             </div>
         </div>
-        <button class="btn btn-sm orange  order-md-1 me-lg-0 mt-lg-0 ">Añadir</button>
+        <!--<button class="btn btn-sm orange  order-md-1 me-lg-0 mt-lg-0 ">Añadir</button>-->
         </div>
           <div class="mainregister d-flex pb-2">
             <div class="card mt-3 mb-2 d-flex ">   

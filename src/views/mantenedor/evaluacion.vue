@@ -699,7 +699,8 @@ export default {
           document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
         }
         console.log("state.segmentacionSubAreasbyAreaSelected", state.segmentacionSubAreasbyAreaSelected);
-      });
+      })
+      .catch((error) => console.log(error));
     };
 
     const irPaso3 = async () => {
