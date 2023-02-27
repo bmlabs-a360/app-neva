@@ -20,10 +20,10 @@
         <nav class="d-flex">
             <ul class="navbar">
                 <li class="nav-item">
-                    <a class="nav-link col-lg-auto" @click="ir('Login')">Ingresar</a>
+                    <a class="nav-link col-lg-auto" >Crear cuenta</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link col-lg-auto" >Crear cuenta</a>
+                    <a class="nav-link col-lg-auto" @click="ir('Login')">Ingresar</a>
                 </li>
             </ul>
         </nav>

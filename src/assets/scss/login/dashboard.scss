@@ -333,6 +333,14 @@
             background-color: $aqua-400;
           }
         }
+        
+      }
+      & .tabslats {
+        
+        &:last-child{
+          width: 560px;
+
+        }
       }
     }
   }
@@ -491,8 +499,51 @@
       border:solid 1px $yellow-400;
     }
   }
+  &.circle-leyend {
+    font-size: 14px;
+    padding:8px 12px;
+    border:solid 1px $success;
+    border-radius: 50%;
+    color:$secundary-400;
+    font-weight: 600;
+    
+    background-color: $success;
+    margin-bottom: 0;
+    @include mv(992px){
+      top: 10px;
+      right: 10px;}
+  }
+  &.circle-leyend-2 {
+    font-size: 14px;
+    padding:8px 12px;
+    border:solid 1px $aqua-400;
+    border-radius: 50%;
+    color:white;
+    font-weight: 600;
+   
+    background-color: $aqua-400;
+    margin-bottom: 0;
+    @include mv(992px){
+      top: 10px;
+      right: 10px;}
+  }
+  &.circle-leyend-3 {
+    font-size: 14px;
+    padding:8px 12px;
+    border:solid 1px $danger;
+    border-radius: 50%;
+    color:white;
+    font-weight: 600;
+  
+    background-color: $danger;
+    margin-bottom: 0;
+    @include mv(992px){
+      top: 10px;
+      right: 10px;}
+  }
   &.grafica{
     gap: 10px;
+   
   }
 }
 
@@ -566,3 +617,30 @@
 .mainregister{
   flex-direction: column;
 }
+.titulo-tabsinterior{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2em;
+  padding-bottom: 1em;
+}
+.leyend{
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding-left: 10px;
+  & h5{
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+.titleafterleyend{
+  margin-right: auto !important;
+}
+
+.titlenivel{
+  font-size: 76px;
+  font-weight: 5000;
+}
+
+
+    

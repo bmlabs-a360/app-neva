@@ -1,0 +1,206 @@
+.cards-grafictabs{
+    // display: block;
+    h2:first-child {
+        text-align: center;
+        margin-bottom: 0;
+        @include min-mv (968px) {
+            margin-bottom: 8px;
+        }
+    }
+    @include mv (968px) {
+    width: calc(100% - 10px);
+    &nivel {
+        width: calc(100% - 10px); 
+    }
+    &:first-child {
+        &{
+            min-width: 100%!important;
+        }
+    }
+}
+@include mv (768px) {
+    width: 100%;
+    &nivel {
+        width: 100%;
+    }
+}
+}
+
+.table-res {
+    width: 100%;
+
+    td {
+        padding: 4px;
+        & .min-w {
+            position: relative;
+            top: -34px;
+            width: 100px;
+            height: 130px;
+
+        }
+        & h3 {
+            font-weight:600!important;
+            font-size: 28px!important;
+        }
+        & h4 {
+            font-size: 18px;
+        }    
+    }
+    .w-1 {
+        min-width:auto;
+    }
+}
+
+.cards-result {
+    .cards {
+        width: calc(50% - 10px);
+        &:first-child {
+            height: 100%;
+        }
+        &{
+            @include mv (968px) {
+                width: 100%!important; 
+            }
+        } 
+    }
+    
+}
+
+.circle {
+    h5 {
+        margin-bottom: 0;
+    }
+
+    &-res {
+        margin-bottom: 1rem;
+        font-size: 14px;
+        padding: 12px 8px;
+        border: solid 1px #16C59B;
+        border-radius: 50%;
+        color: #283252;
+        font-weight: 600;
+        background-color: #16C59B;
+        margin-bottom: 0;
+    
+    }
+    &-blue {
+        margin-bottom: 1rem;
+        font-size: 14px;
+        padding: 12px 8px;
+        border: solid 1px #15ACC0;
+        border-radius: 50%;
+        color: white;
+        font-weight: 600;
+        background-color: #15ACC0;
+        margin-bottom: 0;
+    }
+    &-red {
+        margin-bottom: 1rem;
+        position: relative;
+        font-size: 14px;
+        padding: 24px 24px;
+        border: solid 1px #DC3545;
+        border-radius: 50%;
+        color: white;
+        font-weight: 600;
+        background-color: #DC3545;
+        margin-bottom: 0;
+        & p {
+            position: absolute;
+            top: 14px;
+            left: 8px;
+        }
+    }
+    .leyend {
+        margin-bottom: .8rem;
+    }
+}
+
+.table-recomendaciones{
+    & thead{
+        background-color: $aqua-40;
+        color: white;
+    }
+}
+.level-descrip{
+    width: 100%;
+    box-shadow: rgb(224 224 224 / 75%) 1px 10px 5px 0px;
+    border-radius: 8px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    color: black;
+    & .nivel-5-descrip{
+        background-color: $nivel-5;
+        color: white;
+        display: flex;
+        align-items: center;
+        & p{
+            padding: 2rem;
+        }
+    }
+    & .nivel-5-description{
+        color: white;
+        background-color: $nivel-5;
+        padding: 2rem;
+    }
+    & .nivel-4-descrip{
+        background-color: $nivel-4;
+        color: white;
+        display: flex;
+        align-items: center;
+        & p{
+            padding: 2rem;
+        }
+    }
+    & .nivel-4-description{
+        color: white;
+        background-color: $nivel-4;
+        padding: 2rem;
+    }
+    & .nivel-3-descrip{
+        background-color: $nivel-3;
+        color: $secundary-400;
+        display: flex;
+        align-items: center;
+        & p{
+            padding: 2rem;
+        }
+    }
+    & .nivel-3-description{
+        color: $secundary-400;
+        background-color: $nivel-3;
+        padding: 2rem;
+    }
+    & .nivel-2-descrip{
+        background-color: $nivel-2;
+        color: $secundary-400;
+        display: flex;
+        align-items: center;
+        & p{
+            padding: 2rem;
+        }
+    }
+    & .nivel-2-description{
+        color: $secundary-400;
+        background-color: $nivel-2;
+        padding: 2rem;
+    }
+    & .nivel-1-descrip{
+        background-color: $nivel-1;
+        color: white;
+        display: flex;
+        align-items: center;
+        & p{
+            padding: 2rem;
+        }
+    }
+    & .nivel-1-description{
+        color: white;
+        background-color: $nivel-1;
+        padding: 2rem;
+    }
+
+}

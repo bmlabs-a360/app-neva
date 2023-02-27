@@ -467,8 +467,8 @@ export default {
     };
 
     const getInfo = () => {
-        state.idEvaluacion = route.query.evaluacion.id;
-        state.nombreEvaluacion = route.query.evaluacion.nombre;
+        state.idEvaluacion = route.query.evaluacionId;
+        state.nombreEvaluacion = route.query.evaluacionNombre;
         const fecha = new Date();
         const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
         let month = months[fecha.getMonth()];

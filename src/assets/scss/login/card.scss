@@ -76,6 +76,651 @@
         }
 
     }
+    &-grafictabs{
+        width: 100%;
+        @include min-mv(520px){width: calc(50% - 10px);}
+        @include min-mv(780px){width: calc(100% - 10px);} 
+        @include min-mv(1100px){width: calc(33% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        padding: 24px 16px;
+        text-align: center;
+        & h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: $secundary-400;
+            margin-bottom: 1.5rem;
+            text-align: start;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+            text-align: justify;
+        }
+
+    }
+    &-grafictabsnivel{
+        width: 100%;
+        @include min-mv(520px){width: calc(100% - 10px);}
+        @include min-mv(780px){width: calc(100% - 10px);} 
+        @include min-mv(1100px){width: calc(50% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: white;
+        display: flex;
+        flex-direction: initial;
+        justify-content: space-between;
+        align-items: center;
+        color: black;
+        padding: 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: $secundary-400;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+        & .titlenivel{
+            font-size: 76px;
+            padding: 1rem;
+            font-weight: 500;
+        }
+        & .titlenivel-5{
+            font-size: 76px;
+            padding: 1rem;
+            font-weight: 500;
+            color: $nivel-5;
+        }
+        & .titlenivel-4{
+            font-size: 76px;
+            padding: 1rem;
+            font-weight: 500;
+            color: $nivel-4;
+        }
+        & .titlenivel-3{
+            font-size: 76px;
+            padding: 1rem;
+            font-weight: 500;
+            color: $nivel-3;
+        }
+        & .titlenivel-2{
+            font-size: 76px;
+            padding: 1rem;
+            font-weight: 500;
+            color: $nivel-2;
+        }
+        & .titlenivel-1{
+            font-size: 76px;
+            padding: 1rem;
+            font-weight: 500;
+            color: $nivel-1;
+        }
+        & .catnivel{
+            display: flex;
+            flex-direction: column;
+            & .niveles{
+                padding-top: 2.8rem;
+                padding-bottom: 2.8rem;
+                padding-left:1rem ;
+                padding-right:1rem ;
+            }
+            .nivel-5{
+                background-color: $nivel-5;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-4{
+                background-color: $nivel-4;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-3{
+                background-color: $nivel-3;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-2{
+                background-color: $nivel-2;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-1{
+                background-color: $nivel-1;
+                color: white;
+                font-weight: 500;
+            }
+        }
+
+    }
+    &-grafictabsnivel5{
+        width: 100%;
+        @include min-mv(520px){width: calc(100% - 10px);}
+        @include min-mv(780px){width: calc(100% - 10px);} 
+        @include min-mv(1100px){width: calc(33% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: $nivel-5;
+        display: flex;
+        flex-direction: initial;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        padding: 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: white;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+        & .titlenivel {
+            font-size: 76px;
+            font-weight: 500;
+        }
+
+        & .catnivel{
+            display: flex;
+            flex-direction: column;
+            & .niveles{
+                padding-top: 1.8rem;
+                padding-bottom: 1.8rem;
+                padding-left:1rem ;
+                padding-right:1rem ;
+            }
+            .nivel-5{
+                background-color: $nivel-5;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-4{
+                background-color: $nivel-4;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-3{
+                background-color: $nivel-3;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-2{
+                background-color: $nivel-2;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-1{
+                background-color: $nivel-1;
+                color: white;
+                font-weight: 500;
+            }
+        }
+
+    }
+    &-grafictabsnivel4{
+        width: 100%;
+        @include min-mv(520px){width: calc(50% - 10px);}
+        @include min-mv(780px){width: calc(32% - 10px);} 
+        @include min-mv(1100px){width: calc(33% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: $nivel-4;
+        display: flex;
+        flex-direction: initial;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        padding: 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: white;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+        & .titlenivel {
+            font-size: 76px;
+            font-weight: 500;
+        }
+
+        & .catnivel{
+            display: flex;
+            flex-direction: column;
+            & .niveles{
+                padding-top: 1.8rem;
+                padding-bottom: 1.8rem;
+                padding-left:1rem ;
+                padding-right:1rem ;
+            }
+            .nivel-5{
+                background-color: $nivel-5;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-4{
+                background-color: $nivel-4;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-3{
+                background-color: $nivel-3;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-2{
+                background-color: $nivel-2;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-1{
+                background-color: $nivel-1;
+                color: white;
+                font-weight: 500;
+            }
+        }
+
+    }
+    &-grafictabsnivel3{
+        width: 100%;
+        @include min-mv(520px){width: calc(50% - 10px);}
+        @include min-mv(780px){width: calc(32% - 10px);} 
+        @include min-mv(1100px){width: calc(33% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: $nivel-3;
+        display: flex;
+        flex-direction: initial;
+        justify-content: space-between;
+        align-items: center;
+        color: $secundary-400;
+        padding: 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: $secundary-400;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+        & .titlenivel {
+            font-size: 76px;
+            font-weight: 500;
+        }
+
+        & .catnivel{
+            display: flex;
+            flex-direction: column;
+            & .niveles{
+                padding-top: 1.8rem;
+                padding-bottom: 1.8rem;
+                padding-left:1rem ;
+                padding-right:1rem ;
+            }
+            .nivel-5{
+                background-color: $nivel-5;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-4{
+                background-color: $nivel-4;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-3{
+                background-color: $nivel-3;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-2{
+                background-color: $nivel-2;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-1{
+                background-color: $nivel-1;
+                color: white;
+                font-weight: 500;
+            }
+        }
+
+    }
+    &-grafictabsnivel2{
+        width: 100%;
+        @include min-mv(520px){width: calc(50% - 10px);}
+        @include min-mv(780px){width: calc(32% - 10px);} 
+        @include min-mv(1100px){width: calc(33% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: $nivel-2;
+        display: flex;
+        flex-direction: initial;
+        justify-content: space-between;
+        align-items: center;
+        color: $secundary-400;
+        padding: 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: $secundary-400;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+        & .titlenivel {
+            font-size: 76px;
+            font-weight: 500;
+        }
+
+        & .catnivel{
+            display: flex;
+            flex-direction: column;
+            & .niveles{
+                padding-top: 1.8rem;
+                padding-bottom: 1.8rem;
+                padding-left:1rem ;
+                padding-right:1rem ;
+            }
+            .nivel-5{
+                background-color: $nivel-5;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-4{
+                background-color: $nivel-4;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-3{
+                background-color: $nivel-3;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-2{
+                background-color: $nivel-2;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-1{
+                background-color: $nivel-1;
+                color: white;
+                font-weight: 500;
+            }
+        }
+
+    }
+    &-grafictabsnivel1{
+        width: 100%;
+        @include min-mv(520px){width: calc(50% - 10px);}
+        @include min-mv(780px){width: calc(32% - 10px);} 
+        @include min-mv(1100px){width: calc(33% - 10px);}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: $nivel-1;
+        display: flex;
+        flex-direction: initial;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        padding: 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: white;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+        }
+        & .titlenivel {
+            font-size: 76px;
+            font-weight: 500;
+        }
+
+        & .catnivel{
+            display: flex;
+            flex-direction: column;
+            & .niveles{
+                padding-top: 1.8rem;
+                padding-bottom: 1.8rem;
+                padding-left:1rem ;
+                padding-right:1rem ;
+            }
+            .nivel-5{
+                background-color: $nivel-5;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-4{
+                background-color: $nivel-4;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-3{
+                background-color: $nivel-3;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-2{
+                background-color: $nivel-2;
+                color: white;
+                font-weight: 500;
+            }
+            .nivel-1{
+                background-color: $nivel-1;
+                color: white;
+                font-weight: 500;
+            }
+        }
+
+    }
+    &-grafictabsresult{
+        width: 100%;      
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        padding: 0px 0px 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: $secundary-400;
+            margin-bottom: 1.5rem;
+            margin-top: 1.5rem;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+            text-align: justify;
+        }
+        & .bodycard{
+            background-color: $aqua-40;
+            padding: 1rem;
+            color: white;
+            width: 100%;
+            height: -webkit-fill-available;
+           
+            & h2 {
+                color: white !important;
+            }
+        }
+        & .titlecard{
+            width: 100%;
+            background-color: $aqua-40;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: flex-start;
+            & h3{
+                font-size: 14px;
+                font-weight: 600;
+                color: white;
+            }
+        }
+
+    }
+    &-backtabsresult {
+        width: 100%;
+        @include min-mv(1100px){width: calc(50% - 10px);
+        }
+    }
+    &-grafictabsresultsub{
+        width: 100%;
+        @include min-mv(520px){width: calc(100% - 10px);}
+        @include min-mv(780px){width: calc(100% - 10px);} 
+        @include min-mv(1100px){width: calc(50% - 10px);height: min-content;}       
+        box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224,224,224,0.75);
+        border-radius: 8px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        padding: 0px 0px 0px 0px;
+        text-align: center;
+        & h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: $secundary-400;
+            margin-bottom: 1.5rem;
+            
+        }
+        & h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: $secundary-400;
+            margin-bottom: 16px;
+        }
+        & p {
+            font-size: 14px;
+            font-weight: 200;
+            text-align: justify;
+        }
+        & .bodycard{
+            background-color: $aqua-40;
+            padding: 1rem;
+            color: white;
+            & h2 {
+                color: white !important;
+            }
+        }
+        & .titlecard{
+            width: 100%;
+            background-color: $aqua-40;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: flex-start;
+            & h3{
+                font-size: 14px;
+                font-weight: 600;
+                color: white;
+            }
+        }
+
+    }
+   
     &-hello-2 {
      //   @include mv(768px){width: calc(1000% - 10px);}
         @include mv(1100px){display: none!important;}

@@ -40,6 +40,15 @@ const routes = [
           import(/* webpackChunkName: "dashboard" */ "@/views/HomeDashboardGranEmpresa.vue"),
       },
       {
+        path: "/homereporte",
+        name: "HomeReporte",
+        meta: {
+          middleware: [auth, log],
+        },
+        component: () =>
+          import(/* webpackChunkName: "dashboard" */ "@/views/HomeReporte.vue"),
+      },
+      {
         path: "/mantenedor",
         name: "Mantenedor",
         component: {

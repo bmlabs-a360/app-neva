@@ -1,6 +1,6 @@
 <template>
    <!--Contenido-->
-    <div class="row view-wrapper" v-if="perfil == 'Consultor' || perfil == 'Usuario pro (empresa)'">
+    <div class="row view-wrapper" v-if="perfil == 'Consultor' || perfil == 'Usuario pro (empresa)' || perfil == 'Administrador'">
         <!--Inicia Tabs-->
         <div class="col-12 d-flex mt-3 mt-sm-0 mt-lg-5 flex-column flex-sm-row justify-content-between align-items-center">
             <ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
@@ -138,7 +138,7 @@
                                     </td>
                                     <td v-if="evaluacion.estado == 100"> 
                                         <button class="icons">
-                                            <svg xmlns="http://www.w3.org/2000/svg" @click="ir('Reporte', evaluacion)" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:eye" class="iconify iconify--feather cursor-pointer"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" @click="ir('HomeReporte', evaluacion)" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="feather:eye" class="iconify iconify--feather cursor-pointer"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                                 <path d="M1 12s4-8 11-8s11 8 11 8s-4 8-11 8s-11-8-11-8z">
                                                 </path>
                                                 <circle cx="12" cy="12" r="3">

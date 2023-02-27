@@ -284,12 +284,12 @@ export function getStyleConciliacionSegunEstado(estado) {
   gi;
 }
 
-export function checkAll(name) {
+export function checkAll(name, todoname) {
   let boxes = document.getElementsByName(name);
   for (let x = 0; x < boxes.length; x++) {
     let obj = boxes[x];
     if (obj.type == "checkbox") {
-        obj.checked = document.getElementById("todoschk").checked;
+        obj.checked = document.getElementById(todoname).checked;
     }
   }
 }

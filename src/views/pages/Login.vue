@@ -405,6 +405,7 @@ export default {
 
    
     const IngresarConsultor = () => {
+      
       let idempresa = document.getElementById("empresa").value;
       state.empresaSelected = state.empresas.find((c) => c.id === idempresa);
       if (!state.empresaSelected) {
@@ -457,6 +458,7 @@ export default {
           return false;
         }
       });
+      debugger;
       return router.push({ name: state.dashboard });
     };
     

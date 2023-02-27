@@ -49,7 +49,7 @@
                 }}</CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuario">
                   <CButton 
-                    @click="getUserDelete(user.id)"><CIcon :icon="cilTrash" size="lg" />
+                    @click="getUserDelete(user)"><CIcon :icon="cilTrash" size="lg" />
                   </CButton>
                   <CButton 
                     @click="getUserSelected(user.id)"><CIcon :icon="cilPen" size="lg" />
@@ -343,12 +343,13 @@
             </div>
             <div class="mb-2" >
                 <CFormLabel style="display:flex"> 
-                  <CFormSwitch style="cursor: pointer" id="todoschk" @click="checkAll('checkAreaNewUser')" /> Todos
+                  <CFormSwitch style="cursor: pointer" id="todoschkAreaNew" @click="checkAll('checkAreaNewUser', 'todoschkAreaNew');seleccionarSegmentacionAreaNew()" /> Todos
                 </CFormLabel>
               <div v-for="area in segmentacionAreas" :key="area.id">
                 <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
                 <CFormSwitch style="cursor: pointer"
                             name="checkAreaNewUser"
+                            :id="area.id"
                             v-model="area.activoSegmentacionAreas"
                             :checked="area.activoSegmentacionAreas"/>
               </div>
@@ -611,7 +612,7 @@
             </div>
               <div class="mb-2" >
                   <CFormLabel style="display:flex" > 
-                    <CFormSwitch style="cursor: pointer" id="todoschk" @click="checkAll('checkArea')" /> Todos
+                    <CFormSwitch style="cursor: pointer" id="todoschkArea" @click="checkAll('checkArea', 'todoschkArea'); seleccionarSegmentacionArea()" /> Todos
                   </CFormLabel>
                 <div v-for="area in segmentacionAreas" :key="area.id">
                   <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
@@ -762,6 +763,11 @@ export default {
           swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
           return false;
       }
+      
+      if (state.usuarioNuevo.password.length < 8 || state.usuarioNuevo.password.length > 50 ){
+        swal.fire("Registro usuario", "Contraseña debe tener un mínimo de 8 y máximo 50 caracteres", "warning");
+        return false;
+      }
       if (!state.usuarioNuevo.email || !validateEmail(state.usuarioNuevo.email)) {
           swal.fire("Registro usuario", "Debe ingresar un email", "warning");
           return false;
@@ -771,8 +777,9 @@ export default {
       state.usuarioNuevo.usuarioEvaluacions = [];
       state.evaluaciones.forEach(evaluacion => {
         var usuarioAreas = [];
+        let activoSegmentacionAreas = false;
         evaluacion.segmentacionAreas.forEach(segmentacionArea => {
-          let activoSegmentacionAreas = (segmentacionArea.activoSegmentacionAreas) ? segmentacionArea.activoSegmentacionAreas : false;
+          activoSegmentacionAreas = (segmentacionArea.activoSegmentacionAreas) ? segmentacionArea.activoSegmentacionAreas : false;
           var usuarioArea =
           {
               "segmentacionAreaId": segmentacionArea.id,
@@ -806,6 +813,7 @@ export default {
           "usuarioEvaluacions": state.usuarioNuevo.usuarioEvaluacions
       };
       console.log("usuarioInsert", usuarioInsert);
+      
       ApiNeva.post("Usuario/InsertUser", usuarioInsert,
         { headers: header }
       )
@@ -896,46 +904,72 @@ export default {
     const modificarUser = () => {
 
       if (state.userSelected.nombres == "") {
-          swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
-          return false;
+        swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
+        return false;
       }
       if (state.clave == "") {
-          swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
-          return false;
+        swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
+        return false;
+      }
+      if (state.clave.length < 8 || state.clave.length > 50 ){
+        swal.fire("Registro usuario", "Contraseña debe tener un mínimo de 8 y máximo 50 caracteres", "warning");
+        return false;
       }
       if (state.userSelected.email == "" || !validateEmail(state.userSelected.email)) {
-          swal.fire("Registro usuario", "Debe ingresar un email", "warning");
-          return false;
+        swal.fire("Registro usuario", "Debe ingresar un email", "warning");
+        return false;
       }
 
       state.usuarioEvaluacion = state.userSelected.usuarioEvaluacions;
       state.userSelected.usuarioEvaluacions = [];
       var usuarioArea = {};
+      console.log("evaluaciones 1111", state.evaluaciones);
       state.evaluaciones.forEach(evaluacion => {
         var usuarioAreas = [];
-        var UsuarioEvaluacion = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
+        var UsuarioEvaluacionSelected = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
         evaluacion.segmentacionAreas.forEach(segmentacionArea => {
-          if (segmentacionArea.idusuarioArea){
-            usuarioArea =
-            {
-                "id": segmentacionArea.idusuarioArea,
-                "usuarioEvaluacionId": UsuarioEvaluacion.id, 
-                "segmentacionAreaId": segmentacionArea.id,
-                "activo": segmentacionArea.activo
+          //if (segmentacionArea.idusuarioArea){
+            if (UsuarioEvaluacionSelected){
+              usuarioArea =
+              {
+                  "id": segmentacionArea.idusuarioArea,
+                  "usuarioEvaluacionId": UsuarioEvaluacionSelected.id, 
+                  "segmentacionAreaId": segmentacionArea.id,
+                  "activo": segmentacionArea.activo
+              }
+              usuarioAreas.push(usuarioArea);
+            }else{
+                usuarioArea =
+                {
+                    "segmentacionAreaId": segmentacionArea.id,
+                    "activo": segmentacionArea.activo
+                }
+                usuarioAreas.push(usuarioArea);
             }
-            usuarioAreas.push(usuarioArea);
-          }
+          //}
         });
-        var usuarioEvaluacion =
-        {
-            "id" : UsuarioEvaluacion.id,
-            "usuarioId": state.userSelected.id,
-            "empresaId": state.userSelected.empresaId,
-            "evaluacionId": evaluacion.id,
-            "activo": evaluacion.asociar,
-            "usuarioAreas": usuarioAreas
-        };
-        state.userSelected.usuarioEvaluacions.push(usuarioEvaluacion);
+        if (UsuarioEvaluacionSelected){
+          var usuarioEvaluacion =
+          {
+              "id" : UsuarioEvaluacionSelected.id,
+              "usuarioId": state.userSelected.id,
+              "empresaId": state.userSelected.empresaId,
+              "evaluacionId": evaluacion.id,
+              "activo": evaluacion.asociar,
+              "usuarioAreas": usuarioAreas
+          };
+          state.userSelected.usuarioEvaluacions.push(usuarioEvaluacion);
+        }else{
+          var usuarioEvaluacion =
+          {
+              "usuarioId": state.userSelected.id,
+              "empresaId": state.userSelected.empresaId,
+              "evaluacionId": evaluacion.id,
+              "activo": evaluacion.asociar,
+              "usuarioAreas": usuarioAreas
+          };
+          state.userSelected.usuarioEvaluacions.push(usuarioEvaluacion);
+        }
       });
       console.log("state.userSelected.usuarioEvaluacions", state.userSelected.usuarioEvaluacions);
       let usuarioEdit = {
@@ -1001,6 +1035,88 @@ export default {
         element.asociar = false;
       });
     };
+
+    const seleccionarSegmentacionArea = () => {
+      if ( document.getElementById("todoschkArea").checked == true){
+        state.segmentacionAreas.forEach(x => {
+          x.activo = true;
+        });
+      }else{
+        state.segmentacionAreas.forEach(x => {
+          x.activo = false;
+        });
+      }
+    };
+
+    
+    const seleccionarSegmentacionAreaNew = () => {
+      if ( document.getElementById("todoschkAreaNew").checked == true){
+        state.segmentacionAreas.forEach(x => {
+          x.activoSegmentacionAreas = true;
+        });
+      }else{
+        state.segmentacionAreas.forEach(x => {
+          x.activoSegmentacionAreas = false;
+        });
+      }
+    };
+
+    
+
+    const getUserDelete = (user) => {
+      //console.log("user", user);
+      swal.fire({
+          title: '¿Está seguro?',
+          text: "¡No podrás revertir esto!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          var usuarioId =
+          {
+              id: user.id,
+          }
+            ApiNeva.post("Usuario/DeleteCascade", usuarioId, { headers: header }
+          )
+          .then((response) => {
+              if (response.status != 200) return false;
+
+              console.log("response.data", response.data);
+              swal.fire(
+                  'Eliminar!',
+                  'El usuario y todas sus dependencias fueron eliminadas.',
+                  'success'
+              )
+              //recargar usuarios   
+              getUsers();
+              return;
+            })
+            .catch((error) => {
+                console.log("error->", error.response.data.detail);
+                if (
+                    error.response.data.detail.includes("llave duplicada") ||
+                    error.response.data.detail.includes("duplicate key")
+                ) {
+                    swal.fire(
+                        "Eliminar usuarios",
+                        "Existen datos relacionados imposible de eliminar. Mas detalle: " + error.response.data.detail,
+                        "warning"
+                    );
+                } else
+                    swal.fire(
+                        "Eliminar usuario",
+                        "Por favor, verifique los datos relacionados. Mas detalle: " + error.response.data.detail, 
+                        "warning"
+                    );
+            });
+          }
+
+        })
+      };
     
     onMounted(() => {
       getUsers();
@@ -1018,6 +1134,9 @@ export default {
       getSegmentacionAreaNew,
       crearUser,
       modificarUser,
+      getUserDelete,
+      seleccionarSegmentacionArea,
+      seleccionarSegmentacionAreaNew,
     };
   },
 };

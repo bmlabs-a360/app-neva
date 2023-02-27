@@ -1,3 +1,5 @@
+//
+
 // Grafico Barras
 var chart = bb.generate({
     data: {
@@ -31,7 +33,7 @@ var chart = bb.generate({
       ]
     ],
     colors: {
-        data1: "#FFC7D8",
+        data1: "#16C59B",
         data2: "#76EFFF",
         data3: "#16C59B",
       },
