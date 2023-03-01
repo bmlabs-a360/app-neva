@@ -73,7 +73,7 @@
                               </clipPath>
                             </defs>
                           </svg>
-                          <p class="responsible-table">{{evaluacion.estado}}% Completado</p>
+                          <p class="responsible-table">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
                         </div>
                       </div>
                   </div>
@@ -478,7 +478,9 @@ export default {
     };
 
     const cargarGraficos = async (evaluacionSelected) => {
-      document.getElementById(evaluacionSelected.id).checked = true;
+      if (document.getElementById(evaluacionSelected.id) != undefined){
+        document.getElementById(evaluacionSelected.id).checked = true;
+      } 
       state.evaluacionSelected = evaluacionSelected;
       console.log("evaluacionSelected: ",  state.evaluacionSelected);
       await getIMA();

@@ -13240,12 +13240,12 @@ a {
 }
 @media screen and (min-width: 520px) {
   .cards-grafic {
-    width: calc(50% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 780px) {
   .cards-grafic {
-    width: calc(32% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 1100px) {
@@ -13532,12 +13532,12 @@ a {
 }
 @media screen and (min-width: 520px) {
   .cards-grafictabsnivel4 {
-    width: calc(50% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 780px) {
   .cards-grafictabsnivel4 {
-    width: calc(32% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 1100px) {
@@ -13616,12 +13616,12 @@ a {
 }
 @media screen and (min-width: 520px) {
   .cards-grafictabsnivel3 {
-    width: calc(50% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 780px) {
   .cards-grafictabsnivel3 {
-    width: calc(32% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 1100px) {
@@ -13700,12 +13700,12 @@ a {
 }
 @media screen and (min-width: 520px) {
   .cards-grafictabsnivel2 {
-    width: calc(50% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 780px) {
   .cards-grafictabsnivel2 {
-    width: calc(32% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 1100px) {
@@ -13784,12 +13784,12 @@ a {
 }
 @media screen and (min-width: 520px) {
   .cards-grafictabsnivel1 {
-    width: calc(50% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 780px) {
   .cards-grafictabsnivel1 {
-    width: calc(32% - 10px);
+    width: calc(100% - 10px);
   }
 }
 @media screen and (min-width: 1100px) {
@@ -13858,7 +13858,7 @@ a {
   -moz-box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
   border-radius: 8px;
   background-color: white;
-  display: flex;
+  /*display: flex;*/
   flex-direction: column;
   justify-content: center;
   align-items: center;

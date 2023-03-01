@@ -196,7 +196,7 @@
                       </clipPath>
                     </defs>
                   </svg>
-                  <p>{{tablaSegmentacionArea.estado}}% Completado</p>
+                  <p>{{parseFloat(tablaSegmentacionArea.estado).toFixed(0)}}% Completado</p>
                 </td>
                 <td class="table-finish" v-else>
                   <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
