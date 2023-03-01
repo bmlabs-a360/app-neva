@@ -542,10 +542,6 @@ export default {
         };
     };
 
-    const test = () => {
-        debugger;
-    };
-
     //subareas
     const getGraficoImportanciaEstrategica = () => {
         state.evaluacionEmpresa = [];
@@ -619,127 +615,8 @@ export default {
         })
         .catch((error) => console.log(error));
 
-/*
-        state.resumenImportanciaEstrategica = [];
-        state.segmentacionAreaSelected = [];
-        
-        let labels = [];
 
-
-        console.log("state.evaluacionEmpresa.importanciaRelativas: ",  state.evaluacionEmpresa.importanciaRelativas);
-        state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
-            element.segmentacionArea.segmentacionSubAreas.forEach((x) => {
-                x.importanciaEstrategicas.forEach((y) => {
-                    if (element.id == y.importanciaRelativaId){
-                        if (state.segmentacionAreaSelected.find((m) => m.nombreArea == element.nombreArea) == undefined){
-                            labels.push(element.nombreSubArea);
-                        }
-                        state.segmentacionAreaSelected.push( 
-                            { 
-                                "id" : element.segmentacionArea.id,
-                                "nombreArea" : element.segmentacionArea.nombreArea,
-                                "idSubArea" : x.id,
-                                "nombreSubArea" : x.nombreSubArea,
-                                "valorImportanciaEstrategica" : y.valor
-                            }
-                        );
-                        
-                        
-                    }
-                });
-            });
-        });
-        console.log("segmentacionAreaSelected: ",  state.segmentacionAreaSelected);
-
-        let valorDataList = [];
-        let dataSet = [];
-        */
-        /*state.segmentacionAreaSelected.forEach((a) => {
-            a.segmentacionSubAreas.forEach((element) => {
-                labels.push(element.nombreSubArea);
-            });
-        });*.
-        console.log("labels: ",  labels);
-
-    
-        let datos = [];
-        let index = 0;
-        let dataset = {}; 
-
-    
-
-        /*for (let i = 0; i < state.segmentacionAreaSelected.length; i++) { 
-            for (let j = 0; j < state.segmentacionAreaSelected[i].segmentacionSubAreas.length; j++) {
-                if (state.segmentacionAreaSelected[i].id == state.segmentacionAreaSelected[i].segmentacionSubAreas[j].segmentacionAreaId){
-                    for (let x = 0; x < state.segmentacionAreaSelected[i].segmentacionSubAreas[j].importanciaEstrategicas.length; x++) {
-                        if (datos.find((m) => m.label == state.segmentacionAreaSelected[i].nombreArea) == undefined){
-                            datos.push({
-                                "label" : state.segmentacionAreaSelected[i].nombreArea,
-                                "backgroundColor" : colorAleatorio(),
-                                "data" : state.segmentacionAreaSelected[i].segmentacionSubAreas[j].importanciaEstrategicas[x].valor
-                            });
-                        } else {
-                            index = datos.findIndex((m) => m.label == state.segmentacionAreaSelected[i].nombreArea); 
-                            debugger;
-                            datos[index].data = datos[index].data.concat(state.segmentacionAreaSelected[i].segmentacionSubAreas[j].importanciaEstrategicas[x].valor);
-                        }
-                    }
-                }
-            }
-        }*/
-         //console.log("DATOS: ",  datos);
-        /*state.segmentacionAreaSelected.forEach((a) => {
-            a.segmentacionSubAreas.forEach((element) => {
-                if (a.id == element.segmentacionAreaId){
-                    element.importanciaEstrategicas.forEach((m) => {
-                        //valorDataList.push(m.valor);
-                    });
-                }
-            });
-        });*/
-        //console.log("valorDataList: ",  valorDataList);
-
-        /*let elemento = {
-            label: "Evaluacion " +  state.evaluacionEmpresa.evaluacion.nombre,
-            backgroundColor:  "#41B883",
-            data: valorDataList
-        }
-
-        dataSet.push(elemento);
-
-        state.resumenImportanciaEstrategica = {
-            labels: labels,
-            datasets: dataSet,
-        };
-        console.log("resumenImportanciaEstrategica: ",    state.resumenImportanciaEstrategica);*/
     };
-
-   /* const getGraficoPorcentajeTotalEvaluacion = () => {
-        var chart = bb.generate({
-            data: {
-                columns: [
-                ["data", 77]
-                ],
-                type: "gauge",
-                colors: {
-                    data: "#16C59B",
-                }, // for ESM specify as: gauge()
-            },
-            arc: {
-                cornerRadius: 15
-            },
-            gauge: {
-                arcLength: 70,
-                fullCircle: true,
-                label: {
-                extents: function() { return ""; }
-                },
-                startingAngle: -2.2,
-                width: 25
-            },
-            bindto: "#gaugeCornerRadius_1"
-        });
-    };*/
 
     const ir = (namePageDestiny, evaluacion) => {
         return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });

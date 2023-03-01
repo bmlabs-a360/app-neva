@@ -368,38 +368,6 @@ export default {
         state.visibleModalLoginConsultor = true;
         return false;
       }
-      
-      ApiNeva.get(process.env.VUE_APP_API_NEVA_SWAGGER, {
-        headers: header,
-      }).then((response2) => {
-        if (response2.status == 200) {
-          var asd = Object.keys(response2.data.paths).toString().split(",");
-          var swaggerList = [];
-          var i = 1;
-          asd.forEach((element) => {
-            swaggerList.push({
-              id: i++,
-              repositorio: element
-                .toString()
-                .replace("/api/v1/", "")
-                .split("/")[0],
-              metodo: element.toString().replace("/api/v1/", "").split("/")[1],
-              nombre:
-                element.toString().replace("/api/v1/", "").split("/")[0] +
-                "_" +
-                element.toString().replace("/api/v1/", "").split("/")[1],
-            });
-          });
-          localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
-        } else {
-          swal.fire(
-            "Login",
-            "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
-            "warning"
-          );
-          return false;
-        }
-      });
       return router.push({ name: response.data.dashboard });
     };
 
@@ -427,38 +395,6 @@ export default {
         "empresaModel",
         JSON.stringify(state.empresaSelected)
       );
-      ApiNeva.get(process.env.VUE_APP_API_NEVA_SWAGGER, {
-        headers: header,
-      }).then((response2) => {
-        if (response2.status == 200) {
-          var asd = Object.keys(response2.data.paths).toString().split(",");
-          var swaggerList = [];
-          var i = 1;
-          asd.forEach((element) => {
-            swaggerList.push({
-              id: i++,
-              repositorio: element
-                .toString()
-                .replace("/api/v1/", "")
-                .split("/")[0],
-              metodo: element.toString().replace("/api/v1/", "").split("/")[1],
-              nombre:
-                element.toString().replace("/api/v1/", "").split("/")[0] +
-                "_" +
-                element.toString().replace("/api/v1/", "").split("/")[1],
-            });
-          });
-          localStorage.setItem("swaggerList", JSON.stringify(swaggerList));
-        } else {
-          swal.fire(
-            "Login",
-            "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
-            "warning"
-          );
-          return false;
-        }
-      });
-      debugger;
       return router.push({ name: state.dashboard });
     };
     
@@ -526,45 +462,6 @@ export default {
               "usuarioModel",
               JSON.stringify(response.data.usuarioModel)
             );
-            ApiNeva.get(process.env.VUE_APP_API_NEVA_SWAGGER, {
-              headers: header,
-            }).then((response2) => {
-              if (response2.status == 200) {
-                var asd = Object.keys(response2.data.paths)
-                  .toString()
-                  .split(",");
-                var swaggerList = [];
-                var i = 1;
-                asd.forEach((element) => {
-                  swaggerList.push({
-                    id: i++,
-                    repositorio: element
-                      .toString()
-                      .replace("/api/v1/", "")
-                      .split("/")[0],
-                    metodo: element
-                      .toString()
-                      .replace("/api/v1/", "")
-                      .split("/")[1],
-                    nombre:
-                      element.toString().replace("/api/v1/", "").split("/")[0] +
-                      "_" +
-                      element.toString().replace("/api/v1/", "").split("/")[1],
-                  });
-                });
-                localStorage.setItem(
-                  "swaggerList",
-                  JSON.stringify(swaggerList)
-                );
-              } else {
-                swal.fire(
-                  "Login",
-                  "Problemas al obtener swagger.json. Contacte al administrador del sistema.",
-                  "warning"
-                );
-                return false;
-              }
-            });
             return router.push({ name: "Dashboard" });
           })
           .catch((error) => console.log(error));
