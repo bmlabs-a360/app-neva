@@ -223,7 +223,7 @@
               <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1> 
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" v-if="estadoGeneral == 100" @click="ir('Reporte')">Enviar</button>
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" v-if="estadoGeneral == 100" @click="ir('HomeReporte')">Enviar</button>
               </div>
             </div>
           </div>
