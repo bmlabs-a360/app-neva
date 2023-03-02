@@ -61,16 +61,13 @@
                     <div class="cards cards-result mt-1 mb-4 justify-content-between">
                         <div class="cards">
                             <div class="cards-grafictabsresult pt-4">
-                                <div class="w-100 p-2">
-                                    <CCard>
-                                        <CCardBody >
-                                            <CChart
-                                                type="bar"
-                                                :data="resumenImportanciaRelativa"
-                                                height="100"
-                                            />
-                                        </CCardBody>
-                                    </CCard>
+                                <div class="w-100 p-2" >
+                                    <CChart
+                                        type="bar"
+                                        :data="resumenImportanciaRelativa"
+                                        height="200"
+                                        width="200"
+                                    />
                                 </div>
                                 <div class="bodycard">
                                     <h2>Importancia Relativa</h2>
@@ -83,11 +80,11 @@
                                 <div class="w-100">
                                     <div>
                                         <div :md="12">
-                                            <CCard>
-                                                <CCardBody >
-                                                    <CChart type="radar" :data="resumenPuntuacionArea" :options=" {  responsive: true,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } } }"/>
-                                                </CCardBody>
-                                            </CCard>
+                                            <CChart type="radar" 
+                                                :data="resumenPuntuacionArea" 
+                                                height="200"
+                                                width="200"
+                                                :options=" {  responsive: true,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } } }"/> 
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +218,7 @@
                             <div class="d-flex flex-column justify-content-center">
                                 <p :class="ima.claseIMA">{{parseFloat(ima.imaValor).toFixed(0)}}</p>
                                 <div> 
-                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas"/>
+                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="100" width="100"/>
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap flex-column justify-content-center mt-3">
@@ -236,6 +233,8 @@
                         <div class="cards-grafictabsresult pt-4">
                             <div class="w-100 p-2">
                                 <CChart type="bar" :data="ima.resumenCapacidad" 
+                                    height="100"
+                                    width="100"
                                     :options=" {
                                         plugins:{horizonalLinePlugin},
                                         responsive: true,

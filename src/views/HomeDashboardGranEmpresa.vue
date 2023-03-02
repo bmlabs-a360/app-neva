@@ -108,7 +108,7 @@
                                 </clipPath>
                                 </defs>
                               </svg>
-                              <p class="responsible">0</p>
+                              <p class="responsible">---</p>
                           </div>
                       </div>
                   </div>
@@ -483,7 +483,7 @@ export default {
             console.log("error->", error);
         });
     };
-    
+
     const ir = (namePageDestiny, evaluacion) => {
         return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
     };

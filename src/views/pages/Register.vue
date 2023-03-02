@@ -361,6 +361,7 @@ export default {
             }
         )
         .then((response) => {
+          debugger;
             if (response.status != 200) return false;
             swal.fire(
                 "Registro usuario",

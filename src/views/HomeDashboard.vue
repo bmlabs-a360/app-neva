@@ -92,7 +92,7 @@
                                         <div class="me-md-3">
                                             <h4 class="text-center text-md-start">Madurez</h4>
                                             <div class="d-flex align-items-center data-icon justify-content-center justify-content-md-between flex-wrap">
-                                                <div class="d-flex align-items-center ">
+                                                <div class="d-flex align-items-center" v-if="evaluacion.estado == 100">
                                                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <g clip-path="url(#clip0_258_1364)">
                                                             <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
@@ -105,6 +105,20 @@
                                                         </defs>
                                                     </svg>
                                                     <p class="responsible">{{evaluacion.IM}}</p>
+                                                </div>
+                                                <div class="d-flex align-items-center" v-else>
+                                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_258_1364)">
+                                                            <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_258_1364">
+                                                                <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    <p class="responsible">---</p>
                                                 </div>
                                             </div>
                                         </div>
