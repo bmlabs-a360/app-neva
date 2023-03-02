@@ -43,8 +43,8 @@
                   <label for="username">Seleccione Evaluaci&oacute;n</label>
                   <select id="idEvaluacionSelected" @change="changeEvaluacion" v-model="idEvaluacionSelected" class="form-select w-100" >
                     <option value="0" :key="0">Seleccione tipo evaluación</option>
-                    <option v-for="evaluacion in evaluaciones" :value="evaluacion.id" :key="evaluacion.id">
-                        {{ evaluacion.nombre }}
+                    <option :value="evaluaciones.id">
+                        {{ evaluaciones.nombre }}
                     </option>
                   </select>
                 </div>
@@ -376,6 +376,7 @@ export default {
       idTipoAreaSelected: "0",
       segmentacionAreaSelected: [],
       segmentacionSubAreasbyAreaSelected: [],
+      importanciaRelativa: [],
       importanciaRelativaSelected: [],
       porcentajesSubAreasSelected: [],
       allSegmentacionAreas: [],
@@ -407,36 +408,6 @@ export default {
       state.idEvaluacionSelected = route.query.evaluacionId;
     }
 
-    const SiguienteAtras = async (formStepsNum) => {
-      const formSteps = document.querySelectorAll(".form-step");
-      const progressBar = document.querySelector(".progressbar");
-      formSteps.forEach((formStep) => {
-        formStep.classList.contains("form-step-active") &&
-          formStep.classList.remove("form-step-active");
-      });
-      formSteps[formStepsNum].classList.add("form-step-active");
-
-      const progressSteps = document.querySelectorAll(".progress-step");
-      progressSteps.forEach((progressStep, idx) => {
-        if (idx < formStepsNum + 1) {
-          progressStep.classList.add("progress-step-active");
-        } else {
-          progressStep.classList.remove("progress-step-active");
-        }
-      });
-
-      const progressActive = document.querySelectorAll(".progress-step-active");
-
-      progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
-      
-      if (formStepsNum===3) {
-        progressBar.classList.add("d-none")
-      }
-      else if (formStepsNum<3) {
-        progressBar.classList.remove("d-none")
-      }
-    };
-
     const getEvaluaciones = async () => {
       state.evaluaciones = [];
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
@@ -445,7 +416,7 @@ export default {
       })
         .then((response) => {
           if (response.status != 200) return false;
-          state.evaluaciones = response.data;
+          state.evaluaciones = response.data.find((y) => y.id == state.idEvaluacionSelected);
           console.log("state.evaluaciones", state.evaluaciones);
         })
         .catch((error) => console.log(error));
@@ -467,11 +438,9 @@ export default {
       } 
 
       state.idEvaluacionSelected = idEvaluacionSelected;
-      state.evaluacionSelected = state.evaluaciones.find((y) => y.id == idEvaluacionSelected);
+      state.evaluacionSelected = state.evaluaciones;
       console.log("state.evaluacionSelected", state.evaluacionSelected);
-      state.evaluaciones.forEach(x => {
-        state.segmentacionAreas = state.segmentacionAreas.concat(x.segmentacionAreas);
-      });
+      state.segmentacionAreas =  state.evaluaciones.segmentacionAreas;
 
       getSegmentacionAreaByevaluacionPorcentajes();
 
@@ -484,14 +453,15 @@ export default {
       state.evaluacionSelected = [];
       state.segmentacionAreas = [];
       state.segmentacionAreasByEvaluacion = [];
-      state.porcentajesAreaSelected = [];
+      //state.porcentajesAreaSelected = [];
       state.totalPorcentaje = 0;
     };
 
     const getSegmentacionAreaByevaluacionPorcentajes = async () =>{
-
+      state.porcentajesAreaSelected = [];
+      let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
       let bodySegmentacionArea = {
-          id: state.evaluacionSelected.evaluacionEmpresas[0].id,
+          id: evaluacionEmpresaId,
       };
       ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId", bodySegmentacionArea , {
         headers: header,
@@ -535,14 +505,6 @@ export default {
       document.getElementById("totalporcentaje").classList.remove("text-danger");
       document.getElementById("totalporcentaje").classList.add("text-success");
     };
-
-    /*const RegresarPaso1 = async () => {
-      state.idTipoAreaSelected = "0";
-      state.idEvaluacionSelected = state.evaluacionSelected.id;
-      state.segmentacionAreaSelected = [];
-      state.segmentacionSubAreasbyAreaSelected = [];
-      document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
-    };*/
 
     const irPaso2 = async () => {
       state.idTipoAreaSelected = "0";
@@ -590,6 +552,7 @@ export default {
     };
 
     const guardarPorcentajeAreas = async () => {
+       state.ImportanciaRelativa = [];
       let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
       idAreasPorcentajes.forEach((element) => {
         let bodyImportanciaRelativa = {
@@ -611,6 +574,8 @@ export default {
             });
             return false;
           }
+          state.ImportanciaRelativa = state.ImportanciaRelativa.concat(response.data);
+          console.log("state.ImportanciaRelativaSelected **********", state.ImportanciaRelativa);
           SiguienteAtras(1); //Se avanza a Paso Importancia Estrategica
         })
         .catch((error) => console.log(error));
@@ -666,7 +631,8 @@ export default {
     };
 
     const getSegmentacionSubAreaByAreaPorcentajes = async () => {
-      state.importanciaRelativaSelected = state.porcentajesAreaSelected.find((y) => y.evaluacionEmpresaId == state.evaluacionSelected.evaluacionEmpresas[0].id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
+      let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
+      state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == evaluacionEmpresaId && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
       console.log("state.importanciaRelativaSelected", state.importanciaRelativaSelected);
 
       ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativaId", state.importanciaRelativaSelected , {
@@ -758,7 +724,8 @@ export default {
           });
           return false;
         }
-        state.importanciaRelativaSelected = state.porcentajesAreaSelected.find((y) => y.evaluacionEmpresaId == state.evaluacionSelected.evaluacionEmpresas[0].id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
+        let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
+        state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == evaluacionEmpresaId && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
         idSubAreasPorcentajes.forEach((element) => {
           let bodyImportanciaEstrategica = {
               importanciaRelativaId: state.importanciaRelativaSelected.id,
@@ -1016,7 +983,7 @@ export default {
             element.nombreArea = segmentacionArea.nombreArea;
             segmentacionSubArea = state.allSegmentacionSubAreas.find((y) => y.id == element.segmentacionSubAreaId);
             element.nombreSubArea = segmentacionSubArea.nombreSubArea;
-            evaluacion = state.evaluaciones.find((y) => y.id == element.evaluacionId);
+            evaluacion = state.evaluaciones;
             element.nombreEvaluacion = evaluacion.nombre;
           });
           state.preguntaSelected = state.preguntas[0];
@@ -1249,6 +1216,38 @@ export default {
       if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
         SiguienteAtras(2);
         getUsuarioAreas();
+      }else{
+        
+      }
+    };
+
+    const SiguienteAtras = async (formStepsNum) => {
+      const formSteps = document.querySelectorAll(".form-step");
+      const progressBar = document.querySelector(".progressbar");
+      formSteps.forEach((formStep) => {
+        formStep.classList.contains("form-step-active") &&
+          formStep.classList.remove("form-step-active");
+      });
+      formSteps[formStepsNum].classList.add("form-step-active");
+
+      const progressSteps = document.querySelectorAll(".progress-step");
+      progressSteps.forEach((progressStep, idx) => {
+        if (idx < formStepsNum + 1) {
+          progressStep.classList.add("progress-step-active");
+        } else {
+          progressStep.classList.remove("progress-step-active");
+        }
+      });
+
+      const progressActive = document.querySelectorAll(".progress-step-active");
+
+      progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+      
+      if (formStepsNum===3) {
+        progressBar.classList.add("d-none")
+      }
+      else if (formStepsNum<3) {
+        progressBar.classList.remove("d-none")
       }
     };
 
