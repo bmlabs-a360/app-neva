@@ -33,7 +33,7 @@
                 <tr v-for="evaluacion in evaluaciones" :key="evaluacion.id" @click="cargarGraficos(evaluacion)" class="cursor-pointer">
                   <th scope="row">
                     <div class="form-check">
-                      <input class="form-check-input cursor-pointer" type="radio" name="evaluacionSelected"  @click="cargarGraficos(evaluacion)" value="" :id="evaluacion.id">
+                      <input class="form-check-input cursor-pointer" type="radio" name="evaluacionSelected"  @click="cargarGraficos(evaluacion)" value="" :id="evaluacion.evaluacionEmpresaId + '-' + evaluacion.id">
                       <label class="form-check-label" for="flexCheckDefault">
                       </label>
                     </div>
@@ -82,19 +82,33 @@
                     <div class="me-md-3">
                       <h4 class="text-center text-md-start">Madurez</h4>
                       <div class="d-flex align-items-center data-icon justify-content-center justify-content-md-between flex-wrap">
-                          <div class="d-flex align-items-center ">
+                          <div class="d-flex align-items-center "  v-if="evaluacion.estado == 100">
                               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <g clip-path="url(#clip0_258_1364)">
-                              <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
-                              </g>
-                              <defs>
-                              <clipPath id="clip0_258_1364">
-                              <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
-                              </clipPath>
-                              </defs>
+                                <g clip-path="url(#clip0_258_1364)">
+                                  <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_258_1364">
+                                  <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                </clipPath>
+                                </defs>
                               </svg>
                               <p class="responsible">{{evaluacion.IM}}</p>
+                          </div>
+                          <div class="d-flex align-items-center " v-else>
+                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_258_1364)">
+                                  <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_258_1364">
+                                  <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
+                                </clipPath>
+                                </defs>
+                              </svg>
+                              <p class="responsible">0</p>
                           </div>
                       </div>
                   </div>
@@ -103,22 +117,22 @@
                     <div class="me-md-3">
                       <h4 class="text-center text-md-start">Fecha Termino</h4>
                       <div class="d-flex align-items-center data-icon justify-content-center justify-content-md-between flex-wrap">
-                          <div class="d-flex align-items-center ">
-                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <g clip-path="url(#clip0_258_1364)">
+                        <div class="d-flex align-items-center ">
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_258_1364)">
                               <path d="M11.0674 5.97389V6.43389C11.0668 7.5121 10.7176 8.56123 10.0721 9.4248C9.42647 10.2884 8.51903 10.9201 7.48506 11.2258C6.4511 11.5316 5.34601 11.4948 4.33462 11.1212C3.32322 10.7475 2.45971 10.0569 1.87286 9.15243C1.28602 8.24791 1.00728 7.17792 1.07822 6.10205C1.14916 5.02617 1.56599 4.00206 2.26652 3.18243C2.96706 2.3628 3.91378 1.79158 4.96548 1.55397C6.01718 1.31635 7.11752 1.42506 8.10239 1.86389" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
                               <path d="M11.0674 2.43384L6.06738 7.43884L4.56738 5.93884" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
-                              </g>
-                              <defs>
-                              <clipPath id="clip0_258_1364">
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_258_1364">
                               <rect width="12" height="12" fill="white" transform="translate(0.0673828 0.433838)"/>
-                              </clipPath>
-                              </defs>
-                              </svg>
-                              <p class="responsible">{{evaluacion.fechaTermino}}</p>
-                          </div>
+                            </clipPath>
+                            </defs>
+                          </svg>
+                          <p class="responsible">{{evaluacion.fechaTermino}}</p>
+                        </div>
                       </div>
-                  </div>
+                    </div>
                   </td>
                   <td v-if="evaluacion.estado == 100">
                     <button class="icons">
@@ -134,15 +148,6 @@
                   </td>
                   <td v-else>
                   </td>
-                  <!--<td>
-                    <div>
-                      <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12.9787" cy="5.15581" r="1.65337" fill="#283252"/>
-                        <circle cx="12.9786" cy="10.9427" r="1.65337" fill="#283252"/>
-                        <circle cx="12.9786" cy="16.7295" r="1.65337" fill="#283252"/>
-                      </svg>  
-                  </div>
-                  </td>-->
                 </tr>
               </tbody>
             </table>  
@@ -182,17 +187,12 @@
           <div class="cards-grafic p-3 d-flex">
             <div class="w-100">
               <h2>Indice de madurez entre area</h2>
-              <div >
-                <div :md="12">
-                  <CCard class="mb-4">
-                    <CCardBody >
-                      <CChart
-                        type="bar"
-                        :data="resumenIM"
-                      />
-                    </CCardBody>
-                  </CCard>
-                </div>
+              <div :md="12">
+                <CCard class="mb-4">
+                  <CCardBody >
+                    <CChart type="bar" :data="resumenIM" />
+                  </CCardBody>
+                </CCard>
               </div>
             </div>
           </div>
@@ -200,84 +200,58 @@
           <div class="cards-grafic p-3">
             <div class="w-100">
               <h2>Puntuación entre area</h2>
+              <div :md="12">
+                <CCard class="mb-4">
+                  <CCardBody >
+                    <CChart type="bar" :data="resumenPuntuacionArea" />
+                  </CCardBody>
+                </CCard>
+              </div>
+            </div>
+          </div>
+
+          <div class="cards-grafic p-3">
+            <div class="w-100">
+              <h2>Porcentaje importancia relativa</h2>
+              <div :md="12">
+                <CCard class="mb-4">
+                  <CCardBody >
+                    <CChart type="bar" :data="resumenImportanciaRelativa" />
+                  </CCardBody>
+                </CCard>
+              </div>
+            </div>
+          </div>
+
+          <div class="cards-grafic">
+            <div class="d-flex w-100  justify-content-between">
+              <p>Inbox</p>
               <div>
-                <div :md="12">
-                  <CCard class="mb-4">
-                    <CCardBody >
-                      <CChart
-                        type="bar"
-                        :data="resumenPuntuacionArea"
-                      />
-                    </CCardBody>
-                  </CCard>
+                <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12.9787" cy="5.15581" r="1.65337" fill="#283252"/>
+                  <circle cx="12.9786" cy="10.9427" r="1.65337" fill="#283252"/>
+                  <circle cx="12.9786" cy="16.7295" r="1.65337" fill="#283252"/>
+                </svg>   
+              </div>
+            </div>
+            <div class="d-flex w-100 row cards-none">
+              <div class="col-12 img-left d-flex align-items-center w-100 mb-3 ">
+                <img class="user-photo me-3" alt="" src="../assets/img/nav/pers/02.png">
+                <h3>{{userSelected.nombres}}</h3>        
+              </div>
+              <div class="col-12 card p-3">
+                <div class="circle d-flex align-items-center "><div class=" active me-2 "></div>
+                  <h6>administrador</h6>
                 </div>
+                <p class="message">Estamos aquí ante cualquier pregunta, no dudes en contactarnos.</p>
               </div>
-          </div>
-        </div>
-
-        <div class="cards-grafic p-3" style="visibility: hidden;"> 
-          <div class="w-100">
-            <!--<h3>Promedio de completado</h3>-->
-          <div class="d-flex btn grafica justify-content-around">
-            <!--<button class="btn circle-two-n2 order-md-2 ">
-                SG
-            </button>
-            <button class="btn circle-two-n4 order-md-2 ">
-              SG
-            </button>
-            <button class="btn circle-two-n1 order-md-2 ">
-                SG
-            </button>-->
-          </div>
-          <div id="gaugeCornerRadius_1"></div>
-          </div>
-        </div>
-
-        <div class="cards-grafic">
-          <div class="d-flex w-100  justify-content-between">
-            <p>Inbox</p>
+            </div>
             <div>
-              <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12.9787" cy="5.15581" r="1.65337" fill="#283252"/>
-                <circle cx="12.9786" cy="10.9427" r="1.65337" fill="#283252"/>
-                <circle cx="12.9786" cy="16.7295" r="1.65337" fill="#283252"/>
-              </svg>   
             </div>
           </div>
-          <div class="d-flex w-100 row cards-none">
-            <div class="col-12 img-left d-flex align-items-center w-100 mb-3 ">
-              <img class="user-photo me-3" alt="" src="../assets/img/nav/pers/02.png">
-              <h3>{{userSelected.nombres}}</h3>        
-            </div>
-            <div class="col-12 card p-3">
-              <div class="circle d-flex align-items-center "><div class=" active me-2 "></div>
-                <h6>administrador</h6>
-              </div>
-              <p class="message">Estamos aquí ante cualquier pregunta, no dudes en contactarnos.</p>
-            </div>
-          </div>
-          <div>
-
-          </div>
-      </div>
-      
-      </section>
+        </section>
         <!-- Fin Cajas-->
-
-    </div>
-    <!--Termino Contendio-->
-    <!--alerta de carga-->
-    <!--<div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast succes" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Guardamos con exito tus avances.
-              </div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
       </div>
-    </div>-->
-    <!--Termino alerta de carga-->
 
 </template>
 
@@ -323,38 +297,41 @@ export default {
         IMA: [],
         resumenIM: [],
         resumenPuntuacionArea:[],
+        resumenImportanciaRelativa: []
     });
 
     const getUsuario = async () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
         state.perfil = state.userSelected.perfil.nombre;
         console.log('useer', state.userSelected);
-        await getEmpesas();
-        getEvaluaciones();
+        getEmpesas();
     };
 
-    const getEmpesas = () => {
+    const getEmpesas = async () => {
         state.empresas = [];
         return ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + JSON.parse(localStorage.usuarioModel).id , null, { headers: header })
-          .then((response) => {
+          .then(async (response) => {
             if (response.status != 200) return false;
             state.empresas = response.data;
             console.log("state.empresas",state.empresas);
+            await getEvaluaciones();
+            await getEstadoSubArea(); 
+            await getIM(); 
+            if (state.evaluaciones.length > 0){
+              cargarGraficos(state.evaluaciones[0]);
+            }
           })
           .catch((error) => console.log(error));
-        return false;
     }
 
-    const getEvaluaciones = () => {
+    const getEvaluaciones = async () => {
       state.evaluaciones = [];
-      //let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      return Promise.all( state.empresas.map(element => 
-        ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + element.id, null, { headers: header, })
+        return ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresas", state.empresas, { headers: header, })
         .then(async (response) => {
             if (response.status != 200) return false;
-            state.evaluaciones = response.data;
-            console.log("state.evaluaciones", state.evaluaciones);
-            state.evaluaciones.forEach((m) => {
+             console.log("state.evaluaciones", response.data);
+            if (response.data.length > 0){
+              response.data.forEach((m) => {
                 m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
                 if (m.iniciales.length < 2){
                     m.iniciales =  m.nombre.substring("0", "2");
@@ -362,48 +339,26 @@ export default {
                 let fecha = new Date(m.fechaCreacion);
                 fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
                 m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
-                m.nombreEmpresa = element.razonSocial;
-                state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
-            });
-            console.log("state.evaluaciones", state.evaluaciones);
-            getIM();
-            getEstadoSubArea();
+                m.evaluacionEmpresas.forEach( (e) => {
+                    let empresa = state.empresas.find((c) => c.id === e.empresaId);
+                    m.nombreEmpresa = empresa.razonSocial;
+                    m.empresaId = e.empresaId;
+                    m.evaluacionEmpresaId = empresa.id;
+                });
+              });
+              state.evaluaciones = state.evaluaciones.concat(response.data);
+            }
           })
         .catch((error) => console.log(error))
-      ));
-      /*return ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
-          headers: header,
-      })
-      .then((response) => {
-          if (response.status != 200) return false;
-          state.evaluaciones = response.data;
-          console.log("state.evaluaciones", state.evaluaciones);
-          state.evaluaciones.forEach((m) => {
-              m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-              if (m.iniciales.length < 2){
-                  m.iniciales =  m.nombre.substring("0", "2");
-              }
-              let fecha = new Date(m.fechaCreacion);
-              fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
-              m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
-              state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
-          });
-          console.log("state.evaluaciones", state.evaluaciones);
-          getIM();
-          getEstadoSubArea();
-          
-      })
-      .catch((error) => console.log(error));*/
     }
 
-    const getIM = () => {
+    const getIM = async () => {
         state.evaluaciones.forEach((m) => {
             var filtro = {
                 "evaluacionId":  m.id,
-                "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+                "empresaId": m.empresaId
             }
-              console.log("FILTRO", filtro);
-            ApibackOffice.post("Madurez/GetIM", filtro, { 
+            return ApibackOffice.post("Madurez/GetIM", filtro, { 
                 headers: header 
             })
             .then((response) => {
@@ -413,86 +368,48 @@ export default {
                 }else{
                     m.IM = response.data[0].imValor.toFixed(2);
                 }
-                console.log("response.data", response.data);
+                console.log("IM", response.data);
             })
             .catch((error) => console.log(error));
-            return false;
         });
     };
 
-     const getEstadoSubArea = async () => {
-        state.SegmentacionAreas.forEach(x => {
-            state.SegmentacionSubAreas = state.SegmentacionSubAreas.concat(x.segmentacionSubAreas);
-        });
-
-        let bodyEmpresa =  { 
-            id: JSON.parse(localStorage.usuarioModel).empresaId 
-        };
-
-        ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
+    const getEstadoSubArea = async () => {
+        return ApiNeva.post("EvaluacionEmpresa/GetEstadoEvaluacionByEmpresas", state.empresas ,{
             headers: header,
         })
         .then((response) => {
             if (response.status != 200) return false;
-            response.data.forEach(x => {
-                console.log("SUBESTADO",  response.data);
-                state.SegmentacionSubAreas.forEach(y => {
-                    if (x.segmentacionSubAreaId == y.id){
-                        y.estado = x.respuestaPorcentaje;
-                    }
+            console.log("estadosubareas", response.data );
+            state.evaluaciones.forEach(x => {
+                x.evaluacionEmpresas.forEach(e => {
+                  response.data.forEach(y => {
+                      if (e.id == y.evaluacionEmpresaId){
+                          x.estado = y.respuestaPorcentaje;
+                      }
+                  });
                 });
             });
-            let contador = 0;
-            let contadorArea = 0;
-            let estadoGeneral = 0;
-            state.SegmentacionAreas.forEach (x => {
-                x.estado = 0;
-                contador = 0;
-                contadorArea++;
-                state.SegmentacionSubAreas.forEach(y => {
-                    if (y.segmentacionAreaId == x.id){
-                    contador++;
-                    x.estado = (x.estado + parseInt(y.estado));
-                    };
-                });
-                x.estado = x.estado / contador;
-                estadoGeneral = (estadoGeneral + x.estado);
-            });
-            console.log("ESTADO",  state.SegmentacionAreas);
-            state.evaluaciones.forEach (x => {
-                x.estado = 0;
-                contador = 0;
-                contadorArea++;
-                state.SegmentacionAreas.forEach(y => {
-                    if (y.evaluacionId == x.id){
-                        contador++;
-                        x.estado = (x.estado + parseInt(y.estado));
-                    };
-                });
-                x.estado = x.estado / contador;
-                estadoGeneral = (estadoGeneral + x.estado);
-            });
-            console.log("ESTADOGENERAL",  state.evaluaciones);
+              console.log("evaluaciones", state.evaluaciones );
+            return;
         })
         .catch((error) => console.log(error));
     };
 
     const cargarGraficos = async (evaluacionSelected) => {
-      if (document.getElementById(evaluacionSelected.id) != undefined){
-        document.getElementById(evaluacionSelected.id).checked = true;
+      if (document.getElementById(evaluacionSelected.evaluacionEmpresaId + '-' + evaluacionSelected.id) != undefined){
+        document.getElementById(evaluacionSelected.evaluacionEmpresaId + '-' + evaluacionSelected.id).checked = true;
       } 
       state.evaluacionSelected = evaluacionSelected;
       console.log("evaluacionSelected: ",  state.evaluacionSelected);
       await getIMA();
-      getGraficoPuntuacionArea();
+      //getGraficoPuntuacionArea();
     };
 
-    
-    //areas
     const getIMA = async () => {
         var filtro = {
             "evaluacionId":   state.evaluacionSelected.id,
-            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+            "empresaId": state.evaluacionSelected.empresaId
         }
         return ApibackOffice.post("Madurez/GetIMA", filtro,
             { headers: header }
@@ -501,126 +418,72 @@ export default {
             if (response.status != 200) return false;
             state.IMA = response.data;
             console.log("state.IMA", response.data);
-            let dataSet = [];
+            let dataSetIMA = [];
+            let dataSetPesoRelativo = [];
+            let dataSetPuntuacionArea = [];
             let labels = [];
-            let valorDataList = [];
+            let valorDataIMA = [];
+            let valorDataPesoRelativo = [];
+            let valorDataPuntuacionArea = [];
             state.IMA.forEach((element) => {
                 labels.push(element.nombreArea);
-                valorDataList.push((element.imaValor).toFixed(2));
+                valorDataIMA.push((element.imaValor).toFixed(2));
+                valorDataPesoRelativo.push(element.pesoRelativoAreaPorc);
+                valorDataPuntuacionArea.push((element.imaValor / 5) * 100);
             });
 
-            let elemento = {
+            //#region IMA
+            let elementoIMA = {
                 label: state.evaluacionSelected.nombre,
                 backgroundColor:   colorAleatorio(),
-                data: valorDataList
-            }
-
-            dataSet.push(elemento);
+                data: valorDataIMA
+            };
+            console.log("elementoIMA", elementoIMA);
+            dataSetIMA.push(elementoIMA);
 
             state.resumenIM = {
                 labels: labels,
-                datasets: dataSet
+                datasets: dataSetIMA
             };
+            //#endregion
+
+            //#region PesoRelativo
+            let elementoPesoRelativo = {
+                label: state.evaluacionSelected.nombre,
+                backgroundColor:   colorAleatorio(),
+                data: valorDataPesoRelativo
+            };
+
+            dataSetPesoRelativo.push(elementoPesoRelativo);
+
+            state.resumenImportanciaRelativa = {
+                labels: labels,
+                datasets: dataSetPesoRelativo
+            };
+            //#endregion
+
+             //#region PuntuacionArea
+            let elementoPuntuacionArea = {
+                label: state.evaluacionSelected.nombre,
+                backgroundColor:   colorAleatorio(),
+                data: valorDataPuntuacionArea
+            }
+
+            dataSetPuntuacionArea.push(elementoPuntuacionArea);
+
+            state.resumenPuntuacionArea = {
+                labels: labels,
+                datasets: dataSetPuntuacionArea
+            };
+            
+            console.log("resumenPuntuacionArea", state.resumenPuntuacionArea);
+            //#endregion
         })
         .catch((error) => {
             console.log("error->", error);
         });
     };
-
-    const getGraficoPuntuacionArea = () => {
-        let dataSet = [];
-        let labels = [];
-        let valorDataList = [];
-        state.IMA.forEach((element) => {
-            labels.push(element.nombreArea);
-            valorDataList.push((element.imaValor / 5) * 100);
-        });
-
-        let elemento = {
-            label: state.evaluacionSelected.nombre,
-            backgroundColor:   colorAleatorio(),
-            data: valorDataList
-        }
-
-        dataSet.push(elemento);
-
-        state.resumenPuntuacionArea = {
-            labels: labels,
-            datasets: dataSet
-        };
-    };
     
-    //subareas
-    const getGraficoImportanciaEstrategica = () => {
-        state.evaluacionEmpresa = [];
-        state.resumenImportanciaEstrategica = [];
-        state.segmentacionAreaSelected = [];
-        return ApibackOffice.get(
-            "EvaluacionEmpresa/GetEvaluacionEmpresasByEvaluacionIdEmpresaId?evaluacionId=" + state.evaluacionSelected.id + "&empresaId=" + JSON.parse(localStorage.usuarioModel).empresaId , null ,
-            { headers: header }
-        )
-        .then((response) => {
-            if (response.status != 200) return false;
-            console.log("response.data", response.data);
-            state.evaluacionEmpresa = response.data.find((c) => c.evaluacionId === state.evaluacionSelected.id);
-            console.log("evaluacionEmpresa: ",  state.evaluacionEmpresa);
-            let labels = [];
-            let dataSet = [];
-
-            state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
-                element.segmentacionArea.segmentacionSubAreas.forEach((x) => {
-                    x.importanciaEstrategicas.forEach((y) => {
-                        if (element.id == y.importanciaRelativaId){
-                            if (state.segmentacionAreaSelected.find((m) => m.nombreSubArea == x.nombreSubArea) == undefined){
-                                labels.push(x.nombreSubArea);
-                            }
-                            state.segmentacionAreaSelected.push( 
-                                { 
-                                    "id" : element.segmentacionArea.id,
-                                    "nombreArea" : element.segmentacionArea.nombreArea,
-                                    "idSubArea" : x.id,
-                                    "nombreSubArea" : x.nombreSubArea,
-                                    "valorImportanciaEstrategica" : [y.valor]
-                                }
-                            ); 
-                        }
-                    });
-                });
-            });
-
-            console.log("segmentacionAreaSelected: ",  state.segmentacionAreaSelected);
-
-            let datos = [];
-            let index = 0;
-
-            for (let i = 0; i < state.segmentacionAreaSelected.length; i++) { 
-                if (datos.find((m) => m.label == state.segmentacionAreaSelected[i].nombreArea) == undefined){
-                    datos.push({
-                        "label" : state.segmentacionAreaSelected[i].nombreArea,
-                        "backgroundColor" : colorAleatorio(),
-                        "data" : state.segmentacionAreaSelected[i].valorImportanciaEstrategica,
-                    });
-                } else {
-                    index = datos.findIndex((m) => m.label == state.segmentacionAreaSelected[i].nombreArea); 
-                    datos[index].data = datos[index].data.concat(state.segmentacionAreaSelected[i].valorImportanciaEstrategica);
-                }
-            }
-
-            for (let i = 0; i < datos.length; i++) { 
-                dataSet.push(datos[i]);
-            }
-
-            console.log("labels: ",  labels);
-            state.resumenImportanciaEstrategica = {
-                labels: labels,
-                datasets: dataSet,
-            };
-        
-            console.log("resumenImportanciaEstrategica: ",  state.resumenImportanciaEstrategica);
-        })
-        .catch((error) => console.log(error));
-    };
-
     const ir = (namePageDestiny, evaluacion) => {
         return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
     };

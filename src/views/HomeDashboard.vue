@@ -246,21 +246,15 @@
                 </div>
             </div>
 
-            <div class="cards-grafic p-3" style="visibility: hidden;">
-                <div class="w-100" >
-                    <!--<h3>Promedio de completado</h3>-->
-                    <div class="d-flex btn grafica justify-content-around">
-                        <!--<button class="btn circle-two-n2 order-md-2 ">
-                            SG
-                        </button>
-                        <button class="btn circle-two-n4 order-md-2 ">
-                            SG
-                        </button>
-                        <button class="btn circle-two-n1 order-md-2 ">
-                            SG
-                        </button>-->
-                    </div>
-                    <div id="gaugeCornerRadius_1">
+            <div class="cards-grafic p-3">
+                <div class="w-100">
+                    <h2>Porcentaje importancia relativa</h2>
+                    <div :md="12">
+                        <CCard class="mb-4">
+                        <CCardBody >
+                            <CChart type="bar" :data="resumenImportanciaRelativa" />
+                        </CCardBody>
+                        </CCard>
                     </div>
                 </div>
             </div>
@@ -347,22 +341,29 @@ export default {
         IMA: [],
         resumenIM: [],
         resumenPuntuacionArea:[],
+        resumenImportanciaRelativa: [],
 
         //resumenImportanciaEstrategica: [],
         //segmentacionAreaSelected : [],
     });
 
-    const getUsuario = () => {
+    const getUsuario = async () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
         state.perfil = state.userSelected.perfil.nombre;
         console.log('useer', state.userSelected);
-        getEvaluaciones();
+        await getEvaluaciones();
+        getIM();
+        await getEstadoSubArea();
+
+        if (state.evaluaciones.length > 0){
+            cargarGraficos(state.evaluaciones[0]);
+        }
     };
 
-    const getEvaluaciones = () => {
+    const getEvaluaciones = async () => {
         state.evaluaciones = [];
         let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-        ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
+        return ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
             headers: header,
         })
         .then((response) => {
@@ -380,12 +381,9 @@ export default {
                 state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
             });
             console.log("state.evaluaciones", state.evaluaciones);
-            getIM();
-            getEstadoSubArea();
             
         })
         .catch((error) => console.log(error));
-        return false;
     }
 
     const getIM = () => {
@@ -475,12 +473,8 @@ export default {
         console.log("evaluacionSelected: ",  state.evaluacionSelected);
         await getIMA();
         getGraficoPuntuacionArea();
-        //await getGraficoImportanciaEstrategica();
-        //getGraficoPorcentajeTotalEvaluacion();
     };
 
-
-    //areas
     const getIMA = async () => {
         var filtro = {
             "evaluacionId":   state.evaluacionSelected.id,
@@ -493,26 +487,66 @@ export default {
             if (response.status != 200) return false;
             state.IMA = response.data;
             console.log("state.IMA", response.data);
-            let dataSet = [];
+            let dataSetIMA = [];
+            let dataSetPesoRelativo = [];
+            let dataSetPuntuacionArea = [];
             let labels = [];
-            let valorDataList = [];
+            let valorDataIMA = [];
+            let valorDataPesoRelativo = [];
+            let valorDataPuntuacionArea = [];
             state.IMA.forEach((element) => {
                 labels.push(element.nombreArea);
-                valorDataList.push((element.imaValor).toFixed(2));
+                valorDataIMA.push((element.imaValor).toFixed(2));
+                valorDataPesoRelativo.push(element.pesoRelativoAreaPorc);
+                valorDataPuntuacionArea.push((element.imaValor / 5) * 100);
             });
 
-            let elemento = {
+            //#region IMA
+            let elementoIMA = {
                 label: state.evaluacionSelected.nombre,
                 backgroundColor:   colorAleatorio(),
-                data: valorDataList
-            }
-
-            dataSet.push(elemento);
+                data: valorDataIMA
+            };
+            console.log("elementoIMA", elementoIMA);
+            dataSetIMA.push(elementoIMA);
 
             state.resumenIM = {
                 labels: labels,
-                datasets: dataSet
+                datasets: dataSetIMA
             };
+            //#endregion
+
+            //#region PesoRelativo
+            let elementoPesoRelativo = {
+                label: state.evaluacionSelected.nombre,
+                backgroundColor:   colorAleatorio(),
+                data: valorDataPesoRelativo
+            };
+
+            dataSetPesoRelativo.push(elementoPesoRelativo);
+
+            state.resumenImportanciaRelativa = {
+                labels: labels,
+                datasets: dataSetPesoRelativo
+            };
+            //#endregion
+
+             //#region PuntuacionArea
+            let elementoPuntuacionArea = {
+                label: state.evaluacionSelected.nombre,
+                backgroundColor:   colorAleatorio(),
+                data: valorDataPuntuacionArea
+            }
+
+            dataSetPuntuacionArea.push(elementoPuntuacionArea);
+
+            state.resumenPuntuacionArea = {
+                labels: labels,
+                datasets: dataSetPuntuacionArea
+            };
+            
+            console.log("resumenPuntuacionArea", state.resumenPuntuacionArea);
+            //#endregion
         })
         .catch((error) => {
             console.log("error->", error);
@@ -540,82 +574,6 @@ export default {
             labels: labels,
             datasets: dataSet
         };
-    };
-
-    //subareas
-    const getGraficoImportanciaEstrategica = () => {
-        state.evaluacionEmpresa = [];
-        state.resumenImportanciaEstrategica = [];
-        state.segmentacionAreaSelected = [];
-        return ApibackOffice.get(
-            "EvaluacionEmpresa/GetEvaluacionEmpresasByEvaluacionIdEmpresaId?evaluacionId=" + state.evaluacionSelected.id + "&empresaId=" + JSON.parse(localStorage.usuarioModel).empresaId , null ,
-            { headers: header }
-        )
-        .then((response) => {
-            if (response.status != 200) return false;
-            console.log("response.data", response.data);
-            state.evaluacionEmpresa = response.data.find((c) => c.evaluacionId === state.evaluacionSelected.id);
-            console.log("evaluacionEmpresa: ",  state.evaluacionEmpresa);
-            /*state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
-                valorDataList.push(element.valor);
-            });*/
-            let labels = [];
-            let dataSet = [];
-
-            state.evaluacionEmpresa.importanciaRelativas.forEach((element) => {
-                element.segmentacionArea.segmentacionSubAreas.forEach((x) => {
-                    x.importanciaEstrategicas.forEach((y) => {
-                        if (element.id == y.importanciaRelativaId){
-                            if (state.segmentacionAreaSelected.find((m) => m.nombreSubArea == x.nombreSubArea) == undefined){
-                                labels.push(x.nombreSubArea);
-                            }
-                            state.segmentacionAreaSelected.push( 
-                                { 
-                                    "id" : element.segmentacionArea.id,
-                                    "nombreArea" : element.segmentacionArea.nombreArea,
-                                    "idSubArea" : x.id,
-                                    "nombreSubArea" : x.nombreSubArea,
-                                    "valorImportanciaEstrategica" : [y.valor]
-                                }
-                            ); 
-                        }
-                    });
-                });
-            });
-
-            console.log("segmentacionAreaSelected: ",  state.segmentacionAreaSelected);
-
-            let datos = [];
-            let index = 0;
-
-            for (let i = 0; i < state.segmentacionAreaSelected.length; i++) { 
-                if (datos.find((m) => m.label == state.segmentacionAreaSelected[i].nombreArea) == undefined){
-                    datos.push({
-                        "label" : state.segmentacionAreaSelected[i].nombreArea,
-                        "backgroundColor" : colorAleatorio(),
-                        "data" : state.segmentacionAreaSelected[i].valorImportanciaEstrategica,
-                    });
-                } else {
-                    index = datos.findIndex((m) => m.label == state.segmentacionAreaSelected[i].nombreArea); 
-                    datos[index].data = datos[index].data.concat(state.segmentacionAreaSelected[i].valorImportanciaEstrategica);
-                }
-            }
-
-            for (let i = 0; i < datos.length; i++) { 
-                dataSet.push(datos[i]);
-            }
-
-            console.log("labels: ",  labels);
-            state.resumenImportanciaEstrategica = {
-                labels: labels,
-                datasets: dataSet,
-            };
-        
-            console.log("resumenImportanciaEstrategica: ",  state.resumenImportanciaEstrategica);
-        })
-        .catch((error) => console.log(error));
-
-
     };
 
     const ir = (namePageDestiny, evaluacion) => {

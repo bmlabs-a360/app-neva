@@ -10,7 +10,7 @@
                         </span>
                     </span>
                 </span>
-                <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+                <img  class="logo d-block d-sm-none" @click="ir('HomeDashboard')" :src="logoNegro" alt="">
                 <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
             </div>
             <h1 class="title">
@@ -46,7 +46,7 @@
                         </span>
                     </span>
                 </span>
-                <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+                <img  class="logo d-block d-sm-none" @click="ir('Dashboard')" :src="logoNegro" alt="">
                 <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
             </div>
             <h1 class="title">
@@ -78,7 +78,7 @@
                         </span>
                     </span>
                 </span>
-                <img  class="logo d-block d-sm-none" :src="logoNegro" alt="">
+                <img  class="logo d-block d-sm-none" @click="ir('HomeDashboardGranEmpresa')" :src="logoNegro" alt="">
                 <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
             </div>
             <h1 class="title">

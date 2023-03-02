@@ -13431,6 +13431,121 @@ a {
   color: white;
   font-weight: 500;
 }
+.cards-grafictabsnivelIM {
+  width: 100%;
+  box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
+  -webkit-box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
+  -moz-box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
+  border-radius: 8px;
+  background-color: white;
+  display: flex;
+  flex-direction: initial;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  padding: 0px 0px;
+  text-align: center;
+}
+@media screen and (min-width: 520px) {
+  .cards-grafictabsnivelIM {
+    width: calc(100% - 10px);
+  }
+}
+@media screen and (min-width: 780px) {
+  .cards-grafictabsnivelIM {
+    width: calc(100% - 10px);
+  }
+}
+@media screen and (min-width: 1100px) {
+  .cards-grafictabsnivelIM {
+    width: calc(33% - 10px);
+  }
+}
+.cards-grafictabsnivelIM h2, .cards-grafictabsnivelIM .h2 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #283252;
+}
+.cards-grafictabsnivelIM h3, .cards-grafictabsnivelIM .h3 {
+  font-size: 12px;
+  font-weight: 400;
+  color: #283252;
+  margin-bottom: 16px;
+}
+.cards-grafictabsnivelIM p {
+  font-size: 14px;
+  font-weight: 200;
+}
+.cards-grafictabsnivelIM .titlenivel {
+  font-size: 76px;
+  padding: 1rem;
+  font-weight: 500;
+}
+.cards-grafictabsnivelIM .titlenivel-5 {
+  font-size: 76px;
+  padding: 1rem;
+  font-weight: 500;
+  color: #4FA95C;
+}
+.cards-grafictabsnivelIM .titlenivel-4 {
+  font-size: 76px;
+  padding: 1rem;
+  font-weight: 500;
+  color: #3070B5;
+}
+.cards-grafictabsnivelIM .titlenivel-3 {
+  font-size: 76px;
+  padding: 1rem;
+  font-weight: 500;
+  color: #FCFA62;
+}
+.cards-grafictabsnivelIM .titlenivel-2 {
+  font-size: 76px;
+  padding: 1rem;
+  font-weight: 500;
+  color: #F3BF4F;
+}
+.cards-grafictabsnivelIM .titlenivel-1 {
+  font-size: 76px;
+  padding: 1rem;
+  font-weight: 500;
+  color: #E5342C;
+}
+.cards-grafictabsnivelIM .catnivel {
+  display: flex;
+  flex-direction: column;
+}
+.cards-grafictabsnivelIM .catnivel .niveles {
+  padding-top: 2.8rem;
+  padding-bottom: 2.8rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.cards-grafictabsnivelIM .catnivel .nivel-5 {
+  background-color: #4FA95C;
+  color: white;
+  font-weight: 500;
+}
+.cards-grafictabsnivelIM .catnivel .nivel-4 {
+  background-color: #3070B5;
+  color: white;
+  font-weight: 500;
+}
+.cards-grafictabsnivelIM .catnivel .nivel-3 {
+  background-color: #FCFA62;
+  color: white;
+  font-weight: 500;
+}
+.cards-grafictabsnivelIM .catnivel .nivel-2 {
+  background-color: #F3BF4F;
+  color: white;
+  font-weight: 500;
+}
+.cards-grafictabsnivelIM .catnivel .nivel-1 {
+  background-color: #E5342C;
+  color: white;
+  font-weight: 500;
+}
 .cards-grafictabsnivel5 {
   width: 100%;
   box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);

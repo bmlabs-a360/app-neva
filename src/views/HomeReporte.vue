@@ -40,7 +40,8 @@
                         </div>
                     </div>
 
-                    <div :class="IM.clase">
+                    
+                    <div :class="claseIM">
                         <div class="catnivel">
                             <p class="niveles nivel-5 mb-0 mt-0">5</p>
                             <p class="niveles nivel-4 mb-0 mt-0">4</p>
@@ -50,7 +51,7 @@
                         </div>
                         <div class="w-100">
                             <h2>Madurez General</h2>
-                            <p class="titlenivel">{{parseFloat(IM.imValor).toFixed(0)}}</p>
+                            <p class="titlenivel">{{nivelMadurez}}</p>
                             <h2>{{IM.nivelReporte}}</h2>
                         </div>
                     </div>     
@@ -452,6 +453,8 @@ export default {
         fechaHoy : "",
         rutempresa: "",
         razonsocial: "",
+        nivelMadurez: "",
+        claseIM: "cards-grafictabsnivelIM",
         IM: [],
         IMA: [],
         IMSA: [],
@@ -584,9 +587,18 @@ export default {
 
         state.rutempresa =  JSON.parse(localStorage.empresaModel).rutEmpresa;
         state.razonsocial = JSON.parse(localStorage.empresaModel).razonSocial;
-
         if (await getNivelReporte() != false){
-            getMadurezGeneral();
+            //getMadurezGeneral();
+            await getIM();
+            graficoMadurezGeneral();
+            await getIMA();
+            await getIMSA();
+            await GetCapacidadSubAreas();
+            getGraficoImportanciaRelativa();
+            getGraficoCapacidad();
+            getPuntuacionArea();
+            await getRecomendacionArea();
+
         };
     };
 
@@ -595,7 +607,7 @@ export default {
             "id" : state.idEvaluacion
         }
         return ApibackOffice.post("Reporte/GetReportesByEvaluacionId", bodyEvaluacion,
-            { headers: header }
+            { headers: header } 
         )
         .then((response) => {
             if (response.status != 200) return false;
@@ -616,7 +628,145 @@ export default {
         });
     };
 
-    const getMadurezGeneral = () => {
+    const getIM = async () => {
+        let filtro = {
+            "evaluacionId": state.idEvaluacion, 
+            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+        }
+        return ApibackOffice.post("Madurez/GetIM", filtro,
+            { headers: header }
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            console.log("state.IM", response.data);
+            state.IM = response.data;
+            state.IM = state.IM.find((c) => c.evaluacionId === state.idEvaluacion);
+            if (state.reporte == undefined){
+                return false;
+            }
+            let nivelReporte = state.reporte.reporteItemNivelBasicos.find((c) => c.orden === parseInt(state.IM.imValor.toFixed(0)));
+            state.IM.nivelReporte = nivelReporte.detalle;
+            state.nivelMadurez = parseInt(state.IM.imValor).toFixed(0);
+        })
+        .catch((error) => {
+            console.log("error->", error);
+        });
+    };
+
+     const getIMA = async () => {
+        return ApibackOffice.get("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  JSON.parse(localStorage.usuarioModel).empresaId + "&usuarioId=" +  state.userSelected.id, null,
+            { headers: header } 
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.IMA = response.data;
+            state.IMA.forEach((element) => {
+                let color = [];
+                let restante = "";
+                let dataSet = [];
+                if (element.imaValor.toFixed(0) == 1){
+                    color = "#e5342c";
+                    restante = 4;
+                }
+                if (element.imaValor.toFixed(0) == 2){
+                    color = "#f3bf4f";
+                    restante = 3;
+                }
+                if (element.imaValor.toFixed(0) == 3){
+                    color = "#fcfa62";
+                    restante = 2;
+                }
+                if (element.imaValor.toFixed(0) == 4){
+                    color = "#3070b5";
+                    restante = 1;
+                }
+                if (element.imaValor.toFixed(0) == 5){
+                    color = "#4fa95c";
+                    restante = 0;
+                }
+
+                let elemento = {
+                    label: [element.nombreArea],
+                    backgroundColor:  [color, "#FFFFFF"],
+                    data: [parseInt(element.imaValor.toFixed(0)), restante]
+                }
+
+                dataSet.push(elemento);
+                element.nivelMadurezAreas = {
+                    datasets: dataSet,
+                };
+                
+                element.claseIMA = "titlenivel-" + element.imaValor.toFixed(0);
+                element.imaValor = element.imaValor.toFixed(2);
+                let cumplimiento = (element.imaValor / 5) * 100;
+                element.cumplimiento = cumplimiento.toFixed(0);
+                let brecha =  element.cumplimiento - 100;
+                element.brecha = brecha.toFixed(0);
+
+                if (element.imaValor >= 4){
+                    state.AreasMaduras.push(element);
+                }else{
+                    state.AreasMejorar.push(element);
+                }
+            });
+            state.AreasMaduras = state.AreasMaduras.sort(((a, b) =>  b.imaValor - a.imaValor));
+            state.AreasMejorar = state.AreasMejorar.sort((x, y) => x.imaValor - y.imaValor);
+            console.log("state.IMA", response.data);
+        })
+        .catch((error) => {
+            console.log("error->", error);
+        });
+    };
+
+    const getIMSA= async () => {
+        let filtro = {
+            "evaluacionId": state.idEvaluacion, 
+            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+        }
+        console.log("filtro", filtro);
+        return ApibackOffice.post("Madurez/GetIMSA",filtro,
+            { headers: header }
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.IMSA = response.data;
+            state.IMSA.forEach((element) => {
+                if (element.imsaValor.toFixed(0) >= 4){
+                    state.SubAreasMaduras.push(element);
+                }else{
+                    state.SubAreasMejorar.push(element);
+                }
+            });
+            state.SubAreasMaduras = state.SubAreasMaduras.sort(((a, b) =>  b.imsaValor - a.imsaValor));
+            state.SubAreasMejorar = state.SubAreasMejorar.sort((x, y) => x.imsaValor - y.imsaValor);
+            console.log("state.IMSA", response.data);
+        })
+        .catch((error) => {
+            console.log("error->", error);
+        });
+    };
+
+    const GetCapacidadSubAreas = async () => {
+        let filtro = {
+            "evaluacionId": state.idEvaluacion, 
+            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+        }
+        return ApibackOffice.post("Madurez/GetCapacidadSubAreas", filtro,
+            { headers: header }
+        )
+        .then((response) => {
+            if (response.status != 200) return false;
+            console.log("state.capacidadSubAreas", response.data);
+            state.capacidadSubAreas = response.data
+            return;
+        })
+        .catch((error) => {
+            console.log("error->", error);
+        });
+    };
+
+
+    /*const getMadurezGeneral = () => {
         var filtro = {
             "evaluacionId": state.idEvaluacion, 
             "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
@@ -638,9 +788,6 @@ export default {
             state.SubAreasMaduras = state.SubAreasMaduras.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.SubAreasMejorar = state.SubAreasMejorar.sort((x, y) => x.imsaValor - y.imsaValor);
             console.log("state.IMSA", response.data);
-            /*ApibackOffice.post("Madurez/GetIMA", filtro,
-                { headers: header }
-            ) */ 
             ApibackOffice.get("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  JSON.parse(localStorage.usuarioModel).empresaId + "&usuarioId=" +  state.userSelected.id, null,
                 { headers: header }
             )
@@ -742,7 +889,7 @@ export default {
         .catch((error) => {
             console.log("error->", error);
         });
-    };
+    };*/
 
     const graficoMadurezGeneral = () => {
         let color = [];
@@ -751,27 +898,27 @@ export default {
         if (state.IM.imValor.toFixed(0) == 1){
             color = "#EA0404";
             restante = 4;
-            state.IM.clase = "cards-grafictabsnivel1"
+            state.claseIM = "cards-grafictabsnivel1"
         }
         if (state.IM.imValor.toFixed(0) == 2){
             color = "#DD5004";
             restante = 3;
-            state.IM.clase = "cards-grafictabsnivel2"
+            state.claseIM = "cards-grafictabsnivel2"
         }
         if (state.IM.imValor.toFixed(0) == 3){
             color = "#F5E102";
             restante = 2;
-            state.IM.clase = "cards-grafictabsnivel3"
+            state.claseIM = "cards-grafictabsnivel3"
         }
         if (state.IM.imValor.toFixed(0) == 4){
             color = "#0152EB";
             restante = 1;
-            state.IM.clase = "cards-grafictabsnivel4"
+            state.claseIM = "cards-grafictabsnivel4"
         }
         if (state.IM.imValor.toFixed(0) == 5){
             color = "#3AAE3A";
             restante = 0;
-            state.IM.clase = "cards-grafictabsnivel5"
+            state.claseIM = "cards-grafictabsnivel5"
         }
 
         let elemento = {
@@ -976,14 +1123,14 @@ export default {
       };
     };
 
-    const getRecomendacionArea = () => {  
+    const getRecomendacionArea = async () => {  
         /*let filtro = {
             id: state.IM.evaluacionEmpresaId
         };*/
         /*ApibackOffice.post("EvaluacionEmpresa/GetPlanMejoras", filtro,
             { headers: header }
         )*/
-        ApibackOffice.get("EvaluacionEmpresa/GetPlanMejorasReporteSubscripcionOBasico?evaluacionEmpresaId=" + state.IM.evaluacionEmpresaId + "&usuarioId=" + state.userSelected.id + "&evaluacionId=" + state.idEvaluacion, null,
+        return ApibackOffice.get("EvaluacionEmpresa/GetPlanMejorasReporteSubscripcionOBasico?evaluacionEmpresaId=" + state.IM.evaluacionEmpresaId + "&usuarioId=" + state.userSelected.id + "&evaluacionId=" + state.idEvaluacion, null,
             { headers: header }
         ) 
         .then((response) => {
