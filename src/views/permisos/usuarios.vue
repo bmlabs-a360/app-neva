@@ -720,8 +720,28 @@ export default {
       })
         .then((response) => {
           if (response.status != 200) return false;
+          if (response.data.length == 0){
+            getEvaluacionPorDefecto();
+            return;
+          }
           response.data.forEach(element => {
             element.asociar = false;
+          });
+          state.evaluaciones = response.data;
+          console.log("state.evaluaciones", state.evaluaciones);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getEvaluacionPorDefecto = async () => {
+      state.evaluaciones = [];
+      ApiNeva.get("Evaluacion/GetEvaluacionPorDefecto", {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          response.data.forEach(element => {
+            element.asociar = true;
           });
           state.evaluaciones = response.data;
           console.log("state.evaluaciones", state.evaluaciones);
@@ -867,7 +887,9 @@ export default {
       state.evaluaciones.forEach(element => {
         var evaluacion = state.userSelected.usuarioEvaluacions.find((y) => y.evaluacionId == element.id);
         element.asociar = false;
+        if (element.default) element.asociar = true;
         if (evaluacion != undefined) element.asociar = evaluacion.activo;
+       
       });
       console.log("state.evaluaciones", state.evaluaciones);
     };

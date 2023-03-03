@@ -189,27 +189,20 @@
                 <!-- Paginacion-->
                 <nav aria-label="..." class="d-flex justify-content-between align-items-center">
                     <div class="d-flex">
-                        <p class="message">Mostrando <span>1</span> a <span>10</span> de 16 entradas</p>
+                        <!--<p class="message">Mostrando <span>1</span> a <span>10</span> de 16 entradas</p>-->
                     </div>
                     <div class="d-flex">
-                        <ul class="pagination pagination-sm">
-                        <li class="page-item controls">
-                            <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                            </a>
-                        </li>
-                        <li class="page-item active" aria-current="page">
-                            <span class="page-link">1</span>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li> 
-                        
-                        <li class="page-item controls">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&gt;</span>
-                            </a>
-                        </li>
-                        </ul>
+                        <paginate
+                            v-model="initialPage"
+                            :page-count="totalevaluaciones"
+                            :page-range="3"
+                            :margin-pages="2"
+                            :click-handler="selectedPagination"
+                            :prev-text="'<'"
+                            :next-text="'>'"
+                            :container-class="'pagination'"
+                            :page-class="'page-item'">
+                        </paginate>
                     </div>
                 </nav>
                 <!--Fin Paginacion-->
@@ -326,11 +319,13 @@ import logoPersona from "@/assets/img/nav/pers/02.png";
 import router from "@/router/index";
 import { CChart } from "@coreui/vue-chartjs";
 import { colorAleatorio } from "@/Helper/util";
+import Paginate from 'vuejs-paginate-next';
 
 export default {
   name: "Login",
   components:{
     CChart,
+    paginate: Paginate,
   },
   methods: {
     colorAleatorio,
@@ -357,15 +352,61 @@ export default {
         resumenPuntuacionArea:[],
         resumenImportanciaRelativa: [],
 
+        initialPage: 1,
+        totalevaluaciones: 0,
+        sizePage: 10,
+
         //resumenImportanciaEstrategica: [],
         //segmentacionAreaSelected : [],
     });
+
+    const selectedPagination = (pageNum) => {
+        state.initialPage = pageNum;
+        getEvaluacionesPaginated(false);
+    };
+
+    const getEvaluacionesPaginated = async (iniciarPage) => {
+        if (iniciarPage) state.initialPage = 1;
+        let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
+        ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresaIdFilterCount?empresaId=" + empresaId, {
+            headers: header,
+        })
+            .then((response) => {
+                if (response.status != 200) return false;
+                state.totalevaluaciones = Math.ceil(response.data / state.sizePage);
+            })
+            .catch(() => {
+                state.totalevaluaciones = null;
+            });
+
+        return ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresaIdFilterList?empresaId=' + empresaId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage, {
+            headers: header,
+        })
+            .then((response) => {
+                if (response.status != 200) return false;
+                state.evaluaciones = response.data;
+                state.evaluaciones.forEach((m) => {
+                    m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+                    if (m.iniciales.length < 2){
+                        m.iniciales =  m.nombre.substring("0", "2");
+                    }
+                    let fecha = new Date(m.fechaCreacion);
+                    fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
+                    m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
+                    state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
+                });
+            })
+            .catch(() => {
+                state.totalevaluaciones = null;
+                state.evaluaciones = null;
+            });
+    };
 
     const getUsuario = async () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
         state.perfil = state.userSelected.perfil.nombre;
         console.log('useer', state.userSelected);
-        await getEvaluaciones();
+        await getEvaluacionesPaginated(false);
         getIM();
         await getEstadoSubArea();
 
@@ -374,7 +415,7 @@ export default {
         }
     };
 
-    const getEvaluaciones = async () => {
+    /*const getEvaluaciones = async () => {
         state.evaluaciones = [];
         let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
         return ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
@@ -398,7 +439,7 @@ export default {
             
         })
         .catch((error) => console.log(error));
-    }
+    }*/
 
     const getIM = () => {
         state.evaluaciones.forEach((m) => {
@@ -608,6 +649,7 @@ export default {
       logoPersona,
       ir,
       cargarGraficos,
+      selectedPagination,
     };
   },
 };

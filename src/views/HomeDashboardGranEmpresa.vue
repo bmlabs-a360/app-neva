@@ -7,7 +7,7 @@
       <div class="col-12 d-flex mt-3 mt-sm-0 mt-lg-5 flex-sm-row justify-content-between align-items-center">
         <div class="">
           <div class="control has-icon">
-            <input class="input new w-100" type="email" placeholder="Buscador">
+            <input class="input new w-100" type="text" @change="getEvaluacionesPaginated(true)" id="buscadorEmpresa" placeholder="Buscador">
             <label class="form-icon search" for="">
               <svg width="24" height="24" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_258_3270)">
@@ -157,27 +157,20 @@
         <!-- Paginacion-->
         <nav aria-label="..." class="d-flex justify-content-between align-items-center">
           <div class="d-flex">
-            <p class="message">Mostrando <span>1</span> a <span>10</span> de 16 entradas</p>
+            <!--<p class="message">Mostrando <span>1</span> a <span>10</span> de 16 entradas</p>-->
           </div>
           <div class="d-flex">
-            <ul class="pagination pagination-sm">
-              <li class="page-item controls">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&lt;</span>
-                </a>
-              </li>
-              <li class="page-item active" aria-current="page">
-                <span class="page-link">1</span>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li> 
-              
-              <li class="page-item controls">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&gt;</span>
-                </a>
-              </li>
-            </ul>
+            <paginate
+                v-model="initialPage"
+                :page-count="totalevaluaciones"
+                :page-range="3"
+                :margin-pages="2"
+                :click-handler="selectedPagination"
+                :prev-text="'<'"
+                :next-text="'>'"
+                :container-class="'pagination'"
+                :page-class="'page-item'">
+            </paginate>
           </div>
         </nav>
 
@@ -268,11 +261,13 @@ import logoPersona from "@/assets/img/nav/pers/02.png";
 import router from "@/router/index";
 import { CChart } from "@coreui/vue-chartjs";
 import { colorAleatorio } from "@/Helper/util";
+import Paginate from 'vuejs-paginate-next';
 
 export default {
   name: "Login",
   components:{
     CChart,
+    Paginate,
   },
   methods: {
     colorAleatorio,
@@ -297,8 +292,20 @@ export default {
         IMA: [],
         resumenIM: [],
         resumenPuntuacionArea:[],
-        resumenImportanciaRelativa: []
+        resumenImportanciaRelativa: [],
+
+        initialPage: 1,
+        totalevaluaciones: 0,
+        sizePage: 10,
     });
+
+    const selectedPagination = async (pageNum) => {
+        state.initialPage = pageNum;
+        await getEvaluacionesPaginated(false);
+        if (state.evaluaciones.length > 0){
+          cargarGraficos(state.evaluaciones[0]);
+        }
+    };
 
     const getUsuario = async () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
@@ -314,9 +321,7 @@ export default {
             if (response.status != 200) return false;
             state.empresas = response.data;
             console.log("state.empresas",state.empresas);
-            await getEvaluaciones();
-            await getEstadoSubArea(); 
-            await getIM(); 
+            await getEvaluacionesPaginated();
             if (state.evaluaciones.length > 0){
               cargarGraficos(state.evaluaciones[0]);
             }
@@ -324,7 +329,53 @@ export default {
           .catch((error) => console.log(error));
     }
 
-    const getEvaluaciones = async () => {
+    const getEvaluacionesPaginated = async (iniciarPage) => {
+      state.evaluaciones = [];
+      //let bodyFilter = getFilter();
+      if (iniciarPage) state.initialPage = 1;
+      ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresasFilterCount", state.empresas, {
+          headers: header,
+      })
+          .then((response) => {
+              if (response.status != 200) return false;
+              state.totalevaluaciones = Math.ceil(response.data / state.sizePage);
+          })
+          .catch(() => {
+              state.totalevaluaciones = null;
+          });
+
+        return ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresasFilterList?initialPage=' + state.initialPage + '&sizePage=' + state.sizePage , state.empresas,  {
+            headers: header,
+        })
+            .then(async (response) => {
+                if (response.status != 200) return false;
+                response.data.forEach((m) => {
+                  m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+                  if (m.iniciales.length < 2){
+                      m.iniciales =  m.nombre.substring("0", "2");
+                  }
+                  let fecha = new Date(m.fechaCreacion);
+                  fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
+                  m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
+                  m.evaluacionEmpresas.forEach( (e) => {
+                      let empresa = state.empresas.find((c) => c.id === e.empresaId);
+                      m.nombreEmpresa = empresa.razonSocial;
+                      m.empresaId = e.empresaId;
+                      m.evaluacionEmpresaId = empresa.id;
+                  });
+                });
+                state.evaluaciones = state.evaluaciones.concat(response.data);
+                
+                await getEstadoSubArea(); 
+                await getIM(); 
+            })
+            .catch(() => {
+                state.totalevaluaciones = null;
+                state.evaluaciones = null;
+            });
+    };
+
+    /*const getEvaluaciones = async () => {
       state.evaluaciones = [];
         return ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresas", state.empresas, { headers: header, })
         .then(async (response) => {
@@ -350,7 +401,7 @@ export default {
             }
           })
         .catch((error) => console.log(error))
-    }
+    }*/
 
     const getIM = async () => {
         state.evaluaciones.forEach((m) => {
@@ -484,6 +535,15 @@ export default {
         });
     };
 
+    /*const getFilter = () => {
+        let buscadorEmpresa = document.getElementById('buscadorEmpresa').value;
+
+        let bodyFilter = {
+            razonSocial: buscadorEmpresa,
+        };
+        return bodyFilter;
+    };*/
+
     const ir = (namePageDestiny, evaluacion) => {
         return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
     };
@@ -502,6 +562,7 @@ export default {
       logoPersona,
       ir,
       cargarGraficos,
+      selectedPagination,
     };
   },
 };
