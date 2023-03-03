@@ -306,9 +306,7 @@
             </div>
         </div>
     </div>
-    <!--<button @click="exportToPDF">Export to PDF</button>-->
 
-    
 </template>
 
 

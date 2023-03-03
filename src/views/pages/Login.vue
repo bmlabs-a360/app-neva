@@ -362,7 +362,6 @@ export default {
           .then((response) => {
             if (response.status != 200) return false;
             state.empresas = response.data;
-            console.log("state.empresas",state.empresas);
           })
           .catch((error) => console.log(error));
         state.visibleModalLoginConsultor = true;

@@ -1,5 +1,4 @@
 <template>
-  <!--<VOnboardingWrapper ref="wrapper" :steps="steps" :options="options" />-->
   <CRow>
     <!-- LIST -->
     <CCol :md="12">
@@ -92,12 +91,6 @@
           <div style="display: flex">
             <CFormLabel >Baja/Alta </CFormLabel>
             <div>
-              <!--<CFormSwitch
-                style="cursor: pointer"
-                id="activoNew"
-                :checked="true"
-                v-model="activoUserNew"
-              />-->
               <CFormSwitch
                 style="cursor: pointer"
                 id="activoNew"
@@ -113,14 +106,6 @@
                 <CInputGroupText>
                   <CIcon icon="cil-user" />
                 </CInputGroupText>
-                <!--<CFormInput
-                  type="text"
-                  id="nombreNew"
-                  placeholder="Nombre"
-                  size="sm"
-                  maxlength="255"
-                  v-model="nombreUserNew"
-                />-->
                 <CFormInput
                   type="text"
                   id="nombreNew"
@@ -176,14 +161,6 @@
                       </i>
                     </div>
                   </CInputGroupText>
-                  <!--<CFormInput
-                    id="passwordNew"
-                    :type="passwordFieldType"
-                    size="sm"
-                    maxlength="255"
-                    v-model="passUserNew"
-                    placeholder="Contraseña"
-                  ></CFormInput>-->
                   <CFormInput
                     id="passwordNew"
                     :type="passwordFieldType"
@@ -203,14 +180,6 @@
                 <CInputGroupText>
                   <CIcon icon="cil-mail" />
                 </CInputGroupText>
-                <!--<CFormInput
-                  type="text"
-                  id="emailNew"
-                  maxlength="255"
-                  size="sm"
-                  placeholder="Correo"
-                  v-model="emailUserNew"
-                />-->
                 <CFormInput
                   type="text"
                   id="emailNew"
@@ -228,14 +197,6 @@
                 <CInputGroupText>
                   <CIcon icon="cil-mail" />
                 </CInputGroupText>
-                <!--<CFormInput
-                  type="text"
-                  id="telefonoNew"
-                  maxlength="255"
-                  size="sm"
-                  placeholder="telefono"
-                  v-model="telefonoUserNew"
-                />-->
                 <CFormInput
                   type="text"
                   id="telefonoNew"
@@ -311,7 +272,6 @@
     :visible="visibleModalSegmentacionAreaNew"
     @close="
       () => {
-        //resetAsociarArea();
         visibleModalSegmentacionAreaNew = false;
         visibleModalNuevoUser = true;
       }
@@ -371,7 +331,6 @@
       >
         Cerrar
       </CButton>
-      <!--<CButton color="primary" @click="asociarArea()">Guardar</CButton>-->
       <CButton color="primary" @click="visibleModalSegmentacionAreaNew = false; visibleModalNuevoUser = true;">Listo</CButton>
     </CModalFooter>
   </CModal>
@@ -639,7 +598,6 @@
       >
         Cerrar
       </CButton>
-      <!--<CButton color="primary" @click="asociarArea()">Guardar</CButton>-->
       <CButton color="primary" @click="visibleModalSegmentacionArea = false; visibleModalUser = true;">Listo</CButton>
     </CModalFooter>
   </CModal>
@@ -706,7 +664,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.usuarios = response.data;
-          console.log("state.usuarios", state.usuarios);
           getEvaluaciones();
         })
         .catch((error) => console.log(error));
@@ -728,7 +685,6 @@ export default {
             element.asociar = false;
           });
           state.evaluaciones = response.data;
-          console.log("state.evaluaciones", state.evaluaciones);
         })
         .catch((error) => console.log(error));
     };
@@ -744,7 +700,6 @@ export default {
             element.asociar = true;
           });
           state.evaluaciones = response.data;
-          console.log("state.evaluaciones", state.evaluaciones);
         })
         .catch((error) => console.log(error));
     };
@@ -764,7 +719,6 @@ export default {
                   element.segmentacionAreas = state.segmentacionAreas
               }
           });
-          console.log("state.evaluaciones", state.evaluaciones);
           state.visibleModalNuevoUser = false;
           state.visibleModalSegmentacionAreaNew = true;
         })
@@ -832,7 +786,6 @@ export default {
           ],
           "usuarioEvaluacions": state.usuarioNuevo.usuarioEvaluacions
       };
-      console.log("usuarioInsert", usuarioInsert);
       
       ApiNeva.post("Usuario/InsertUser", usuarioInsert,
         { headers: header }
@@ -840,7 +793,6 @@ export default {
       .then((response) => {
         if (response.status != 200) return false;
         var usuario = response.data;
-        console.log("usuario", usuario);
         getUsers();
         swal.fire(
             "Guardar usuario",
@@ -878,7 +830,6 @@ export default {
 
     const getUserSelected = (idusuario) => {
       state.userSelected = state.usuarios.find((c) => c.id === idusuario);
-      console.log("state.userSelected", state.userSelected);
       state.visibleModalUser = true;
       getUsuarioEvaluacionByEvaluacionEmpresa();
     };
@@ -891,7 +842,6 @@ export default {
         if (evaluacion != undefined) element.asociar = evaluacion.activo;
        
       });
-      console.log("state.evaluaciones", state.evaluaciones);
     };
 
     const getSegmentacionArea = (evaluacionEmpresa) =>{
@@ -916,7 +866,6 @@ export default {
                 } 
               });
               evaluacionEmpresa.segmentacionAreas = state.segmentacionAreas;
-              console.log("state.segmentacionAreas", state.segmentacionAreas);
               state.visibleModalUser = false;
               state.visibleModalSegmentacionArea = true;
           })
@@ -945,7 +894,6 @@ export default {
       state.usuarioEvaluacion = state.userSelected.usuarioEvaluacions;
       state.userSelected.usuarioEvaluacions = [];
       var usuarioArea = {};
-      console.log("evaluaciones 1111", state.evaluaciones);
       state.evaluaciones.forEach(evaluacion => {
         var usuarioAreas = [];
         var UsuarioEvaluacionSelected = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
@@ -993,7 +941,6 @@ export default {
           state.userSelected.usuarioEvaluacions.push(usuarioEvaluacion);
         }
       });
-      console.log("state.userSelected.usuarioEvaluacions", state.userSelected.usuarioEvaluacions);
       let usuarioEdit = {
           "id": state.userSelected.id,
           "perfilId": state.userSelected.perfilId,
@@ -1012,14 +959,12 @@ export default {
           ],
           "usuarioEvaluacions": state.userSelected.usuarioEvaluacions
       };
-      console.log("usuarioEdit", usuarioEdit);
       ApiNeva.post("Usuario/UpdateUser", usuarioEdit,
         { headers: header }
       )
       .then((response) => {
           if (response.status != 200) return false;
           var usuario = response.data;
-          console.log("Update", usuario)
           getUsers();
           swal.fire(
               "Editar usuario",
@@ -1086,7 +1031,6 @@ export default {
     
 
     const getUserDelete = (user) => {
-      //console.log("user", user);
       swal.fire({
           title: '¿Está seguro?',
           text: "¡No podrás revertir esto!",
@@ -1106,8 +1050,6 @@ export default {
           )
           .then((response) => {
               if (response.status != 200) return false;
-
-              console.log("response.data", response.data);
               swal.fire(
                   'Eliminar!',
                   'El usuario y todas sus dependencias fueron eliminadas.',
@@ -1118,7 +1060,6 @@ export default {
               return;
             })
             .catch((error) => {
-                console.log("error->", error.response.data.detail);
                 if (
                     error.response.data.detail.includes("llave duplicada") ||
                     error.response.data.detail.includes("duplicate key")

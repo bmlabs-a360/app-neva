@@ -66,10 +66,6 @@
                           {{ rubro.nombre }}
                       </option>
                     </select>
-                    <!--<div class="registro-icon" for="" >
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:user" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></g></svg>
-                    </div>
-                    <div class="form-icon"></div>-->
                   </div>
                 </div>
                 <div class="col-6 field">
@@ -81,24 +77,17 @@
                         {{ subrubro.nombre }}
                       </option>
                     </select>
-                    <!--<div class="registro-icon" for="">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
-                    </div>-->
                   </div>
                 </div>
                 <div class="col-12 field">
                   <div class="control has-icon">
                     <label for="">Comuna</label>
-                    <!--<input class="input input w-100" type="text" v-model="comuna" placeholder="Comuna" >-->
                     <select class="form-select" v-model="comunaSelected" @change="GetComunaId">
                       <option value="0" :key="0">Seleccione comuna</option>
                       <option v-for="comuna in comunas" :value="comuna.id" :key="comuna.id">
                           {{ comuna.nombre }}
                       </option>
                     </select>
-                    <!--<div class="registro-icon" for="">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
-                    </div>-->
                   </div>
                 </div>
                 <div class="col-12 field">
@@ -110,9 +99,6 @@
                         {{ tamano.nombre }}
                       </option>
                     </select>
-                    <!--<div class="registro-icon" for="">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
-                    </div>-->
                   </div>
                 </div>
                 <div class="col-12 field">
@@ -124,9 +110,6 @@
                         {{ nivelventa.nombre }}
                       </option>
                     </select>
-                    <!--<div class="registro-icon" for="">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
-                    </div>-->
                   </div>
                 </div>
                 <div class="col-12 field">
@@ -138,9 +121,6 @@
                         {{ rangoempleado.nombre }}
                       </option>
                     </select>
-                    <!--<div class="registro-icon" for="">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
-                    </div>-->
                   </div>
                 </div>
                 <div class="alert">

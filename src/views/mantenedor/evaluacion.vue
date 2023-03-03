@@ -177,13 +177,11 @@
             <table id="customers">
               <tr>
                 <th>Área</th>
-                <!--<th>Sub&aacute;rea</th>-->
                 <th class="text-center">Porcentaje</th>
                 <th class="text-end pe-4">Responder</th>
               </tr>
               <tr v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
                 <td>{{tablaSegmentacionArea.nombreArea}}</td>
-                <!--<td>{{tablaSegmentacionArea.nombreSubArea}}</td>-->
                 <td class="table-progress" v-if="tablaSegmentacionArea.estado < 100">
                   <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_376_6978)">
@@ -417,7 +415,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.evaluaciones = response.data.find((y) => y.id == state.idEvaluacionSelected);
-          console.log("state.evaluaciones", state.evaluaciones);
         })
         .catch((error) => console.log(error));
     };
@@ -439,14 +436,11 @@ export default {
 
       state.idEvaluacionSelected = idEvaluacionSelected;
       state.evaluacionSelected = state.evaluaciones;
-      console.log("state.evaluacionSelected", state.evaluacionSelected);
       state.segmentacionAreas =  state.evaluaciones.segmentacionAreas;
 
       getSegmentacionAreaByevaluacionPorcentajes();
 
       document.getElementById("totalporcentajediv").classList.remove("d-none");
-      console.log("state.segmentacionAreas", state.segmentacionAreas);
-      console.log("state.segmentacionAreasByEvaluacion", state.segmentacionAreasByEvaluacion);
     };
 
     const limpiarPaso1 = async () => {
@@ -469,7 +463,6 @@ export default {
       .then((response) => {
         if (response.status != 200) return false;
         state.porcentajesAreaSelected = response.data;
-        console.log("state.porcentajesAreaSelected", state.porcentajesAreaSelected);
 
         state.segmentacionAreas.forEach( x => {
           if (x.evaluacionId == state.idEvaluacionSelected){
@@ -575,7 +568,6 @@ export default {
             return false;
           }
           state.ImportanciaRelativa = state.ImportanciaRelativa.concat(response.data);
-          console.log("state.ImportanciaRelativaSelected **********", state.ImportanciaRelativa);
           SiguienteAtras(1); //Se avanza a Paso Importancia Estrategica
         })
         .catch((error) => console.log(error));
@@ -619,7 +611,6 @@ export default {
       getSegmentacionSubAreaByAreaPorcentajes();
 
       document.getElementById("totalPorcentajeSubAreasDiv").classList.remove("d-none");
-      console.log("state.segmentacionAreaSelected", state.segmentacionAreaSelected);
     };
 
     const limpiarPaso2 = async () => {
@@ -633,7 +624,6 @@ export default {
     const getSegmentacionSubAreaByAreaPorcentajes = async () => {
       let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
       state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == evaluacionEmpresaId && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
-      console.log("state.importanciaRelativaSelected", state.importanciaRelativaSelected);
 
       ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativaId", state.importanciaRelativaSelected , {
         headers: header,
@@ -641,7 +631,6 @@ export default {
       .then((response) => {
         if (response.status != 200) return false;
         state.porcentajesSubAreasSelected = response.data;
-        console.log("state.porcentajesSubAreasSelected", state.porcentajesSubAreasSelected);
 
         state.segmentacionAreaSelected.segmentacionSubAreas.forEach( x => {
             if (state.porcentajesSubAreasSelected.length == 0) x.valor = 0;
@@ -664,7 +653,6 @@ export default {
           document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
           document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
         }
-        console.log("state.segmentacionSubAreasbyAreaSelected", state.segmentacionSubAreasbyAreaSelected);
       })
       .catch((error) => console.log(error));
     };
@@ -707,7 +695,6 @@ export default {
         idSubAreasPorcentajes.forEach((element) => {
           total = total + parseInt(element.value)
         });
-       console.log("total", total);
         if (total < 100){
           swal.fire({
             title: "Preparación sub áreas",
@@ -798,7 +785,6 @@ export default {
         state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
       }); 
       
-      console.log("state.allSegmentacionAreas ****", state.allSegmentacionAreas);
       state.tablaSegmentacionAreas = [];
       getEstadoSubArea();
     };
@@ -813,7 +799,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.usuarioArea = response.data;
-          console.log("state.usuarioArea", state.usuarioArea);
           getAllAreas();
         })
         .catch((error) => console.log(error));
@@ -830,7 +815,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.evaluacionPaso3 = response.data;
-          console.log("state.evaluacionPaso3", state.evaluacionPaso3);
           response.data.forEach(x => {
             state.allSegmentacionAreas = state.allSegmentacionAreas.concat(x.segmentacionAreas);
           });
@@ -847,12 +831,10 @@ export default {
           });
 
           state.allSegmentacionAreas = areas;
-          console.log("state.allSegmentacionAreas", state.allSegmentacionAreas);
 
           state.allSegmentacionAreas.forEach(x => {
             state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
           });
-          console.log("state.allSegmentacionSubAreas", state.allSegmentacionSubAreas);
           getEstadoSubArea();
         })
         .catch((error) => console.log(error));
@@ -869,14 +851,12 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           response.data.forEach(x => {
-            console.log(" response.data",  response.data);
             state.allSegmentacionSubAreas.forEach(y => {
               if (x.segmentacionSubAreaId == y.id){
                 y.estado = x.respuestaPorcentaje;
               }
             });
           });
-          console.log("state.allSegmentacionSubAreas", state.allSegmentacionSubAreas);
           cargarTablaPaso3();
         })
         .catch((error) => console.log(error));
@@ -906,9 +886,6 @@ export default {
 
       state.estadoGeneral = estadoGeneral / contadorArea;
       
-      console.log("state.estadoGeneral", state.estadoGeneral);
-
-      console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
       SiguienteAtras(2); //Se avanza a Paso Evaluacion
     };
 
@@ -936,16 +913,7 @@ export default {
           state.tablaSegmentacionAreas.push(x);
         }
       });
-      console.log("state.tablaSegmentacionAreas", state.tablaSegmentacionAreas);
-
     };
-
-    /*const RegresarPaso2 = async () => {
-      state.idAreaPaso3 = "0";
-      state.idTipoSubAreaPaso3 = "0";
-      state.allSegmentacionAreas = [];
-      state.allSegmentacionSubAreas = [];
-    };*/
 
     const getPregunta = (segmentacionArea) => {
       state.preguntas = [];
@@ -987,7 +955,6 @@ export default {
             element.nombreEvaluacion = evaluacion.nombre;
           });
           state.preguntaSelected = state.preguntas[0];
-          console.log("state.preguntas", state.preguntas);
           getTipoimportancia();
         })
         .catch((error) => console.log(error));
@@ -1001,7 +968,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.tiposImportancia = response.data;
-          console.log("state.tiposImportancia", state.tiposImportancia);
            if (state.perfilSelected.nombre == "Consultor") {
             getDeficienciaRelacionada();
            } else {
@@ -1019,7 +985,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.defRelacionadas = response.data;
-          console.log("state.defRelacionadas", state.defRelacionadas);
           getRespuesta();
         })
         .catch((error) => console.log(error));
@@ -1044,7 +1009,6 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.respuestaSelected = response.data;
-          console.log("state.respuestaSelected", state.respuestaSelected);
           if (state.respuestaSelected) cargarRespuestas();
         })
         .catch((error) => console.log(error));
@@ -1252,7 +1216,6 @@ export default {
     };
 
     const ir = (namePageDestiny) => {
-      console.log('evaluacion enviada', state.idEvaluacionSelected)
       return router.push({ name: namePageDestiny, query: {evaluacionId: state.evaluacionSelected.id, evaluacionNombre: state.evaluacionSelected.nombre } });
     };
 

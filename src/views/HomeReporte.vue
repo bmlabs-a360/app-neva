@@ -225,7 +225,6 @@
                                 <h2>Madurez General</h2>
                                 <h2>Tu puntuación ha sido calculada en base a las últimas métricas</h2>
                             </div>
-                            <!-- <div id="updateConfigTwo"></div>  -->
                         </div>
                     </div> 
 
@@ -619,7 +618,6 @@ export default {
                 });
                 return false;
             }
-            console.log("state.reporte", state.reporte);
             return;
         })
         .catch((error) => {
@@ -637,7 +635,6 @@ export default {
         )
         .then((response) => {
             if (response.status != 200) return false;
-            console.log("state.IM", response.data);
             state.IM = response.data;
             state.IM = state.IM.find((c) => c.evaluacionId === state.idEvaluacion);
             if (state.reporte == undefined){
@@ -710,7 +707,6 @@ export default {
             });
             state.AreasMaduras = state.AreasMaduras.sort(((a, b) =>  b.imaValor - a.imaValor));
             state.AreasMejorar = state.AreasMejorar.sort((x, y) => x.imaValor - y.imaValor);
-            console.log("state.IMA", response.data);
         })
         .catch((error) => {
             console.log("error->", error);
@@ -722,7 +718,6 @@ export default {
             "evaluacionId": state.idEvaluacion, 
             "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
         }
-        console.log("filtro", filtro);
         return ApibackOffice.post("Madurez/GetIMSA",filtro,
             { headers: header }
         )
@@ -738,7 +733,6 @@ export default {
             });
             state.SubAreasMaduras = state.SubAreasMaduras.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.SubAreasMejorar = state.SubAreasMejorar.sort((x, y) => x.imsaValor - y.imsaValor);
-            console.log("state.IMSA", response.data);
         })
         .catch((error) => {
             console.log("error->", error);
@@ -755,7 +749,6 @@ export default {
         )
         .then((response) => {
             if (response.status != 200) return false;
-            console.log("state.capacidadSubAreas", response.data);
             state.capacidadSubAreas = response.data
             return;
         })
@@ -763,132 +756,6 @@ export default {
             console.log("error->", error);
         });
     };
-
-
-    /*const getMadurezGeneral = () => {
-        var filtro = {
-            "evaluacionId": state.idEvaluacion, 
-            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
-        }
-        console.log("filtro", filtro);
-        ApibackOffice.post("Madurez/GetIMSA",filtro,
-            { headers: header }
-        )
-        .then((response) => {
-            if (response.status != 200) return false;
-            state.IMSA = response.data;
-            state.IMSA.forEach((element) => {
-                if (element.imsaValor.toFixed(0) >= 4){
-                    state.SubAreasMaduras.push(element);
-                }else{
-                    state.SubAreasMejorar.push(element);
-                }
-            });
-            state.SubAreasMaduras = state.SubAreasMaduras.sort(((a, b) =>  b.imsaValor - a.imsaValor));
-            state.SubAreasMejorar = state.SubAreasMejorar.sort((x, y) => x.imsaValor - y.imsaValor);
-            console.log("state.IMSA", response.data);
-            ApibackOffice.get("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  JSON.parse(localStorage.usuarioModel).empresaId + "&usuarioId=" +  state.userSelected.id, null,
-                { headers: header }
-            )
-            .then((response) => {
-                if (response.status != 200) return false;
-                state.IMA = response.data;
-                state.IMA.forEach((element) => {
-                    let color = [];
-                    let restante = "";
-                    let dataSet = [];
-                    if (element.imaValor.toFixed(0) == 1){
-                        color = "#e5342c";
-                        restante = 4;
-                    }
-                    if (element.imaValor.toFixed(0) == 2){
-                        color = "#f3bf4f";
-                        restante = 3;
-                    }
-                    if (element.imaValor.toFixed(0) == 3){
-                        color = "#fcfa62";
-                        restante = 2;
-                    }
-                    if (element.imaValor.toFixed(0) == 4){
-                        color = "#3070b5";
-                        restante = 1;
-                    }
-                    if (element.imaValor.toFixed(0) == 5){
-                        color = "#4fa95c";
-                        restante = 0;
-                    }
-
-                    let elemento = {
-                        label: [element.nombreArea],
-                        backgroundColor:  [color, "#FFFFFF"],
-                        data: [parseInt(element.imaValor.toFixed(0)), restante]
-                    }
-
-                    dataSet.push(elemento);
-                    element.nivelMadurezAreas = {
-                        datasets: dataSet,
-                    };
-                    
-                    element.claseIMA = "titlenivel-" + element.imaValor.toFixed(0);
-                    element.imaValor = element.imaValor.toFixed(2);
-                    let cumplimiento = (element.imaValor / 5) * 100;
-                    element.cumplimiento = cumplimiento.toFixed(0);
-                    let brecha =  element.cumplimiento - 100;
-                    element.brecha = brecha.toFixed(0);
-
-                    if (element.imaValor >= 4){
-                        state.AreasMaduras.push(element);
-                    }else{
-                        state.AreasMejorar.push(element);
-                    }
-                });
-                state.AreasMaduras = state.AreasMaduras.sort(((a, b) =>  b.imaValor - a.imaValor));
-                state.AreasMejorar = state.AreasMejorar.sort((x, y) => x.imaValor - y.imaValor);
-                console.log("state.IMA", response.data);
-                ApibackOffice.post("Madurez/GetIM", filtro,
-                    { headers: header }
-                )
-                .then((response) => {
-                    if (response.status != 200) return false;
-                    console.log("state.IM", response.data);
-                    state.IM = response.data;
-                    state.IM = state.IM.find((c) => c.evaluacionId === state.idEvaluacion);
-                    if (state.reporte == undefined){
-                        return false;
-                    }
-                    let nivelReporte = state.reporte.reporteItemNivelBasicos.find((c) => c.orden === parseInt(state.IM.imValor.toFixed(0)));
-                    state.IM.nivelReporte = nivelReporte.detalle;
-                    
-                    ApibackOffice.post("Madurez/GetCapacidadSubAreas", filtro,
-                        { headers: header }
-                    )
-                    .then((response) => {
-                        if (response.status != 200) return false;
-                        console.log("state.capacidadSubAreas", response.data);
-                        state.capacidadSubAreas = response.data
-                        getGraficoCapacidad();
-                        graficoMadurezGeneral();
-                        getGraficoImportanciaRelativa();
-                        getPuntuacionArea();
-                        getRecomendacionArea();
-                        return;
-                    })
-                    .catch((error) => {
-                        console.log("error->", error);
-                    });
-                })
-                .catch((error) => {
-                    console.log("error->", error);
-                });
-            })
-            .catch((error) => {
-                console.log("error->", error);
-            });
-        })
-        .catch((error) => {
-            console.log("error->", error);
-        });
-    };*/
 
     const graficoMadurezGeneral = () => {
         let color = [];
@@ -931,7 +798,6 @@ export default {
             labels: ["Madurez General"],
             datasets: dataSet,
         };
-        console.log("madurezGeneral", state.madurezGeneral);
     };
 
     const getGraficoImportanciaRelativa = () => {
@@ -1089,7 +955,6 @@ export default {
             valor3 = [];
             valor4 = [];
         });
-        console.log("IMA", state.IMA); 
     };
 
     const getPuntuacionArea = () => { 
@@ -1162,7 +1027,6 @@ export default {
             });
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
-            console.log("state.feedbacks", state.feedbacks);
             return;
         })
         .catch((error) => {
@@ -1179,8 +1043,6 @@ export default {
         if (state.top3peoresCapacidadesByarea.length > 3){
             state.top3peoresCapacidadesByarea.length = 3;
         }
-        console.log("state.top3capacidadesByarea", state.top3capacidadesByarea);
-        console.log("state.top3peoresCapacidadesByarea", state.top3peoresCapacidadesByarea);
         
         
         let areasTab = document.getElementsByName("areas-pills-tab");

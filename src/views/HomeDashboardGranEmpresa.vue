@@ -7,7 +7,7 @@
       <div class="col-12 d-flex mt-3 mt-sm-0 mt-lg-5 flex-sm-row justify-content-between align-items-center">
         <div class="">
           <div class="control has-icon">
-            <input class="input new w-100" type="text" @change="getEvaluacionesPaginated(true)" id="buscadorEmpresa" placeholder="Buscador">
+            <input class="input new w-100" type="text" @change="getEmpesas" id="buscadorEmpresa" placeholder="Buscador Empresa">
             <label class="form-icon search" for="">
               <svg width="24" height="24" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_258_3270)">
@@ -22,7 +22,6 @@
             </label>
           </div>
         </div>
-        <!--<button class="btn btn-sm orange  order-md-1 me-lg-0 mt-lg-0 ">Añadir</button>-->
       </div>
 
       <div class="mainregister d-flex pb-2">
@@ -301,6 +300,9 @@ export default {
 
     const selectedPagination = async (pageNum) => {
         state.initialPage = pageNum;
+        state.resumenIM = [];
+        state.resumenPuntuacionArea = [];
+        state.resumenImportanciaRelativa = [];
         await getEvaluacionesPaginated(false);
         if (state.evaluaciones.length > 0){
           cargarGraficos(state.evaluaciones[0]);
@@ -310,17 +312,24 @@ export default {
     const getUsuario = async () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
         state.perfil = state.userSelected.perfil.nombre;
-        console.log('useer', state.userSelected);
         getEmpesas();
     };
 
     const getEmpesas = async () => {
         state.empresas = [];
-        return ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + JSON.parse(localStorage.usuarioModel).id , null, { headers: header })
+
+        let buscadorNombreEmpresa = "";
+        if (document.getElementById('buscadorEmpresa') != undefined ) {
+          buscadorNombreEmpresa = document.getElementById('buscadorEmpresa').value;
+          state.initialPage = 1;
+          state.resumenIM = [];
+          state.resumenPuntuacionArea = [];
+          state.resumenImportanciaRelativa = [];
+        }
+        return ApiNeva.get("Empresa/GetEmpresasByUsuarioIdFilter?idUsuario=" + JSON.parse(localStorage.usuarioModel).id + "&filter=" + buscadorNombreEmpresa, null, { headers: header })
           .then(async (response) => {
             if (response.status != 200) return false;
             state.empresas = response.data;
-            console.log("state.empresas",state.empresas);
             await getEvaluacionesPaginated();
             if (state.evaluaciones.length > 0){
               cargarGraficos(state.evaluaciones[0]);
@@ -331,7 +340,6 @@ export default {
 
     const getEvaluacionesPaginated = async (iniciarPage) => {
       state.evaluaciones = [];
-      //let bodyFilter = getFilter();
       if (iniciarPage) state.initialPage = 1;
       ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresasFilterCount", state.empresas, {
           headers: header,
@@ -375,34 +383,6 @@ export default {
             });
     };
 
-    /*const getEvaluaciones = async () => {
-      state.evaluaciones = [];
-        return ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresas", state.empresas, { headers: header, })
-        .then(async (response) => {
-            if (response.status != 200) return false;
-             console.log("state.evaluaciones", response.data);
-            if (response.data.length > 0){
-              response.data.forEach((m) => {
-                m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-                if (m.iniciales.length < 2){
-                    m.iniciales =  m.nombre.substring("0", "2");
-                }
-                let fecha = new Date(m.fechaCreacion);
-                fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
-                m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
-                m.evaluacionEmpresas.forEach( (e) => {
-                    let empresa = state.empresas.find((c) => c.id === e.empresaId);
-                    m.nombreEmpresa = empresa.razonSocial;
-                    m.empresaId = e.empresaId;
-                    m.evaluacionEmpresaId = empresa.id;
-                });
-              });
-              state.evaluaciones = state.evaluaciones.concat(response.data);
-            }
-          })
-        .catch((error) => console.log(error))
-    }*/
-
     const getIM = async () => {
         state.evaluaciones.forEach((m) => {
             var filtro = {
@@ -419,7 +399,6 @@ export default {
                 }else{
                     m.IM = response.data[0].imValor.toFixed(2);
                 }
-                console.log("IM", response.data);
             })
             .catch((error) => console.log(error));
         });
@@ -431,7 +410,6 @@ export default {
         })
         .then((response) => {
             if (response.status != 200) return false;
-            console.log("estadosubareas", response.data );
             state.evaluaciones.forEach(x => {
                 x.evaluacionEmpresas.forEach(e => {
                   response.data.forEach(y => {
@@ -441,7 +419,6 @@ export default {
                   });
                 });
             });
-              console.log("evaluaciones", state.evaluaciones );
             return;
         })
         .catch((error) => console.log(error));
@@ -452,9 +429,7 @@ export default {
         document.getElementById(evaluacionSelected.evaluacionEmpresaId + '-' + evaluacionSelected.id).checked = true;
       } 
       state.evaluacionSelected = evaluacionSelected;
-      console.log("evaluacionSelected: ",  state.evaluacionSelected);
       await getIMA();
-      //getGraficoPuntuacionArea();
     };
 
     const getIMA = async () => {
@@ -468,7 +443,6 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             state.IMA = response.data;
-            console.log("state.IMA", response.data);
             let dataSetIMA = [];
             let dataSetPesoRelativo = [];
             let dataSetPuntuacionArea = [];
@@ -489,7 +463,6 @@ export default {
                 backgroundColor:   colorAleatorio(),
                 data: valorDataIMA
             };
-            console.log("elementoIMA", elementoIMA);
             dataSetIMA.push(elementoIMA);
 
             state.resumenIM = {
@@ -526,23 +499,12 @@ export default {
                 labels: labels,
                 datasets: dataSetPuntuacionArea
             };
-            
-            console.log("resumenPuntuacionArea", state.resumenPuntuacionArea);
             //#endregion
         })
         .catch((error) => {
             console.log("error->", error);
         });
     };
-
-    /*const getFilter = () => {
-        let buscadorEmpresa = document.getElementById('buscadorEmpresa').value;
-
-        let bodyFilter = {
-            razonSocial: buscadorEmpresa,
-        };
-        return bodyFilter;
-    };*/
 
     const ir = (namePageDestiny, evaluacion) => {
         return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
@@ -563,6 +525,7 @@ export default {
       ir,
       cargarGraficos,
       selectedPagination,
+      getEmpesas,
     };
   },
 };

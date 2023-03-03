@@ -13,7 +13,7 @@
             </ul>
             <div class="">
                 <div class="control has-icon">
-                    <input class="input new w-100" type="email" placeholder="Buscador">
+                    <input class="input new w-100" type="text"  @change="getEvaluacionesPaginated(true)" id="buscadorEvaluacion" placeholder="Buscador Evaluacion">
                     <label class="form-icon search" for="">
                         <svg width="24" height="24" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_258_3270)">
@@ -172,15 +172,6 @@
                                             </svg>
                                         </button>
                                     </td>
-                                    <!--<td>
-                                        <div>
-                                            <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="12.9787" cy="5.15581" r="1.65337" fill="#283252"/>
-                                                <circle cx="12.9786" cy="10.9427" r="1.65337" fill="#283252"/>
-                                                <circle cx="12.9786" cy="16.7295" r="1.65337" fill="#283252"/>
-                                            </svg>   
-                                        </div>
-                                    </td>-->
                                 </tr>
                             </tbody>
                         </table>  
@@ -216,7 +207,6 @@
             <div class="cards-grafic p-3 d-flex">
                 <div class="w-100">
                     <h2>Indice de madurez entre area</h2>
-                    <!--<div id="dataColor">-->
                     <div >
                         <div :md="12">
                             <CCard class="mb-4">
@@ -229,14 +219,12 @@
                             </CCard>
                         </div>
                     </div>
-                    <!--</div>-->
                 </div>
             </div>
         
             <div class="cards-grafic p-3">
                 <div class="w-100">
                     <h2>Puntuación entre area</h2>
-                    <!--<div id="linearGradient_1">-->
                     <div>
                         <div :md="12">
                             <CCard class="mb-4">
@@ -249,7 +237,6 @@
                             </CCard>
                         </div>
                     </div>
-                    <!--</div>-->
                 </div>
             </div>
 
@@ -299,12 +286,6 @@
     </div>
 <!--Termino Contendio-->
 </template>
-
-
-<!--
-<script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="assets/js/nav.js"></script>
--->
 
 <script>
 import { reactive, toRefs, onMounted, getCurrentInstance } from "vue";
@@ -360,15 +341,25 @@ export default {
         //segmentacionAreaSelected : [],
     });
 
-    const selectedPagination = (pageNum) => {
+    const selectedPagination = async (pageNum) => {
         state.initialPage = pageNum;
-        getEvaluacionesPaginated(false);
+        state.resumenIM = [];
+        state.resumenPuntuacionArea = [];
+        state.resumenImportanciaRelativa = [];
+        await getEvaluacionesPaginated(false);
+        if (state.evaluaciones.length > 0){
+        cargarGraficos(state.evaluaciones[0]);
+    }
     };
 
     const getEvaluacionesPaginated = async (iniciarPage) => {
-        if (iniciarPage) state.initialPage = 1;
+        let buscadorEvaluacion = "";
+        if (iniciarPage) {
+            state.initialPage = 1
+            buscadorEvaluacion = document.getElementById('buscadorEvaluacion').value;
+        };
         let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-        ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresaIdFilterCount?empresaId=" + empresaId, {
+        ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresaIdFilterCount?empresaId=" + empresaId + "&filter=" + buscadorEvaluacion, {
             headers: header,
         })
             .then((response) => {
@@ -379,7 +370,7 @@ export default {
                 state.totalevaluaciones = null;
             });
 
-        return ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresaIdFilterList?empresaId=' + empresaId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage, {
+        return ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresaIdFilterList?empresaId=' + empresaId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage  + "&filter=" + buscadorEvaluacion, {
             headers: header,
         })
             .then((response) => {
@@ -405,7 +396,6 @@ export default {
     const getUsuario = async () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
         state.perfil = state.userSelected.perfil.nombre;
-        console.log('useer', state.userSelected);
         await getEvaluacionesPaginated(false);
         getIM();
         await getEstadoSubArea();
@@ -415,39 +405,12 @@ export default {
         }
     };
 
-    /*const getEvaluaciones = async () => {
-        state.evaluaciones = [];
-        let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-        return ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
-            headers: header,
-        })
-        .then((response) => {
-            if (response.status != 200) return false;
-            state.evaluaciones = response.data;
-            console.log("state.evaluaciones", state.evaluaciones);
-            state.evaluaciones.forEach((m) => {
-                m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-                if (m.iniciales.length < 2){
-                    m.iniciales =  m.nombre.substring("0", "2");
-                }
-                let fecha = new Date(m.fechaCreacion);
-                fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
-                m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
-                state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
-            });
-            console.log("state.evaluaciones", state.evaluaciones);
-            
-        })
-        .catch((error) => console.log(error));
-    }*/
-
     const getIM = () => {
         state.evaluaciones.forEach((m) => {
             var filtro = {
                 "evaluacionId":  m.id,
                 "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
             }
-              console.log("FILTRO", filtro);
             ApibackOffice.post("Madurez/GetIM", filtro, { 
                 headers: header 
             })
@@ -458,7 +421,6 @@ export default {
                 }else{
                     m.IM = response.data[0].imValor.toFixed(2);
                 }
-                console.log("response.data", response.data);
             })
             .catch((error) => console.log(error));
             return false;
@@ -515,7 +477,6 @@ export default {
                 x.estado = x.estado / contador;
                 estadoGeneral = (estadoGeneral + x.estado);
             });
-            console.log("ESTADOGENERAL",  state.evaluaciones);
         })
         .catch((error) => console.log(error));
     };
@@ -525,7 +486,6 @@ export default {
             document.getElementById(evaluacionSelected.id).checked = true;
         } 
         state.evaluacionSelected = evaluacionSelected;
-        console.log("evaluacionSelected: ",  state.evaluacionSelected);
         await getIMA();
         getGraficoPuntuacionArea();
     };
@@ -541,7 +501,6 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             state.IMA = response.data;
-            console.log("state.IMA", response.data);
             let dataSetIMA = [];
             let dataSetPesoRelativo = [];
             let dataSetPuntuacionArea = [];
@@ -562,7 +521,6 @@ export default {
                 backgroundColor:   colorAleatorio(),
                 data: valorDataIMA
             };
-            console.log("elementoIMA", elementoIMA);
             dataSetIMA.push(elementoIMA);
 
             state.resumenIM = {
@@ -599,8 +557,6 @@ export default {
                 labels: labels,
                 datasets: dataSetPuntuacionArea
             };
-            
-            console.log("resumenPuntuacionArea", state.resumenPuntuacionArea);
             //#endregion
         })
         .catch((error) => {
@@ -650,6 +606,7 @@ export default {
       ir,
       cargarGraficos,
       selectedPagination,
+      getEvaluacionesPaginated
     };
   },
 };
