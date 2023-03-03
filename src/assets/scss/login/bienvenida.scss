@@ -1,0 +1,21 @@
+.imgbienvenida{
+    margin-top: 3rem;
+    margin-left: 3rem;
+    margin-right: 3rem; 
+}
+.textosbienvenida{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.titulobienvenida{
+    font-size: 28px;
+    font-weight: 600;
+    color: $secundary-400;
+}
+.btn-bienvenida{
+    background-color: $aqua-400;
+    color: white;
+   
+}

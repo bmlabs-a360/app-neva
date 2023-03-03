@@ -1,0 +1,7 @@
+.texto404{
+    text-align: center;
+}
+.textocul{
+    @include mv(520px){display: none;}
+}
+

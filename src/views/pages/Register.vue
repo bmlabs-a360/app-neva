@@ -182,7 +182,6 @@
       color="secondary"
       @click="
         () => {
-          //resetAsociarArea();
           visibleTerminosYCondiciones = false;
         }
       "
@@ -246,7 +245,6 @@ export default {
     };
     const state = reactive({
       nombre: "",
-      //apellido: "",
       password: "",
       passwordRepetir: "",
       email: "",
@@ -320,7 +318,6 @@ export default {
           return false;
         }
  
-        //FALTA APELLIDO
         let bodyUser = {
             nombres: state.nombre,
             password: state.password,

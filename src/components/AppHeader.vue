@@ -107,13 +107,11 @@ import router from "@/router/index";
 import logoNegro from "@/assets/img/nav/logos/logo-negro.svg";
 import logoPers from "@/assets/img/nav/pers/02.png";
 import cilAccountLogout from "@coreui/vue";
-//import bootstrap from "@/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 export default {
   name: "AppHeader",
   components: {
     AppBreadcrumb,
-    //bootstrap,
   },
   setup() {
 

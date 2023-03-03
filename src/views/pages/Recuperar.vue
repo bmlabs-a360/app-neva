@@ -165,7 +165,6 @@ export default {
               name: "Pages",
               query: { showMsjInvalidToken: "true" },
             });
-          //todo ok todo perfect
         })
         .catch(() => {
           router.push({

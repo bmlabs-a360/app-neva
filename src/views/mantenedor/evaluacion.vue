@@ -447,7 +447,6 @@ export default {
       state.evaluacionSelected = [];
       state.segmentacionAreas = [];
       state.segmentacionAreasByEvaluacion = [];
-      //state.porcentajesAreaSelected = [];
       state.totalPorcentaje = 0;
     };
 
@@ -1239,8 +1238,6 @@ export default {
       changeSegmentacionSubAreaPaso3,
       getPregunta,
       cilPen,
-      //RegresarPaso1,
-      //RegresarPaso2,
       CambioPorcentajePaso1,
       CambioPorcentajePaso2,
       addRespuesta,

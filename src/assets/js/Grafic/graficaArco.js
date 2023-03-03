@@ -54,15 +54,15 @@ var chart = bb.generate({
   bindto: "#radarAxis"
 });
 
-
-//BARRAS COLOR ONOVER
-
-var chart = bb.generate({
+// Barras Stack Normalizer
+var chart2 = bb.generate({
   data: {
+    x: "x",
     columns: [
-	["data1", 230,50, 100, 400, 150]
-	
+	["x", "Estrategia", "Finanzas", "Marketing", "Operación", "Gestion de Personas", "Comercial y Ventas"],
+	["data1", 30, 280, 951, 400, 150, 546, 4528]
     ],
+    type: "bar", // for ESM specify as: bar()
     groups: [
       [
         "data1",
@@ -70,23 +70,55 @@ var chart = bb.generate({
         "data3"
       ]
     ],
-    type: "bar", // for ESM specify as: bar()
+    stack: {
+      normalize: false
+    }
   },
-  colors: {
-    
-      data1: "red",
-      data2: "black",
-      data3: "blue"
-  
+  axis: {
+    x: {
+      type: "category"
+    }
   },
   color: {
-    pattern: [
-      "#16C59B"
-      
-    ]
-  },
-  bindto: "#colorOnover_1"
+        pattern: [
+         "#16C59B"
+          
+       ]
+      },
+  bindto: "#dataStackNormalized_2"
 });
+//BARRAS COLOR ONOVER
+
+// var chart = bb.generate({
+//   data: {
+//     columns: [
+// 	["data1", 230,50, 100, 400, 150]
+	
+//     ],
+//     groups: [
+//       [
+//         "data1",
+//         "data2",
+//         "data3"
+//       ]
+//     ],
+//     type: "bar", // for ESM specify as: bar()
+//   },
+//   colors: {
+    
+//       data1: "red",
+//       data2: "black",
+//       data3: "blue"
+  
+//   },
+//   color: {
+//     pattern: [
+//       "#16C59B"
+      
+//     ]
+//   },
+//   bindto: "#colorOnover_1"
+// });
 
 
 //BARRAS COLOR ONOVER 2

@@ -13,7 +13,7 @@
             </ul>
             <div class="">
                 <div class="control has-icon">
-                    <input class="input new w-100" type="text"  @change="getEvaluacionesPaginated(true)" id="buscadorEvaluacion" placeholder="Buscador Evaluacion">
+                    <input class="input new w-100" type="text"  @change="getEvaluacionesPaginated(true)" id="buscadorEvaluacion" placeholder="Buscador Evaluación">
                     <label class="form-icon search" for="">
                         <svg width="24" height="24" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_258_3270)">

@@ -323,7 +323,6 @@
         color="secondary"
         @click="
           () => {
-            //resetAsociarArea();
             visibleModalSegmentacionAreaNew = false;
             visibleModalNuevoUser = true;
           }
@@ -538,7 +537,6 @@
     :visible="visibleModalSegmentacionArea"
     @close="
       () => {
-        //resetAsociarArea();
         visibleModalSegmentacionArea = false;
         visibleModalUser = true;
       }
@@ -590,7 +588,6 @@
         color="secondary"
         @click="
           () => {
-            //resetAsociarArea();
             visibleModalSegmentacionArea = false;
             visibleModalUser = true;
           }
@@ -898,7 +895,6 @@ export default {
         var usuarioAreas = [];
         var UsuarioEvaluacionSelected = state.usuarioEvaluacion.find((y) => y.evaluacionId == evaluacion.id);
         evaluacion.segmentacionAreas.forEach(segmentacionArea => {
-          //if (segmentacionArea.idusuarioArea){
             if (UsuarioEvaluacionSelected){
               usuarioArea =
               {
@@ -916,7 +912,6 @@ export default {
                 }
                 usuarioAreas.push(usuarioArea);
             }
-          //}
         });
         if (UsuarioEvaluacionSelected){
           var usuarioEvaluacion =
@@ -1054,8 +1049,7 @@ export default {
                   'Eliminar!',
                   'El usuario y todas sus dependencias fueron eliminadas.',
                   'success'
-              )
-              //recargar usuarios   
+              ) 
               getUsers();
               return;
             })

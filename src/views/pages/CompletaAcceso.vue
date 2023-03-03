@@ -215,7 +215,6 @@
       color="secondary"
       @click="
         () => {
-          //resetAsociarArea();
           visibleTerminosYCondiciones = false;
         }
       "

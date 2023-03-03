@@ -17,7 +17,7 @@
     </div>
 
     
-    <div id="document_container" style="width:8.3in">
+    <div id="document_container" style="width:8.3in" >
         <div class="Pagina">
             <div id="tituloEmpresa">
                 <div class="d-flex justify-content-end">
@@ -480,7 +480,7 @@ export default {
 
     const getMadurezGeneral = () => {
         var filtro = {
-            "evaluacionId":  state.idEvaluacion, //FALTA CUANDO SE ENVIE EVALUACION DISTINTA
+            "evaluacionId":  state.idEvaluacion,
             "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
         }
         console.log("filtro", filtro);
@@ -812,51 +812,6 @@ export default {
             valor2 = [];
             valor3 = [];
             valor4 = [];
-
-           /*
-            for (var i = 0; i < capacidad.length; i++) {
-                for (var j = 0; j < capacidad.length; j++) {
-                    if (capacidad[i].segmentacionSubAreaId == capacidad[j].segmentacionSubAreaId &&  i != j) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
-                        valorcapacidad = capacidad[i].pesoRelativoCapacidadValor;
-                    }
-                }
-            }
-            console.log("valorcapacidad", valorcapacidad);
-            capacidad = [];
-            valorcapacidad = [];
-            
-
-            if (capacidadvalorMayor.length > 3){
-                capacidadvalorMayor.length = 3;
-            }
-            if (capacidadvalorMenor.length > 3) {
-                capacidadvalorMenor.length = 3;
-            }
-            element.capacidadvalorMayor = capacidadvalorMayor.sort(((a, b) =>  b.pesoRelativoCapacidadPorc - a.pesoRelativoCapacidadPorc));
-            element.capacidadvalorMenor = capacidadvalorMenor.sort((x, y) => x.pesoRelativoCapacidadPorc - y.pesoRelativoCapacidadPorc);
-
-            state.capacidadSubAreas.forEach((y) => {
-                if (y.segmentacionAreaId == element.segmentacionAreaId) valorDataList.push(y.pesoRelativoCapacidadValor);
-            });
-
-            let elemento = {
-                label: "Capacidad" ,
-                backgroundColor:  "#47608d",
-                data: valorDataList
-            }
-
-            dataSet.push(elemento);
-
-            element.resumenCapacidad = {
-                labels: labels,
-                datasets: dataSet,
-            };
-            dataSet = [];
-            labels = [];
-            valorDataList = [];
-            capacidadvalorMayor = [];
-            capacidadvalorMenor = [];*/
-
         });
         console.log("IMA", state.IMA); 
     };
@@ -884,7 +839,7 @@ export default {
       };
     };
 
-    const getRecomendacionArea = () => {  //VERIFICAr como OBTENER PUNTUADCION DE AREAS
+    const getRecomendacionArea = () => { 
         let filtro = {
             id: state.IM[0].evaluacionEmpresaId
         };
@@ -909,7 +864,6 @@ export default {
 
     return {
       ...toRefs(state),
-      //exportToPDF,
       horizonalLinePlugin,
     };
   },

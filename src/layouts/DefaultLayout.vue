@@ -11,7 +11,6 @@ import { CContainer } from "@coreui/vue";
 import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
 //import AppSidebar from "@/components/AppSidebar.vue";
-//import { onBoardingHelper, renderSteps } from "@/Helper/onBoardingHelper";
 import navOnboarding from "@/_navOnboarding.js";
 import { VOnboardingWrapper, useVOnboarding } from "v-onboarding";
 import { getCurrentInstance } from "vue";
@@ -23,17 +22,13 @@ export default {
   components: {
     AppFooter,
     AppHeader,
-    //AppSidebar,
     CContainer,
     Nav,
-      //VOnboardingWrapper,
   },
   methods: {
-    //renderSteps,
   },
   setup() {
     const wrapper = ref(null);
-   // const { start } = useVOnboarding(wrapper);
 
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
@@ -46,7 +41,6 @@ export default {
     };
 
     const state = reactive({
-      //isonboardinginitial: false,
       wrapper,
       steps: [],
       options: {
@@ -80,39 +74,9 @@ export default {
         },
       },
     });
-
-    //let localNav = navOnboarding;
-  /*
-    const onBoardingInitialNav = async () => {
-      let user = JSON.parse(localStorage.getItem("usuarioModel"));
-      try {
-        state.isonboardinginitial = await onBoardingHelper.getUserSeeMenuNav(
-          user.id,
-          header
-        );
-      } catch (error) {
-        console.log(error);
-      }
-
-      if (!state.isonboardinginitial) {
-        state.steps = localNav.map((x) => {
-          return renderSteps(x);
-        });
-        await onBoardingHelper.setUserSeeMenuNav(user.id, header);
-      }
-    };
-    onBoardingInitialNav();
-
-    onMounted(() => {
-      if (!state.isonboardinginitial) {
-        start();
-      }
-    });
-      */
     return {
       ...toRefs(state),
       style,
-      //start,
     };
   },
 };
