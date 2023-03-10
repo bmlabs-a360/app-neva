@@ -204,7 +204,7 @@
 
         <!-- Inicio Cajas -->
         <section class="cards mb-4 justify-content-between">
-            <div class="cards-grafic p-3 d-flex">
+            <div class="cards-grafic p-3 d-flex" >
                 <div class="w-100">
                     <h2>Indice de madurez entre area</h2>
                     <div >
@@ -214,6 +214,10 @@
                                     <CChart
                                         type="bar"
                                         :data="resumenIM"
+                                        height="285"
+                                        width="200"
+                                        :options="{ maintainAspectRatio: false }"
+
                                     />
                                 </CCardBody>
                             </CCard>
@@ -222,7 +226,7 @@
                 </div>
             </div>
         
-            <div class="cards-grafic p-3">
+            <div class="cards-grafic p-3" >
                 <div class="w-100">
                     <h2>Puntuación entre area</h2>
                     <div>
@@ -232,6 +236,9 @@
                                     <CChart
                                         type="bar"
                                         :data="resumenPuntuacionArea"
+                                        height="285"
+                                        width="200"
+                                        :options="{ maintainAspectRatio: false }"
                                     />
                                 </CCardBody>
                             </CCard>
@@ -240,13 +247,16 @@
                 </div>
             </div>
 
-            <div class="cards-grafic p-3">
+            <div class="cards-grafic p-3" >
                 <div class="w-100">
                     <h2>Porcentaje importancia relativa</h2>
                     <div :md="12">
                         <CCard class="mb-4">
                         <CCardBody >
-                            <CChart type="bar" :data="resumenImportanciaRelativa" />
+                            <CChart type="bar" :data="resumenImportanciaRelativa"
+                            height="285"
+                                        width="200"
+                                        :options="{ maintainAspectRatio: false }" />
                         </CCardBody>
                         </CCard>
                     </div>
@@ -520,6 +530,7 @@ export default {
                 label: state.evaluacionSelected.nombre,
                 backgroundColor:   colorAleatorio(),
                 data: valorDataIMA
+
             };
             dataSetIMA.push(elementoIMA);
 

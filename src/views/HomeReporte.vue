@@ -65,8 +65,9 @@
                                     <CChart
                                         type="bar"
                                         :data="resumenImportanciaRelativa"
-                                        height="200"
+                                        height="285"
                                         width="200"
+                                        :options="{ maintainAspectRatio: false, plugins: { legend: { display: false } } }"
                                     />
                                 </div>
                                 <div class="bodycard">
@@ -82,9 +83,10 @@
                                         <div :md="12">
                                             <CChart type="radar" 
                                                 :data="resumenPuntuacionArea" 
-                                                height="200"
+                                                height="300"
                                                 width="200"
-                                                :options=" {  responsive: true,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } } }"/> 
+                                                :options=" {  responsive: true,  maintainAspectRatio: false,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } },
+                                            plugins: { legend: { display: false } } }"/> 
                                         </div>
                                     </div>
                                 </div>
