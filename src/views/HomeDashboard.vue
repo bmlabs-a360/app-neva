@@ -275,7 +275,8 @@
                             </div>
                             <h6>administrador</h6>
                         </div>
-                        <p class="message">Estamos aquí ante cualquier pregunta, no dudes en contactarnos.</p>
+                        <p class="message">Estamos 
+                        <a href="mailto:contacto@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.</p>
                     </div>
                 </div>
                 <div>
