@@ -808,7 +808,8 @@ export default {
         let labels = [];
         let valorDataList = [];
         state.IMA.forEach((element) => {
-            labels.push(element.nombreArea);
+            var labelArea = element.pesoRelativoAreaPorc + "% " + element.nombreArea
+            labels.push(labelArea);
             valorDataList.push(element.pesoRelativoAreaPorc);
         });
 
@@ -964,12 +965,14 @@ export default {
       let labels = [];
       let valorDataList = [];
       state.IMA.forEach((element) => {
-        labels.push(element.nombreArea);
+        var porcentaje = ((element.imaValor / 5) * 100).toFixed(1)
+        var lablePor =   porcentaje +"% " + element.nombreArea 
+        labels.push(lablePor );
         valorDataList.push((element.imaValor / 5) * 100);
       });
 
       let elemento = {
-        label: "Evaluacion " +  state.IM.nombreEvaluacion,
+        label: "Evaluacion " +  state.IM.nombreEvaluacion ,
         backgroundColor:  colorAleatorio(),
         data: valorDataList,
         fill: true,
