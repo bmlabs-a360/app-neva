@@ -232,10 +232,11 @@
                 <h3>{{userSelected.nombres}}</h3>        
               </div>
               <div class="col-12 card p-3">
-                <div class="circle d-flex align-items-center "><div class=" active me-2 "></div>
-                  <h6>administrador</h6>
-                </div>
-                <p class="message">Estamos aquí ante cualquier pregunta, no dudes en contactarnos.</p>
+                  <div class="circle d-flex align-items-center ">
+                      <div class=" active me-2 "></div>
+                      <h6>administrador</h6>
+                  </div>
+                  <p class="message"><a style="color:blue" href="mailto:contacto@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.</p>
               </div>
             </div>
             <div>
