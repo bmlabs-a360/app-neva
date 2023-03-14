@@ -9,7 +9,7 @@
                 </li> 
                 <li class="nav-item" role="presentation" v-for="ima in IMA" :value="ima.segmentacionAreaId" :key="ima.segmentacionAreaId">
                     <div v-if="ima.activaArea">
-                         <button   @click="areaSelected(ima)" name="areas-pills-tab" class="nav-link" :id="'pill-'+ ima.segmentacionAreaId + '-tab'" data-bs-toggle="pill" data-bs-target="#pills-estrategias" type="button" role="tab" aria-controls="pills-estrategias" aria-selected="false">{{ima.nombreArea}}</button>
+                         <button    @click="areaSelected(ima)" name="areas-pills-tab" class="nav-link" :id="'pill-'+ ima.segmentacionAreaId + '-tab'" data-bs-toggle="pill" data-bs-target="#pills-estrategias" type="button" role="tab" aria-controls="pills-estrategias" aria-selected="false">{{ima.nombreArea}}</button>
                     </div>
                         </li>
                  <li class="nav-item" role="presentation">
