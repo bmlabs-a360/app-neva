@@ -47,7 +47,7 @@
                   user.area
                 }}</CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuario">
-                  <CButton 
+                  <CButton :disabled="deleteUserDisabled(user)"
                     @click="getUserDelete(user)"><CIcon :icon="cilTrash" size="lg" />
                   </CButton>
                   <CButton 
@@ -362,6 +362,7 @@
                 id="activo"
                 v-model="userSelected.activo"
                 :checked="userSelected.activo"
+                :disabled="deleteUserDisabled(userSelected)"
               />
             </div>
           </div>
@@ -630,7 +631,8 @@ export default {
     };
 
     const state = reactive({
-      usuarioNuevo: [],
+        userOnline:null,
+        usuarioNuevo: [],
       passwordFieldType: "password",
       clave: "",
       usuarios: [],
@@ -1023,7 +1025,24 @@ export default {
       }
     };
 
-    
+      const deleteUserDisabled = (user) => {
+          var salida = false;
+
+          console.log("deleteUserDisabled");
+          console.log("userSelectd", user.email);
+
+          state.userOnline = JSON.parse(localStorage.usuarioModel);
+
+
+          console.log(" state.userOnline", state.userOnline.email);
+     
+          if (state.userOnline.email == user.email)
+              salida= true;
+
+          
+
+          return salida;
+      };
 
     const getUserDelete = (user) => {
       swal.fire({
@@ -1091,7 +1110,8 @@ export default {
       getSegmentacionAreaNew,
       crearUser,
       modificarUser,
-      getUserDelete,
+        getUserDelete,
+        deleteUserDisabled,
       seleccionarSegmentacionArea,
       seleccionarSegmentacionAreaNew,
     };

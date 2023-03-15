@@ -6,10 +6,12 @@
             <ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button @click="resumenSelected()" class="nav-link active" id="pills-resumen-tab" data-bs-toggle="pill" data-bs-target="#pills-resumen" type="button" role="tab" aria-controls="pills-resumen" aria-selected="true">Resumen</button>
-                </li>
+                </li> 
                 <li class="nav-item" role="presentation" v-for="ima in IMA" :value="ima.segmentacionAreaId" :key="ima.segmentacionAreaId">
-                    <button @click="areaSelected(ima)" name="areas-pills-tab" class="nav-link" :id="'pill-'+ ima.segmentacionAreaId + '-tab'" data-bs-toggle="pill" data-bs-target="#pills-estrategias" type="button" role="tab" aria-controls="pills-estrategias" aria-selected="false">{{ima.nombreArea}}</button>
-                </li>
+                    <div v-if="ima.activaArea">
+                         <button    @click="areaSelected(ima)" name="areas-pills-tab" class="nav-link" :id="'pill-'+ ima.segmentacionAreaId + '-tab'" data-bs-toggle="pill" data-bs-target="#pills-estrategias" type="button" role="tab" aria-controls="pills-estrategias" aria-selected="false">{{ima.nombreArea}}</button>
+                    </div>
+                        </li>
                  <li class="nav-item" role="presentation">
                 <button @click="feedbackSelected()" class="nav-link" id="pills-feedback-tab" data-bs-toggle="pill" data-bs-target="#pills-feedback" type="button" role="tab" aria-controls="pills-feedback" aria-selected="false">Feedback</button>
               </li>
@@ -203,8 +205,8 @@
 
                         <div class="leyend d-flex align-items-center">
                             <div class="grafica">
-                                <button class="btn circle-red order-md-2 ">
-                                    <p>{{ima.brecha}}%</p>
+                                <button class="btn circle-red order-md-2">
+                                    <p  style=" color: rgb(155 155 155); ">{{ima.brecha}}%</p>
                                 </button>
                             </div>
                             <h5>Brecha</h5>
@@ -667,6 +669,7 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             state.IMA = response.data;
+            //console.log("state.IMA", state.IMA);
             state.IMA.forEach((element) => {
                 let color = [];
                 let restante = "";
@@ -1025,7 +1028,10 @@ export default {
                 if ( element.respuestaValor == '3'){
                     element.tipoRespuestaValorNombre = "Desarrollada";
                 }
-
+               /* state.IMA.forEach((x) => {
+                    if (x.segmentacionAreaId == element.segmentacionAreaId) 
+                        element.activaArea = x.activaArea;
+                });*/
                 state.IMSA.forEach((x) => {
                     if (x.segmentacionSubAreaId == element.segmentacionSubAreaId){
                         if (element.importanciaDetalle == "4" || element.importanciaDetalle == "3" ){
@@ -1040,6 +1046,7 @@ export default {
                     }
                 });
             });
+            //console.log("state.feedbacks", state.feedbacks);
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
             return;

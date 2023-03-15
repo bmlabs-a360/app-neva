@@ -285,7 +285,8 @@
                             </div>
                             <h6>administrador</h6>
                         </div>
-                        <p class="message">Estamos aquí ante cualquier pregunta, no dudes en contactarnos.</p>
+                        <p class="message">Estamos 
+                        <a style="color:blue" href="mailto:contacto@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.</p>
                     </div>
                 </div>
                 <div>
@@ -363,29 +364,39 @@ export default {
     };
 
     const getEvaluacionesPaginated = async (iniciarPage) => {
+
+        console.log("getEvaluacionesPaginated");
         let buscadorEvaluacion = "";
         if (iniciarPage) {
             state.initialPage = 1
             buscadorEvaluacion = document.getElementById('buscadorEvaluacion').value;
         };
         let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-        ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresaIdFilterCount?empresaId=" + empresaId + "&filter=" + buscadorEvaluacion, {
+         let usuarioId = JSON.parse(localStorage.usuarioModel).id;
+         await ApiNeva.post("Evaluacion/GetEvaluacionsByEmpresaIdFilterCount?empresaId=" + empresaId  + "&usuarioId=" + usuarioId + "&filter=" + buscadorEvaluacion, {
             headers: header,
         })
             .then((response) => {
+
+                 console.log("response",response);
                 if (response.status != 200) return false;
+                 console.log("GetEvaluacionsByEmpresaIdFilterCount",response.data);
                 state.totalevaluaciones = Math.ceil(response.data / state.sizePage);
             })
-            .catch(() => {
+            .catch((error) => {
                 state.totalevaluaciones = null;
+                console.log("error",error);
             });
 
-        return ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresaIdFilterList?empresaId=' + empresaId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage  + "&filter=" + buscadorEvaluacion, {
+         await ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresaIdFilterList?empresaId=' + empresaId + "&usuarioId=" + usuarioId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage  + "&filter=" + buscadorEvaluacion, {
             headers: header,
         })
-            .then((response) => {
-                if (response.status != 200) return false;
-                state.evaluaciones = response.data;
+            .then((response2) => {
+
+                 console.log("response2",response2);
+                if (response2.status != 200) return false;
+                state.evaluaciones = response2.data;
+               console.log("response.data evaluaciones: ",response2.data);
                 state.evaluaciones.forEach((m) => {
                     m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
                     if (m.iniciales.length < 2){
@@ -395,9 +406,11 @@ export default {
                     fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
                     m.fechaTermino = new Date(fecha).toLocaleString().split(",")[0];
                     state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
+                    return;
                 });
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log("errorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerror",error);
                 state.totalevaluaciones = null;
                 state.evaluaciones = null;
             });
@@ -407,7 +420,7 @@ export default {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
         state.perfil = state.userSelected.perfil.nombre;
         await getEvaluacionesPaginated(false);
-        getIM();
+        await getIM();
         await getEstadoSubArea();
 
         if (state.evaluaciones.length > 0){
@@ -415,13 +428,14 @@ export default {
         }
     };
 
-    const getIM = () => {
-        state.evaluaciones.forEach((m) => {
+    const getIM = async () => {
+        try {
+            state.evaluaciones.forEach((m) => {
             var filtro = {
                 "evaluacionId":  m.id,
                 "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
-            }
-            ApibackOffice.post("Madurez/GetIM", filtro, { 
+            };
+             ApibackOffice.post("Madurez/GetIM", filtro, { 
                 headers: header 
             })
             .then((response) => {
@@ -432,9 +446,12 @@ export default {
                     m.IM = response.data[0].imValor.toFixed(2);
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log("error en getIM",error));
             return false;
         });
+        } catch (e) {
+            console.log("error en evaluaciones.forEach",e)
+        }
     };
 
     const getEstadoSubArea = async () => {
@@ -446,7 +463,7 @@ export default {
             id: JSON.parse(localStorage.usuarioModel).empresaId 
         };
 
-        ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
+       await  ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
             headers: header,
         })
         .then((response) => {
@@ -505,7 +522,7 @@ export default {
             "evaluacionId":   state.evaluacionSelected.id,
             "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
         }
-        return ApibackOffice.post("Madurez/GetIMA", filtro,
+        return await ApibackOffice.post("Madurez/GetIMA", filtro,
             { headers: header }
         )
         .then((response) => {
