@@ -13326,7 +13326,7 @@ a {
   display: flex;
   flex-direction: initial;
   justify-content: space-between;
-  align-items: center;
+  --align-items: center;
   color: black;
   padding: 0px 0px;
   text-align: center;

@@ -228,8 +228,8 @@
                             <div class="d-flex flex-column justify-content-center">
                                 <p :class="ima.claseIMA">{{parseFloat(ima.imaValor).toFixed(0)}}</p>
                                 <div> 
-                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="100" width="100"
-                                    :options="{ maintainAspectRatio: true,circumference: 180,rotation: -90, plugins: { title: { display: true,
+                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="50" width="100"
+                                    :options="{ maintainAspectRatio: false,circumference: 180,rotation: -90, plugins: { title: { display: true,
                                     text:(ima.cumplimiento).toString()+'%',font :{size:20},
                                     position: 'bottom' } } }"/>
                                 </div>
@@ -245,7 +245,7 @@
                         <div class="cards-grafictabsresult pt-4">
                             <div class="w-100 p-2">
                                 <CChart type="bar" :data="ima.resumenCapacidad" 
-                                    height="100"
+                                    height="60s"
                                     width="100"
                                     :options=" {
                                         plugins:{horizonalLinePlugin},
@@ -281,6 +281,9 @@
                                         <td class="w-1">
                                             <h4 class="text-center text-md-start">{{top3capacidadByarea.preguntaCapacidad}}</h4>
                                         </td>
+                                        <td class="">
+                                            <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -297,6 +300,9 @@
                                     <tr v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                         <td class="w-1">
                                             <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.preguntaCapacidad}}</h4>
+                                        </td>
+                                        <td class="">
+                                            <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1034,11 +1040,21 @@ export default {
                 });*/
                 state.IMSA.forEach((x) => {
                     if (x.segmentacionSubAreaId == element.segmentacionSubAreaId){
-                        if (element.importanciaDetalle == "4" || element.importanciaDetalle == "3" ){
+                        //Se cambiara el detalle de la importancia por el imsaValor para generar mejores o peor
+                       /* if (element.importanciaDetalle == "4" || element.importanciaDetalle == "3" ){
                             element.imsaValor = x.imsaValor;
                             state.capacidadvalorMayor.push(element);
                         }
                         if (element.importanciaDetalle == "1" || element.importanciaDetalle == "2" ){
+                            element.imsaValor = x.imsaValor;
+                            state.capacidadvalorMenor.push(element);
+                        }*/
+                        console.log(x.imsaValor)
+                        if (x.imsaValor >= 4 ){
+                            element.imsaValor = x.imsaValor;
+                            state.capacidadvalorMayor.push(element);
+                        }
+                        if (x.imsaValor <4 ){
                             element.imsaValor = x.imsaValor;
                             state.capacidadvalorMenor.push(element);
                         }
