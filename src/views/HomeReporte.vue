@@ -108,7 +108,10 @@
                                             <tr v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
                                                 <td scope="row">
                                                     <div class="min-w pt-5">
-                                                        <CChart type="doughnut" :data="areaMadura.nivelMadurezAreas"/>
+                                                        <CChart type="doughnut" :data="areaMadura.nivelMadurezAreas"
+                                                        :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
+                                                         text:(areaMadura.cumplimiento).toString()+'%',
+                                                        position: 'bottom' } }}"/>
                                                     </div>
                                                 </td>
                                                 <td class="w-1">
@@ -135,7 +138,10 @@
                                             <tr v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
                                                 <td scope="row">
                                                     <div class="min-w pt-5">
-                                                        <CChart type="doughnut" :data="areaMejorar.nivelMadurezAreas"/>
+                                                        <CChart type="doughnut" :data="areaMejorar.nivelMadurezAreas"
+                                                        :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
+                                                           text:(areaMejorar.cumplimiento).toString()+'%',
+                                                         position: 'bottom' } }}"/>
                                                     </div>
                                                 </td>
                                                 <td class="w-1">
@@ -220,7 +226,10 @@
                             <div class="d-flex flex-column justify-content-center">
                                 <p :class="ima.claseIMA">{{parseFloat(ima.imaValor).toFixed(0)}}</p>
                                 <div> 
-                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="100" width="100"/>
+                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="100" width="100"
+                                    :options="{ maintainAspectRatio: true,circumference: 180,rotation: -90, plugins: { title: { display: true,
+                                    text:(ima.cumplimiento).toString()+'%',font :{size:20},
+                                    position: 'bottom' } } }"/>
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap flex-column justify-content-center mt-3">
@@ -685,7 +694,8 @@ export default {
 
                 let elemento = {
                     label: [element.nombreArea],
-                    backgroundColor:  [color, "#FFFFFF"],
+                    backgroundColor:  [color, "#EAE7E6"],
+                    borderColor : "#A9A7A6",
                     data: [parseInt(element.imaValor.toFixed(0)), restante]
                 }
 
@@ -965,7 +975,7 @@ export default {
       let labels = [];
       let valorDataList = [];
       state.IMA.forEach((element) => {
-        var porcentaje = ((element.imaValor / 5) * 100).toFixed(1)
+        var porcentaje = ((element.imaValor / 5) * 100).toFixed(0)
         var lablePor =   porcentaje +"% " + element.nombreArea 
         labels.push(lablePor );
         valorDataList.push((element.imaValor / 5) * 100);
