@@ -2,9 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\api",
-    "\\src\\views\\pages"
+    "\\src\\views",
+    "\\src\\views\\pages",
+    "\\src\\views\\permisos"
   ],
-  "SelectedNode": "\\.env.production",
+  "SelectedNode": "\\src\\views\\HomeDashboard.vue",
   "PreviewInSolutionExplorer": false
 }

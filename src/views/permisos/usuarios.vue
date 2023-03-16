@@ -284,17 +284,18 @@
       <CContainer>
         <CRow>
           <div style="display: flex">
-            <CFormLabel > Asociar área a evaluación </CFormLabel>
+              <CFormLabel> Asociar área a evaluación: {{evaluacion.nombre}}</CFormLabel>
             <div>
-              <CFormInput
-                  type="text"
-                  id="nombreevaluacion"
-                  placeholder="Evaluacion"
-                  size="sm"
-                  disabled
-                  maxlength="255"
-                  v-model="evaluacion.nombre"
-                />
+                <!--<CFormInput
+                    type="text"
+                    id="nombreevaluacion"
+                    placeholder="Evaluacion"
+                    size="sm"
+                    disabled
+                    maxlength="255"
+                    v-model="evaluacion.nombre"
+                  />-->
+
             </div>
           </div>
           <CCol sm="12">
@@ -500,6 +501,7 @@
                   {{evaluacion.nombre}}
                 </CTableDataCell>
                 <CTableDataCell class="text-center">
+
                    <CFormCheck name="chkAsociar" :checked="evaluacion.asociar"  v-model="evaluacion.asociar" />
                 </CTableDataCell>
                 <CTableDataCell class="text-center" id="acciones_usuario">
@@ -550,37 +552,38 @@
       <CContainer>
         <CRow>
           <div style="display: flex">
-            <CFormLabel > Asociar área a evaluación </CFormLabel>
-            <div>
-              <CFormInput
-                  type="text"
-                  id="nombreevaluacion"
-                  placeholder="Evaluacion"
-                  size="sm"
-                  disabled
-                  maxlength="255"
-                  :v-model="evaluacion.nombre"
-                  :value="evaluacion.nombre"
-                />
-            </div>
+              <CFormLabel> Asociar área a evaluación:  {{evaluacion.nombre}} </CFormLabel>
+            <td>
+                <!--<CFormInput
+                    type="text"
+                    id="nombreevaluacion"
+                    placeholder="Evaluacion"
+                    size="sm"
+                    disabled
+                    maxlength="255"
+                    :v-model="evaluacion.nombre"
+                    :value="evaluacion.nombre"
+                  />-->
+                
+            </td>
           </div>
-          <CCol sm="12">
-            <div class="mb-2">
-              <CFormLabel>Asociar área*</CFormLabel>
-            </div>
-              <div class="mb-2" >
-                  <CFormLabel style="display:flex" > 
-                    <CFormSwitch style="cursor: pointer" id="todoschkArea" @click="checkAll('checkArea', 'todoschkArea'); seleccionarSegmentacionArea()" /> Todos
-                  </CFormLabel>
-                <div v-for="area in segmentacionAreas" :key="area.id">
-                  <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
-                  <CFormSwitch style="cursor: pointer"
-                                v-model="area.activo"
-                                :checked="area.activo" 
-                                name="checkArea"/>
+            <CCol sm="12">
+                <div class="mb-2">
+                    <CFormLabel>Asociar área*</CFormLabel>
                 </div>
-            </div>
-          </CCol>
+                <div class="mb-2">
+                    <CFormLabel style="display:flex">
+                        <CFormSwitch style="cursor: pointer" id="todoschkArea" @click="checkAll('checkArea', 'todoschkArea'); seleccionarSegmentacionArea()" /> Todos
+                    </CFormLabel>
+                    <div v-for="area in segmentacionAreas" :key="area.id">
+                        <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
+                        <CFormSwitch style="cursor: pointer"
+                                     v-model="area.activo"
+                                     :checked="area.activo"
+                                     name="checkArea" />
+                    </div>
+                </div>
+            </CCol>
         </CRow>
       </CContainer>
     </CModalBody>
@@ -877,14 +880,15 @@ export default {
         swal.fire("Registro usuario", "Debe ingresar nombre", "warning");
         return false;
       }
-      if (state.clave == "") {
-        swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
-        return false;
+      if (state.clave != "") {
+        //swal.fire("Registro usuario", "Debe ingresar contraseña", "warning");
+        //return false;
+          if (state.clave.length < 8 || state.clave.length > 50) {
+              swal.fire("Registro usuario", "Contraseña debe tener un mínimo de 8 y máximo 50 caracteres", "warning");
+              return false;
+          }
       }
-      if (state.clave.length < 8 || state.clave.length > 50 ){
-        swal.fire("Registro usuario", "Contraseña debe tener un mínimo de 8 y máximo 50 caracteres", "warning");
-        return false;
-      }
+
       if (state.userSelected.email == "" || !validateEmail(state.userSelected.email)) {
         swal.fire("Registro usuario", "Debe ingresar un email", "warning");
         return false;
@@ -938,24 +942,52 @@ export default {
           state.userSelected.usuarioEvaluacions.push(usuarioEvaluacion);
         }
       });
-      let usuarioEdit = {
-          "id": state.userSelected.id,
-          "perfilId": state.userSelected.perfilId,
-          "empresaId": state.userSelected.empresaId,
-          "email": state.userSelected.email,
-          "telefono": state.userSelected.telefono,
-          "password": state.userSelected.password,
-          "nombres": state.userSelected.nombres,
-          "activo": state.userSelected.activo,
-          "usuarioEmpresas": [
-            {
-                "usuarioId": state.userSelected.id,
+
+
+        let usuarioEdit = null;
+        if (state.clave != "") {
+            usuarioEdit = {
+                "id": state.userSelected.id,
+                "perfilId": state.userSelected.perfilId,
                 "empresaId": state.userSelected.empresaId,
-                "activo": true
-            }
-          ],
-          "usuarioEvaluacions": state.userSelected.usuarioEvaluacions
-      };
+                "email": state.userSelected.email,
+                "telefono": state.userSelected.telefono,
+                "password": state.clave,
+                "nombres": state.userSelected.nombres,
+                "activo": state.userSelected.activo,
+                "usuarioEmpresas": [
+                    {
+                        "usuarioId": state.userSelected.id,
+                        "empresaId": state.userSelected.empresaId,
+                        "activo": true
+                    }
+                ],
+                "usuarioEvaluacions": state.userSelected.usuarioEvaluacions
+            };
+        }
+        else {
+            usuarioEdit = {
+                "id": state.userSelected.id,
+                "perfilId": state.userSelected.perfilId,
+                "empresaId": state.userSelected.empresaId,
+                "email": state.userSelected.email,
+                "telefono": state.userSelected.telefono,
+                //"password": state.userSelected.password,
+                "nombres": state.userSelected.nombres,
+                "activo": state.userSelected.activo,
+                "usuarioEmpresas": [
+                    {
+                        "usuarioId": state.userSelected.id,
+                        "empresaId": state.userSelected.empresaId,
+                        "activo": true
+                    }
+                ],
+                "usuarioEvaluacions": state.userSelected.usuarioEvaluacions
+            };
+        }
+
+
+
       ApiNeva.post("Usuario/UpdateUser", usuarioEdit,
         { headers: header }
       )
@@ -1027,20 +1059,12 @@ export default {
 
       const deleteUserDisabled = (user) => {
           var salida = false;
-
-          console.log("deleteUserDisabled");
-          console.log("userSelectd", user.email);
-
+          //console.log("deleteUserDisabled");
+          console.log("userSelectd", user);
           state.userOnline = JSON.parse(localStorage.usuarioModel);
-
-
-          console.log(" state.userOnline", state.userOnline.email);
-     
+         //console.log(" state.userOnline", state.userOnline.email);
           if (state.userOnline.email == user.email)
               salida= true;
-
-          
-
           return salida;
       };
 
