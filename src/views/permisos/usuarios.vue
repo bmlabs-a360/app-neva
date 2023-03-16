@@ -1060,8 +1060,8 @@ export default {
       const deleteUserDisabled = (user) => {
           var salida = false;
           //console.log("deleteUserDisabled");
-          console.log("userSelectd", user);
-          state.userOnline = JSON.parse(localStorage.usuarioModel);
+          //console.log("userSelectd", user);
+         
          //console.log(" state.userOnline", state.userOnline.email);
           if (state.userOnline.email == user.email)
               salida= true;
@@ -1118,7 +1118,8 @@ export default {
         })
       };
     
-    onMounted(() => {
+      onMounted(() => {
+          state.userOnline = JSON.parse(localStorage.usuarioModel);
       getUsers();
     });
 
