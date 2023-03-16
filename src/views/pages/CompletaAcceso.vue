@@ -416,9 +416,9 @@ export default {
         TipoCantidadEmpleadoId: state.cantidadEmpleadoSelected
       };
       await recaptchaLoaded();
-      await executeRecaptcha("EmpresaInsert").then((token) => {
+      await executeRecaptcha("EmpresaInsertOrUpdate").then((token) => {
         ApiNeva.post(
-          "Empresa/EmpresaInsert?uri=" + encodeURIComponent(uri) + "&tr=" + token,
+          "Empresa/EmpresaInsertOrUpdate?uri=" + encodeURIComponent(uri) + "&tr=" + token,
           bodyUser,
           {
             headers: {
