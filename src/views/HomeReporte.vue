@@ -107,7 +107,7 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
+                                            <tr v-if="AreasMaduras.length >0" v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
                                                 <td scope="row">
                                                     <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="areaMadura.nivelMadurezAreas"
@@ -123,6 +123,9 @@
                                                     <h3 class="">Nivel {{parseFloat(areaMadura.imaValor).toFixed(0)}}</h3>
                                                 </td>
                                             </tr>
+                                            <tr v-if="AreasMaduras.length ==0">
+                                                <td><h4>No existe información para mostrar</h4></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -137,7 +140,7 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
+                                            <tr v-if="AreasMejorar.length >0" v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
                                                 <td scope="row">
                                                     <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="areaMejorar.nivelMadurezAreas"
@@ -153,6 +156,9 @@
                                                 <td class="">
                                                     <h3 class="">Nivel {{parseFloat(areaMejorar.imaValor).toFixed(0)}}</h3>
                                                 </td>
+                                            </tr>
+                                            <tr v-if="AreasMejorar.length ==0">
+                                                <td><h4>No existe información para mostrar</h4></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -245,7 +251,7 @@
                         <div class="cards-grafictabsresult pt-4">
                             <div class="w-100 p-2">
                                 <CChart type="bar" :data="ima.resumenCapacidad" 
-                                    height="60s"
+                                    height="60"
                                     width="100"
                                     :options=" {
                                         plugins:{horizonalLinePlugin},
@@ -277,13 +283,16 @@
                         <div class="w-100 table-responsive pie-table">
                             <table class="table-res table-hover">
                                 <tbody>
-                                    <tr v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
+                                    <tr v-if="top3capacidadesByarea.length >0"  v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                         <td class="w-1">
                                             <h4 class="text-center text-md-start">{{top3capacidadByarea.preguntaCapacidad}}</h4>
                                         </td>
                                         <td class="">
                                             <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
                                         </td>
+                                    </tr>
+                                    <tr v-if="top3capacidadesByarea.length ==0">
+                                                <td><h4>No existe información para mostrar</h4></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -297,13 +306,16 @@
                         <div class="w-100 table-responsive pie-table">
                             <table class="table-res table-hover">
                                 <tbody>
-                                    <tr v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
+                                    <tr  v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                         <td class="w-1">
                                             <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.preguntaCapacidad}}</h4>
                                         </td>
                                         <td class="">
                                             <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
                                         </td>
+                                    </tr>
+                                    <tr v-if="top3peoresCapacidadesByarea.length ==0">
+                                                <td><h4>No existe información para mostrar</h4></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -318,11 +330,14 @@
                             <div class="w-100 table-responsive pie-table">
                                 <table class="table-res table-hover">
                                     <tbody>
-                                        <tr v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id" >
+                                        <tr v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id" >
                                             <td scope="row" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
-                                                <div class="min-w">
-                                                    <div id="updateConfigtestFive"></div>
-                                                </div>
+                                                <div class="min-w pt-5">
+                                                        <CChart type="doughnut" :data="SubAreaMadura.nivelMadurezSubAreas"
+                                                        :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
+                                                         text:(SubAreaMadura.cumplimiento).toString()+'%',
+                                                        position: 'bottom' } }}"/>
+                                                    </div>
                                             </td>
                                             <td class="w-1" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
                                                 <h4 class="text-center text-md-start">{{SubAreaMadura.nombreSubArea}}</h4>
@@ -331,6 +346,9 @@
                                                 <h3 class="">Nivel {{parseFloat(SubAreaMadura.imsaValor).toFixed(0)}}</h3>
                                             </td>
                                         </tr>
+                                        <tr  v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
+                                                <td><h4>No existe información para mostrar</h4></td>
+                                            </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -345,11 +363,14 @@
                             <div class="w-100 table-responsive pie-table">
                                 <table class="table-res table-hover">
                                     <tbody>
-                                        <tr v-for="SubAreaMejorar in SubAreasMejorar" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
+                                        <tr v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0"  v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
                                             <td scope="row" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
-                                                <div class="min-w">
-                                                    <div id="updateConfigtestSeven"></div>
-                                                </div>
+                                                <div class="min-w pt-5">
+                                                        <CChart type="doughnut" :data="SubAreaMejorar.nivelMadurezSubAreas"
+                                                        :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
+                                                         text:(SubAreaMejorar.cumplimiento).toString()+'%',
+                                                        position: 'bottom' } }}"/>
+                                                    </div>
                                             </td>
                                             <td class="w-1" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
                                                 <h4 class="text-center text-md-start">{{SubAreaMejorar.nombreSubArea}}</h4>
@@ -358,6 +379,9 @@
                                                 <h3 class="">Nivel {{parseFloat(SubAreaMejorar.imsaValor).toFixed(0)}}</h3>
                                             </td>
                                         </tr>
+                                        <tr v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length ==0">
+                                                <td><h4>No existe información para mostrar</h4></td>
+                                            </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -746,6 +770,42 @@ export default {
             if (response.status != 200) return false;
             state.IMSA = response.data;
             state.IMSA.forEach((element) => {
+                let color = [];
+                let restante = "";
+                let dataSet = [];
+                if (element.imsaValor.toFixed(0) == 1){
+                    color = "#e5342c";
+                    restante = 4;
+                }
+                if (element.imsaValor.toFixed(0) == 2){
+                    color = "#f3bf4f";
+                    restante = 3;
+                }
+                if (element.imsaValor.toFixed(0) == 3){
+                    color = "#fcfa62";
+                    restante = 2;
+                }
+                if (element.imsaValor.toFixed(0) == 4){
+                    color = "#3070b5";
+                    restante = 1;
+                }
+                if (element.imsaValor.toFixed(0) == 5){
+                    color = "#4fa95c";
+                    restante = 0;
+                }
+                let elemento = {
+                    label: [element.nombreSubArea],
+                    backgroundColor:  [color, "#EAE7E6"],
+                    borderColor : "#A9A7A6",
+                    data: [parseInt(element.imsaValor.toFixed(0)), restante]
+                }
+                dataSet.push(elemento);
+                element.nivelMadurezSubAreas = {
+                    datasets: dataSet,
+                };
+                let cumplimiento = (element.imsaValor.toFixed(0) / 5) * 100;
+                element.cumplimiento = cumplimiento.toFixed(0);
+
                 if (element.imsaValor.toFixed(0) >= 4){
                     state.SubAreasMaduras.push(element);
                 }else{
