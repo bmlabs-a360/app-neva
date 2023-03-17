@@ -703,33 +703,45 @@ export default {
             state.IMA.forEach((element) => {
                 let color = [];
                 let restante = "";
+                let restante2 = "";
                 let dataSet = [];
+                let cumplimiento = (element.imaValor / 5) * 100;
+
                 if (element.imaValor.toFixed(0) == 1){
                     color = "#e5342c";
                     restante = 4;
+                    restante2 = 100-cumplimiento  ;
                 }
                 if (element.imaValor.toFixed(0) == 2){
                     color = "#f3bf4f";
                     restante = 3;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imaValor.toFixed(0) == 3){
                     color = "#fcfa62";
                     restante = 2;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imaValor.toFixed(0) == 4){
                     color = "#3070b5";
                     restante = 1;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imaValor.toFixed(0) == 5){
                     color = "#4fa95c";
                     restante = 0;
+                    restante2 = 100-cumplimiento  ;
+
                 }
 
                 let elemento = {
                     label: [element.nombreArea],
                     backgroundColor:  [color, "#EAE7E6"],
                     borderColor : "#A9A7A6",
-                    data: [parseInt(element.imaValor.toFixed(0)), restante]
+                    data: [cumplimiento.toFixed(0), restante2.toFixed(0)]
                 }
 
                 dataSet.push(elemento);
@@ -739,7 +751,6 @@ export default {
                 
                 element.claseIMA = "titlenivel-" + element.imaValor.toFixed(0);
                 element.imaValor = element.imaValor.toFixed(2);
-                let cumplimiento = (element.imaValor / 5) * 100;
                 element.cumplimiento = cumplimiento.toFixed(0);
                 let brecha =  element.cumplimiento - 100;
                 element.brecha = brecha.toFixed(0);
@@ -772,38 +783,50 @@ export default {
             state.IMSA.forEach((element) => {
                 let color = [];
                 let restante = "";
+                let restante2 = "";
                 let dataSet = [];
+                let cumplimiento = (element.imsaValor.toFixed(0) / 5) * 100;
+
                 if (element.imsaValor.toFixed(0) == 1){
                     color = "#e5342c";
                     restante = 4;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imsaValor.toFixed(0) == 2){
                     color = "#f3bf4f";
                     restante = 3;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imsaValor.toFixed(0) == 3){
                     color = "#fcfa62";
                     restante = 2;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imsaValor.toFixed(0) == 4){
                     color = "#3070b5";
                     restante = 1;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 if (element.imsaValor.toFixed(0) == 5){
                     color = "#4fa95c";
                     restante = 0;
+                    restante2 = 100-cumplimiento  ;
+
                 }
                 let elemento = {
                     label: [element.nombreSubArea],
                     backgroundColor:  [color, "#EAE7E6"],
                     borderColor : "#A9A7A6",
-                    data: [parseInt(element.imsaValor.toFixed(0)), restante]
+                    data: [cumplimiento, restante2]
                 }
                 dataSet.push(elemento);
                 element.nivelMadurezSubAreas = {
                     datasets: dataSet,
                 };
-                let cumplimiento = (element.imsaValor.toFixed(0) / 5) * 100;
                 element.cumplimiento = cumplimiento.toFixed(0);
 
                 if (element.imsaValor.toFixed(0) >= 4){
