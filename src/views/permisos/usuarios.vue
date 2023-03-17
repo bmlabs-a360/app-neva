@@ -846,32 +846,60 @@ export default {
       });
     };
 
-    const getSegmentacionArea = (evaluacionEmpresa) =>{
-      state.evaluacion = evaluacionEmpresa;
-        ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresa, { headers: header, })
-          .then((response) => {
-              if (response.status != 200) return false;
-              state.usuarioAreas = [];
-              evaluacionEmpresa.segmentacionAreas = [];
-              state.userSelected.usuarioEvaluacions.forEach(y => {
-                if (y.evaluacionId == state.evaluacion.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) {
-                  state.usuarioAreas = y.usuarioAreas
-                }
-              });
-              state.segmentacionAreas = response.data;
-              state.segmentacionAreas.forEach(x => {
-                var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
-                x.activo = false;
-                if (areaAsuario != undefined) {
-                  x.idusuarioArea = areaAsuario.id;
-                  x.activo = areaAsuario.activo;
-                } 
-              });
-              evaluacionEmpresa.segmentacionAreas = state.segmentacionAreas;
-              state.visibleModalUser = false;
-              state.visibleModalSegmentacionArea = true;
-          })
-          .catch((error) => console.log(error));
+      const getSegmentacionArea = (evaluacionEmpresa) => {
+          state.evaluacion = evaluacionEmpresa;
+          ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByEvaluacionId", evaluacionEmpresa, { headers: header, })
+              .then((response) => {
+                  if (response.status != 200) return false;
+                  /*LB: No pinta las areas assignadas al usuario seleccionado, se crea metodo en la api para resolver*/
+                  //state.usuarioAreas = [];
+                  //evaluacionEmpresa.segmentacionAreas = [];
+                  //state.userSelected.usuarioEvaluacions.forEach(y => {
+                  //  if (y.evaluacionId == state.evaluacion.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId) { // ¿¿por que se filtra por el usuario enLinea??
+                  //    state.usuarioAreas = y.usuarioAreas
+                  //  }
+                  //});
+                  //state.segmentacionAreas = response.data;
+                  //state.segmentacionAreas.forEach(x => {
+                  //  var areaAsuario = state.usuarioAreas.find((y) => y.segmentacionAreaId == x.id);
+                  //  x.activo = false;
+                  //  if (areaAsuario != undefined) {
+                  //    x.idusuarioArea = areaAsuario.id;
+                  //    x.activo = areaAsuario.activo;
+                  //  }
+                  //});
+                  state.segmentacionAreas = response.data;
+                  evaluacionEmpresa.segmentacionAreas = [];
+                  evaluacionEmpresa.segmentacionAreas = state.segmentacionAreas;
+
+                  /*metodo en la api para resolver*/
+                  //console.log("state.userSelected", state.userSelected);
+                  //console.log("evaluacionEmpresa", evaluacionEmpresa);
+                  console.log("state.userSelected A", state.segmentacionAreas);
+
+                  var usuarioIdAndEvaluacionId = 
+                  {
+                      UsuarioId: state.userSelected.id,
+                      EvaluacionId: evaluacionEmpresa.id
+                    };
+
+                   ApiNeva.post("SegmentacionArea/GetSegmentacionAreasByUsuarioIdAndEvaluacionId", usuarioIdAndEvaluacionId, { headers: header, })
+                  .then((responseUser) => {
+                      if (responseUser.status != 200) return false;
+
+                      var segmentacionAreasUsuario = responseUser.data;
+                      console.log("segmentacionAreasUsuario", segmentacionAreasUsuario);
+
+                      state.segmentacionAreas.forEach(x => {
+                          x.activo = segmentacionAreasUsuario.find((y) => y.id == x.id) ? segmentacionAreasUsuario.find((y) => y.id == x.id).activo : false;
+                      });
+                      console.log("state.userSelected B", state.segmentacionAreas);
+                    
+                      state.visibleModalUser = false;
+                      state.visibleModalSegmentacionArea = true;
+
+                  }).catch((errorUser) => console.log(errorUser));
+          }).catch((error) => console.log(error));
     };
 
     const modificarUser = () => {
