@@ -139,7 +139,11 @@ export default {
 
     const getUsuario = () => {
         state.userSelected = JSON.parse(localStorage.usuarioModel);
-        state.userSelected.iniciales =  state.userSelected.nombres.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+        if (state.userSelected.nombres.length > 2){
+          state.userSelected.iniciales =  state.userSelected.nombres.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+        } else {
+            state.userSelected.iniciales = state.userSelected.nombres;
+        }
         state.perfil = state.userSelected.perfil.nombre;
     };
 

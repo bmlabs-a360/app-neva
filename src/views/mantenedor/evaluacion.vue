@@ -13,9 +13,9 @@
     <div class="card my-3 d-flex flex-column flex-lg-row align-items-center justify-content-between w-100">
       <form action="#" class="w-100">
         <!-- Steps -->
-        <div class="form-step form-step-active">
+        <div class="form-step form-step-active" >
           <!--header form-->
-          <div class="border-bottom p-3">
+          <div class="border-bottom p-3" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
               <div class="d-flex justify-content-center align-items-center">
                 <h1 class="title-form text-center mx-2">Preparaci&oacute;n</h1> 
@@ -36,17 +36,12 @@
             </div>     
           </div>
           <!--main form-->
-          <div class="container">
+          <div class="container" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )">
             <div class="row align-items-center">
               <div class="col-12 col-md-6">
                 <div class="input-group d-flex flex-column  gris-400">
                   <label for="username">Seleccione Evaluaci&oacute;n</label>
-                  <select id="idEvaluacionSelected" @change="changeEvaluacion" v-model="idEvaluacionSelected" class="form-select w-100" >
-                    <option value="0" :key="0">Seleccione tipo evaluación</option>
-                    <option :value="evaluaciones.id">
-                        {{ evaluaciones.nombre }}
-                    </option>
-                  </select>
+                  <CFormInput  id="idEvaluacionSelected" v-model="idEvaluacionSelected" :value="evaluacionSelected.nombre" class="form-select w-100" />
                 </div>
               </div>
 
@@ -59,7 +54,7 @@
                     <span :id="'porc-'+ area.id"> {{area.valor}}%</span>
                   </div>
                 </div>
-                <div class="d-flex justify-content-end amount d-none" id="totalporcentajediv">
+                <div class="d-flex justify-content-end amount" id="totalporcentajediv">
                   <p>Total <span :value="totalPorcentaje" id="totalporcentaje" >{{totalPorcentaje}}%</span></p>
                 </div>
               </div>
@@ -67,7 +62,7 @@
           </div>
 
           <!--footer form-->
-          <div class="border-bottom p-3">
+          <div class="border-bottom p-3" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
               <h1 class="title-form text-center">Preparación</h1> 
               <div class="btns-group">
@@ -78,7 +73,7 @@
         </div>
 
         <div class="form-step">
-          <div class="border-bottom p-3">
+          <div class="border-bottom p-3" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
               <div class="d-flex justify-content-center align-items-center">
                 <h1 class="title-form text-center">Importancia estrat&eacute;gica</h1> 
@@ -99,7 +94,7 @@
             </div> 
           </div>
           <!--main form-->
-          <div class="container">
+          <div class="container" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"> 
             <div class="row align-items-center">
               <div class="col-12 col-md-6">
                 <div class="input-group d-flex flex-column  gris-400">
@@ -113,7 +108,7 @@
 
                 <div class="input-group d-flex flex-column  gris-400">
                   <label for="username">Nombre &aacute;rea</label>
-                  <select class="form-select w-100" id="idTipoAreaSelected" v-model="idTipoAreaSelected" @change="changeSegmentacionArea" @click="guardarSubAreasChange">
+                  <select class="form-select w-100" id="idTipoAreaSelected" v-model="idTipoAreaSelected" @change="changeSegmentacionAreaPaso2();" >
                     <option value="0" :key="0">Seleccione nombre área</option>
                     <option v-for="segmentacionArea in segmentacionAreasByEvaluacion" :value="segmentacionArea.id" :key="segmentacionArea.id">
                         {{ segmentacionArea.nombreArea }}
@@ -139,7 +134,7 @@
           </div>
 
 
-          <div class="border-bottom p-3">
+          <div class="border-bottom p-3" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
               <h1 class="title-form text-center">Importancia estrat&eacute;gica</h1> 
               <div class="btns-group">
@@ -150,12 +145,12 @@
           </div>
         </div>
 
+        <!--EVALUACION AREAS A CONTESTAS-->
         <div class="form-step">
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
               <div class="d-flex justify-content-center align-items-center">
-                <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1>
-                <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre != 'Usuario pro (empresa)' )" >Evaluaci&oacute;n</h1>
+                <h1 class="title-form text-center" >{{nombreEvaluacionSelected}}</h1>
                 <b class="tooltips p-2">
                   <p class="mb-0 circles">?</p>
                   <span class="tooltips-box">Para comenzar esta evaluación, es necesario ingresar a cada área y contestar las 
@@ -166,8 +161,8 @@
                 </b> 
               </div>
               <div class="btns-group">
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
-                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" @click="() => { modalGuardarRespuestas = true; }">Guardar</button>
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="limpiarPaso2();SiguienteAtras(1);">Anterior</button>
+                <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" @click="ModalGuardarRespuestas">Guardar</button>
               </div>
             </div>
           </div>
@@ -182,7 +177,7 @@
               </tr>
               <tr v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
                 <td>{{tablaSegmentacionArea.nombreArea}}</td>
-                <td class="table-progress" v-if="tablaSegmentacionArea.estado < 100">
+                <td class="table-progress" v-if="tablaSegmentacionArea.estado < 100" >
                   <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_376_6978)">
                       <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
@@ -218,7 +213,7 @@
           </div>
           <div class="p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
-              <h1 class="title-form text-center" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )" >{{evaluacionSelected.nombre}}</h1> 
+              <h1 class="title-form text-center" >{{nombreEvaluacionSelected}}</h1> 
               <div class="btns-group">
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised is-primary btn-prev" v-if="perfilSelected && (perfilSelected.nombre == 'Usuario pro (empresa)' )"  @click="SiguienteAtras(1)">Anterior</button>
                 <button type="button" class="button button v-button is-bold is-fullwidth is-raised" id="liveToastBtn" v-if="estadoGeneral == 100" @click="ir('HomeReporte')">Enviar</button>
@@ -302,35 +297,6 @@
     </div>
   </div>
 
-  
-  <!-- MODAL RECUPERACION-->
-  <CModal
-    backdrop="static"
-    size="lg"
-    alignment="center"
-    :visible="modalGuardarRespuestas"
-    @close="() => { modalGuardarRespuestas = false; }"
-  >
-    <CModalHeader>
-      <CModalTitle>Guardar Respuestas</CModalTitle>
-    </CModalHeader>
-    <CModalBody>
-      <CContainer>
-        <CRow>
-          <CCol sm="8">
-            <CFormLabel  >Se ha guardado con exito respuestas</CFormLabel>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </CModalBody>
-    <CModalFooter>
-      <CButton color="secondary" @click="() => { modalGuardarRespuestas = false; }">
-        Cerrar
-      </CButton>
-    </CModalFooter>
-  </CModal>
-  <!-- FIN MODAL RECUPERACION-->
-
 </template>
 
 
@@ -339,7 +305,6 @@
 import { getCurrentInstance, reactive, toRefs, onMounted } from "vue";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
-import { cilPen } from "@coreui/icons";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 
@@ -361,6 +326,7 @@ export default {
     };
 
     const state = reactive({
+      /*nombreEvaluacionSelected: "",
       isonboarding: false,
       perfilSelected: [],
       idEvaluacionSelected: "0",
@@ -398,12 +364,831 @@ export default {
       respuestaSelected: [],
       nombreAreaSelected: "",
       nombreSubAreaSelected: "",
+
+      evaluacionEmpresaSelected,
+      evaluacionEmpresa,*/
+
+
+      idEvaluacionSelected : "0",
+      nombreEvaluacionSelected: "",
+      perfilSelected: [],
+      evaluaciones: [],
+      evaluacionSelected: [],
+      evaluacionEmpresaSelected: [],
+      porcentajesAreaSelected: [],
+      segmentacionAreasByEvaluacion: [],
+      totalPorcentaje : 0,
+      idTipoAreaSelected: "0",
+      importanciaRelativa: [],
+      totalPorcentajeSubAreas: 0,
+      segmentacionAreaSelected: [],
+      porcentajesSubAreas: [],
+      segmentacionSubAreas: [],
+      segmentacionSubAreasbyAreaSelected: [],
+      importanciaestrategica: [],
+      tablaSegmentacionAreas: [],
+      preguntas: [],
+      preguntaSelected: [],
+      preguntasTotal: [],
+      estadoGeneral: 0,
+      tiposImportancia : [],
+      defRelacionadas: [],
+      respuestaSelected: [],
+      defRelacionadaSelected: [],
+      tipoImportanciaSelected: [],
+      alternativaSelected: [],
       modalGuardarRespuestas: false,
+
+    });
+
+    onMounted(async () => {
+      oncreated();
     });
 
     const route = useRoute();
-      if (route.query.evaluacionId){
+    if (route.query.evaluacionId){
       state.idEvaluacionSelected = route.query.evaluacionId;
+      state.nombreEvaluacionSelected = route.query.evaluacionNombre;
+    }
+
+    const oncreated = async () => {
+      state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
+      await getEvaluaciones();
+      if (state.perfilSelected.nombre != "Usuario básico"){
+        await getEvaluacionSelected();
+        getSegmentacionAreasPaso3();
+      }
+      SiguienteAtras(0);
+      if (state.perfilSelected.nombre != "Usuario pro (empresa)"){
+        SiguienteAtras(2);
+        return;
+      }
+      if (state.perfilSelected.nombre == "Usuario básico"){
+        //cargar areas de otra forma
+      }
+
+    };
+
+    const getEvaluaciones = async () => {
+      state.evaluaciones = [];
+      return ApiNeva.post("Evaluacion/GetEvaluacionsByPerfil?evaluacionId=" + state.idEvaluacionSelected , JSON.parse(localStorage.usuarioModel), {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.evaluaciones = response.data;
+          console.log("state.evaluaciones", state.evaluaciones)
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getEvaluacionSelected = async () => {
+      state.evaluacionSelected = state.evaluaciones.find((y) => y.id == state.idEvaluacionSelected);
+      //if (state.perfilSelected.nombre == "Usuario pro (empresa)"){
+      await getSegmentacionAreaByevaluacionPorcentajes();
+      //}
+    };
+
+    //#region USUARIOPRO
+    const getSegmentacionAreaByevaluacionPorcentajes = async () =>{
+      state.porcentajesAreaSelected = [];
+      state.evaluacionEmpresaSelected = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
+      let bodyEvaluacionEmpresa = {
+          "id" : state.evaluacionEmpresaSelected.id,
+      };
+      return ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId", bodyEvaluacionEmpresa , {
+        headers: header,
+      })
+      .then((response) => {
+        if (response.status != 200) return false;
+        state.porcentajesAreaSelected = response.data;
+
+        state.evaluacionSelected.segmentacionAreas.forEach( x => {
+          if (state.porcentajesAreaSelected.length == 0) x.valor = 0;
+          state.porcentajesAreaSelected.forEach( y => {
+            if (y.segmentacionAreaId == x.id){
+              if ( y.valor != undefined) {
+                x.valor = y.valor;
+                state.totalPorcentaje += parseInt(y.valor);
+              }else{
+                  x.valor = 0;
+              }
+            }
+          });
+          state.segmentacionAreasByEvaluacion.push(x);
+        });
+      });
+    };
+
+    const CambioPorcentajePaso1 = async (idarea) => {
+      document.getElementById("porc-"+idarea).innerHTML=document.getElementById(idarea).value + "%";
+      let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
+      state.totalPorcentaje = 0;
+      idAreasPorcentajes.forEach((element) => {
+        state.totalPorcentaje += parseInt(element.value);
+      });
+      if (state.totalPorcentaje != 100 ){
+        document.getElementById("totalporcentaje").classList.remove("text-success");
+        document.getElementById("totalporcentaje").classList.add("text-danger");
+        return;
+      }
+      document.getElementById("totalporcentaje").classList.remove("text-danger");
+      document.getElementById("totalporcentaje").classList.add("text-success");
+    };
+
+    const irPaso2 = async () => {
+      state.idTipoAreaSelected = "0";
+      state.segmentacionAreaSelected = [];
+      state.segmentacionSubAreasbyAreaSelected = [];
+      document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
+      if (state.idEvaluacionSelected == "0" || !state.idEvaluacionSelected){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "Seleccione tipo evaluación",
+          icon: "warning",
+        });
+        return false;
+      }
+
+      if (!state.segmentacionAreasByEvaluacion){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "Empresa no tiene áreas asignadas",
+          icon: "warning",
+        });
+        return false;
+      }
+      
+      if (state.totalPorcentaje < 100){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "No puede ser menor al 100% de importancia entre las áreas",
+          icon: "warning",
+        });
+        return false;
+      }
+
+      if (state.totalPorcentaje > 100){
+        swal.fire({
+          title: "Preparación de áreas",
+          text: "No puede sobrepasar el 100% de importancia entre las áreas",
+          icon: "warning",
+        });
+        return false;
+      }
+      
+      await guardarPorcentajeAreas();
+      await getSegmentacionSubAreaByAreaPorcentajes();
+    };
+
+    const guardarPorcentajeAreas = async () => {
+      state.ImportanciaRelativa = [];
+      let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
+      let bodyImportanciaRelativa = []
+      idAreasPorcentajes.forEach((element) => {
+        let importanciarelativa = {
+            evaluacionEmpresaId: state.evaluacionEmpresaSelected.id,
+            segmentacionAreaId: element.id,
+            valor: element.value,
+            activo: true,
+        };
+        bodyImportanciaRelativa.push(importanciarelativa);
+
+      });
+        return Promise.all( bodyImportanciaRelativa.map(element => 
+          ApiNeva.post("ImportanciaRelativa/ImportanciaRelativaInsertOrUpdate", element, { headers: header, })
+          .then(async (response) => {
+              if (response.status != 200){
+                swal.fire({
+                  title: "Preparación de áreas",
+                  text: "Error al guardar porcentajes",
+                  icon: "warning",
+                });
+                return false;
+              }
+              state.ImportanciaRelativa.push(response.data);
+
+              SiguienteAtras(1); //Se avanza a Paso Importancia Estrategica
+          })
+          .catch((error) => console.log(error))
+        ));
+    };
+
+     const getSegmentacionSubAreaByAreaPorcentajes = async () => {
+      state.porcentajesSubAreas = [];
+      //state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == state.evaluacionEmpresaSelected.id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
+      return ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativa", state.ImportanciaRelativa , {
+      //ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativaId", state.importanciaRelativaSelected , {
+        headers: header,
+      })
+      .then((response) => {
+        if (response.status != 200) return false;
+        state.porcentajesSubAreas = response.data;
+
+        state.segmentacionAreasByEvaluacion.forEach( x => {
+          x.segmentacionSubAreas.forEach( subarea => {
+            
+            let subareaporcentaje = state.porcentajesSubAreas.find((y) => y.segmentacionSubAreaId == subarea.id);
+            if (subareaporcentaje){
+              subarea.valor = subareaporcentaje.valor;
+              //state.totalPorcentajeSubAreas += parseInt(subareaporcentaje.valor);
+            }else{
+              subarea.valor = 0;
+            }
+            state.segmentacionSubAreas.push(subarea);
+          });
+
+        });
+        /*if (state.totalPorcentajeSubAreas == 100){
+          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
+          document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
+        }else{
+          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
+          document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
+        }*/
+      })
+      .catch((error) => console.log(error));
+    };
+
+    const changeSegmentacionAreaPaso2 = async () => {
+      if ( state.idTipoAreaSelected != "0"){
+        await guardarSubAreasChange();
+        await getSegmentacionSubAreaByAreaPorcentajes();
+      }
+      let idTipoAreaSelected = document.getElementById("idTipoAreaSelected")
+        .options[
+        document.getElementById("idTipoAreaSelected").selectedIndex
+      ].value;
+
+      limpiarPaso2();
+
+      if (idTipoAreaSelected == 0){
+        state.totalPorcentajeSubAreas = 0;
+        document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
+        return;
+      } 
+
+      state.idTipoAreaSelected = idTipoAreaSelected;
+      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idTipoAreaSelected);
+      
+      state.segmentacionSubAreasbyAreaSelected = state.segmentacionAreaSelected.segmentacionSubAreas;
+      state.segmentacionSubAreasbyAreaSelected.forEach( x => {
+        state.totalPorcentajeSubAreas += parseInt(x.valor);
+      });
+
+      if (state.totalPorcentajeSubAreas == 100){
+        document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
+        document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
+      }else{
+        document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
+        document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
+      }
+
+
+      document.getElementById("totalPorcentajeSubAreasDiv").classList.remove("d-none");
+    };
+
+    const CambioPorcentajePaso2 = async (idsubarea) => {
+      document.getElementById("porcPaso2-"+idsubarea).innerHTML=document.getElementById(idsubarea).value + "%";
+      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
+      state.totalPorcentajeSubAreas = 0;
+      idSubAreasPorcentajes.forEach((element) => {
+        state.totalPorcentajeSubAreas += parseInt(element.value);
+      });
+
+      if (state.totalPorcentajeSubAreas != 100){
+        document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
+        document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
+        return;
+      }
+      document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
+      document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
+    };
+
+    const limpiarPaso2 = async () => {
+      state.segmentacionAreaSelected = [];
+      state.segmentacionSubAreasbyAreaSelected = [];
+      state.totalPorcentajeSubAreas = 0;
+      state.idTipoAreaSelected  = "0";
+    };
+
+    const guardarSubAreasChange = async () => {
+      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
+      if (idSubAreasPorcentajes.length > 0){
+        
+        //let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
+        state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == state.evaluacionEmpresaSelected.id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
+        await getImportanciaEstrategica();
+        let bodyImportanciaEstrategica = [];
+        idSubAreasPorcentajes.forEach((element) => {
+          let importanciaestrategicaId = state.importanciaestrategica.find((y) => y.importanciaRelativaId == state.importanciaRelativaSelected.id && y.segmentacionSubAreaId == element.id);
+          if (importanciaestrategicaId){
+            let importanciaestrategica = {
+                id :  importanciaestrategicaId.id,
+                importanciaRelativaId: state.importanciaRelativaSelected.id,
+                segmentacionSubAreaId: element.id,
+                valor: element.value,
+                fechaCreacion: importanciaestrategicaId.fechaCreacion,
+                activo: true,
+            };
+            bodyImportanciaEstrategica.push(importanciaestrategica);
+          }else{
+            let importanciaestrategica = {
+                importanciaRelativaId: state.importanciaRelativaSelected.id,
+                segmentacionSubAreaId: element.id,
+                valor: element.value,
+                activo: true,
+            };
+            bodyImportanciaEstrategica.push(importanciaestrategica);
+          }
+         
+        });
+
+        return Promise.all( bodyImportanciaEstrategica.map(element => 
+          ApiNeva.post("ImportanciaEstrategica/ImportanciaEstrategicaInsertOrUpdate", element, { headers: header, })
+          .then(async (response) => {
+            if (response.status != 200){
+              swal.fire({
+                title: "Preparación de sub áreas",
+                text: "Error al guardar porcentajes" + error,
+                icon: "warning",
+              });
+              return false;
+            }
+          })
+          .catch((error) => console.log(error))
+        ));
+      }
+    };
+
+    const getImportanciaEstrategica = async () => {
+      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
+      let bodyImportanciaEstrategica = [];
+      idSubAreasPorcentajes.forEach((element) => {
+        let importanciaestrategica = {
+            importanciaRelativaId: state.importanciaRelativaSelected.id,
+            segmentacionSubAreaId: element.id,
+            valor: element.value,
+            activo: true,
+        };
+        bodyImportanciaEstrategica.push(importanciaestrategica);
+      });
+
+      return Promise.all( bodyImportanciaEstrategica.map(element => 
+        ApiNeva.get("ImportanciaEstrategica/GetImportanciaEstrategicasBySegmentacionSubAreaImportanciaRelativa?segmentacionSubAreaId=" + element.segmentacionSubAreaId + "&importanciaRelativaId=" + state.importanciaRelativaSelected.id
+        , null, 
+        { headers: header, })
+        .then(async (response) => {
+          if (response.status != 200) return false;
+          state.importanciaestrategica.push(response.data);
+        })
+        .catch((error) => console.log(error))
+        ))
+    };
+
+    const irPaso3 = async () => {
+      await guardarSubAreasChange();
+      await getSegmentacionSubAreaByAreaPorcentajes();
+      let nombreAreasIncompletas = "";
+      state.segmentacionAreasByEvaluacion.forEach( x => {
+        let valorsubareas = 0;
+        x.segmentacionSubAreas.forEach( x => {
+          valorsubareas += parseInt(x.valor);
+        });
+        x.totalsubareas = valorsubareas;
+        if (x.totalsubareas != 100){
+          nombreAreasIncompletas += "<li>" + x.nombreArea + " Valor: " + x.totalsubareas + "% </li>" ;
+        }
+      });
+
+      if (nombreAreasIncompletas != ""){
+        swal.fire({
+          title: "Preparación sub áreas",
+          html: "Las siguientes áreas no tienen importancia <br> relativa al 100%: <br><br>" + nombreAreasIncompletas,
+          icon: "warning",
+        });
+        return false;
+      }
+      SiguienteAtras(2); //Se avanza a Paso Evaluacion
+      getSegmentacionAreasPaso3();
+    };
+    //#endregion USUARIOPRO
+
+    //#region PASO3
+    const getSegmentacionAreasPaso3 = async () => {
+      //state.tablaSegmentacionAreas = [];
+      //state.tablaSegmentacionAreas = state.evaluacionSelected.segmentacionAreas;
+      if (state.perfilSelected.nombre == "Consultor" || state.perfilSelected.nombre == "Gran empresa"){
+        state.segmentacionAreasByEvaluacion.forEach (x => {
+          x.segmentacionSubAreas.forEach(y => {
+            state.segmentacionSubAreas.push(y);
+          });
+        });
+      }
+      await getEstadoSubArea();
+      cargarTablaPaso3();
+    };
+
+    const getEstadoSubArea = async () => {
+      let bodyEmpresa =  { 
+        id: JSON.parse(localStorage.usuarioModel).empresaId 
+      };
+
+      return ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          response.data.forEach(x => {
+            state.segmentacionSubAreas.forEach(y => {
+              if (x.segmentacionSubAreaId == y.id){
+                y.estado = x.respuestaPorcentaje;
+              }
+            });
+          });
+          console.log("state.segmentacionSubAreas", state.segmentacionSubAreas);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const cargarTablaPaso3 = async () => {
+      state.tablaSegmentacionAreas = []
+      state.estadoGeneral = 0;
+      let contador = 0;
+      let contadorArea = 0;
+      let estadoGeneral = 0;
+      state.segmentacionAreasByEvaluacion.forEach (x => {
+        x.estado = 0;
+        contador = 0;
+        contadorArea++;
+        x.segmentacionSubAreas.forEach(y => {
+            if (y.segmentacionAreaId == x.id){
+              contador++;
+              x.estado = (x.estado + parseInt(y.estado));
+            };
+        });
+        x.estado = x.estado / contador;
+        estadoGeneral = (estadoGeneral + x.estado);
+        state.tablaSegmentacionAreas.push(x);
+      });
+
+      state.estadoGeneral = estadoGeneral / contadorArea;
+    };
+
+    const ModalGuardarRespuestas = async () => {
+      swal.fire({
+          title: "Guardar Respuestas",
+          text: "Se ha guardado con exito sus respuestas",
+          icon: "success",
+        });
+    }
+    
+    //#endregion PASO3
+
+    //#region REPONDER
+    const getPregunta = (segmentacionArea) => {
+      state.preguntas = [];
+      state.preguntaSelected = [];
+      state.preguntasTotal = [];
+
+      let bodySegmentacionArea = {
+        id: segmentacionArea.id
+      };
+      ApiNeva.post("Pregunta/GetPreguntasBySegmentacionAreaId" , bodySegmentacionArea,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.preguntas = response.data;
+          state.preguntasTotal = response.data.length;
+          if (state.preguntas.length == 0){
+            swal.fire({
+              title: "Felicitaciones!",
+              text: "&Aacute;rea no tiene preguntas asignadas",
+              icon: "warning",
+            });
+            return false;
+          }
+          let orden = 0;
+          let segmentacionArea = [];
+          let segmentacionSubArea = [];
+          //verificar nombre de evaluacion cuando sea usuario BASICO
+          state.preguntas.forEach((element) => {
+            orden++;
+            element.orden = orden;
+            segmentacionArea = state.segmentacionAreasByEvaluacion.find((y) => y.id == element.segmentacionAreaId);
+            element.nombreArea = segmentacionArea.nombreArea;
+            segmentacionSubArea = state.segmentacionSubAreas.find((y) => y.id == element.segmentacionSubAreaId);
+            element.nombreSubArea = segmentacionSubArea.nombreSubArea;
+            element.nombreEvaluacion = state.evaluacionSelected.nombre;
+          });
+          state.preguntaSelected = state.preguntas[0];
+          console.log("state.preguntaSelected", state.preguntaSelected)
+          getTipoimportancia();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getTipoimportancia = async () => {
+      state.tiposImportancia = [];
+      ApiNeva.post("TipoImportancia/GetTipoImportancias", null,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.tiposImportancia = response.data;
+           if (state.perfilSelected.nombre == "Consultor") {
+            getDeficienciaRelacionada();
+           } else {
+            getRespuesta();
+           }
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getDeficienciaRelacionada = async () => {
+      state.defRelacionadas = [];
+      ApiNeva.post("TipoDiferenciaRelacionada/GetTipoDiferenciaRelacionadas", null,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.defRelacionadas = response.data;
+          getRespuesta();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getRespuesta = () => {
+      //let EvaluacionEmpresa = "";
+      state.respuestaSelected = [];
+      /*for (let index = 0; index < state.evaluacionPaso3.length; index++) {
+        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
+        if (EvaluacionEmpresa) break;
+      }*/
+
+      let bodyRespuesta = {
+        preguntaId: state.preguntaSelected.id,
+        evaluacionEmpresaId: state.evaluacionEmpresaSelected.id
+      };
+
+      ApiNeva.post("Respuesta/GetRespuestaByIdsPreguntaUsuarioEvaluacionEmpresa", bodyRespuesta,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) return false;
+          state.respuestaSelected = response.data;
+          if (state.respuestaSelected) cargarRespuestas();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const cargarRespuestas = async () => {
+      let alternativas = document.getElementsByName("alternativas");
+      for (let x = 0; x < alternativas.length; x++) {
+        let obj = alternativas[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.alternativaId){
+          obj.checked = true;
+          state.alternativaSelected = obj.value;
+        }
+      };
+
+      let tipoImportancias = document.getElementsByName("tipoImportancias");
+      for (let x = 0; x < tipoImportancias.length; x++) {
+        let obj = tipoImportancias[x];
+        obj.checked = false;
+        if (obj.value == state.respuestaSelected.tipoImportanciaId){
+          obj.checked = true;
+          state.tipoImportanciaSelected = obj.value;
+        }
+      };
+
+      if (state.perfilSelected.nombre == "Consultor"){
+        let defRelacionada = document.getElementsByName("defRelacionada");
+        for (let x = 0; x < defRelacionada.length; x++) {
+          let obj = defRelacionada[x];
+          obj.checked = false;
+          if (obj.value == state.respuestaSelected.tipoDiferenciaRelacionadaId){
+            obj.checked = true;
+            state.defRelacionadaSelected = obj.value;
+          }
+        }
+      }
+    };
+
+    const addRespuesta= () => {
+      if (state.alternativaSelected == ""){
+         swal.fire({
+            title: "Preguntas",
+            text: "Debe seleccionar una alternativa",
+            icon: "warning",
+          });
+          return false;
+      }
+      if (state.tipoImportanciaSelected == ""){
+         swal.fire({
+            title: "Preguntas",
+            text: "Debe seleccionar un tipo importancia",
+            icon: "warning",
+          });
+          return false;
+      }
+      if (state.perfilSelected.nombre == "Consultor"){
+        if (state.defRelacionadaSelected == ""){
+          swal.fire({
+              title: "Preguntas",
+              text: "Debe seleccionar una deficiencia relacionada",
+              icon: "warning",
+            });
+            return false;
+        }
+      }
+
+      /*let EvaluacionEmpresa = "";
+      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
+        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
+        if (EvaluacionEmpresa) break;
+      }*/
+
+      let alternativa = state.preguntaSelected.alternativas.find((y) => y.id == state.alternativaSelected);
+      let idRespuesta = state.respuestaSelected ? state.respuestaSelected.id : "00000000-0000-0000-0000-000000000000";
+      let idDefRelacionada = state.perfilSelected.nombre == "Consultor" ? state.defRelacionadaSelected : "00000000-0000-0000-0000-000000000000";
+
+      let bodyRespuesta = {
+        id: idRespuesta,
+        alternativaId: state.alternativaSelected,
+        preguntaId: state.preguntaSelected.id,
+        evaluacionEmpresaId: state.evaluacionEmpresaSelected.id,
+        tipoImportanciaId: state.tipoImportanciaSelected,
+        tipoDiferenciaRelacionadaId: idDefRelacionada,
+        valor: alternativa.valor,
+        realimentacion: alternativa.retroalimentacion,
+        activo: true,
+        usuarioId: localStorage.iduser
+      };
+      ApiNeva.post("Respuesta/InsertOrUpdate", bodyRespuesta,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200) {
+            swal.fire({
+                title: "Preguntas",
+                text: "Error al guardar pregunta" + response.error,
+                icon: "warning",
+              });
+              return false;
+          }
+          pasosPreguntas("siguiente");
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const pasosPreguntas = async (paso) => {
+      let orden = state.preguntaSelected.orden - 1;
+      if (paso == "siguiente"){ 
+        if (state.preguntasTotal <= state.preguntaSelected.orden ){
+          swal.fire(
+            "Preguntas",
+            "No existen mas preguntas asociadas",
+            "warning"
+          );
+          return false;
+        }
+        limpiarRespuestas("alternativas");
+        limpiarRespuestas("tipoImportancias");
+        if (state.perfilSelected.nombre == "Consultor"){
+          limpiarRespuestas("defRelacionada");
+        }
+        state.alternativaSelected = [];
+        state.tipoImportanciaSelected = [];
+        state.defRelacionadaSelected = [];
+
+        if (state.preguntaSelected.orden == state.preguntasTotal){
+          return false;
+        }
+        state.preguntaSelected = state.preguntas[orden + 1];
+        getRespuesta();
+      }
+      if (paso == "atras"){
+        if (state.preguntaSelected.orden == 1){
+          return false;
+        }
+        state.preguntaSelected = state.preguntas[orden - 1];
+      }
+    };
+
+    const limpiarRespuestas = async (name) => {
+      let radios = document.getElementsByName(name);
+      for (let x = 0; x < radios.length; x++) {
+        let obj = radios[x];
+        obj.checked = false;
+      }
+    };
+
+    const VolverAreasResponder = async () => {
+      limpiarRespuestas("alternativas");
+      limpiarRespuestas("tipoImportancias");
+      await addRespuestaVolver();
+      state.alternativaSelected = [];
+      state.tipoImportanciaSelected = [];
+      if (state.perfilSelected.nombre == "Consultor"){
+        limpiarRespuestas("defRelacionada");
+        state.defRelacionadaSelected = [];
+        //getUsuarioAreas();
+      }
+      //verificar como regresar para los usuarios BASICOS
+      getSegmentacionAreasPaso3(); 
+      SiguienteAtras(2); //Se regresa a Paso Evaluacion
+      //getUsuarioAreasByEvaluacionSelected();
+    };
+
+    const addRespuestaVolver= async () => {
+      let guardarRespuesta = true
+      if (state.alternativaSelected == "" || state.tipoImportanciaSelected == ""){
+        guardarRespuesta = false;
+      }
+      if (state.perfilSelected.nombre == "Consultor"){
+        if (state.defRelacionadaSelected == ""){
+          guardarRespuesta = false;
+        }
+      }
+
+      if (guardarRespuesta){
+        let alternativa = state.preguntaSelected.alternativas.find((y) => y.id == state.alternativaSelected);
+        let idRespuesta = state.respuestaSelected ? state.respuestaSelected.id : "00000000-0000-0000-0000-000000000000";
+        let idDefRelacionada = state.perfilSelected.nombre == "Consultor" ? state.defRelacionadaSelected : "00000000-0000-0000-0000-000000000000";
+
+        let bodyRespuesta = {
+          id: idRespuesta,
+          alternativaId: state.alternativaSelected,
+          preguntaId: state.preguntaSelected.id,
+          evaluacionEmpresaId: state.evaluacionEmpresaSelected.id,
+          tipoImportanciaId: state.tipoImportanciaSelected,
+          tipoDiferenciaRelacionadaId: idDefRelacionada,
+          valor: alternativa.valor,
+          realimentacion: alternativa.retroalimentacion,
+          activo: true,
+          usuarioId: localStorage.iduser
+        };
+        return ApiNeva.post("Respuesta/InsertOrUpdate", bodyRespuesta,  {
+          headers: header,
+        })
+          .then((response) => {
+            if (response.status != 200) {
+              swal.fire({
+                  title: "Preguntas",
+                  text: "Error al guardar pregunta" + response.error,
+                  icon: "warning",
+                });
+                return false;
+            }
+            pasosPreguntas("siguiente");
+          })
+          .catch((error) => console.log(error));
+      }
+    };
+    //#endregion RESPONDER
+
+    const ir = (namePageDestiny) => {
+      return router.push({ name: namePageDestiny, query: {evaluacionId: state.evaluacionSelected.id, evaluacionNombre: state.evaluacionSelected.nombre } });
+    };
+
+    const SiguienteAtras = async (formStepsNum) => {
+      const formSteps = document.querySelectorAll(".form-step");
+      const progressBar = document.querySelector(".progressbar");
+      formSteps.forEach((formStep) => {
+        formStep.classList.contains("form-step-active") &&
+          formStep.classList.remove("form-step-active");
+      });
+      formSteps[formStepsNum].classList.add("form-step-active");
+
+      const progressSteps = document.querySelectorAll(".progress-step");
+      progressSteps.forEach((progressStep, idx) => {
+        if (idx < formStepsNum + 1) {
+          progressStep.classList.add("progress-step-active");
+        } else {
+          progressStep.classList.remove("progress-step-active");
+        }
+      });
+
+      const progressActive = document.querySelectorAll(".progress-step-active");
+
+      progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+      
+      if (formStepsNum===3) {
+        progressBar.classList.add("d-none")
+      }
+      else if (formStepsNum<3) {
+        progressBar.classList.remove("d-none")
+      }
+    };
+
+/*
+    const route = useRoute();
+    if (route.query.evaluacionId){
+      state.idEvaluacionSelected = route.query.evaluacionId;
+      state.nombreEvaluacionSelected = route.query.evaluacionNombre;
     }
 
     const getEvaluaciones = async () => {
@@ -788,15 +1573,18 @@ export default {
       getEstadoSubArea();
     };
 
+   
     const getUsuarioAreas = async () => {
       let bodyUsuarioEvaluacion = {
-        id: localStorage.iduser
+        "usuarioId" : localStorage.iduser,
+        "empresaId" :  JSON.parse(localStorage.usuarioModel).empresaId ,
+        "evaluacionId" :  state.idEvaluacionSelected
       }
-        ApiNeva.post("UsuarioEvaluacion/GetUsuarioEvaluacionsByUsuarioId", bodyUsuarioEvaluacion ,{
+        ApiNeva.post("UsuarioEvaluacion/GetUsuarioEvaluacionsByIdsEvaluacionEmpresaUsuario", bodyUsuarioEvaluacion ,{
         headers: header,
       })
         .then((response) => {
-          if (response.status != 200) return false;
+          if (response.status != 200 && response.status == "" ) return false;
           state.usuarioArea = response.data;
           getAllAreas();
         })
@@ -808,25 +1596,31 @@ export default {
       state.allSegmentacionSubAreas = [];
       state.tablaSegmentacionAreas = [];
       
-      ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + JSON.parse(localStorage.usuarioModel).empresaId , {
+      let bodyEvaluacion = {
+        "id": state.idEvaluacionSelected
+      }
+      ApiNeva.post("Evaluacion/GetEvaluacionById" , bodyEvaluacion,  {
         headers: header,
       })
         .then((response) => {
-          if (response.status != 200) return false;
+          if (response.status != 200 ) return false;
           state.evaluacionPaso3 = response.data;
-          response.data.forEach(x => {
-            state.allSegmentacionAreas = state.allSegmentacionAreas.concat(x.segmentacionAreas);
-          });
+          state.allSegmentacionAreas = response.data.segmentacionAreas;
+          //response.data.forEach(x => {
+          //  state.allSegmentacionAreas = state.allSegmentacionAreas.concat(x.segmentacionAreas);
+          //});
 
           let areas = [];
           state.allSegmentacionAreas.forEach(element => {
-            state.usuarioArea.forEach(x => {
-              x.usuarioAreas.forEach(y => {
-                if (y.segmentacionAreaId == element.id && y.activo){
+            if (state.perfilSelected.nombre == "Consultor" ||state.perfilSelected.nombre == "Gran Empresa"){
+              areas = areas.concat(element);
+            }else{
+              state.usuarioArea.usuarioAreas.forEach(x => {
+                if (element.id == x.segmentacionAreaId){
                   areas = areas.concat(element);
                 }
               });
-            });
+            }
           });
 
           state.allSegmentacionAreas = areas;
@@ -1170,19 +1964,42 @@ export default {
       getUsuarioAreasByEvaluacionSelected();
     };
 
-    const oncreated = () => {
+//camilo
+    const getEmpresaEvaluacion = async () => {
+      let bodyEmpresa = {
+        "id": JSON.parse(localStorage.usuarioModel).empresaId
+      }
+      return ApiNeva.post("EvaluacionEmpresa/GetEvaluacionEmpresasByEmpresaId", bodyEmpresa,  {
+        headers: header,
+      })
+        .then((response) => {
+          if (response.status != 200)  return false;
+          debugger;
+          state.evaluacionEmpresa = response.data;
+          state.evaluacionEmpresaSelected = response.data.find((y) => y.evaluacionId == state.idEvaluacionSelected);
+          console.log("state.evaluacionEmpresa", state.evaluacionEmpresa)
+           
+        })
+        .catch((error) => console.log(error));
+    };
+
+
+    const oncreated = async () => {
       if (route.query.evaluacionId){
         changeEvaluacion();
       }
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       SiguienteAtras(0);
+      debugger;
+      if (state.perfilSelected.nombre == "Consultor" || state.perfilSelected.nombre == "Gran Empresa"){
+        await getEmpresaEvaluacion();
+      }
       if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
         SiguienteAtras(2);
         getUsuarioAreas();
-      }else{
-        
       }
     };
+    
 
     const SiguienteAtras = async (formStepsNum) => {
       const formSteps = document.querySelectorAll(".form-step");
@@ -1222,11 +2039,24 @@ export default {
       await getEvaluaciones();
       oncreated();
     });
-
+*/
     return {
       ...toRefs(state),
       SiguienteAtras,
-
+      CambioPorcentajePaso1,
+      irPaso2,
+      changeSegmentacionAreaPaso2,
+      CambioPorcentajePaso2,
+      irPaso3,
+      guardarSubAreasChange,
+      limpiarPaso2,
+      getPregunta,
+      addRespuesta,
+      VolverAreasResponder,
+      ModalGuardarRespuestas,
+      ir,
+     
+      /*
       formatterMoney,
 
       irPaso2,
@@ -1245,7 +2075,7 @@ export default {
       pasosPreguntas,
       VolverAreasResponder,
       ir,
-      guardarSubAreasChange,
+      guardarSubAreasChange,*/
     };
   },
 };
