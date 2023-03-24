@@ -693,7 +693,7 @@ export default {
     };
 
      const getIMA = async () => {
-        return ApibackOffice.get("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  JSON.parse(localStorage.usuarioModel).empresaId + "&usuarioId=" +  state.userSelected.id, null,
+        return ApibackOffice.post("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  JSON.parse(localStorage.usuarioModel).empresaId , state.userSelected,
             { headers: header } 
         )
         .then((response) => {
