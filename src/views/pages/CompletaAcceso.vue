@@ -1857,7 +1857,7 @@ export default {
         state.comunaNombre = "";
         return false;
       } 
-      state.comunaNombre = elemento.target.options[elemento.target.selectedIndex].innerText;
+      state.comunaNombre = elemento.target.options[elemento.target.selectedIndex].value;
     };
 
 
