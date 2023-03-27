@@ -1049,10 +1049,13 @@ export default {
       if (paso == "siguiente"){ 
         if (state.preguntasTotal <= state.preguntaSelected.orden ){
           swal.fire(
-            "Preguntas",
-            "No existen mas preguntas asociadas",
-            "warning"
-          );
+            "Felicitaciones",
+            "No existen mas preguntas por responder",
+            "success"
+          ).then(async () => {
+            await getSegmentacionAreasPaso3(); 
+            SiguienteAtras(2);
+          })
           return false;
         }
         limpiarRespuestas("alternativas");
@@ -1087,9 +1090,9 @@ export default {
     };
 
     const VolverAreasResponder = async () => {
+      await addRespuestaVolver();
       limpiarRespuestas("alternativas");
       limpiarRespuestas("tipoImportancias");
-      await addRespuestaVolver();
       state.alternativaSelected = [];
       state.tipoImportanciaSelected = [];
       if (state.perfilSelected.nombre == "Consultor"){
@@ -1098,7 +1101,7 @@ export default {
         //getUsuarioAreas();
       }
       //verificar como regresar para los usuarios BASICOS
-      getSegmentacionAreasPaso3(); 
+      await getSegmentacionAreasPaso3(); 
       SiguienteAtras(2); //Se regresa a Paso Evaluacion
       //getUsuarioAreasByEvaluacionSelected();
     };

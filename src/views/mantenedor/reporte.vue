@@ -510,8 +510,8 @@ export default {
                 if (response.status != 200) return false;
                 state.IMA = response.data;
                 state.IMA.forEach((element) => {
-                    element.AreaMadura  = (element.imaValor >= 3) ? element.nombreArea : "";
-                    element.AreaMejorar = (element.imaValor < 3) ? element.nombreArea : "";
+                    element.AreaMadura  = (element.imaValor.toFixed(0) >= 3) ? element.nombreArea : "";
+                    element.AreaMejorar = (element.imaValor.toFixed(0) < 3) ? element.nombreArea : "";
                     let color = [];
                     let restante = "";
                     let dataSet = [];

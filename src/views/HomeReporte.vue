@@ -638,7 +638,7 @@ export default {
             getGraficoImportanciaRelativa();
             getGraficoCapacidad();
             getPuntuacionArea();
-            await getRecomendacionArea();
+            await getFeedbackArea();
 
         };
     };
@@ -706,31 +706,32 @@ export default {
                 let restante2 = "";
                 let dataSet = [];
                 let cumplimiento = (element.imaValor / 5) * 100;
+                let imaValor = element.imaValor.toFixed(0);
 
-                if (element.imaValor.toFixed(0) == 1){
+                if (imaValor == 1){
                     color = "#e5342c";
                     restante = 4;
                     restante2 = 100-cumplimiento  ;
                 }
-                if (element.imaValor.toFixed(0) == 2){
+                if (imaValor == 2){
                     color = "#f3bf4f";
                     restante = 3;
                     restante2 = 100-cumplimiento  ;
 
                 }
-                if (element.imaValor.toFixed(0) == 3){
+                if (imaValor == 3){
                     color = "#fcfa62";
                     restante = 2;
                     restante2 = 100-cumplimiento  ;
 
                 }
-                if (element.imaValor.toFixed(0) == 4){
+                if (imaValor == 4){
                     color = "#3070b5";
                     restante = 1;
                     restante2 = 100-cumplimiento  ;
 
                 }
-                if (element.imaValor.toFixed(0) == 5){
+                if (imaValor == 5){
                     color = "#4fa95c";
                     restante = 0;
                     restante2 = 100-cumplimiento  ;
@@ -749,13 +750,13 @@ export default {
                     datasets: dataSet,
                 };
                 
-                element.claseIMA = "titlenivel-" + element.imaValor.toFixed(0);
+                element.claseIMA = "titlenivel-" + imaValor;
                 element.imaValor = element.imaValor.toFixed(2);
                 element.cumplimiento = cumplimiento.toFixed(0);
                 let brecha =  element.cumplimiento - 100;
                 element.brecha = brecha.toFixed(0);
 
-                if (element.imaValor >= 4){
+                if (imaValor >= 4){
                     state.AreasMaduras.push(element);
                 }else{
                     state.AreasMejorar.push(element);
@@ -1094,14 +1095,14 @@ export default {
       };
     };
 
-    const getRecomendacionArea = async () => {  
+    const getFeedbackArea = async () => {  
         /*let filtro = {
             id: state.IM.evaluacionEmpresaId
         };*/
         /*ApibackOffice.post("EvaluacionEmpresa/GetPlanMejoras", filtro,
             { headers: header }
         )*/
-        return ApibackOffice.get("EvaluacionEmpresa/GetPlanMejorasReporteSubscripcionOBasico?evaluacionEmpresaId=" + state.IM.evaluacionEmpresaId + "&usuarioId=" + state.userSelected.id + "&evaluacionId=" + state.idEvaluacion, null,
+        return ApibackOffice.post("EvaluacionEmpresa/GetPlanMejorasReporteSubscripcionOBasico?evaluacionEmpresaId=" + state.IM.evaluacionEmpresaId + "&reporteId=" + state.reporte.id , state.userSelected,
             { headers: header }
         ) 
         .then((response) => {
@@ -1145,7 +1146,7 @@ export default {
                     }
                 });
             });
-            //console.log("state.feedbacks", state.feedbacks);
+            console.log("state.feedbacks", state.feedbacks);
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
             return;
