@@ -358,7 +358,7 @@ export default {
       );
       if (response.data.usuarioModel.perfil.nombre == "Consultor" || response.data.usuarioModel.perfil.nombre == "Administrador"){
         state.empresas = [];
-        ApiNeva.get("Empresa/GetEmpresasByUsuarioId?idUsuario=" + response.data.usuarioModel.id , null, { headers: header })
+        ApiNeva.post("Empresa/GetEmpresasByUsuario", response.data.usuarioModel, { headers: header })
           .then((response) => {
             if (response.status != 200) return false;
             state.empresas = response.data;
