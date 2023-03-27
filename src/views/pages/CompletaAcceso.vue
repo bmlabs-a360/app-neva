@@ -10,26 +10,7 @@
     <link rel="stylesheet" :href="style">
 </head>
 <body class="body-login">
-  <header class=" py-2 nav-header">
-    <div class="container">
-      <div class="d-flex justify-content-between">
-        <div class="nav-login">
-          <img class="img-logo cursor-pointer" @click="ir('Login')" :src="imgIcon" alt="simbolo neva360">
-        </div>
-        <nav class="d-flex">
-            <ul class="navbar">
-                <li class="nav-item">
-                    <a class="nav-link col-lg-auto" @click="ir('Login')" href="#">Ingresar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link col-lg-auto"  @click="ir('Register')" href="#">Crear cuenta</a>
-                </li>
-            </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
-  <div class="mt-5 container">
+  <div class="mt-1 container">
     <div class="row ">
       <div class="col-12 col-md-6 d-flex justify-content-center align-items-center mt-5 mt-lg-0 pt-5 pt-md-0">
         <form class="mt-lg-5 d-flex flex-column registro-form" action="">
@@ -140,7 +121,7 @@
             <div class="">
               <div class="row">
                 <div class="col-6 ">
-                  <div class="services card-producto">
+                  <div class="services selected">
                     <h3>Inicia</h3>
                     <p>Plan</p>
                   </div>
@@ -247,6 +228,19 @@
   #terminosycondiciones:active {
     text-decoration: underline;
   }
+
+  .selected {
+    cursor: pointer;
+    box-shadow: 0 8px 16px -12px hsla(187deg, 80%, 42%, 0.171), 0 4px 12px 0 hsla(187deg, 80%, 42%, 0.171), 0 4px 5px -5px hsla(187deg, 100%, 73%, 0.208) !important;
+    border: 1px solid #15ACC0;
+    background-color: #15ACC0;
+    color: white;
+  }
+
+  .selected h3 {
+     color: white;
+  }
+
 </style>
 
 <script>
