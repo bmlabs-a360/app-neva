@@ -88,12 +88,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-3" v-if="evaluacion.estado == 100">
+                    <!--<div class="mt-3" v-if="evaluacion.estado == 100">
                         <button class="btn disabled orange order-md-1 me-lg-4 mt-lg-0" aria-disabled="true">Terminado</button>
                     </div>
-                    <div class="mt-3" v-else>
+                    <div class="mt-3" v-else>-->
                         <button class="btn orange order-md-1 me-lg-4 mt-lg-0" @click="ir('Evaluacion', evaluacion)">Responder</button>
-                    </div>
+                    <!--</div>-->
                 </div>
             </div>
         </div>

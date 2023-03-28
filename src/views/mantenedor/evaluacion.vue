@@ -253,7 +253,13 @@
               <form>
                 <div class="mb-4">
                   <h5>{{preguntaSelected.detalle}}</h5>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column" v-if="perfilSelected && (perfilSelected.nombre=='Usuario básico')">
+                    <div class="form-check form-check-inline" v-for="alternativa in preguntaSelected.alternativas" :key="alternativa.id">
+                      <input class="form-check-input" type="radio" name="alternativas" :value="alternativa.id" v-model="alternativaSelected" :disabled="disabledAlternativas">
+                      <label class="form-check-label" >{{alternativa.detalle}}</label>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column" v-else>
                     <div class="form-check form-check-inline" v-for="alternativa in preguntaSelected.alternativas" :key="alternativa.id">
                       <input class="form-check-input" type="radio" name="alternativas" :value="alternativa.id" v-model="alternativaSelected">
                       <label class="form-check-label" >{{alternativa.detalle}}</label>
@@ -262,7 +268,13 @@
                 </div>
                 <div class="mb-4">
                   <h5>Importancia</h5>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column" v-if="perfilSelected && (perfilSelected.nombre=='Usuario básico')">
+                    <div class="form-check form-check-inline" v-for="tipoImportancia in tiposImportancia" :key="tipoImportancia.id">
+                      <input class="form-check-input" type="radio" name="tipoImportancias" :value="tipoImportancia.id" v-model="tipoImportanciaSelected" :disabled="disabledAlternativas">
+                      <label class="form-check-label" >{{tipoImportancia.nombre}}</label>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column" v-else>
                     <div class="form-check form-check-inline" v-for="tipoImportancia in tiposImportancia" :key="tipoImportancia.id">
                       <input class="form-check-input" type="radio" name="tipoImportancias" :value="tipoImportancia.id" v-model="tipoImportanciaSelected">
                       <label class="form-check-label" >{{tipoImportancia.nombre}}</label>
@@ -401,6 +413,7 @@ export default {
       tipoImportanciaSelected: [],
       alternativaSelected: [],
       modalGuardarRespuestas: false,
+      disabledAlternativas: false
 
     });
 
@@ -943,6 +956,13 @@ export default {
     };
 
     const cargarRespuestas = async () => {
+      if (state.respuestaSelected){
+        if (state.respuestaSelected.usuarioId != JSON.parse(localStorage.usuarioModel).id){
+          state.disabledAlternativas = true;
+        }else{
+           state.disabledAlternativas = false;
+        }
+      }
       let alternativas = document.getElementsByName("alternativas");
       for (let x = 0; x < alternativas.length; x++) {
         let obj = alternativas[x];
@@ -1044,6 +1064,7 @@ export default {
     };
 
     const pasosPreguntas = async (paso) => {
+      state.disabledAlternativas = false;
       let orden = state.preguntaSelected.orden - 1;
       if (paso == "siguiente"){ 
         if (state.preguntasTotal <= state.preguntaSelected.orden ){
@@ -1089,6 +1110,7 @@ export default {
     };
 
     const VolverAreasResponder = async () => {
+      state.disabledAlternativas = false;
       await addRespuestaVolver();
       limpiarRespuestas("alternativas");
       limpiarRespuestas("tipoImportancias");
