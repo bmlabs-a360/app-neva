@@ -145,7 +145,7 @@
           </div>
         </div>
 
-        <!--EVALUACION AREAS A CONTESTAS-->
+        <!--EVALUACION AREAS A CONTESTAR-->
         <div class="form-step">
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
@@ -210,6 +210,9 @@
                 </td>
               </tr>
             </table>
+            <div v-if="tablaSegmentacionAreas.length<1" style="text-align: center;">
+              <h2>Usuario no tiene areas asignadas</h2>
+            </div>
           </div>
           <div class="p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
@@ -414,19 +417,15 @@ export default {
     const oncreated = async () => {
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       await getEvaluaciones();
-      if (state.perfilSelected.nombre != "Usuario básico"){
+      //if (state.perfilSelected.nombre != "Usuario básico"){
         await getEvaluacionSelected();
         getSegmentacionAreasPaso3();
-      }
+     // }
       SiguienteAtras(0);
       if (state.perfilSelected.nombre != "Usuario pro (empresa)"){
         SiguienteAtras(2);
         return;
       }
-      if (state.perfilSelected.nombre == "Usuario básico"){
-        //cargar areas de otra forma
-      }
-
     };
 
     const getEvaluaciones = async () => {
@@ -453,10 +452,10 @@ export default {
     const getSegmentacionAreaByevaluacionPorcentajes = async () =>{
       state.porcentajesAreaSelected = [];
       state.evaluacionEmpresaSelected = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-      let bodyEvaluacionEmpresa = {
+      /*let bodyEvaluacionEmpresa = {
           "id" : state.evaluacionEmpresaSelected.id,
-      };
-      return ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId", bodyEvaluacionEmpresa , {
+      };*/
+      return ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId?evaluacionId=" + state.idEvaluacionSelected + "&evaluacionEmpresaId="+ state.evaluacionEmpresaSelected.id, JSON.parse(localStorage.usuarioModel) , {
         headers: header,
       })
       .then((response) => {
@@ -778,7 +777,7 @@ export default {
     const getSegmentacionAreasPaso3 = async () => {
       //state.tablaSegmentacionAreas = [];
       //state.tablaSegmentacionAreas = state.evaluacionSelected.segmentacionAreas;
-      if (state.perfilSelected.nombre == "Consultor" || state.perfilSelected.nombre == "Gran empresa"){
+      if (state.perfilSelected.nombre != "Usuario pro (empresa)"){
         state.segmentacionAreasByEvaluacion.forEach (x => {
           x.segmentacionSubAreas.forEach(y => {
             state.segmentacionSubAreas.push(y);

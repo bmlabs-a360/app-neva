@@ -360,8 +360,8 @@ export default {
         state.resumenImportanciaRelativa = [];
         await getEvaluacionesPaginated(false);
         if (state.evaluaciones.length > 0){
-        cargarGraficos(state.evaluaciones[0]);
-    }
+            cargarGraficos(state.evaluaciones[0]);
+        }
     };
 
     const getEvaluacionesPaginated = async (iniciarPage) => {
