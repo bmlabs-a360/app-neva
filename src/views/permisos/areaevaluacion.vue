@@ -186,9 +186,6 @@ export default {
               state.segmentacionSubAreas.push(y);
             });
           });
-
-          console.log("evalauciones", state.evaluaciones);
-           console.log("segmentacionAreas", state.segmentacionAreas);
         })
         .catch((error) => console.log(error));
     };
@@ -203,7 +200,6 @@ export default {
       })
         .then((response) => {
           if (response.status != 200) return false;
-          console.log(" response.data",  response.data);
           response.data.forEach(x => {
             state.segmentacionSubAreas.forEach(y => {
               if (x.segmentacionSubAreaId == y.id){
@@ -211,7 +207,6 @@ export default {
               }
             });
           });
-          console.log("state.segmentacionSubAreas", state.segmentacionSubAreas);
         })
         .catch((error) => console.log(error));
     };
@@ -229,7 +224,6 @@ export default {
         });
         x.estado = x.estado / contador;
       });
-       console.log("state.segmentacionAreas", state.segmentacionAreas);
     };
 
     const AsignarArea = () => {

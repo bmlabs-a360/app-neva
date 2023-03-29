@@ -160,10 +160,8 @@ export default {
             headers: header,
         })
             .then((response2) => {
-                console.log("response2",response2);
                 if (response2.status != 200) return false;
                 state.evaluaciones = response2.data;
-                console.log("response.data evaluaciones: ",response2.data);
                 state.evaluaciones.forEach((m) => {
                     if (m.nombre.length < 2){
                         m.iniciales = m.nombre;

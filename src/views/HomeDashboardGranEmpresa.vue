@@ -412,7 +412,6 @@ export default {
     };
 
     const getEstadoSubArea = async () => {
-      debugger;
         return ApiNeva.post("EvaluacionEmpresa/GetEstadoEvaluacionByEmpresasList", state.empresas ,{
             headers: header,
         })

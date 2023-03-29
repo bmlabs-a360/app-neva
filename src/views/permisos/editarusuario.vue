@@ -102,7 +102,6 @@ export default {
           if (JSON.parse(localStorage.usuarioModel).email == state.userSelected.email){
             state.disabledActivo = true;
           }
-          console.log("usuario", state.userSelected)
         })
         .catch((error) => console.log(error));
     };
@@ -191,15 +190,6 @@ export default {
             }
         });
     };
-
-    /*const deleteUserDisabled = () => {
-        debugger;
-        var salida = false;
-        if (state.userOnline.email == state.userSelected.email)
-            salida= true;
-        return salida;
-    };*/
-
     const ir = (namePageDestiny) => {
         return router.push({ name: namePageDestiny});
     };
@@ -213,7 +203,6 @@ export default {
         ...toRefs(state),
         ir,
         modificarUser,
-        //deleteUserDisabled,
     };
   },
 };
