@@ -415,7 +415,7 @@ export default {
                 });
             })
             .catch((error) => {
-                console.log("errorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerror",error);
+                console.log("error",error);
                 state.totalevaluaciones = null;
                 state.evaluaciones = null;
             });
@@ -464,11 +464,31 @@ export default {
             state.SegmentacionSubAreas = state.SegmentacionSubAreas.concat(x.segmentacionSubAreas);
         });
 
-        let bodyEmpresa =  { 
+        /*let bodyEmpresa =  { 
             id: JSON.parse(localStorage.usuarioModel).empresaId 
-        };
+        };*/
 
-       await  ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
+        return ApiNeva.post("EvaluacionEmpresa/GetEstadoEvaluacionByEmpresas", JSON.parse(localStorage.usuarioModel).empresa ,{
+            headers: header,
+        })
+        .then((response) => {
+            if (response.status != 200) return false;
+            debugger;
+            state.evaluaciones.forEach(x => {
+                x.evaluacionEmpresas.forEach(e => {
+                  response.data.forEach(y => {
+                    debugger;
+                      if (e.id == y.evaluacionEmpresaId){
+                          x.estado = y.respuestaPorcentaje;
+                      }
+                  });
+                });
+            });
+            return;
+        })
+        .catch((error) => console.log(error));
+
+       /*await  ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
             headers: header,
         })
         .then((response) => {
@@ -510,7 +530,7 @@ export default {
                 estadoGeneral = (estadoGeneral + x.estado);
             });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error));*/
     };
 
     const cargarGraficos = async (evaluacionSelected) => {
