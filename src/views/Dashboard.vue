@@ -165,9 +165,13 @@ export default {
                 state.evaluaciones = response2.data;
                 console.log("response.data evaluaciones: ",response2.data);
                 state.evaluaciones.forEach((m) => {
-                    m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-                    if (m.iniciales.length < 2){
-                        m.iniciales =  m.nombre.substring("0", "2");
+                    if (m.nombre.length < 2){
+                        m.iniciales = m.nombre;
+                    }else {
+                        m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+                        if (m.iniciales.length < 2){
+                            m.iniciales =  m.nombre.substring("0", "2");
+                        }
                     }
                     let fecha = new Date(m.fechaCreacion);
                     fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));

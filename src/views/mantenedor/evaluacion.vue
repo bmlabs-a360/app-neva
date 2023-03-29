@@ -1988,7 +1988,7 @@ export default {
       getUsuarioAreasByEvaluacionSelected();
     };
 
-//camilo
+
     const getEmpresaEvaluacion = async () => {
       let bodyEmpresa = {
         "id": JSON.parse(localStorage.usuarioModel).empresaId

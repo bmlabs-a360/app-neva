@@ -91,6 +91,21 @@ const routes = [
             name: "Usuarios",
             component: () => import("@/views/permisos/usuarios.vue"),
           },
+          {
+            path: "/permisos/nuevousuario",
+            name: "NuevoUsuario",
+            component: () => import("@/views/permisos/nuevousuario.vue"),
+          },
+          {
+            path: "/permisos/editarusuario",
+            name: "EditarUsuario",
+            component: () => import("@/views/permisos/editarusuario.vue"),
+          },
+          {
+            path: "/permisos/areaevaluacion",
+            name: "AreaEvaluacion",
+            component: () => import("@/views/permisos/areaevaluacion.vue"),
+          },
         ],
       },
     ],
