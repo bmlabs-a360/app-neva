@@ -514,7 +514,7 @@ export default {
     };
 
     const ir = (namePageDestiny, evaluacion) => {
-        return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
+        return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre, empresaId: evaluacion.empresaId} });
     };
 
     onMounted(() => {
