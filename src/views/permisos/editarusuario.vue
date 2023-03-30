@@ -32,7 +32,7 @@
         <div class="card p-3 d-flex">
             <div class="formcreateuser">
                 <div class="mb-2 mb-md-2 mb-lg-0">
-                    <select class="form-select" aria-label="Default select example"  v-model="userSelected.activo" :disabled="disabledActivo">
+                    <select class="form-select" aria-label="Default select example" id="estado" v-model="userSelected.activo" :disabled="disabledActivo">
                         <option value="true">Activo</option>
                         <option value="false">Inactivo</option>
                     </select>
