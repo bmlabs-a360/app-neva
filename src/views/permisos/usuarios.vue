@@ -572,13 +572,14 @@
                     <CFormLabel>Asociar área*</CFormLabel>
                 </div>
                 <div class="mb-2">
-                    <CFormLabel style="display:flex">
-                        <CFormSwitch style="cursor: pointer" id="todoschkArea" @click="checkAll('checkArea', 'todoschkArea'); seleccionarSegmentacionArea()" /> Todos
+                    <CFormLabel  style="display:flex">
+                        <CFormSwitch  :disabled="editUserConsultorDisabled()" style="cursor: pointer" id="todoschkArea" @click="checkAll('checkArea', 'todoschkArea'); seleccionarSegmentacionArea()" /> Todos
                     </CFormLabel>
                     <div v-for="area in segmentacionAreas" :key="area.id">
                         <CFormLabel for="area">{{area.nombreArea}}</CFormLabel>
                         <CFormSwitch style="cursor: pointer"
                                      v-model="area.activo"
+                                     :disabled="editUserConsultorDisabled()"
                                      :checked="area.activo"
                                      name="checkArea" />
                     </div>
@@ -727,6 +728,16 @@ export default {
         .catch((error) => console.log(error));
     };
 
+
+      const editUserConsultorDisabled = () => {
+          var salida = false;
+          //console.log("editUserConsultorDisabled => state.userSelected: ", state.userSelected);
+          //console.log("editUserConsultorDisabled => state.userOnline: ", state.userOnline);
+          //if (state.userSelected.id == state.userOnline.id)
+         if (state.userSelected.perfil.nombre == "Usuario pro (empresa)")
+              salida = true;
+          return salida;
+      };
     const crearUser = () => {
       state.usuarioNuevo.empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
       state.usuarioNuevo.empresa =  JSON.parse(localStorage.usuarioModel).empresa;
@@ -1159,7 +1170,8 @@ export default {
       getUserSelected,
       resetUser,
       resetNewUser,
-      getSegmentacionArea,
+        getSegmentacionArea,
+        editUserConsultorDisabled,
       getSegmentacionAreaNew,
       crearUser,
       modificarUser,

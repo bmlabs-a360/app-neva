@@ -3,9 +3,8 @@
     "",
     "\\src",
     "\\src\\views",
-    "\\src\\views\\pages",
+    "\\src\\views\\mantenedor",
     "\\src\\views\\permisos"
   ],
-  "SelectedNode": "\\src\\views\\pages\\Register.vue",
   "PreviewInSolutionExplorer": false
 }

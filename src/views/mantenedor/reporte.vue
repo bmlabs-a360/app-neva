@@ -381,7 +381,7 @@ export default {
         //var totalPages = pdf.putTotalPages().internal.getNumberOfPages()
         //console.log("Total Pages: " + totalPages);
 
-        var element = document.getElementById('document_container');
+        var element = getElementById('document_container');
         var opt = {
             margin: 1,
             filename: state.nombreEvaluacion + '_' + state.fechaHoy +'Evaluacion.pdf',
