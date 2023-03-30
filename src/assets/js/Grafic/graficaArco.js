@@ -23,7 +23,7 @@ var chart = bb.generate({
     x: "x",
     columns: [
 	["x", "Estrategia", "Finanzas", "Marketing", "Operaciones", "Gestion de personas", "Comercial y ventas"],
-	["data1", 40, 50, 40, 80, 50, 30, 100]
+	["data1", 40+"%", 50, 40, 80, 50, 30, 100]
     ],
     type: "radar", // for ESM specify as: radar()
     labels: true
@@ -62,7 +62,7 @@ var chart2 = bb.generate({
 	["x", "Estrategia", "Finanzas", "Marketing", "Operación", "Gestion de Personas", "Comercial y Ventas"],
 	["data1", 30, 280, 951, 400, 150, 546, 4528]
     ],
-    type: "bar", // for ESM specify as: bar()
+    type: "bar",
     groups: [
       [
         "data1",

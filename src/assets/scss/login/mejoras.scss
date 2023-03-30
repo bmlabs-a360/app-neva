@@ -1,0 +1,102 @@
+.listbody{
+    list-style: none;
+    padding-left: 10px;
+}
+.accordion-button{
+    font-weight: 600;
+}
+.accordion-menu-title{
+    font-size: 12px;
+    font-weight: 600;
+    color: $gris-400;
+}
+.btn-nav-primary{
+    svg  {
+        stroke:$secundary-400;
+        
+    }
+    &:hover{
+         svg{
+            stroke: white;
+        }
+    }
+}
+.allclientes{
+    & thead{
+        background-color: $gris-200;
+    }
+}
+.titlealluser{
+   & h2 {color: $secundary-400;
+    font-weight: 600;
+   }
+}
+.iconstableuser{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+.modalfootuser{
+        justify-content: center;
+    }
+.modalbodyuser{
+    text-align: center;
+}
+.formusers{
+    display: flex;
+    justify-content: space-between;
+    @include mv(992px){
+        flex-direction: column;
+    }
+} 
+.formcreateuser{
+    display: flex;
+    justify-content: space-between;
+    @include mv(992px){
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+    & select{
+        width: 11rem;
+    }
+    .botonesformuser{
+        margin-left: auto;
+        @include mv(992px){
+            margin-left: 0px;
+        }
+    }
+}
+.botoncardform{
+    display: flex;
+    justify-content: space-between;
+    @include mv(992px){
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+    @include mv(768px){
+        flex-direction:row;
+        margin-bottom: 5px;
+    }
+    @include mv(576px){
+        flex-direction:row;
+        margin-bottom: 5px;
+    }
+    @include mv(360px){
+        flex-direction:column;
+        margin-bottom: 5px;
+        align-self: center;
+    }
+    & select{
+        width: 11rem;
+    }
+    .botonesformuser{
+        margin-left: auto;
+        @include mv(992px){
+            margin-left: 0px;
+        }
+    }
+}
+.subtitlecreateuser{
+    color: $secundary-400;
+    font-weight: 600;
+}

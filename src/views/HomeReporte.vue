@@ -107,7 +107,7 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-if="AreasMaduras.length >0" v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
+                                            <tr :v-if="AreasMaduras.length >0" v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
                                                 <td scope="row">
                                                     <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="areaMadura.nivelMadurezAreas"
@@ -140,7 +140,7 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-if="AreasMejorar.length >0" v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
+                                            <tr :v-if="AreasMejorar.length >0" v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
                                                 <td scope="row">
                                                     <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="areaMejorar.nivelMadurezAreas"
@@ -236,7 +236,7 @@
                                 <div> 
                                     <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="50" width="100"
                                     :options="{ maintainAspectRatio: false,circumference: 180,rotation: -90, plugins: { title: { display: true,
-                                    text:(ima.cumplimiento).toString()+'%',font :{size:20},
+                                    text:(ima.cumplimiento)+'%',font :{size:20},
                                     position: 'bottom' } } }"/>
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
                         <div class="w-100 table-responsive pie-table">
                             <table class="table-res table-hover">
                                 <tbody>
-                                    <tr v-if="top3capacidadesByarea.length >0"  v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
+                                    <tr :v-if="top3capacidadesByarea.length >0"  v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                         <td class="w-1">
                                             <h4 class="text-center text-md-start">{{top3capacidadByarea.preguntaCapacidad}}</h4>
                                         </td>
@@ -306,7 +306,7 @@
                         <div class="w-100 table-responsive pie-table">
                             <table class="table-res table-hover">
                                 <tbody>
-                                    <tr  v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
+                                    <tr  :v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                         <td class="w-1">
                                             <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.preguntaCapacidad}}</h4>
                                         </td>
@@ -330,7 +330,7 @@
                             <div class="w-100 table-responsive pie-table">
                                 <table class="table-res table-hover">
                                     <tbody>
-                                        <tr v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id" >
+                                        <tr :v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id" >
                                             <td scope="row" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
                                                 <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="SubAreaMadura.nivelMadurezSubAreas"
@@ -363,7 +363,7 @@
                             <div class="w-100 table-responsive pie-table">
                                 <table class="table-res table-hover">
                                     <tbody>
-                                        <tr v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0"  v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
+                                        <tr :v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0"  v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
                                             <td scope="row" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
                                                 <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="SubAreaMejorar.nivelMadurezSubAreas"
@@ -1385,6 +1385,7 @@ export default {
         userSelected: [],
         fechaHoy : "",
         rutempresa: "",
+        idempresa: "",
         razonsocial: "",
         nivelMadurez: "",
         claseIM: "cards-grafictabsnivelIM",
@@ -1576,6 +1577,11 @@ export default {
         let month = months[fecha.getMonth()];
         state.fechaHoy = fecha.getDate() +  " de " + month + " de " + fecha.getFullYear();
 
+        if (route.query.empresaId){
+            state.idempresa =  route.query.empresaId;
+        }else{
+            state.idempresa =  JSON.parse(localStorage.empresaModel).id;
+        }
         state.rutempresa =  JSON.parse(localStorage.empresaModel).rutEmpresa;
         state.razonsocial = JSON.parse(localStorage.empresaModel).razonSocial;
         if (await getNivelReporte() != false){
@@ -1621,7 +1627,7 @@ export default {
     const getIM = async () => {
         let filtro = {
             "evaluacionId": state.idEvaluacion, 
-            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+            "empresaId": state.idempresa
         }
         return ApibackOffice.post("Madurez/GetIM", filtro,
             { headers: header }
@@ -1634,7 +1640,11 @@ export default {
                 return false;
             }
             let nivelReporte = state.reporte.reporteItemNivelBasicos.find((c) => c.orden === parseInt(state.IM.imValor.toFixed(0)));
-            state.IM.nivelReporte = nivelReporte.detalle;
+            if (!nivelReporte){
+                state.IM.nivelReporte = 1;
+            }else{
+                state.IM.nivelReporte = nivelReporte.detalle;
+            }
             state.nivelMadurez = parseInt(state.IM.imValor).toFixed(0);
         })
         .catch((error) => {
@@ -1643,7 +1653,7 @@ export default {
     };
 
      const getIMA = async () => {
-        return ApibackOffice.post("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  JSON.parse(localStorage.usuarioModel).empresaId , state.userSelected,
+        return ApibackOffice.post("Madurez/GetIMAReporteSubscripcionOBasico?evaluacionId="+ state.idEvaluacion + "&empresaId=" +  state.idempresa , state.userSelected,
             { headers: header } 
         )
         .then((response) => {
@@ -1723,7 +1733,7 @@ export default {
     const getIMSA= async () => {
         let filtro = {
             "evaluacionId": state.idEvaluacion, 
-            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+            "empresaId": state.idempresa
         }
         return ApibackOffice.post("Madurez/GetIMSA",filtro,
             { headers: header }
@@ -1797,7 +1807,7 @@ export default {
     const GetCapacidadSubAreas = async () => {
         let filtro = {
             "evaluacionId": state.idEvaluacion, 
-            "empresaId": JSON.parse(localStorage.usuarioModel).empresaId
+            "empresaId": state.idempresa
         }
         return ApibackOffice.post("Madurez/GetCapacidadSubAreas", filtro,
             { headers: header }

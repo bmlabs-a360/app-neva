@@ -348,7 +348,6 @@ export default {
 
     const guardarUsuario = async () => {
       state.mensajeError = "";
-      console.log("comuna", state.comunaSelected)
       if (!state.razonsocial) {
         state.mensajeError = "Debe ingresar razón social";
         swal.fire("Registro usuario", "Debe ingresar razón social", "warning");
@@ -1857,7 +1856,7 @@ export default {
         state.comunaNombre = "";
         return false;
       } 
-      state.comunaNombre = elemento.target.options[elemento.target.selectedIndex].innerText;
+      state.comunaNombre = elemento.target.options[elemento.target.selectedIndex].value;
     };
 
 

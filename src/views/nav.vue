@@ -114,7 +114,7 @@
           <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
             <div class="accordion-body">
               <ul>
-                <li @click="ir('Permisos')" class="cursor-pointer">Crear Usuario</li>
+                <li @click="ir('Usuarios')" class="cursor-pointer">Crear Usuario</li>
               </ul>
             </div>
           </div>

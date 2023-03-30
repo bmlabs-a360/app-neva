@@ -145,7 +145,7 @@
           </div>
         </div>
 
-        <!--EVALUACION AREAS A CONTESTAS-->
+        <!--EVALUACION AREAS A CONTESTAR-->
         <div class="form-step">
           <div class="border-bottom p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
@@ -210,6 +210,9 @@
                 </td>
               </tr>
             </table>
+            <div v-if="tablaSegmentacionAreas.length<1" style="text-align: center;">
+              <h2>Usuario no tiene areas asignadas</h2>
+            </div>
           </div>
           <div class="p-3">
             <div class="d-flex flex-column flex-sm-row  justify-content-between align-items-center">
@@ -250,7 +253,13 @@
               <form>
                 <div class="mb-4">
                   <h5>{{preguntaSelected.detalle}}</h5>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column" v-if="perfilSelected && (perfilSelected.nombre=='Usuario básico')">
+                    <div class="form-check form-check-inline" v-for="alternativa in preguntaSelected.alternativas" :key="alternativa.id">
+                      <input class="form-check-input" type="radio" name="alternativas" :value="alternativa.id" v-model="alternativaSelected" :disabled="disabledAlternativas">
+                      <label class="form-check-label" >{{alternativa.detalle}}</label>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column" v-else>
                     <div class="form-check form-check-inline" v-for="alternativa in preguntaSelected.alternativas" :key="alternativa.id">
                       <input class="form-check-input" type="radio" name="alternativas" :value="alternativa.id" v-model="alternativaSelected">
                       <label class="form-check-label" >{{alternativa.detalle}}</label>
@@ -259,7 +268,13 @@
                 </div>
                 <div class="mb-4">
                   <h5>Importancia</h5>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column" v-if="perfilSelected && (perfilSelected.nombre=='Usuario básico')">
+                    <div class="form-check form-check-inline" v-for="tipoImportancia in tiposImportancia" :key="tipoImportancia.id">
+                      <input class="form-check-input" type="radio" name="tipoImportancias" :value="tipoImportancia.id" v-model="tipoImportanciaSelected" :disabled="disabledAlternativas">
+                      <label class="form-check-label" >{{tipoImportancia.nombre}}</label>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column" v-else>
                     <div class="form-check form-check-inline" v-for="tipoImportancia in tiposImportancia" :key="tipoImportancia.id">
                       <input class="form-check-input" type="radio" name="tipoImportancias" :value="tipoImportancia.id" v-model="tipoImportanciaSelected">
                       <label class="form-check-label" >{{tipoImportancia.nombre}}</label>
@@ -326,49 +341,6 @@ export default {
     };
 
     const state = reactive({
-      /*nombreEvaluacionSelected: "",
-      isonboarding: false,
-      perfilSelected: [],
-      idEvaluacionSelected: "0",
-      evaluaciones : [],
-      evaluacionSelected: [],
-      porcentajesAreaSelected: [],
-      segmentacionAreas : [],
-      totalPorcentaje : 0,
-      totalPorcentajeSubAreas: 0,
-      segmentacionAreasByEvaluacion: [],
-      idTipoAreaSelected: "0",
-      segmentacionAreaSelected: [],
-      segmentacionSubAreasbyAreaSelected: [],
-      importanciaRelativa: [],
-      importanciaRelativaSelected: [],
-      porcentajesSubAreasSelected: [],
-      allSegmentacionAreas: [],
-      allSegmentacionSubAreas: [],
-      tablaSegmentacionAreas: [],
-      allSegmentacionSubAreasByIdArea: [],
-      idAreaPaso3: "0",
-      idTipoSubAreaPaso3: "0",
-      evaluacionPaso3: [],
-      usuarioArea: [],
-      alternativaSelected: [],
-      defRelacionadas: [],
-      defRelacionadaSelected: [],
-      tiposImportancia : [],
-      tipoImportanciaSelected: [],
-      preguntas : [],
-      preguntaSelected : [],
-      preguntasTotal:0,
-      estadoGeneral: 0,
-
-      respuestaSelected: [],
-      nombreAreaSelected: "",
-      nombreSubAreaSelected: "",
-
-      evaluacionEmpresaSelected,
-      evaluacionEmpresa,*/
-
-
       idEvaluacionSelected : "0",
       nombreEvaluacionSelected: "",
       perfilSelected: [],
@@ -398,6 +370,7 @@ export default {
       tipoImportanciaSelected: [],
       alternativaSelected: [],
       modalGuardarRespuestas: false,
+      disabledAlternativas: false
 
     });
 
@@ -414,19 +387,13 @@ export default {
     const oncreated = async () => {
       state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
       await getEvaluaciones();
-      if (state.perfilSelected.nombre != "Usuario básico"){
-        await getEvaluacionSelected();
-        getSegmentacionAreasPaso3();
-      }
+      await getEvaluacionSelected();
+      getSegmentacionAreasPaso3();
       SiguienteAtras(0);
       if (state.perfilSelected.nombre != "Usuario pro (empresa)"){
         SiguienteAtras(2);
         return;
       }
-      if (state.perfilSelected.nombre == "Usuario básico"){
-        //cargar areas de otra forma
-      }
-
     };
 
     const getEvaluaciones = async () => {
@@ -437,26 +404,21 @@ export default {
         .then((response) => {
           if (response.status != 200) return false;
           state.evaluaciones = response.data;
-          console.log("state.evaluaciones", state.evaluaciones)
         })
         .catch((error) => console.log(error));
     };
 
     const getEvaluacionSelected = async () => {
       state.evaluacionSelected = state.evaluaciones.find((y) => y.id == state.idEvaluacionSelected);
-      //if (state.perfilSelected.nombre == "Usuario pro (empresa)"){
       await getSegmentacionAreaByevaluacionPorcentajes();
-      //}
     };
 
     //#region USUARIOPRO
     const getSegmentacionAreaByevaluacionPorcentajes = async () =>{
       state.porcentajesAreaSelected = [];
       state.evaluacionEmpresaSelected = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-      let bodyEvaluacionEmpresa = {
-          "id" : state.evaluacionEmpresaSelected.id,
-      };
-      return ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId", bodyEvaluacionEmpresa , {
+
+      return ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId?evaluacionId=" + state.idEvaluacionSelected + "&evaluacionEmpresaId="+ state.evaluacionEmpresaSelected.id, JSON.parse(localStorage.usuarioModel) , {
         headers: header,
       })
       .then((response) => {
@@ -576,9 +538,7 @@ export default {
 
      const getSegmentacionSubAreaByAreaPorcentajes = async () => {
       state.porcentajesSubAreas = [];
-      //state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == state.evaluacionEmpresaSelected.id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
       return ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativa", state.ImportanciaRelativa , {
-      //ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativaId", state.importanciaRelativaSelected , {
         headers: header,
       })
       .then((response) => {
@@ -591,7 +551,6 @@ export default {
             let subareaporcentaje = state.porcentajesSubAreas.find((y) => y.segmentacionSubAreaId == subarea.id);
             if (subareaporcentaje){
               subarea.valor = subareaporcentaje.valor;
-              //state.totalPorcentajeSubAreas += parseInt(subareaporcentaje.valor);
             }else{
               subarea.valor = 0;
             }
@@ -599,13 +558,6 @@ export default {
           });
 
         });
-        /*if (state.totalPorcentajeSubAreas == 100){
-          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
-          document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
-        }else{
-          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
-          document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
-        }*/
       })
       .catch((error) => console.log(error));
     };
@@ -675,8 +627,7 @@ export default {
     const guardarSubAreasChange = async () => {
       let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
       if (idSubAreasPorcentajes.length > 0){
-        
-        //let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
+      
         state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == state.evaluacionEmpresaSelected.id && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
         await getImportanciaEstrategica();
         let bodyImportanciaEstrategica = [];
@@ -776,9 +727,7 @@ export default {
 
     //#region PASO3
     const getSegmentacionAreasPaso3 = async () => {
-      //state.tablaSegmentacionAreas = [];
-      //state.tablaSegmentacionAreas = state.evaluacionSelected.segmentacionAreas;
-      if (state.perfilSelected.nombre == "Consultor" || state.perfilSelected.nombre == "Gran empresa"){
+      if (state.perfilSelected.nombre != "Usuario pro (empresa)"){
         state.segmentacionAreasByEvaluacion.forEach (x => {
           x.segmentacionSubAreas.forEach(y => {
             state.segmentacionSubAreas.push(y);
@@ -872,7 +821,6 @@ export default {
           let orden = 0;
           let segmentacionArea = [];
           let segmentacionSubArea = [];
-          //verificar nombre de evaluacion cuando sea usuario BASICO
           state.preguntas.forEach((element) => {
             orden++;
             element.orden = orden;
@@ -883,7 +831,6 @@ export default {
             element.nombreEvaluacion = state.evaluacionSelected.nombre;
           });
           state.preguntaSelected = state.preguntas[0];
-          console.log("state.preguntaSelected", state.preguntaSelected)
           getTipoimportancia();
         })
         .catch((error) => console.log(error));
@@ -920,12 +867,7 @@ export default {
     };
 
     const getRespuesta = () => {
-      //let EvaluacionEmpresa = "";
       state.respuestaSelected = [];
-      /*for (let index = 0; index < state.evaluacionPaso3.length; index++) {
-        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-        if (EvaluacionEmpresa) break;
-      }*/
 
       let bodyRespuesta = {
         preguntaId: state.preguntaSelected.id,
@@ -944,6 +886,13 @@ export default {
     };
 
     const cargarRespuestas = async () => {
+      if (state.respuestaSelected){
+        if (state.respuestaSelected.usuarioId != JSON.parse(localStorage.usuarioModel).id){
+          state.disabledAlternativas = true;
+        }else{
+           state.disabledAlternativas = false;
+        }
+      }
       let alternativas = document.getElementsByName("alternativas");
       for (let x = 0; x < alternativas.length; x++) {
         let obj = alternativas[x];
@@ -1005,12 +954,6 @@ export default {
         }
       }
 
-      /*let EvaluacionEmpresa = "";
-      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
-        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-        if (EvaluacionEmpresa) break;
-      }*/
-
       let alternativa = state.preguntaSelected.alternativas.find((y) => y.id == state.alternativaSelected);
       let idRespuesta = state.respuestaSelected ? state.respuestaSelected.id : "00000000-0000-0000-0000-000000000000";
       let idDefRelacionada = state.perfilSelected.nombre == "Consultor" ? state.defRelacionadaSelected : "00000000-0000-0000-0000-000000000000";
@@ -1045,6 +988,7 @@ export default {
     };
 
     const pasosPreguntas = async (paso) => {
+      state.disabledAlternativas = false;
       let orden = state.preguntaSelected.orden - 1;
       if (paso == "siguiente"){ 
         if (state.preguntasTotal <= state.preguntaSelected.orden ){
@@ -1090,6 +1034,7 @@ export default {
     };
 
     const VolverAreasResponder = async () => {
+      state.disabledAlternativas = false;
       await addRespuestaVolver();
       limpiarRespuestas("alternativas");
       limpiarRespuestas("tipoImportancias");
@@ -1098,12 +1043,10 @@ export default {
       if (state.perfilSelected.nombre == "Consultor"){
         limpiarRespuestas("defRelacionada");
         state.defRelacionadaSelected = [];
-        //getUsuarioAreas();
       }
       //verificar como regresar para los usuarios BASICOS
       await getSegmentacionAreasPaso3(); 
       SiguienteAtras(2); //Se regresa a Paso Evaluacion
-      //getUsuarioAreasByEvaluacionSelected();
     };
 
     const addRespuestaVolver= async () => {
@@ -1187,862 +1130,6 @@ export default {
       }
     };
 
-/*
-    const route = useRoute();
-    if (route.query.evaluacionId){
-      state.idEvaluacionSelected = route.query.evaluacionId;
-      state.nombreEvaluacionSelected = route.query.evaluacionNombre;
-    }
-
-    const getEvaluaciones = async () => {
-      state.evaluaciones = [];
-      let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      return ApiNeva.get("Evaluacion/GetEvaluacionsByEmpresaId?empresaId=" + empresaId, {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.evaluaciones = response.data.find((y) => y.id == state.idEvaluacionSelected);
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const changeEvaluacion = async () => {
-      state.idTipoAreaSelected = "0";
-      let idEvaluacionSelected = document.getElementById("idEvaluacionSelected")
-        .options[
-        document.getElementById("idEvaluacionSelected").selectedIndex
-      ].value;
-
-      limpiarPaso1();
-
-      if (!idEvaluacionSelected || idEvaluacionSelected == 0){
-        state.totalPorcentaje = 0;
-        document.getElementById("totalporcentajediv").classList.add("d-none");
-        return;
-      } 
-
-      state.idEvaluacionSelected = idEvaluacionSelected;
-      state.evaluacionSelected = state.evaluaciones;
-      state.segmentacionAreas =  state.evaluaciones.segmentacionAreas;
-
-      getSegmentacionAreaByevaluacionPorcentajes();
-
-      document.getElementById("totalporcentajediv").classList.remove("d-none");
-    };
-
-    const limpiarPaso1 = async () => {
-      state.evaluacionSelected = [];
-      state.segmentacionAreas = [];
-      state.segmentacionAreasByEvaluacion = [];
-      state.totalPorcentaje = 0;
-    };
-
-    const getSegmentacionAreaByevaluacionPorcentajes = async () =>{
-      state.porcentajesAreaSelected = [];
-      let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
-      let bodySegmentacionArea = {
-          id: evaluacionEmpresaId,
-      };
-      ApiNeva.post("ImportanciaRelativa/GetImportanciaRelativasByEvaluacionEmpresaId", bodySegmentacionArea , {
-        headers: header,
-      })
-      .then((response) => {
-        if (response.status != 200) return false;
-        state.porcentajesAreaSelected = response.data;
-
-        state.segmentacionAreas.forEach( x => {
-          if (x.evaluacionId == state.idEvaluacionSelected){
-            if (state.porcentajesAreaSelected.length == 0) x.valor = 0;
-            state.porcentajesAreaSelected.forEach( y => {
-              if (y.segmentacionAreaId == x.id){
-                if ( y.valor != undefined) {
-                  x.valor = y.valor;
-                  state.totalPorcentaje += parseInt(y.valor);
-                }else{
-                   x.valor = 0;
-                }
-              }
-            });
-            state.segmentacionAreasByEvaluacion.push(x);
-          }
-        });
-      });
-    };
-
-    const CambioPorcentajePaso1 = async (idarea) => {
-      document.getElementById("porc-"+idarea).innerHTML=document.getElementById(idarea).value + "%";
-      let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
-      state.totalPorcentaje = 0;
-      idAreasPorcentajes.forEach((element) => {
-        state.totalPorcentaje += parseInt(element.value);
-      });
-      if (state.totalPorcentaje != 100 ){
-        document.getElementById("totalporcentaje").classList.remove("text-success");
-        document.getElementById("totalporcentaje").classList.add("text-danger");
-        return;
-      }
-      document.getElementById("totalporcentaje").classList.remove("text-danger");
-      document.getElementById("totalporcentaje").classList.add("text-success");
-    };
-
-    const irPaso2 = async () => {
-      state.idTipoAreaSelected = "0";
-      state.idEvaluacionSelected = state.evaluacionSelected.id;
-      state.segmentacionAreaSelected = [];
-      state.segmentacionSubAreasbyAreaSelected = [];
-      document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
-      if (state.idEvaluacionSelected == "0"){
-        swal.fire({
-          title: "Preparación de áreas",
-          text: "Seleccione tipo evaluación",
-          icon: "warning",
-        });
-        return false;
-      }
-
-      if (!state.segmentacionAreasByEvaluacion){
-        swal.fire({
-          title: "Preparación de áreas",
-          text: "Empresa no tiene áreas asignadas",
-          icon: "warning",
-        });
-        return false;
-      }
-      
-      if (state.totalPorcentaje < 100){
-        swal.fire({
-          title: "Preparación de áreas",
-          text: "No puede ser menor al 100% de importancia entre las áreas",
-          icon: "warning",
-        });
-        return false;
-      }
-
-      if (state.totalPorcentaje > 100){
-        swal.fire({
-          title: "Preparación de áreas",
-          text: "No puede sobrepasar el 100% de importancia entre las áreas",
-          icon: "warning",
-        });
-        return false;
-      }
-      
-      guardarPorcentajeAreas();
-    };
-
-    const guardarPorcentajeAreas = async () => {
-       state.ImportanciaRelativa = [];
-      let idAreasPorcentajes = document.getElementsByName("porcentajeAreas");
-      idAreasPorcentajes.forEach((element) => {
-        let bodyImportanciaRelativa = {
-            evaluacionEmpresaId: state.evaluacionSelected.evaluacionEmpresas[0].id,
-            segmentacionAreaId: element.id,
-            valor: element.value,
-            activo: true,
-        };
-        
-        ApiNeva.post("ImportanciaRelativa/ImportanciaRelativaInsertOrUpdate", bodyImportanciaRelativa , {
-          headers: header,
-        })
-        .then((response) => {
-          if (response.status != 200){
-            swal.fire({
-              title: "Preparación de áreas",
-              text: "Error al guardar porcentajes",
-              icon: "warning",
-            });
-            return false;
-          }
-          state.ImportanciaRelativa = state.ImportanciaRelativa.concat(response.data);
-          SiguienteAtras(1); //Se avanza a Paso Importancia Estrategica
-        })
-        .catch((error) => console.log(error));
-      });
-    };
-
-    const CambioPorcentajePaso2 = async (idsubarea) => {
-      document.getElementById("porcPaso2-"+idsubarea).innerHTML=document.getElementById(idsubarea).value + "%";
-      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
-      state.totalPorcentajeSubAreas = 0;
-      idSubAreasPorcentajes.forEach((element) => {
-        state.totalPorcentajeSubAreas += parseInt(element.value);
-      });
-      if (state.totalPorcentajeSubAreas != 100){
-        document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
-        document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
-        return;
-      }
-      document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
-      document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
-    };
-
-
-    const changeSegmentacionArea = async () => {
-      let idTipoAreaSelected = document.getElementById("idTipoAreaSelected")
-        .options[
-        document.getElementById("idTipoAreaSelected").selectedIndex
-      ].value;
-
-      limpiarPaso2();
-
-      if (idTipoAreaSelected == 0){
-        state.totalPorcentajeSubAreas = 0;
-        document.getElementById("totalPorcentajeSubAreasDiv").classList.add("d-none");
-        return;
-      } 
-
-      state.idTipoAreaSelected = idTipoAreaSelected;
-      state.segmentacionAreaSelected = state.segmentacionAreasByEvaluacion.find((y) => y.id == idTipoAreaSelected);
-
-      getSegmentacionSubAreaByAreaPorcentajes();
-
-      document.getElementById("totalPorcentajeSubAreasDiv").classList.remove("d-none");
-    };
-
-    const limpiarPaso2 = async () => {
-      state.segmentacionAreaSelected = [];
-      state.segmentacionSubAreasbyAreaSelected = [];
-      state.totalPorcentajeSubAreas = 0;
-      state.idTipoAreaSelected  = "0";
-      state.importanciaRelativaSelected = [];
-    };
-
-    const getSegmentacionSubAreaByAreaPorcentajes = async () => {
-      let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
-      state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == evaluacionEmpresaId && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
-
-      ApiNeva.post("ImportanciaEstrategica/GetImportanciaEstrategicasByImportanciaRelativaId", state.importanciaRelativaSelected , {
-        headers: header,
-      })
-      .then((response) => {
-        if (response.status != 200) return false;
-        state.porcentajesSubAreasSelected = response.data;
-
-        state.segmentacionAreaSelected.segmentacionSubAreas.forEach( x => {
-            if (state.porcentajesSubAreasSelected.length == 0) x.valor = 0;
-            state.porcentajesSubAreasSelected.forEach( y => {
-              if (y.segmentacionSubAreaId == x.id ){
-                if ( y.valor != undefined) {
-                  x.valor = y.valor;
-                  state.totalPorcentajeSubAreas += parseInt(y.valor);
-                }else {
-                  x.valor = 0;
-                }
-              }
-            });
-            state.segmentacionSubAreasbyAreaSelected.push(x);
-        });
-        if (state.totalPorcentajeSubAreas == 100){
-          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-danger");
-          document.getElementById("totalPorcentajeSubAreas").classList.add("text-success");
-        }else{
-          document.getElementById("totalPorcentajeSubAreas").classList.remove("text-success");
-          document.getElementById("totalPorcentajeSubAreas").classList.add("text-danger");
-        }
-      })
-      .catch((error) => console.log(error));
-    };
-
-    const irPaso3 = async () => {
-      if (state.idTipoAreaSelected == "0"){
-        swal.fire({
-          title: "Preparación sub áreas",
-          text: "Seleccione nombre área",
-          icon: "warning",
-        });
-        return false;
-      }
-      if (state.totalPorcentajeSubAreas < 100){
-        swal.fire({
-          title: "Preparación sub áreas",
-          text: "No puede ser menor al 100% de importancia entre las sub áreas",
-          icon: "warning",
-        });
-        return false;
-      }
-      if (state.totalPorcentajeSubAreas > 100){
-        swal.fire({
-          title: "Preparación sub áreas",
-          text: "No puede sobrepasar el 100% de importancia entre las sub áreas",
-          icon: "warning",
-        });
-        return false;
-      }
-      guardarPorcentajeSubAreas();
-      state.idAreaPaso3 = "0";
-      state.idTipoSubAreaPaso3 = "0";
-    };
-
-    const guardarSubAreasChange = async () => {
-      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
-      let largo = 0;
-      let total = 0;
-      if (idSubAreasPorcentajes.length > 0){
-        idSubAreasPorcentajes.forEach((element) => {
-          total = total + parseInt(element.value)
-        });
-        if (total < 100){
-          swal.fire({
-            title: "Preparación sub áreas",
-            text: "No puede ser menor al 100% de importancia entre las sub áreas",
-            icon: "warning",
-          });
-          return false;
-        }
-        if (total > 100){
-          swal.fire({
-            title: "Preparación sub áreas",
-            text: "No puede sobrepasar el 100% de importancia entre las sub áreas",
-            icon: "warning",
-          });
-          return false;
-        }
-        let evaluacionEmpresaId = state.evaluacionSelected.evaluacionEmpresas.find((y) => y.evaluacionId == state.evaluacionSelected.id).id;
-        state.importanciaRelativaSelected = state.ImportanciaRelativa.find((y) => y.evaluacionEmpresaId == evaluacionEmpresaId && y.segmentacionAreaId == state.segmentacionAreaSelected.id);
-        idSubAreasPorcentajes.forEach((element) => {
-          let bodyImportanciaEstrategica = {
-              importanciaRelativaId: state.importanciaRelativaSelected.id,
-              segmentacionSubAreaId: element.id,
-              valor: element.value,
-              activo: true,
-          };
-          
-          ApiNeva.post("ImportanciaEstrategica/ImportanciaEstrategicaInsertOrUpdate", bodyImportanciaEstrategica , {
-            headers: header,
-          })
-          .then((response) => {
-            largo++;
-            if (response.status != 200){
-              swal.fire({
-                title: "Preparación de sub áreas",
-                text: "Error al guardar porcentajes" + error,
-                icon: "warning",
-              });
-              return false;
-            }
-            if (largo >= idSubAreasPorcentajes.length){
-            }
-          })
-          .catch((error) => console.log(error));
-        });
-      }
-    };
-
-    const guardarPorcentajeSubAreas = async () => {
-      let idSubAreasPorcentajes = document.getElementsByName("porcentajeSubAreas");
-      let largo = 0;
-      idSubAreasPorcentajes.forEach((element) => {
-        let bodyImportanciaEstrategica = {
-            importanciaRelativaId: state.importanciaRelativaSelected.id,
-            segmentacionSubAreaId: element.id,
-            valor: element.value,
-            activo: true,
-        };
-        
-        ApiNeva.post("ImportanciaEstrategica/ImportanciaEstrategicaInsertOrUpdate", bodyImportanciaEstrategica , {
-          headers: header,
-        })
-        .then((response) => {
-          largo++;
-          if (response.status != 200){
-            swal.fire({
-              title: "Preparación de sub áreas",
-              text: "Error al guardar porcentajes" + error,
-              icon: "warning",
-            });
-            return false;
-          }
-          if (largo >= idSubAreasPorcentajes.length){
-            getUsuarioAreasByEvaluacionSelected();
-          }
-        })
-        .catch((error) => console.log(error));
-      });
-    };
-
-    const getUsuarioAreasByEvaluacionSelected = async () => {
-      state.evaluacionPaso3 = [];
-      state.allSegmentacionAreas = [];
-      state.allSegmentacionSubAreas = [];
-
-      state.evaluacionPaso3.push(state.evaluacionSelected);
-      state.allSegmentacionAreas = state.segmentacionAreasByEvaluacion;
-      state.allSegmentacionAreas.forEach(x => {
-        state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
-      }); 
-      
-      state.tablaSegmentacionAreas = [];
-      getEstadoSubArea();
-    };
-
-   
-    const getUsuarioAreas = async () => {
-      let bodyUsuarioEvaluacion = {
-        "usuarioId" : localStorage.iduser,
-        "empresaId" :  JSON.parse(localStorage.usuarioModel).empresaId ,
-        "evaluacionId" :  state.idEvaluacionSelected
-      }
-        ApiNeva.post("UsuarioEvaluacion/GetUsuarioEvaluacionsByIdsEvaluacionEmpresaUsuario", bodyUsuarioEvaluacion ,{
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200 && response.status == "" ) return false;
-          state.usuarioArea = response.data;
-          getAllAreas();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const getAllAreas = async () => {
-      state.allSegmentacionAreas = [];
-      state.allSegmentacionSubAreas = [];
-      state.tablaSegmentacionAreas = [];
-      
-      let bodyEvaluacion = {
-        "id": state.idEvaluacionSelected
-      }
-      ApiNeva.post("Evaluacion/GetEvaluacionById" , bodyEvaluacion,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200 ) return false;
-          state.evaluacionPaso3 = response.data;
-          state.allSegmentacionAreas = response.data.segmentacionAreas;
-          //response.data.forEach(x => {
-          //  state.allSegmentacionAreas = state.allSegmentacionAreas.concat(x.segmentacionAreas);
-          //});
-
-          let areas = [];
-          state.allSegmentacionAreas.forEach(element => {
-            if (state.perfilSelected.nombre == "Consultor" ||state.perfilSelected.nombre == "Gran Empresa"){
-              areas = areas.concat(element);
-            }else{
-              state.usuarioArea.usuarioAreas.forEach(x => {
-                if (element.id == x.segmentacionAreaId){
-                  areas = areas.concat(element);
-                }
-              });
-            }
-          });
-
-          state.allSegmentacionAreas = areas;
-
-          state.allSegmentacionAreas.forEach(x => {
-            state.allSegmentacionSubAreas = state.allSegmentacionSubAreas.concat(x.segmentacionSubAreas);
-          });
-          getEstadoSubArea();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const getEstadoSubArea = async () => {
-      let bodyEmpresa =  { 
-        id: JSON.parse(localStorage.usuarioModel).empresaId 
-      };
-
-      ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          response.data.forEach(x => {
-            state.allSegmentacionSubAreas.forEach(y => {
-              if (x.segmentacionSubAreaId == y.id){
-                y.estado = x.respuestaPorcentaje;
-              }
-            });
-          });
-          cargarTablaPaso3();
-        })
-        .catch((error) => console.log(error));
-    };
-
-
-    const cargarTablaPaso3 = async () => {
-      state.tablaSegmentacionAreas = [];
-      state.estadoGeneral = 0;
-      let contador = 0;
-      let contadorArea = 0;
-      let estadoGeneral = 0;
-      state.allSegmentacionAreas.forEach (x => {
-        x.estado = 0;
-        contador = 0;
-        contadorArea++;
-        state.allSegmentacionSubAreas.forEach(y => {
-            if (y.segmentacionAreaId == x.id){
-              contador++;
-              x.estado = (x.estado + parseInt(y.estado));
-            };
-        });
-        x.estado = x.estado / contador;
-        estadoGeneral = (estadoGeneral + x.estado);
-        state.tablaSegmentacionAreas.push(x);
-      });
-
-      state.estadoGeneral = estadoGeneral / contadorArea;
-      
-      SiguienteAtras(2); //Se avanza a Paso Evaluacion
-    };
-
-    const changeSegmentacionSubAreaPaso3 = async () => {
-      let idTipoSubAreaPaso3 = document.getElementById("idTipoSubAreaPaso3")
-        .options[
-        document.getElementById("idTipoSubAreaPaso3").selectedIndex
-      ].value;
-
-      
-      if (idTipoSubAreaPaso3 == "0"){
-        cargarTablaPaso3();
-        return false;
-      }
-
-      state.tablaSegmentacionAreas = [];
-
-      state.allSegmentacionSubAreas.forEach (x => {
-        if ( x.id == idTipoSubAreaPaso3 ){
-          state.allSegmentacionAreas.forEach(y => {
-            if (x.segmentacionAreaId == y.id){
-              x.nombreArea = y.nombreArea;
-            };
-          });
-          state.tablaSegmentacionAreas.push(x);
-        }
-      });
-    };
-
-    const getPregunta = (segmentacionArea) => {
-      state.preguntas = [];
-      state.preguntaSelected = [];
-      state.preguntasTotal = [];
-      state.nombreAreaSelected = segmentacionArea.nombreArea;
-      state.nombreSubAreaSelected = segmentacionArea.nombreSubArea;
-
-      let bodySegmentacionArea = {
-        id: segmentacionArea.id
-      };
-      ApiNeva.post("Pregunta/GetPreguntasBySegmentacionAreaId" , bodySegmentacionArea,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;;
-          state.preguntas = response.data;
-          state.preguntasTotal = response.data.length;
-          if (!state.preguntaSelected){
-            swal.fire({
-              title: "Preguntas",
-              text: "Sub área no tiene preguntas asignadas",
-              icon: "warning",
-            });
-            return false;
-          }
-          let orden = 0;
-          let segmentacionArea = [];
-          let segmentacionSubArea = [];
-          let evaluacion = [];
-          state.preguntas.forEach((element) => {
-            orden++;
-            element.orden = orden;
-            segmentacionArea = state.allSegmentacionAreas.find((y) => y.id == element.segmentacionAreaId);
-            element.nombreArea = segmentacionArea.nombreArea;
-            segmentacionSubArea = state.allSegmentacionSubAreas.find((y) => y.id == element.segmentacionSubAreaId);
-            element.nombreSubArea = segmentacionSubArea.nombreSubArea;
-            evaluacion = state.evaluaciones;
-            element.nombreEvaluacion = evaluacion.nombre;
-          });
-          state.preguntaSelected = state.preguntas[0];
-          getTipoimportancia();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const getTipoimportancia = async () => {
-      state.tiposImportancia = [];
-      ApiNeva.post("TipoImportancia/GetTipoImportancias", null,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.tiposImportancia = response.data;
-           if (state.perfilSelected.nombre == "Consultor") {
-            getDeficienciaRelacionada();
-           } else {
-            getRespuesta();
-           }
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const getDeficienciaRelacionada = async () => {
-      state.defRelacionadas = [];
-      ApiNeva.post("TipoDiferenciaRelacionada/GetTipoDiferenciaRelacionadas", null,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.defRelacionadas = response.data;
-          getRespuesta();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const getRespuesta = () => {
-      let EvaluacionEmpresa = "";
-      state.respuestaSelected = [];
-      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
-        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-        if (EvaluacionEmpresa) break;
-      }
-
-       let bodyRespuesta = {
-        preguntaId: state.preguntaSelected.id,
-        evaluacionEmpresaId: EvaluacionEmpresa.id
-      };
-
-      ApiNeva.post("Respuesta/GetRespuestaByIdsPreguntaUsuarioEvaluacionEmpresa", bodyRespuesta,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) return false;
-          state.respuestaSelected = response.data;
-          if (state.respuestaSelected) cargarRespuestas();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const cargarRespuestas = async () => {
-      let alternativas = document.getElementsByName("alternativas");
-      for (let x = 0; x < alternativas.length; x++) {
-        let obj = alternativas[x];
-        obj.checked = false;
-        if (obj.value == state.respuestaSelected.alternativaId){
-          obj.checked = true;
-          state.alternativaSelected = obj.value;
-        }
-      };
-
-      let tipoImportancias = document.getElementsByName("tipoImportancias");
-      for (let x = 0; x < tipoImportancias.length; x++) {
-        let obj = tipoImportancias[x];
-        obj.checked = false;
-        if (obj.value == state.respuestaSelected.tipoImportanciaId){
-          obj.checked = true;
-          state.tipoImportanciaSelected = obj.value;
-        }
-      };
-
-      if (state.perfilSelected.nombre == "Consultor"){
-        let defRelacionada = document.getElementsByName("defRelacionada");
-        for (let x = 0; x < defRelacionada.length; x++) {
-          let obj = defRelacionada[x];
-          obj.checked = false;
-          if (obj.value == state.respuestaSelected.tipoDiferenciaRelacionadaId){
-            obj.checked = true;
-            state.defRelacionadaSelected = obj.value;
-          }
-        }
-      }
-    };
-
-    const addRespuesta= () => {
-      if (state.alternativaSelected == ""){
-         swal.fire({
-            title: "Preguntas",
-            text: "Debe seleccionar una alternativa",
-            icon: "warning",
-          });
-          return false;
-      }
-      if (state.tipoImportanciaSelected == ""){
-         swal.fire({
-            title: "Preguntas",
-            text: "Debe seleccionar un tipo importancia",
-            icon: "warning",
-          });
-          return false;
-      }
-      if (state.perfilSelected.nombre == "Consultor"){
-        if (state.defRelacionadaSelected == ""){
-          swal.fire({
-              title: "Preguntas",
-              text: "Debe seleccionar una deficiencia relacionada",
-              icon: "warning",
-            });
-            return false;
-        }
-      }
-
-      let EvaluacionEmpresa = "";
-      for (let index = 0; index < state.evaluacionPaso3.length; index++) {
-        EvaluacionEmpresa =  state.evaluacionPaso3[index].evaluacionEmpresas.find((y) => y.evaluacionId == state.preguntaSelected.evaluacionId && y.empresaId == JSON.parse(localStorage.usuarioModel).empresaId);
-        if (EvaluacionEmpresa) break;
-      }
-
-      let alternativa = state.preguntaSelected.alternativas.find((y) => y.id == state.alternativaSelected);
-      let idRespuesta = state.respuestaSelected ? state.respuestaSelected.id : "00000000-0000-0000-0000-000000000000";
-      let idDefRelacionada = state.perfilSelected.nombre == "Consultor" ? state.defRelacionadaSelected : "00000000-0000-0000-0000-000000000000";
-
-      let bodyRespuesta = {
-        id: idRespuesta,
-        alternativaId: state.alternativaSelected,
-        preguntaId: state.preguntaSelected.id,
-        evaluacionEmpresaId: EvaluacionEmpresa.id,
-        tipoImportanciaId: state.tipoImportanciaSelected,
-        tipoDiferenciaRelacionadaId: idDefRelacionada,
-        valor: alternativa.valor,
-        realimentacion: alternativa.retroalimentacion,
-        activo: true,
-        usuarioId: localStorage.iduser
-      };
-      ApiNeva.post("Respuesta/InsertOrUpdate", bodyRespuesta,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200) {
-            swal.fire({
-                title: "Preguntas",
-                text: "Error al guardar pregunta" + error,
-                icon: "warning",
-              });
-              return false;
-          }
-          pasosPreguntas("siguiente");
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const pasosPreguntas = async (paso) => {
-      let orden = state.preguntaSelected.orden - 1;
-      if (paso == "siguiente"){ 
-        if (state.preguntasTotal <= state.preguntaSelected.orden ){
-          swal.fire(
-            "Preguntas",
-            "No existen mas preguntas asociadas",
-            "warning"
-          );
-          return false;
-        }
-        limpiarRespuestas("alternativas");
-        limpiarRespuestas("tipoImportancias");
-        if (state.perfilSelected.nombre == "Consultor"){
-          limpiarRespuestas("defRelacionada");
-        }
-        state.alternativaSelected = [];
-        state.tipoImportanciaSelected = [];
-        state.defRelacionadaSelected = [];
-
-        if (state.preguntaSelected.orden == state.preguntasTotal){
-          return false;
-        }
-        state.preguntaSelected = state.preguntas[orden + 1];
-        getRespuesta();
-      }
-      if (paso == "atras"){
-        if (state.preguntaSelected.orden == 1){
-          return false;
-        }
-        state.preguntaSelected = state.preguntas[orden - 1];
-      }
-    };
-
-    const limpiarRespuestas = async (name) => {
-      let radios = document.getElementsByName(name);
-      for (let x = 0; x < radios.length; x++) {
-        let obj = radios[x];
-        obj.checked = false;
-      }
-    };
-
-    const VolverAreasResponder = async () => {
-      limpiarRespuestas("alternativas");
-      limpiarRespuestas("tipoImportancias");
-      state.alternativaSelected = [];
-      state.tipoImportanciaSelected = [];
-      if (state.perfilSelected.nombre == "Consultor"){
-        limpiarRespuestas("defRelacionada");
-        state.defRelacionadaSelected = [];
-        getUsuarioAreas();
-        return;
-      }
-      getUsuarioAreasByEvaluacionSelected();
-    };
-
-//camilo
-    const getEmpresaEvaluacion = async () => {
-      let bodyEmpresa = {
-        "id": JSON.parse(localStorage.usuarioModel).empresaId
-      }
-      return ApiNeva.post("EvaluacionEmpresa/GetEvaluacionEmpresasByEmpresaId", bodyEmpresa,  {
-        headers: header,
-      })
-        .then((response) => {
-          if (response.status != 200)  return false;
-          debugger;
-          state.evaluacionEmpresa = response.data;
-          state.evaluacionEmpresaSelected = response.data.find((y) => y.evaluacionId == state.idEvaluacionSelected);
-          console.log("state.evaluacionEmpresa", state.evaluacionEmpresa)
-           
-        })
-        .catch((error) => console.log(error));
-    };
-
-
-    const oncreated = async () => {
-      if (route.query.evaluacionId){
-        changeEvaluacion();
-      }
-      state.perfilSelected = JSON.parse(localStorage.usuarioModel).perfil;
-      SiguienteAtras(0);
-      debugger;
-      if (state.perfilSelected.nombre == "Consultor" || state.perfilSelected.nombre == "Gran Empresa"){
-        await getEmpresaEvaluacion();
-      }
-      if (state.perfilSelected.nombre != "Usuario pro (empresa)") {
-        SiguienteAtras(2);
-        getUsuarioAreas();
-      }
-    };
-    
-
-    const SiguienteAtras = async (formStepsNum) => {
-      const formSteps = document.querySelectorAll(".form-step");
-      const progressBar = document.querySelector(".progressbar");
-      formSteps.forEach((formStep) => {
-        formStep.classList.contains("form-step-active") &&
-          formStep.classList.remove("form-step-active");
-      });
-      formSteps[formStepsNum].classList.add("form-step-active");
-
-      const progressSteps = document.querySelectorAll(".progress-step");
-      progressSteps.forEach((progressStep, idx) => {
-        if (idx < formStepsNum + 1) {
-          progressStep.classList.add("progress-step-active");
-        } else {
-          progressStep.classList.remove("progress-step-active");
-        }
-      });
-
-      const progressActive = document.querySelectorAll(".progress-step-active");
-
-      progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
-      
-      if (formStepsNum===3) {
-        progressBar.classList.add("d-none")
-      }
-      else if (formStepsNum<3) {
-        progressBar.classList.remove("d-none")
-      }
-    };
-
-    const ir = (namePageDestiny) => {
-      return router.push({ name: namePageDestiny, query: {evaluacionId: state.evaluacionSelected.id, evaluacionNombre: state.evaluacionSelected.nombre } });
-    };
-
-    onMounted(async () => {
-      await getEvaluaciones();
-      oncreated();
-    });
-*/
     return {
       ...toRefs(state),
       SiguienteAtras,
@@ -2058,27 +1145,6 @@ export default {
       VolverAreasResponder,
       ModalGuardarRespuestas,
       ir,
-     
-      /*
-      formatterMoney,
-
-      irPaso2,
-      irPaso3,
-
-
-      changeEvaluacion,
-      changeSegmentacionArea,
-      changeSegmentacionSubAreaPaso3,
-      getPregunta,
-      cilPen,
-      CambioPorcentajePaso1,
-      CambioPorcentajePaso2,
-      addRespuesta,
-      getRespuesta,
-      pasosPreguntas,
-      VolverAreasResponder,
-      ir,
-      guardarSubAreasChange,*/
     };
   },
 };

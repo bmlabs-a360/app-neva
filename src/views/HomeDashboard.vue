@@ -348,9 +348,6 @@ export default {
         initialPage: 1,
         totalevaluaciones: 0,
         sizePage: 10,
-
-        //resumenImportanciaEstrategica: [],
-        //segmentacionAreaSelected : [],
     });
 
     const selectedPagination = async (pageNum) => {
@@ -360,13 +357,12 @@ export default {
         state.resumenImportanciaRelativa = [];
         await getEvaluacionesPaginated(false);
         if (state.evaluaciones.length > 0){
-        cargarGraficos(state.evaluaciones[0]);
-    }
+            cargarGraficos(state.evaluaciones[0]);
+        }
     };
 
     const getEvaluacionesPaginated = async (iniciarPage) => {
 
-        console.log("getEvaluacionesPaginated");
         let buscadorEvaluacion = "";
         if (iniciarPage) {
             state.initialPage = 1
@@ -379,29 +375,27 @@ export default {
         })
             .then((response) => {
 
-                 console.log("response",response);
                 if (response.status != 200) return false;
-                 console.log("GetEvaluacionsByEmpresaIdFilterCount",response.data);
                 state.totalevaluaciones = Math.ceil(response.data / state.sizePage);
             })
             .catch((error) => {
                 state.totalevaluaciones = null;
-                console.log("error",error);
             });
 
          await ApiNeva.post('Evaluacion/GetEvaluacionsByEmpresaIdFilterList?empresaId=' + empresaId + "&usuarioId=" + usuarioId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage  + "&filter=" + buscadorEvaluacion, {
             headers: header,
         })
             .then((response2) => {
-
-                 console.log("response2",response2);
                 if (response2.status != 200) return false;
                 state.evaluaciones = response2.data;
-               console.log("response.data evaluaciones: ",response2.data);
                 state.evaluaciones.forEach((m) => {
-                    m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-                    if (m.iniciales.length < 2){
-                        m.iniciales =  m.nombre.substring("0", "2");
+                    if (m.nombre.length < 2){
+                        m.iniciales = m.nombre;
+                    }else {
+                        m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+                        if (m.iniciales.length < 2){
+                            m.iniciales =  m.nombre.substring("0", "2");
+                        }
                     }
                     let fecha = new Date(m.fechaCreacion);
                     fecha.setDate(fecha.getDate() + parseInt(m.tiempoLimite));
@@ -411,7 +405,7 @@ export default {
                 });
             })
             .catch((error) => {
-                console.log("errorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerror",error);
+                console.log("error",error);
                 state.totalevaluaciones = null;
                 state.evaluaciones = null;
             });
@@ -460,11 +454,25 @@ export default {
             state.SegmentacionSubAreas = state.SegmentacionSubAreas.concat(x.segmentacionSubAreas);
         });
 
-        let bodyEmpresa =  { 
-            id: JSON.parse(localStorage.usuarioModel).empresaId 
-        };
+        return ApiNeva.post("EvaluacionEmpresa/GetEstadoEvaluacionByEmpresas", JSON.parse(localStorage.usuarioModel).empresa ,{
+            headers: header,
+        })
+        .then((response) => {
+            if (response.status != 200) return false;
+            state.evaluaciones.forEach(x => {
+                x.evaluacionEmpresas.forEach(e => {
+                  response.data.forEach(y => {
+                      if (e.id == y.evaluacionEmpresaId){
+                          x.estado = y.respuestaPorcentaje;
+                      }
+                  });
+                });
+            });
+            return;
+        })
+        .catch((error) => console.log(error));
 
-       await  ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
+       /*await  ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
             headers: header,
         })
         .then((response) => {
@@ -506,7 +514,7 @@ export default {
                 estadoGeneral = (estadoGeneral + x.estado);
             });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error));*/
     };
 
     const cargarGraficos = async (evaluacionSelected) => {
