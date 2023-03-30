@@ -140,6 +140,11 @@ const routes = [
         name: "CompletaAcceso",
         component: () => import("@/views/pages/CompletaAcceso"),
       },
+      {
+        path: "bienvenida",
+        name: "Bienvenida",
+        component: () => import("@/views/pages/Bienvenida"),
+      },
     ],
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/pages/NotFound') },
