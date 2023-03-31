@@ -294,6 +294,19 @@ export function checkAll(name, todoname) {
   }
 }
 
+
+export function soloNumeros(evt) {
+  evt = (evt) ? evt : window.event;
+  var charCode = (evt.which) ? evt.which : evt.keyCode;
+  if (charCode == 46){
+    evt.preventDefault();
+  } else if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+    evt.preventDefault();
+  }else{
+    return true;
+  }
+};
+
 export function colorAleatorio(){
 	let simbolos, color;
 	simbolos = "0123456789ABCDEF";

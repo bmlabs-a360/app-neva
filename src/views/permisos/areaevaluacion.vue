@@ -285,14 +285,16 @@ export default {
         .then(async (response) => {
           if (response.status != 200) return false;
 
-          await getEvaluacionesAreas();
-          await getEstadoSubArea();
-          getEstadoArea();
+          //await getEvaluacionesAreas();
+          //await getEstadoSubArea();
+          //getEstadoArea();
           swal.fire(
               "Asociar nuevas Áreas y evaluación",
               "Se modifico usuario",
               "success"
-          );
+          ).then( () => {
+              ir('Usuarios');
+          });
 
         })
         .catch((error) => console.log(error));
