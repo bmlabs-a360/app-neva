@@ -138,6 +138,7 @@ export default {
                 "telefono": state.userSelected.telefono,
                 "password": state.clave,
                 "nombres": state.userSelected.nombres,
+                "fechaCreacion" : state.userSelected.fechaCreacion,
                 "activo": activo
             };
         }
@@ -150,6 +151,7 @@ export default {
                 "telefono": state.userSelected.telefono,
                 //"password": state.userSelected.password,
                 "nombres": state.userSelected.nombres,
+                "fechaCreacion" : state.userSelected.fechaCreacion,
                 "activo": activo
             };
         }
