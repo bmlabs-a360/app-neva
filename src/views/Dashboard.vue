@@ -163,7 +163,11 @@ export default {
                 if (response2.status != 200) return false;
                 state.evaluaciones = response2.data;
                 state.evaluaciones.forEach((m) => {
-                    if (m.nombre.length < 2){
+                    let regex = /^[0-9]*$/;
+                    let soloNumeros = regex.test(m.nombre);
+                    if (soloNumeros){
+                        m.iniciales = m.nombre.substring("0","2")
+                    }else if (m.nombre.length < 2){
                         m.iniciales = m.nombre;
                     }else {
                         m.iniciales = m.nombre.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");

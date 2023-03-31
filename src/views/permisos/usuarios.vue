@@ -107,27 +107,20 @@
   <!-- Paginacion-->
   <nav aria-label="..." class="d-flex justify-content-between align-items-center">
     <div class="d-flex">
-    <p class="message">Mostrando <span>1</span> a <span>10</span> de 16 entradas</p>
+     <!--<p class="message">Mostrando <span>1</span> a <span>10</span> de 16 entradas</p>-->
     </div>
     <div class="d-flex">
-      <ul class="pagination pagination-sm">
-        <li class="page-item controls">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&lt;</span>
-          </a>
-        </li>
-        <li class="page-item active" aria-current="page">
-          <span class="page-link">1</span>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li> 
-        
-        <li class="page-item controls">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&gt;</span>
-          </a>
-        </li>
-      </ul>
+      <paginate
+          v-model="initialPage"
+          :page-count="totalusuarios"
+          :page-range="3"
+          :margin-pages="2"
+          :click-handler="selectedPagination"
+          :prev-text="'<'"
+          :next-text="'>'"
+          :container-class="'pagination'"
+          :page-class="'page-item'">
+      </paginate>
     </div>
   </nav>
   <!--Fin Paginacion-->
@@ -140,6 +133,7 @@ import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import router from "@/router/index";
+import Paginate from 'vuejs-paginate-next';
 
 
 export default {
@@ -147,6 +141,7 @@ export default {
   methods: {
   },
   components: {
+    paginate: Paginate,
   },
   setup() {
     const globalProperties =
@@ -164,30 +159,61 @@ export default {
       userOnline:null,
       usuarios: [],
       userSelected: [],
+
+      initialPage: 1,
+      totalusuarios: 0,
+      sizePage: 10,
     });
 
-    const getUsers = async () => {
-      state.usuarios = [];
+    const selectedPagination = async (pageNum) => {
+        state.initialPage = pageNum;
+        getUsuariosPaginated(false);
+    };
+
+    const getUsuariosPaginated = async (iniciarPage) => {
+        /*if (iniciarPage) {
+            state.initialPage = 1
+            buscadorEvaluacion = document.getElementById('buscadorUsuario').value;
+        };*/
       let empresaId = JSON.parse(localStorage.usuarioModel).empresaId;
-      ApiNeva.get("Usuario/GetUsuarioByIdEmpresa?empresaId=" + empresaId, {
+      ApiNeva.get("Usuario/GetUsuarioByIdEmpresaCount?empresaId=" + empresaId, {
         headers: header,
       })
-        .then((response) => {
+      .then((response) => {
           if (response.status != 200) return false;
-          state.usuarios = response.data;
-          state.usuarios.forEach((m) => {
-            if (m.nombres.length < 2){
-                 m.iniciales = m.nombres
-            } else {
-              m.iniciales = m.nombres.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
-              if (m.iniciales.length < 2){
-                  m.iniciales =  m.nombres.substring("0", "2");
-              }
+          state.totalusuarios = Math.ceil(response.data / state.sizePage);
+      })
+      .catch((error) => {
+          state.totalusuarios = null;
+      });
+
+      ApiNeva.get("Usuario/GetUsuarioByIdEmpresaFilterList?empresaId=" + empresaId + '&initialPage=' + state.initialPage + '&sizePage=' + state.sizePage , {
+        headers: header,
+      })
+      .then((response) => {
+        if (response.status != 200) return false;
+        state.usuarios = response.data;
+        state.usuarios.forEach((m) => {
+          let regex = /^[0-9]*$/;
+          let soloNumeros = regex.test(m.nombres);
+          if (soloNumeros){
+            m.iniciales = m.nombres.substring("0","2")
+          }else if (m.nombres.length < 2){
+                m.iniciales = m.nombres
+          } else {
+            m.iniciales = m.nombres.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join("").substring("0","2");
+            if (m.iniciales.length < 2){
+                m.iniciales =  m.nombres.substring("0", "2");
             }
-            return;
-          });
-        })
-        .catch((error) => console.log(error));
+          }
+          return;
+        });
+      })
+      .catch((error) => {
+        console.log("error",error);
+        state.totalusuarios = null;
+        state.usuarios = null;
+      });
     };
 
     const getUserDelete = (user) => {
@@ -215,10 +241,18 @@ export default {
                 'El usuario y todas sus dependencias fueron eliminadas.',
                 'success'
             )
-            getUsers();
+            getUsuariosPaginated(false);
             return;
           })
           .catch((error) => {
+            if (error.response.data.detail.includes("respuesta")){
+               swal.fire(
+                  "Eliminar usuario",
+                  "No se puede eliminar usuario, tiene preguntas respondidas",
+                  "warning"
+              );
+              return;
+            }
             if (error.response.data.detail.includes("llave duplicada") || error.response.data.detail.includes("duplicate key")) {
               swal.fire(
                   "Eliminar usuario",
@@ -247,7 +281,7 @@ export default {
 
     onMounted(() => {
       state.userOnline = JSON.parse(localStorage.usuarioModel);
-      getUsers();
+      getUsuariosPaginated(false);
     });
 
     const ir = (namePageDestiny, usuario) => {
@@ -263,6 +297,7 @@ export default {
       ir,
       getUserDelete,
       deleteUsuarioPro,
+      selectedPagination
     };
   },
 };
