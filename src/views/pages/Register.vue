@@ -100,7 +100,7 @@
                   <div class="col-12 field">
                       <div class="control has-icon">
                           <label for="">Teléfono</label>
-                          <input class="input w-100" type="tel" v-model="telefono"  maxlength="11" placeholder="Teléfono">
+                          <input class="input w-100" type="text" v-model="telefono"  maxlength="11" placeholder="Teléfono" @keypress="soloNumeros($event)">
                           <div class="registro-icon" for="">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>
                           </div>
@@ -133,7 +133,7 @@
             <div class="row">
               <div class="d-flex mt-3 mt-md-5 mb-2">
                 <label class="check mb-2"> 
-                  <input type="checkbox" v-model="terminos">
+                  <input type="checkbox" id="checkTerminos" v-model="terminos">
                   <span class="checkmark"></span>
                 </label>
                 <label @click="visibleTerminosYCondiciones = true;" id="terminosycondiciones">Terminos y condiciones
@@ -222,13 +222,14 @@ import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import { useRoute } from "vue-router";
 import router from "@/router/index";
-import { validateEmail, Fn } from "@/Helper/util";
+import { validateEmail, Fn, soloNumeros } from "@/Helper/util";
 import { useReCaptcha } from "vue-recaptcha-v3";
 export default {
   name: "Register",
   methods: {
     validateEmail,
     Fn,
+    soloNumeros
   },
   setup() {
     const globalProperties = getCurrentInstance().appContext.config.globalProperties;
@@ -316,7 +317,13 @@ export default {
           swal.fire("Registro usuario", "Debe ingresar rut empresa válido sin puntos y con guión. Ejemplo: 111111111-1", "warning");
           return false;
         }
- 
+
+        if (!document.getElementById("checkTerminos").checked){
+          state.mensajeError = "Debe aceptar terminos y condiciones ";
+          swal.fire("Registro usuario", "Debe aceptar terminos y condiciones", "warning");
+          return false;
+        }
+
         let bodyUser = {
             nombres: state.nombre,
             password: state.password,
@@ -395,7 +402,6 @@ export default {
     const ir = (namePageDestiny) => {
       return router.push({ name: namePageDestiny });
     };
-
 
     return {
       ...toRefs(state),

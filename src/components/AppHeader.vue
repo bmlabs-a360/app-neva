@@ -48,7 +48,7 @@
                 <img class="user-photo me-sm-3 d-block" alt="" :src="logoPers">
             </div>
             <h1 class="title">
-              Tus Clientes
+              Tus Evaluaciones
             </h1>
         </div>
         <div class="toolbar ml-auto desktop-toolbar">

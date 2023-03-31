@@ -24,7 +24,7 @@
             </div>
             <div>
                 <label for="basic-url" class="form-label">Telefono</label>
-                <input v-model="userSelected.telefono" type="text" class="form-control" id="telefono" aria-describedby="basic-addon3">
+                <input v-model="userSelected.telefono" @keypress="soloNumeros($event)" type="text" class="form-control" id="telefono" aria-describedby="basic-addon3" maxlength="11">
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
 import { getCurrentInstance, reactive, toRefs, onMounted, ref } from "vue";
 import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
-import { validateEmail, Fn, checkAll } from "@/Helper/util";
+import { validateEmail, Fn, soloNumeros } from "@/Helper/util";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 
@@ -62,7 +62,7 @@ export default {
   methods: {
     validateEmail,
     Fn,
-    checkAll,
+    soloNumeros,
   },
   components: {
   },
@@ -121,6 +121,10 @@ export default {
         if (state.userSelected.email == "" || !validateEmail(state.userSelected.email)) {
             swal.fire("Registro usuario", "Debe ingresar un email", "warning");
             return false;
+        }
+         if (state.userSelected.telefono != "" && !state.userSelected.telefono.match(/^[0-9]+$/)) {
+          swal.fire("Registro usuario", "Debe ingresar teléfono válido", "warning");
+          return false;
         }
 
         let activo = (document.getElementById("estado").value == 'true') ? true : false;
