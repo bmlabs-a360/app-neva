@@ -1449,110 +1449,110 @@ export default {
       };
     
     const exportToPDF = () => {
-        /*html2pdf(document.getElementById("document_container"), {
-            filename: "Evaluacion.pdf",
-            pagebreak:    { after: [".Pagina"] , avoid: ["canvas",".Seccion"]},
-            html2canvas:  { dpi: 192, scale: 2, letterRendering: true},
-            jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait'},
-            margin:       [30, 0, 30, 0], //top, left, buttom, right
-            image:        { type: 'canvas', quality: 1 },
-        });*/
-        //var totalPages = pdf.putTotalPages().internal.getNumberOfPages()
-        //console.log("Total Pages: " + totalPages);
-       //console.log("localStorage.usuarioModel",localStorage.usuarioModel);
+       // /*html2pdf(document.getElementById("document_container"), {
+       //     filename: "Evaluacion.pdf",
+       //     pagebreak:    { after: [".Pagina"] , avoid: ["canvas",".Seccion"]},
+       //     html2canvas:  { dpi: 192, scale: 2, letterRendering: true},
+       //     jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait'},
+       //     margin:       [30, 0, 30, 0], //top, left, buttom, right
+       //     image:        { type: 'canvas', quality: 1 },
+       // });*/
+       // //var totalPages = pdf.putTotalPages().internal.getNumberOfPages()
+       // //console.log("Total Pages: " + totalPages);
+       ////console.log("localStorage.usuarioModel",localStorage.usuarioModel);
         
-       var element = document.getElementById('document_pdf');
-       // var document_container = document.getElementById("document_container")
-       // if(element.style.display == ""){  
-       //         element.style.display = "none";  
-       // } else {  
-       //     element.style.display = "";  
-       // } 
+       //var element = document.getElementById('document_pdf');
+       //// var document_container = document.getElementById("document_container")
+       //// if(element.style.display == ""){  
+       ////         element.style.display = "none";  
+       //// } else {  
+       ////     element.style.display = "";  
+       //// } 
 
-       //if(document_container.style.display == ""){  
-       //     document_container.style.display = "none";  
-       // } else {  
-       //     document_container.style.display = "";  
-       // } 
-
-
-         //var element = document.getElementById("document_container").className.replace( /(?:^|\s)dfgd (?!\S)/g , ' fade' );
-
-          // element.setAttribute("hidden", "some_class_name");
-          //element.className.replace( /(?:^|\s)hidden(?!\S)/g , ' fade' );
-            //if(element.style.display == ""){  
-            //    element.style.display = "none";  
-            //} else {  
-            // element.style.display = "";  
-            //}  
+       ////if(document_container.style.display == ""){  
+       ////     document_container.style.display = "none";  
+       //// } else {  
+       ////     document_container.style.display = "";  
+       //// } 
 
 
-                console.log("element",element);
+       //  //var element = document.getElementById("document_container").className.replace( /(?:^|\s)dfgd (?!\S)/g , ' fade' );
+
+       //   // element.setAttribute("hidden", "some_class_name");
+       //   //element.className.replace( /(?:^|\s)hidden(?!\S)/g , ' fade' );
+       //     //if(element.style.display == ""){  
+       //     //    element.style.display = "none";  
+       //     //} else {  
+       //     // element.style.display = "";  
+       //     //}  
+
+
+       //         console.log("element",element);
         
-        //      element.forEach((elemento) => {
-        //  elemento.classList.remove('tab-pane');
-        //});
+       // //      element.forEach((elemento) => {
+       // //  elemento.classList.remove('tab-pane');
+       // //});
         
-        //console.log("element",element);
-        var opt = {
-            margin: 0.5,
-            filename: state.nombreEvaluacion + '_' + state.fechaHoy +'Evaluacion.pdf',
-            image: {
-                type: 'canvas',
-                quality: 0.98
-            },
-            html2canvas: {
-                scale: 3,
-                logging: true,
-                dpi: 192,
-                letterRendering: true
-            },
-            jsPDF: {
-                unit: 'pt',
-                format: 'A5',
-                orientation: 'landscape'//'landscape'//'portrait'
-            },
-            //pagebreak: { 
-            //    after: [".Pagina"], 
-            //    avoid: ["canvas",".Seccion"]
-            //},
-        };
-        //var cabecera = document.getElementById('cabecera');
-        //element.classList.remove("tab-pane");
-        
-        
+       // //console.log("element",element);
+       // var opt = {
+       //     margin: 0.5,
+       //     filename: state.nombreEvaluacion + '_' + state.fechaHoy +'Evaluacion.pdf',
+       //     image: {
+       //         type: 'canvas',
+       //         quality: 0.98
+       //     },
+       //     html2canvas: {
+       //         scale: 3,
+       //         logging: true,
+       //         dpi: 192,
+       //         letterRendering: true
+       //     },
+       //     jsPDF: {
+       //         unit: 'pt',
+       //         format: 'A5',
+       //         orientation: 'landscape'//'landscape'//'portrait'
+       //     },
+       //     //pagebreak: { 
+       //     //    after: [".Pagina"], 
+       //     //    avoid: ["canvas",".Seccion"]
+       //     //},
+       // };
+       // //var cabecera = document.getElementById('cabecera');
+       // //element.classList.remove("tab-pane");
         
         
-        //html2pdf().from(element).set(opt) .save();
+        
+        
+       // //html2pdf().from(element).set(opt) .save();
 
        
-        html2pdf().from(element).set(opt).toPdf().get('pdf')
+       // html2pdf().from(element).set(opt).toPdf().get('pdf')
             
-            //.then(function(pdf) {
-            //var totalPages = pdf.internal.getNumberOfPages();
-        //    for (let i = 1; i <= totalPages; i++) {
-        //        //pdf.html(cabecera.innerHTML);
-        //        pdf.setPage(i);
-        //        pdf.setFontSize(10);
-        //        pdf.setTextColor(100);
-        //        pdf.text('Página ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 2.3), (pdf.internal.pageSize.getHeight() - 0.8));
-        //    }
-        //})          
-            .save();
-          state.pdfBool = !state.pdfBool;
+       //     //.then(function(pdf) {
+       //     //var totalPages = pdf.internal.getNumberOfPages();
+       // //    for (let i = 1; i <= totalPages; i++) {
+       // //        //pdf.html(cabecera.innerHTML);
+       // //        pdf.setPage(i);
+       // //        pdf.setFontSize(10);
+       // //        pdf.setTextColor(100);
+       // //        pdf.text('Página ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 2.3), (pdf.internal.pageSize.getHeight() - 0.8));
+       // //    }
+       // //})          
+       //     .save();
+       //   state.pdfBool = !state.pdfBool;
 
 
-       //         if(element.style.display == ""){  
-       //         element.style.display = "none";  
-       // } else {  
-       //     element.style.display = "";  
-       // } 
+       ////         if(element.style.display == ""){  
+       ////         element.style.display = "none";  
+       //// } else {  
+       ////     element.style.display = "";  
+       //// } 
 
-       //if(document_container.style.display == ""){  
-       //     document_container.style.display = "none";  
-       // } else {  
-       //     document_container.style.display = "";  
-       // } 
+       ////if(document_container.style.display == ""){  
+       ////     document_container.style.display = "none";  
+       //// } else {  
+       ////     document_container.style.display = "";  
+       //// } 
       };
       const downloadPDF = () => {
 
@@ -1567,11 +1567,11 @@ export default {
               margin: 0.5,
               filename: state.nombreEvaluacion + '_' + state.fechaHoy + 'Evaluacion.pdf',
               image: {
-                  type: 'canvas',
+                  type: 'jpeg',
                   quality: 0.98
               },
               html2canvas: {
-                  scale: 3,
+                  scale: 2,
                   logging: true,
                   dpi: 192,
                   letterRendering: true
