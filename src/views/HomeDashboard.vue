@@ -475,50 +475,6 @@ export default {
             return;
         })
         .catch((error) => console.log(error));
-
-       /*await  ApiNeva.post("SegmentacionSubArea/GetEstadoSubAreas", bodyEmpresa ,{
-            headers: header,
-        })
-        .then((response) => {
-            if (response.status != 200) return false;
-            response.data.forEach(x => {
-                state.SegmentacionSubAreas.forEach(y => {
-                    if (x.segmentacionSubAreaId == y.id){
-                        y.estado = x.respuestaPorcentaje;
-                    }
-                });
-            });
-            let contador = 0;
-            let contadorArea = 0;
-            let estadoGeneral = 0;
-            state.SegmentacionAreas.forEach (x => {
-                x.estado = 0;
-                contador = 0;
-                contadorArea++;
-                state.SegmentacionSubAreas.forEach(y => {
-                    if (y.segmentacionAreaId == x.id){
-                    contador++;
-                    x.estado = (x.estado + parseInt(y.estado));
-                    };
-                });
-                x.estado = x.estado / contador;
-                estadoGeneral = (estadoGeneral + x.estado);
-            });
-            state.evaluaciones.forEach (x => {
-                x.estado = 0;
-                contador = 0;
-                contadorArea++;
-                state.SegmentacionAreas.forEach(y => {
-                    if (y.evaluacionId == x.id){
-                        contador++;
-                        x.estado = (x.estado + parseInt(y.estado));
-                    };
-                });
-                x.estado = x.estado / contador;
-                estadoGeneral = (estadoGeneral + x.estado);
-            });
-        })
-        .catch((error) => console.log(error));*/
     };
 
     const cargarGraficos = async (evaluacionSelected) => {

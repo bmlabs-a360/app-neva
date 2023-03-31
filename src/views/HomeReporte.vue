@@ -1444,7 +1444,6 @@ export default {
               state.contadorLineas++
               salida = false;
           }
-          //console.log(" state.contadorLineas", state.contadorLineas)
           return salida;
       };
     
