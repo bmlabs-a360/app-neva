@@ -1,0 +1,15 @@
+# build stage
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npx vue-cli-service build --mode=development
+
+# production stage
+FROM nginx:1.13.12-alpine as production-stage
+COPY ./docker-build/nginx.development.conf /etc/nginx/nginx.conf
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build-stage /app/dist /usr/share/nginx/html/neva
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
