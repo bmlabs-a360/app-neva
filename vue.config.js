@@ -1,6 +1,6 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
-  publicPath :'/neva',
+  publicPath : process.env.NODE_ENV === 'production' ?  '/' : '/neva',
   transpileDependencies: true,
   configureWebpack: {
     module: {
@@ -26,19 +26,3 @@ module.exports = defineConfig({
     },
   },
 });
-/*
-module.exports = {
-  configureWebpack: {
-    module: {
-      rules: [
-        {
-          test: /\.(csv|xlsx|xls|t)$/,
-          loader: 'file-loader',
-          options: {
-            name: `files/[name].[ext]`
-          }
-        }
-      ],
-     },
-  },
-};*/
