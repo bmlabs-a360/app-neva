@@ -2274,7 +2274,6 @@ export default {
                     state.feedback.push(element);
                 }
             });
-            console.log("state.feedbacks", state.feedbacks);
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
             return;
