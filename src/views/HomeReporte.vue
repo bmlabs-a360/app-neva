@@ -927,7 +927,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="recomendacion in feedbacks " :key="recomendacion.id">
+                                    <tr v-for="recomendacion in feedback " :key="recomendacion.id">
                                         <td v-if="recomendacion.respuestaValor != '4'">
                                             <div class="me-md-3">
                                         <td class="text-center text-md-start">{{recomendacion.preguntaCapacidad}}</td>
@@ -1498,6 +1498,7 @@ export default {
         capacidadvalorMenor: [],
         top3capacidadesByarea: [],
         top3peoresCapacidadesByarea : [],
+        feedback: [],
 
     });
 
@@ -2269,7 +2270,11 @@ export default {
 
                     }
                 });
+                if ( element.respuestaValor != '4'){
+                    state.feedback.push(element);
+                }
             });
+            console.log("state.feedbacks", state.feedbacks);
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
             return;
