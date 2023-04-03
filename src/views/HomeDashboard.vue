@@ -593,17 +593,17 @@ export default {
     });
 
     return {
-      ...toRefs(state),
-      style,
-      logoNeva,
-      logoConfiguracion,
-      logoCubo,
-      logoLatam,
-      logoPersona,
-      ir,
-      cargarGraficos,
-      selectedPagination,
-      getEvaluacionesPaginated
+        ...toRefs(state),
+        style,
+        logoNeva,
+        logoConfiguracion,
+        logoCubo,
+        logoLatam,
+        logoPersona,
+        ir,
+        cargarGraficos,
+        selectedPagination,
+        getEvaluacionesPaginated
     };
   },
 };
