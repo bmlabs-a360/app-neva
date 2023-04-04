@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="cards">
-                            <div class="cards-grafictabsresult">
+                            <div class="cards-grafictabsresultreporte">
                                 <div class="titlecard">
                                     <h3>AREAS MADURAS</h3>
                                 </div>
@@ -159,7 +159,7 @@
                         </div>
 
                         <div class="cards">
-                            <div class="cards-grafictabsresult">
+                            <div class="cards-grafictabsresultreporte">
                                 <div class="titlecard">
                                     <h3>AREAS A MEJORAR</h3>
                                 </div>
@@ -1046,10 +1046,10 @@
         height: 30px !important;
     }
 
-    table, th, tr {
+    /*table, th, tr {
         border: 1px solid #283252;
         border-collapse: collapse;
-    }
+    }*/
 
     .tipoempresa {
         display: flex;
@@ -1421,6 +1421,62 @@
     .areas .bb {
         left: -140px;
     }
+
+    .cards-grafictabsresultreporte {
+        width: 100%;
+        box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
+        -webkit-box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
+        -moz-box-shadow: 1px 10px 5px 0px rgba(224, 224, 224, 0.75);
+        border-radius: 8px;
+        background-color: white;
+        /*display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;*/
+        color: black;
+        padding: 0px 0px 0px 0px;
+        text-align: center;
+        }
+        .cards-grafictabsresultreporte h2, .cards-grafictabsresultreporte .h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #283252;
+        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
+        }
+        .cards-grafictabsresultreporte h3, .cards-grafictabsresultreporte .h3 {
+        font-size: 12px;
+        font-weight: 400;
+        color: #283252;
+        margin-bottom: 16px;
+        }
+        .cards-grafictabsresultreporte p {
+        font-size: 14px;
+        font-weight: 200;
+        text-align: justify;
+        }
+        .cards-grafictabsresultreporte .bodycard {
+        background-color: #15ACC0;
+        padding: 1rem;
+        color: white;
+        width: 100%;
+        height: -webkit-fill-available;
+        }
+        .cards-grafictabsresultreporte .bodycard h2, .cards-grafictabsresultreporte .bodycard .h2 {
+        color: white !important;
+        }
+        .cards-grafictabsresultreporte .titlecard {
+        width: 100%;
+        background-color: #15ACC0;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: flex-start;
+        }
+        .cards-grafictabsresultreporte .titlecard h3, .cards-grafictabsresultreporte .titlecard .h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        }
     
 </style>
 <script>
@@ -1499,6 +1555,8 @@ export default {
         top3capacidadesByarea: [],
         top3peoresCapacidadesByarea : [],
         feedback: [],
+        creartdSubAreaMejorar: 0,
+        creartdSubAreaMadura: 0,
 
     });
 
@@ -1958,12 +2016,25 @@ export default {
 
                 if (element.imsaValor.toFixed(0) >= 4){
                     state.SubAreasMaduras.push(element);
+                    state.capacidadvalorMayor.push(element);
                 }else{
                     state.SubAreasMejorar.push(element);
+                    state.capacidadvalorMenor.push(element);
                 }
             });
             state.SubAreasMaduras = state.SubAreasMaduras.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.SubAreasMejorar = state.SubAreasMejorar.sort((x, y) => x.imsaValor - y.imsaValor);
+
+            state.creartdSubAreaMejorar = 0;
+            state.creartdSubAreaMadura = 0;
+            if (state.SubAreasMaduras.length > state.SubAreasMejorar.length){
+                state.creartdSubAreaMejorar = state.SubAreasMaduras.length - state.SubAreasMaduras.length;
+            }else{
+                state.creartdSubAreaMadura = state.SubAreasMejorar.length - state.SubAreasMaduras.length;
+            }
+
+            state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
+            state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
         })
         .catch((error) => {
             console.log("error->", error);
@@ -2259,14 +2330,14 @@ export default {
                             element.imsaValor = x.imsaValor;
                             state.capacidadvalorMenor.push(element);
                         }*/
-                        if (x.imsaValor >= 4 ){
+                        /*if (x.imsaValor >= 4 ){
                             element.imsaValor = x.imsaValor;
                             state.capacidadvalorMayor.push(element);
                         }
                         if (x.imsaValor <4 ){
                             element.imsaValor = x.imsaValor;
                             state.capacidadvalorMenor.push(element);
-                        }
+                        }*/
 
                     }
                 });
@@ -2274,8 +2345,8 @@ export default {
                     state.feedback.push(element);
                 }
             });
-            state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
-            state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
+            //state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
+            //state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
             return;
         })
         .catch((error) => {
@@ -2284,6 +2355,7 @@ export default {
     };
 
     const areaSelected = (ima) => { 
+        debugger;
         state.top3capacidadesByarea = state.capacidadvalorMayor.filter(y => y.segmentacionAreaId == ima.segmentacionAreaId);
         if (state.top3capacidadesByarea.length > 3){
             state.top3capacidadesByarea.length = 3;

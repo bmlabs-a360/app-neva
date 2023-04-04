@@ -69,7 +69,7 @@
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
-                                                    <p class="responsible-table">{{evaluacion.estado}}% Completado</p>
+                                                    <p class="responsible-table" >{{evaluacion.estado}}% Completado</p>
                                                 </div>
                                                 <div class="d-flex align-items-center color-warning" v-else>
                                                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +83,8 @@
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
-                                                    <p class="responsible-table">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
+                                                    <p class="responsible-table" v-if="evaluacion.estado">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
+                                                    <p class="responsible-table" v-else>0% Completado</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -286,7 +287,7 @@
                             <h6>administrador</h6>
                         </div>
                         <p class="message">Estamos 
-                            <a style="color:blue" href="mailto:contacto@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.
+                            <a style="color:blue" href="mailto:evaluacion@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.
                         </p>
                     </div>
                 </div>
@@ -467,7 +468,7 @@ export default {
                 x.evaluacionEmpresas.forEach(e => {
                   response.data.forEach(y => {
                       if (e.id == y.evaluacionEmpresaId){
-                          x.estado = y.respuestaPorcentaje;
+                        x.estado = y.respuestaPorcentaje;
                       }
                   });
                 });

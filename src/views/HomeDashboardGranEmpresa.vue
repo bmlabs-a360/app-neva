@@ -72,7 +72,8 @@
                               </clipPath>
                             </defs>
                           </svg>
-                          <p class="responsible-table">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
+                          <p class="responsible-table" v-if="evaluacion.estado">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
+                          <p class="responsible-table" v-else>0% Completado</p>
                         </div>
                       </div>
                   </div>
@@ -237,7 +238,7 @@
                       <h6>administrador</h6>
                   </div>
                   <p class="message">Estamos 
-                    <a style="color:blue" href="mailto:contacto@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.
+                    <a style="color:blue" href="mailto:evaluacion@neva.cl?Subject=Contacto%20A360%20NEVA">aquí</a> ante cualquier pregunta, no dudes en contactarnos.
                   </p>
               </div>
             </div>

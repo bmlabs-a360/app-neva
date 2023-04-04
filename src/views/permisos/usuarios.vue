@@ -83,14 +83,7 @@
                     </svg>
                   </a>
                 </div>
-                <div v-if="userOnline.email == user.email">
-                  <a data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"  @click="deleteUsuarioPro()" >
-                      <path d="M2.93262 4.80937H14.9326M13.5993 4.80937V14.1427C13.5993 14.4963 13.4588 14.8355 13.2088 15.0855C12.9587 15.3356 12.6196 15.476 12.266 15.476H5.59928C5.24566 15.476 4.90652 15.3356 4.65647 15.0855C4.40643 14.8355 4.26595 14.4963 4.26595 14.1427V4.80937M6.26595 4.80937V3.47603C6.26595 3.12241 6.40643 2.78327 6.65648 2.53322C6.90652 2.28318 7.24566 2.1427 7.59928 2.1427H10.266C10.6196 2.1427 10.9587 2.28318 11.2088 2.53322C11.4588 2.78327 11.5993 3.12241 11.5993 3.47603V4.80937" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-                <div v-else>
+                <div v-if="userOnline.email != user.email">
                   <a data-bs-toggle="modal" data-bs-target="#exampleModal" @click="getUserDelete(user)">
                     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" >
                       <path d="M2.93262 4.80937H14.9326M13.5993 4.80937V14.1427C13.5993 14.4963 13.4588 14.8355 13.2088 15.0855C12.9587 15.3356 12.6196 15.476 12.266 15.476H5.59928C5.24566 15.476 4.90652 15.3356 4.65647 15.0855C4.40643 14.8355 4.26595 14.4963 4.26595 14.1427V4.80937M6.26595 4.80937V3.47603C6.26595 3.12241 6.40643 2.78327 6.65648 2.53322C6.90652 2.28318 7.24566 2.1427 7.59928 2.1427H10.266C10.6196 2.1427 10.9587 2.28318 11.2088 2.53322C11.4588 2.78327 11.5993 3.12241 11.5993 3.47603V4.80937" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
@@ -134,6 +127,7 @@ import swal from "sweetalert2";
 import ApiNeva from "@/api/ApiNeva";
 import router from "@/router/index";
 import Paginate from 'vuejs-paginate-next';
+import { useRoute, useRouter } from 'vue-router'
 
 
 export default {
@@ -144,6 +138,10 @@ export default {
     paginate: Paginate,
   },
   setup() {
+
+    const router = useRouter()
+    const route = useRoute()
+
     const globalProperties =
       getCurrentInstance().appContext.config.globalProperties;
     const ApiKey = globalProperties.$apiKey;
@@ -286,7 +284,7 @@ export default {
 
     const ir = (namePageDestiny, usuario) => {
       if (usuario){
-        return router.push({ name: namePageDestiny , query : {usuarioId : usuario.id} });
+        return router.push({ name: namePageDestiny ,  query : {usuarioId : usuario.id}  } );
       }else{
         return router.push({ name: namePageDestiny});
       }

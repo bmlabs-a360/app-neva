@@ -177,7 +177,7 @@
               </tr>
               <tr v-for="tablaSegmentacionArea in tablaSegmentacionAreas" :key="tablaSegmentacionArea.id">
                 <td>{{tablaSegmentacionArea.nombreArea}}</td>
-                <td class="table-progress" v-if="tablaSegmentacionArea.estado < 100" >
+                <td class="table-finish" v-if="tablaSegmentacionArea.estado == 100" >
                   <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_376_6978)">
                       <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
@@ -189,9 +189,9 @@
                       </clipPath>
                     </defs>
                   </svg>
-                  <p>{{parseFloat(tablaSegmentacionArea.estado).toFixed(0)}}% Completado</p>
+                  <p>{{tablaSegmentacionArea.estado}}% Completado</p>
                 </td>
-                <td class="table-finish" v-else>
+                <td class="table-progress" v-else>
                   <svg width="13" height="14" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_376_6978)">
                       <path d="M11 5.78188V6.24188C10.9994 7.32009 10.6503 8.36921 10.0047 9.23279C9.35908 10.0964 8.45164 10.7281 7.41768 11.0338C6.38372 11.3395 5.27863 11.3028 4.26724 10.9292C3.25584 10.5555 2.39233 9.86493 1.80548 8.96041C1.21863 8.05589 0.939896 6.98591 1.01084 5.91003C1.08178 4.83416 1.4986 3.81004 2.19914 2.99041C2.89968 2.17079 3.84639 1.59957 4.89809 1.36195C5.9498 1.12433 7.05013 1.23304 8.035 1.67188" stroke="#ED9A37" stroke-linecap="round" stroke-linejoin="round"/>
@@ -203,7 +203,8 @@
                       </clipPath>
                     </defs>
                   </svg>
-                  <p>{{tablaSegmentacionArea.estado}}% Completado</p>
+                  <p v-if="tablaSegmentacionArea.estado ">{{parseFloat(tablaSegmentacionArea.estado).toFixed(0)}}% Completado</p>
+                  <p v-else>0% Completado</p>
                 </td>
                 <td class="text-end pe-4">
                   <button type="button" class="button button is-bold is-raised is-primary btn-next" @click="SiguienteAtras(3);getPregunta(tablaSegmentacionArea)">Responder</button>
@@ -812,9 +813,11 @@ export default {
           state.preguntasTotal = response.data.length;
           if (state.preguntas.length == 0){
             swal.fire({
-              title: "Felicitaciones!",
-              text: "&Aacute;rea no tiene preguntas asignadas",
+              title: "Preguntas",
+              text: "Área no tiene preguntas asignadas",
               icon: "warning",
+            }).then(() => {
+              SiguienteAtras(2);
             });
             return false;
           }

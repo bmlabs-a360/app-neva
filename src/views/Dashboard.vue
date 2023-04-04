@@ -55,7 +55,7 @@
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <p class="responsible-table">{{evaluacion.estado}}% Completado</p>
+                                    <p class="responsible-table" >{{evaluacion.estado}}% Completado</p>
                                 </div>
                                 <div class="d-flex align-items-center color-warning" v-else>
                                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +69,8 @@
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <p class="responsible-table">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
+                                    <p class="responsible-table" v-if="evaluacion.estado">{{parseFloat(evaluacion.estado).toFixed(0)}}% Completado</p>
+                                    <p class="responsible-table" v-else>0% Completado</p>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">

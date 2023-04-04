@@ -118,7 +118,7 @@
                   <div class="col-6 field">
                       <div class="control has-icon">
                           <label for="">Rut Empresa</label>
-                          <input class="input w-100" type="text" v-model="rutEmpresa" v-c-tooltip="{content: 'Ingrese rut sin puntos y con guión. Ejemplo: 11111111-1', placement: 'right'}" placeholder="11111111-1" >
+                          <input class="input w-100" type="text" v-model="rutEmpresa" v-c-tooltip="{content: 'Ingrese rut sin puntos y con guión. Ejemplo: 11111111-1', placement: 'right'}" placeholder="11111111-1" maxlength="10">
                           <div class="registro-icon" for="">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--feather" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="feather:lock" data-v-e4038ad7=""><g fill="none" stroke="#EAEBEF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></g></svg>  
                           </div>
@@ -372,7 +372,7 @@ export default {
               if (!error.response.data.detail) {
                 swal.fire(
                   "Registro usuario",
-                  error.response.data,
+                  "Error" + error.response.data,
                   "warning"
                 );
                 return;

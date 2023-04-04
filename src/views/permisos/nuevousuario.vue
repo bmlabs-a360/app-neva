@@ -166,11 +166,6 @@ export default {
       });
     };
 
-    const resetUser = () => {
-        document.getElementById("estado").value = 'true';
-        state.usuarioNuevo = [];
-    };
-
     const ir = (namePageDestiny) => {
         return router.push({ name: namePageDestiny});
     };

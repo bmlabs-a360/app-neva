@@ -76,6 +76,7 @@ const routes = [
             return h(resolveComponent("router-view"));
           },
         },
+        props: true,
         redirect: "/permisos/usuarios",
         meta: {
           middleware: [auth, log],
@@ -85,6 +86,7 @@ const routes = [
             path: "/permisos/usuarios",
             name: "Usuarios",
             component: () => import("@/views/permisos/usuarios.vue"),
+            props: true
           },
           {
             path: "/permisos/nuevousuario",
@@ -100,6 +102,7 @@ const routes = [
             path: "/permisos/areaevaluacion",
             name: "AreaEvaluacion",
             component: () => import("@/views/permisos/areaevaluacion.vue"),
+            props: true,
           },
         ],
       },
