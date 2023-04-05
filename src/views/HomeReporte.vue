@@ -313,7 +313,7 @@
                                 <tbody>
                                     <tr :v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                         <td class="w-1">
-                                            <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3capacidadByarea.capacidad}}</h4>
+                                            <h4 class="text-center text-md-start uppercase" >{{top3capacidadByarea.capacidad}}</h4>
                                         </td>
                                         <!--<td class="">
                                             <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
@@ -336,7 +336,7 @@
                                 <tbody>
                                     <tr :v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                         <td class="w-1">
-                                            <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3PeorCapacidadByArea.capacidad}}</h4>
+                                            <h4 class="text-center text-md-start uppercase">{{top3PeorCapacidadByArea.capacidad}}</h4>
                                         </td>
                                         <!--<td class="">
                                             <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
@@ -789,7 +789,7 @@
                                         <tbody>
                                             <tr v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                                 <td class="w-1">
-                                                    <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3capacidadByarea.capacidad}}</h4>
+                                                    <h4 class="text-center text-md-start uppercase" >{{top3capacidadByarea.capacidad}}</h4>
                                                 </td>
                                                 <!--<td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
@@ -815,7 +815,7 @@
                                         <tbody>
                                             <tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                                 <td class="w-1">
-                                                    <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3PeorCapacidadByArea.capacidad}}</h4>
+                                                    <h4 class="text-center text-md-start uppercase" >{{top3PeorCapacidadByArea.capacidad}}</h4>
                                                 </td>
                                                 <!--<td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
@@ -975,6 +975,10 @@
 
 
 <style>
+    .uppercase {
+        text-transform: uppercase;
+    }
+
     .donut-inner {
         margin-top: -100px;
         margin-bottom: 100px;
@@ -1766,10 +1770,7 @@ export default {
     };
 
       const getInfo = async () => {
-
-       //   console.log(" getInfo");
         state.userSelected = JSON.parse(localStorage.usuarioModel);
-       // console.log(" state.userSelected", state.userSelected);
         state.idEvaluacion = route.query.evaluacionId;
         state.nombreEvaluacion = route.query.evaluacionNombre;
         const fecha = new Date();
@@ -1792,7 +1793,6 @@ export default {
             await getIMSA();
             await GetCapacidadSubAreas();
             await getFeedbackArea();
-            
             await graficoMadurezGeneral();
             await getGraficoImportanciaRelativa();
             await getGraficoCapacidad();
