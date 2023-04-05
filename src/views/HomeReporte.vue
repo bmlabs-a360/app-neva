@@ -1,6 +1,9 @@
 <template>
     <!--Contenido-->
-    <div class="row view-wrapper" id="document_container" v-if="!pdfBool">
+    <div v-if="!completoData" >
+        <p>Cargando...</p>
+    </div>
+    <div class="row view-wrapper" id="document_container" v-if="!pdfBool && completoData">
         <!--Inicia Tabs-->
         <div class="col-12 mt-3 mt-sm-0 mt-lg-5 flex-column flex-sm-row justify-content-between align-items-center">
             <ul class="nav nav-pills mb-2 mb-sm-0" id="pills-tab" role="tablist">
@@ -69,8 +72,7 @@
                             <p>El <b>índice de madurez empresarial</b>, se refiere como el grado en que una empresa ha desarrollado y adoptado buenas prácticas en sus procesos y dirección, lo que le permite operar de manera más efectiva y eficiente, alcanzando así sus objetivos y metas a largo plazo. La evaluación de la madurez empresarial, implica la medición del nivel de madurez actual de la empresa y la identificación de las áreas en las que se deben hacer mejoras para alcanzar un mayor grado de madurez y competitividad.</p>
                         </div>
                     </div>
-
-
+                        
                     <div :class="claseIM">
                         <div class="catnivel">
                             <p class="niveles nivel-5 mb-0 mt-0">5</p>
@@ -311,7 +313,7 @@
                                 <tbody>
                                     <tr :v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                         <td class="w-1">
-                                            <h4 class="text-center text-md-start">{{top3capacidadByarea.preguntaCapacidad}}</h4>
+                                            <h4 class="text-center text-md-start">{{top3capacidadByarea.capacidad}}</h4>
                                         </td>
                                         <td class="">
                                             <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
@@ -334,7 +336,7 @@
                                 <tbody>
                                     <tr :v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                         <td class="w-1">
-                                            <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.preguntaCapacidad}}</h4>
+                                            <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.capacidad}}</h4>
                                         </td>
                                         <td class="">
                                             <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
@@ -787,7 +789,7 @@
                                         <tbody>
                                             <tr v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                                 <td class="w-1">
-                                                    <h4 class="text-center text-md-start">{{top3capacidadByarea.preguntaCapacidad}}</h4>
+                                                    <h4 class="text-center text-md-start">{{top3capacidadByarea.capacidad}}</h4>
                                                 </td>
                                                 <td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
@@ -813,7 +815,7 @@
                                         <tbody>
                                             <tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                                 <td class="w-1">
-                                                    <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.preguntaCapacidad}}</h4>
+                                                    <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.capacidad}}</h4>
                                                 </td>
                                                 <td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
@@ -1555,8 +1557,7 @@ export default {
         top3capacidadesByarea: [],
         top3peoresCapacidadesByarea : [],
         feedback: [],
-        creartdSubAreaMejorar: 0,
-        creartdSubAreaMadura: 0,
+        completoData: false
 
     });
 
@@ -1782,14 +1783,16 @@ export default {
             //getMadurezGeneral();
             await getEmpresa();
             await getIM();
-            graficoMadurezGeneral();
             await getIMA();
             await getIMSA();
             await GetCapacidadSubAreas();
-            getGraficoImportanciaRelativa();
-            getGraficoCapacidad();
-            getPuntuacionArea();
             await getFeedbackArea();
+            
+            await graficoMadurezGeneral();
+            await getGraficoImportanciaRelativa();
+            await getGraficoCapacidad();
+            await getPuntuacionArea();
+            state.completoData = true;
 
         };
     };
@@ -2016,25 +2019,12 @@ export default {
 
                 if (element.imsaValor.toFixed(0) >= 4){
                     state.SubAreasMaduras.push(element);
-                    state.capacidadvalorMayor.push(element);
                 }else{
                     state.SubAreasMejorar.push(element);
-                    state.capacidadvalorMenor.push(element);
                 }
             });
             state.SubAreasMaduras = state.SubAreasMaduras.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.SubAreasMejorar = state.SubAreasMejorar.sort((x, y) => x.imsaValor - y.imsaValor);
-
-            state.creartdSubAreaMejorar = 0;
-            state.creartdSubAreaMadura = 0;
-            if (state.SubAreasMaduras.length > state.SubAreasMejorar.length){
-                state.creartdSubAreaMejorar = state.SubAreasMaduras.length - state.SubAreasMaduras.length;
-            }else{
-                state.creartdSubAreaMadura = state.SubAreasMejorar.length - state.SubAreasMaduras.length;
-            }
-
-            state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
-            state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
         })
         .catch((error) => {
             console.log("error->", error);
@@ -2052,6 +2042,28 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             state.capacidadSubAreas = response.data
+            state.capacidadSubAreas.forEach((element) => {
+                state.IMSA.forEach((x) => {
+                    if (x.segmentacionSubAreaId == element.segmentacionSubAreaId){
+                        if (x.imsaValor >= 4 && element.pesoRelativoCapacidadValor >= 3){
+                            element.imsaValor = x.imsaValor;
+                            state.capacidadvalorMayor.push(element);
+                        }
+                        if (x.imsaValor < 4 && element.pesoRelativoCapacidadValor >= 3 ){
+                            element.imsaValor = x.imsaValor;
+                            state.capacidadvalorMenor.push(element);
+                        }
+
+                    }
+                });
+                if ( element.respuestaValor != '4'){
+                    state.feedback.push(element);
+                }
+            });
+            state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
+            state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.pesoRelativoCapacidadValor - a.pesoRelativoCapacidadValor));
+            state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
+            state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.pesoRelativoCapacidadValor - b.pesoRelativoCapacidadValor));
             return;
         })
         .catch((error) => {
@@ -2059,7 +2071,7 @@ export default {
         });
     };
 
-    const graficoMadurezGeneral = () => {
+    const graficoMadurezGeneral = async () => {
         let color = [];
         let restante = "";
         let dataSet = [];
@@ -2102,7 +2114,7 @@ export default {
         };
     };
 
-    const getGraficoImportanciaRelativa = () => {
+    const getGraficoImportanciaRelativa = async() => {
 
         let dataSet = [];
         let labels = [];
@@ -2260,7 +2272,7 @@ export default {
         });
     };
 
-    const getPuntuacionArea = () => { 
+    const getPuntuacionArea = async () => { 
       let dataSet = [];
       let labels = [];
       let valorDataList = [];
@@ -2293,12 +2305,6 @@ export default {
     };
 
     const getFeedbackArea = async () => {  
-        /*let filtro = {
-            id: state.IM.evaluacionEmpresaId
-        };*/
-        /*ApibackOffice.post("EvaluacionEmpresa/GetPlanMejoras", filtro,
-            { headers: header }
-        )*/
         return ApibackOffice.post("EvaluacionEmpresa/GetPlanMejorasReporteSubscripcionOBasico?evaluacionEmpresaId=" + state.IM.evaluacionEmpresaId + "&reporteId=" + state.reporte.id , state.userSelected,
             { headers: header }
         ) 
@@ -2315,38 +2321,11 @@ export default {
                 if ( element.respuestaValor == '3'){
                     element.tipoRespuestaValorNombre = "Desarrollada";
                 }
-               /* state.IMA.forEach((x) => {
-                    if (x.segmentacionAreaId == element.segmentacionAreaId) 
-                        element.activaArea = x.activaArea;
-                });*/
-                state.IMSA.forEach((x) => {
-                    if (x.segmentacionSubAreaId == element.segmentacionSubAreaId){
-                        //Se cambiara el detalle de la importancia por el imsaValor para generar mejores o peor
-                       /* if (element.importanciaDetalle == "4" || element.importanciaDetalle == "3" ){
-                            element.imsaValor = x.imsaValor;
-                            state.capacidadvalorMayor.push(element);
-                        }
-                        if (element.importanciaDetalle == "1" || element.importanciaDetalle == "2" ){
-                            element.imsaValor = x.imsaValor;
-                            state.capacidadvalorMenor.push(element);
-                        }*/
-                        /*if (x.imsaValor >= 4 ){
-                            element.imsaValor = x.imsaValor;
-                            state.capacidadvalorMayor.push(element);
-                        }
-                        if (x.imsaValor <4 ){
-                            element.imsaValor = x.imsaValor;
-                            state.capacidadvalorMenor.push(element);
-                        }*/
 
-                    }
-                });
                 if ( element.respuestaValor != '4'){
                     state.feedback.push(element);
                 }
             });
-            //state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
-            //state.capacidadvalorMenor = state.capacidadvalorMenor.sort(((a, b) =>  a.imsaValor - b.imsaValor));
             return;
         })
         .catch((error) => {
@@ -2355,7 +2334,8 @@ export default {
     };
 
     const areaSelected = (ima) => { 
-        debugger;
+        state.top3capacidadesByarea = [];
+        state.top3peoresCapacidadesByarea = [];
         state.top3capacidadesByarea = state.capacidadvalorMayor.filter(y => y.segmentacionAreaId == ima.segmentacionAreaId);
         if (state.top3capacidadesByarea.length > 3){
             state.top3capacidadesByarea.length = 3;
