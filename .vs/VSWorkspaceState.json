@@ -4,8 +4,8 @@
     "\\src",
     "\\src\\views",
     "\\src\\views\\mantenedor",
-    "\\src\\views\\permisos"
+    "\\src\\views\\pages"
   ],
-  "SelectedNode": "\\src\\views\\permisos\\usuarios.vue",
+  "SelectedNode": "\\src\\views\\pages\\CompletaAcceso.vue",
   "PreviewInSolutionExplorer": false
 }
