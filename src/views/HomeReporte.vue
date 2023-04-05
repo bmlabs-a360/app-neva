@@ -1559,14 +1559,8 @@ export default {
         top3capacidadesByarea: [],
         top3peoresCapacidadesByarea : [],
         feedback: [],
-<<<<<<< HEAD
-        completoData: false
-=======
-        creartdSubAreaMejorar: 0,
-        creartdSubAreaMadura: 0,
+        completoData: false,
         muestraBotonDescarga: true,
->>>>>>> af1827c48dacda208f34f721574f3876ff67adb7
-
     });
 
       const route = useRoute();
