@@ -336,11 +336,11 @@
                                 <tbody>
                                     <tr :v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                         <td class="w-1">
-                                            <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.capacidad}}</h4>
+                                            <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3PeorCapacidadByArea.capacidad}}</h4>
                                         </td>
-                                        <td class="">
+                                        <!--<td class="">
                                             <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                     <tr v-if="top3peoresCapacidadesByarea.length ==0">
                                         <td><h4>No existe información para mostrar</h4></td>
@@ -815,11 +815,11 @@
                                         <tbody>
                                             <tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                                 <td class="w-1">
-                                                    <h4 class="text-center text-md-start">{{top3PeorCapacidadByArea.capacidad}}</h4>
+                                                    <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3PeorCapacidadByArea.capacidad}}</h4>
                                                 </td>
-                                                <td class="">
+                                                <!--<td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
-                                                </td>
+                                                </td>-->
                                             </tr>
                                             <tr v-if="top3peoresCapacidadesByarea.length ==0">
                                                 <td><h4>No existe información para mostrar</h4></td>
