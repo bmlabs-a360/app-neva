@@ -313,11 +313,11 @@
                                 <tbody>
                                     <tr :v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                         <td class="w-1">
-                                            <h4 class="text-center text-md-start">{{top3capacidadByarea.capacidad}}</h4>
+                                            <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3capacidadByarea.capacidad}}</h4>
                                         </td>
-                                        <td class="">
+                                        <!--<td class="">
                                             <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                     <tr v-if="top3capacidadesByarea.length ==0">
                                         <td><h4>No existe información para mostrar</h4></td>
@@ -437,7 +437,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="recomendacion in feedbacks " :key="recomendacion.id">
+                                <tr v-for="recomendacion in feedback " :key="recomendacion.id">
                                     <td v-if="recomendacion.respuestaValor != '4'">
                                         <div class="me-md-3">
                                             <h4 class="text-center text-md-start">{{recomendacion.preguntaCapacidad}}</h4>
@@ -568,8 +568,8 @@
 
             <div class="cards-grafictabsresult pt-4">
 
-                <div style="width: 100%;" class="px-2">
-                    <div class="graficatablas" style="width: 55%;">
+                <div class="px-2">
+                    <div class="graficatablas" >
                         <CChart type="radar"
                                 :data="resumenPuntuacionArea"
                                 height="300"
@@ -657,8 +657,8 @@
             <div class="cards-grafictabsresult pt-4">
 
 
-                <div style="width: 100%;" class="px-2">
-                    <div class="graficatablas" style="width: 45%;">
+                <div  class="px-2">
+                    <div class="graficatablas" >
                         <CChart type="bar"
                                 :data="resumenImportanciaRelativa"
                                 height="250"
@@ -789,11 +789,11 @@
                                         <tbody>
                                             <tr v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
                                                 <td class="w-1">
-                                                    <h4 class="text-center text-md-start">{{top3capacidadByarea.capacidad}}</h4>
+                                                    <h4 class="text-center text-md-start" style="text-transform: uppercase;">{{top3capacidadByarea.capacidad}}</h4>
                                                 </td>
-                                                <td class="">
+                                                <!--<td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
-                                                </td>
+                                                </td>-->
                                             </tr>
                                             <tr v-if="top3capacidadesByarea.length ==0">
                                                 <td><h4>No existe información para mostrar</h4></td>
@@ -913,7 +913,7 @@
                 <div id="pills-feedback" role="tabpanel" aria-labelledby="pills-feedback-tab" tabindex="0">
                     <!-- Inicio Cajas -->
 
-                    <h3 class="titleafterleyend">Recomendaciones</h3>
+                    <h3 class="titleafterleyend">Feedback</h3>
 
 
                     <div class="card mt-3 mb-2 d-flex ">
@@ -2061,9 +2061,6 @@ export default {
 
                     }
                 });
-                if ( element.respuestaValor != '4'){
-                    state.feedback.push(element);
-                }
             });
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.imsaValor - a.imsaValor));
             state.capacidadvalorMayor = state.capacidadvalorMayor.sort(((a, b) =>  b.pesoRelativoCapacidadValor - a.pesoRelativoCapacidadValor));
@@ -2413,7 +2410,7 @@ export default {
       
     };
 
-      onMounted(() => {
+      onMounted(async () => {
        //   console.log("onMounted");
           getInfo();
 
