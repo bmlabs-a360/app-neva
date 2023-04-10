@@ -1884,7 +1884,6 @@ export default {
             }else{
                 state.IM.nivelReporte = nivelReporte.detalle;
             }
-            debugger;
             state.nivelMadurez = state.IM.imValor.toFixed(0);
             state.nivelMadurez = parseInt(state.nivelMadurez);
         })
@@ -2085,7 +2084,6 @@ export default {
         let color = [];
         let restante = "";
         let dataSet = [];
-        debugger;
         if (state.IM.imValor.toFixed(0) == 1){
             color = "#EA0404";
             restante = 4;
