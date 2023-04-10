@@ -95,9 +95,10 @@
                             <div class="cards-grafictabsresult pt-4">
                                 <div class="w-100 p-2">
                                     <CChart type="bar"
+                                            v-if="resumenImportanciaRelativa"
                                             :data="resumenImportanciaRelativa"
-                                            height="285"
-                                            width="200"
+                                            :height="285"
+                                            :width="200"
                                             :options="{ maintainAspectRatio: false, plugins: { legend: { display: false } } }" />
                                 </div>
                                 <div class="bodycard">
@@ -112,9 +113,10 @@
                                     <div>
                                         <div :md="12">
                                             <CChart type="radar"
+                                                    v-if="resumenPuntuacionArea"
                                                     :data="resumenPuntuacionArea"
-                                                    height="300"
-                                                    width="200"
+                                                    :height="300"
+                                                    :width="200"
                                                     :options=" {  responsive: true,  maintainAspectRatio: false,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } },
                                             plugins: { legend: { display: false } } }" />
                                         </div>
@@ -262,7 +264,7 @@
                             <div class="d-flex flex-column justify-content-center">
                                 <p :class="ima.claseIMA">{{parseFloat(ima.imaValor).toFixed(0)}}</p>
                                 <div>
-                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" height="50" width="100"
+                                    <CChart type="doughnut" :data="ima.nivelMadurezAreas" :height="50" :width="100"
                                             :options="{ maintainAspectRatio: false,circumference: 180,rotation: -90, plugins: { title: { display: true,
                                     text:(ima.cumplimiento)+'%',font :{size:20},
                                     position: 'bottom' } } }" />
@@ -279,8 +281,9 @@
                         <div class="cards-grafictabsresult pt-4">
                             <div class="w-100 p-2">
                                 <CChart type="bar" :data="ima.resumenCapacidad"
-                                        height="60"
-                                        width="100"
+                                        v-if="ima.resumenCapacidad"
+                                        :height="60"
+                                        :width="100"
                                         :options=" {
                                         plugins:{horizonalLinePlugin},
                                         responsive: true,
@@ -571,9 +574,10 @@
                 <div class="px-2">
                     <div class="graficatablas" >
                         <CChart type="radar"
+                                v-if="resumenPuntuacionArea"
                                 :data="resumenPuntuacionArea"
-                                height="300"
-                                width="300"
+                                :height="300"
+                                :width="300"
                                 :options=" {  responsive: true,  maintainAspectRatio: false,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } },
                                             plugins: { legend: { display: false } } }" />
                     </div>
@@ -594,7 +598,6 @@
                         <h2>Madurez General</h2>
                     </div>
                     <div class="tipoempresa">
-                        <!--camilo-->
                         <div class="tipoempresa">
                             <div class="p-3" v-if="tamanoempresa.nombre == 'Microempresa'">
                                 <img :src="microEmpresaNegro" />
@@ -660,9 +663,10 @@
                 <div  class="px-2">
                     <div class="graficatablas" >
                         <CChart type="bar"
+                                v-if="resumenImportanciaRelativa"
                                 :data="resumenImportanciaRelativa"
-                                height="250"
-                                width="200"
+                                :height="250"
+                                :width="200"
                                 :options="{ maintainAspectRatio: false, plugins: { legend: { display: false } } }" />
                     </div>
                 </div>
@@ -745,9 +749,9 @@
                     <div class="cards-grafictabsresult pt-4">
 
 
-                        <CChart type="bar" :data="ima.resumenCapacidad"
-                                height="200"
-                                width="400"
+                        <CChart type="bar" :data="ima.resumenCapacidad" v-if="ima.resumenCapacidad"
+                                :height="200"
+                                :width="400"
                                 :options=" {
                                     plugins:{horizonalLinePlugin},
                                     responsive: true,
@@ -787,15 +791,15 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-if="top3capacidadesByarea.length >0" v-for="top3capacidadByarea in top3capacidadesByarea" :value="top3capacidadByarea.segmentacionAreaId" :key="top3capacidadByarea.segmentacionAreaId">
-                                                <td class="w-1">
-                                                    <h4 class="text-center text-md-start uppercase" >{{top3capacidadByarea.capacidad}}</h4>
+                                            <tr :v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMayor in capacidadvalorMayor" :value="capacidadMayor.segmentacionAreaId" :key="capacidadMayor.segmentacionAreaId">
+                                                <td class="w-1" v-if="capacidadMayor.segmentacionAreaId === ima.segmentacionAreaId">
+                                                    <h4 class="text-center text-md-start uppercase" >{{capacidadMayor.capacidad}}</h4>
                                                 </td>
                                                 <!--<td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
                                                 </td>-->
                                             </tr>
-                                            <tr v-if="top3capacidadesByarea.length ==0">
+                                            <tr  v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
                                                 <td><h4>No existe información para mostrar</h4></td>
                                             </tr>
                                         </tbody>
@@ -813,15 +817,19 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
+                                            <!--<tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
                                                 <td class="w-1">
                                                     <h4 class="text-center text-md-start uppercase" >{{top3PeorCapacidadByArea.capacidad}}</h4>
-                                                </td>
+                                                </td>-->
                                                 <!--<td class="">
                                                     <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
                                                 </td>-->
+                                            <tr :v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMenor in capacidadvalorMenor" :value="capacidadMenor.segmentacionAreaId" :key="capacidadMenor.segmentacionAreaId">
+                                                <td class="w-1" v-if="capacidadMenor.segmentacionAreaId === ima.segmentacionAreaId">
+                                                    <h4 class="text-center text-md-start uppercase" >{{capacidadMenor.capacidad}}</h4>
+                                                </td>
                                             </tr>
-                                            <tr v-if="top3peoresCapacidadesByarea.length ==0">
+                                            <tr v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
                                                 <td><h4>No existe información para mostrar</h4></td>
                                             </tr>
                                         </tbody>
@@ -841,13 +849,13 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id">
+                                            <tr :v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id">
                                                 <td scope="row" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
                                                     <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="SubAreaMadura.nivelMadurezSubAreas"
                                                                 :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
-                                    text:(SubAreaMadura.cumplimiento).toString()+'%',
-                                position: 'bottom' } }}" />
+                                                                        text:(SubAreaMadura.cumplimiento).toString()+'%',
+                                                                        position: 'bottom' } }}" />
                                                     </div>
                                                 </td>
                                                 <td class="w-1" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
@@ -875,13 +883,13 @@
                                 <div class="w-100 table-responsive pie-table">
                                     <table class="table-res table-hover">
                                         <tbody>
-                                            <tr v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
+                                            <tr :v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
                                                 <td scope="row" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
                                                     <div class="min-w pt-5">
                                                         <CChart type="doughnut" :data="SubAreaMejorar.nivelMadurezSubAreas"
                                                                 :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
-                                    text:(SubAreaMejorar.cumplimiento).toString()+'%',
-                                position: 'bottom' } }}" />
+                                                                        text:(SubAreaMejorar.cumplimiento).toString()+'%',
+                                                                        position: 'bottom' } }}" />
                                                     </div>
                                                 </td>
                                                 <td class="w-1" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
@@ -929,44 +937,44 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="recomendacion in feedback " :key="recomendacion.id">
+                                    <tr v-for="recomendacion in feedback" :key="recomendacion.id">
                                         <td v-if="recomendacion.respuestaValor != '4'">
                                             <div class="me-md-3">
-                                        <td class="text-center text-md-start">{{recomendacion.preguntaCapacidad}}</td>
-                        </div>
-                        </td>
-<td v-if="recomendacion.respuestaValor != '4'">
-        <div class="me-md-3">
-    <td class="align1cont1">{{recomendacion.nombreArea}} / {{recomendacion.nombreSubArea}}</td>
-    </div>
-    </td>
-    <td v-if="recomendacion.respuestaValor != '4'">
-        <div class="me-md-3">
-    <td class="text-center text-md-start">{{recomendacion.respuestaRealimentacion}}</td>
-    </div>
-    </td>
-    <td v-if="recomendacion.respuestaValor != '4'">
-        <div class="me-md-3">
-    <td class="text-center text-md-start">{{recomendacion.tipoImportanciaNombre}}</td>
-    </div>
-    </td>
-    <td v-if="recomendacion.respuestaValor != '4'">
-        <div class="me-md-3">
-    <td class="text-center text-md-start">{{recomendacion.tipoRespuestaValorNombre}}</td>
-    </div>
-    </td>
+                                                <td class="text-center text-md-start">{{recomendacion.preguntaCapacidad}}</td>
+                                            </div>
+                                        </td>
+                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                            <div class="me-md-3">
+                                                <td class="align1cont1">{{recomendacion.nombreArea}} / {{recomendacion.nombreSubArea}}</td>
+                                            </div>
+                                        </td>
+                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                            <div class="me-md-3">
+                                                <td class="text-center text-md-start">{{recomendacion.respuestaRealimentacion}}</td>
+                                            </div>
+                                        </td>
+                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                            <div class="me-md-3">
+                                                <td class="text-center text-md-start">{{recomendacion.tipoImportanciaNombre}}</td>
+                                            </div>
+                                        </td>
+                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                            <div class="me-md-3">
+                                                <td class="text-center text-md-start">{{recomendacion.tipoRespuestaValorNombre}}</td>
+                                            </div>
+                                        </td>
 
-    <div v-if="lineasContador()">
-        <div class="html2pdf__page-break"></div>
-    </div>
-    </tr>
-    </tbody>
-    </table>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+                                        <div v-if="lineasContador()">
+                                            <div class="html2pdf__page-break"></div>
+                                        </div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--Termino Contendio-->
 
@@ -1569,7 +1577,6 @@ export default {
 
       const route = useRoute();
       const lineasContador = () => {
-
           var salida = true;
 
           if (state.contadorLineas == 4) {
@@ -1877,7 +1884,9 @@ export default {
             }else{
                 state.IM.nivelReporte = nivelReporte.detalle;
             }
-            state.nivelMadurez = parseInt(state.IM.imValor).toFixed(0);
+            debugger;
+            state.nivelMadurez = state.IM.imValor.toFixed(0);
+            state.nivelMadurez = parseInt(state.nivelMadurez);
         })
         .catch((error) => {
             console.log("error->", error);
@@ -1891,7 +1900,6 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             state.IMA = response.data;
-            //console.log("state.IMA", state.IMA);
             state.IMA.forEach((element) => {
                 let color = [];
                 let restante = "";
@@ -2077,6 +2085,7 @@ export default {
         let color = [];
         let restante = "";
         let dataSet = [];
+        debugger;
         if (state.IM.imValor.toFixed(0) == 1){
             color = "#EA0404";
             restante = 4;
