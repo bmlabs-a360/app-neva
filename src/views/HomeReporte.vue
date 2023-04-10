@@ -506,7 +506,7 @@
                         <div class="w-100 table-responsive pie-table">
                             <table class="table-res table-hover">
                                 <tbody>
-                                    <tr v-if="AreasMaduras.length >0" v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
+                                    <tr :v-if="AreasMaduras.length >0" v-for="areaMadura in AreasMaduras" :value="areaMadura.id" :key="areaMadura.id">
                                         <td scope="row">
                                             <div class="min-w pt-5">
                                                 <CChart type="doughnut" :data="areaMadura.nivelMadurezAreas"
@@ -540,7 +540,7 @@
                         <div class="w-100 table-responsive pie-table">
                             <table class="table-res table-hover">
                                 <tbody>
-                                    <tr v-if="AreasMejorar.length >0" v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
+                                    <tr :v-if="AreasMejorar.length >0" v-for="areaMejorar in AreasMejorar" :value="areaMejorar.id" :key="areaMejorar.id">
                                         <td scope="row">
                                             <div class="min-w pt-5">
                                                 <CChart type="doughnut" :data="areaMejorar.nivelMadurezAreas"

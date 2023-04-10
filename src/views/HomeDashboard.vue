@@ -215,8 +215,8 @@
                                     <CChart
                                         type="bar"
                                         :data="resumenIM"
-                                        height="285"
-                                        width="200"
+                                        :height="285"
+                                        :width="200"
                                         :options="{ maintainAspectRatio: false }"
 
                                     />
@@ -237,8 +237,8 @@
                                     <CChart
                                         type="bar"
                                         :data="resumenPuntuacionArea"
-                                        height="285"
-                                        width="200"
+                                        :height="285"
+                                        :width="200"
                                         :options="{ maintainAspectRatio: false }"
                                     />
                                 </CCardBody>
@@ -255,9 +255,9 @@
                         <CCard class="mb-4">
                         <CCardBody >
                             <CChart type="bar" :data="resumenImportanciaRelativa"
-                            height="285"
-                                        width="200"
-                                        :options="{ maintainAspectRatio: false }" />
+                                :height="285"
+                                :width="200"
+                                :options="{ maintainAspectRatio: false }" />
                         </CCardBody>
                         </CCard>
                     </div>
@@ -411,7 +411,7 @@ export default {
             })
             .catch((error) => {
                 console.log("error",error);
-                state.totalevaluaciones = null;
+                state.totalevaluaciones = 0;
                 state.evaluaciones = null;
             });
     };
