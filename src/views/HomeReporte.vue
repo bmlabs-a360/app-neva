@@ -479,7 +479,7 @@
     <!--Termino Contendio-->
     <!--Contenido-->
     <!--<body class="btn" id="element-to-print">-->
-    <div id="document_pdf" style=" margin-top: -15000px; ">
+    <div id="document_pdf" style=" margin-top: -15000px;">
 
         <div class="seccion1 p-1 d-flex justify-center">
             <button class="btn btn-primary" @click="downloadPDF">Descargar</button>
@@ -487,16 +487,131 @@
         <div class="html2pdf__page-break"></div>
         <div id="download_pdf" >
             <div class="body-presentacion align-center ">
-                <div class="contenedor py-3">
+                <div class="contenedorPortada py-3">
                     <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ5IiBoZWlnaHQ9IjUyIiB2aWV3Qm94PSIwIDAgMTQ5IDUyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfMzUzXzU1NDApIj4KPHBhdGggZD0iTTM4LjI4NTggMEg0Ni45MDQ1VjUxLjA2ODVIMzcuNTU1NEw4LjYyMjE3IDEzLjgwNzJWNTEuMDY4NUgwVjBIOC42MjIxN0wzOC4yODU4IDM4LjEzNjlWMFoiIGZpbGw9IiMyMjM2M0UiLz4KPHBhdGggZD0iTTc0LjM4MzkgMFY4LjEwOTlINDcuMTI5NFYyMS42MjY0SDcxLjYwNzlWMjkuMjk2N0g0Ny4xMjk0VjQyLjk1ODZINzUuMjU5NlY1MS4wNjg1SDM4LjUxMDdWMEg3NC4zODM5WiIgZmlsbD0iIzIyMzYzRSIvPgo8cGF0aCBkPSJNOTEuMzQ0NCA1MS4wNjg1TDcwLjgxNTMgMEg4MC40NTg2TDk2LjM4NzYgMzguNjc2OUw5MS4zNDQ0IDUxLjA3MTlWNTEuMDY4NVoiIGZpbGw9IiMyMjM2M0UiLz4KPHBhdGggZD0iTTExMS45MzYgMEgxMjEuNTc5TDE0Mi4xMDggNTEuMDY4NUgxMzIuNDY1TDExNi43NTcgMTIuOTMxNUwxMDEuMDUgNTEuMDY4NUg5MS40MDY3TDExMS45MzYgMFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xMzIuNjEgMy42NTg1MkMxMzIuOTA1IDMuMjAxNjMgMTMzLjE5MiAyLjc0ODE5IDEzMy40NzkgMi4zMDE2OEMxMzMuNzY2IDEuODU1MTcgMTM0LjA1IDEuNDA1MiAxMzQuMzM4IDAuOTU1MjI1SDEzMS45ODdWMC4yOTA2NDlIMTM1LjQ4N0MxMzUuMTk5IDAuNzI2Nzc3IDEzNC45MTYgMS4xNjI5IDEzNC42MzUgMS41OTU1N0MxMzQuMzUxIDIuMDI4MjQgMTM0LjA2NCAyLjQ2MDkgMTMzLjc3IDIuODkwMTFDMTM0LjAyNiAyLjk0ODk1IDEzNC4yNjggMy4wMzg5NSAxMzQuNDkzIDMuMTcwNDhDMTM0LjcxOCAzLjI5ODU1IDEzNC45MTIgMy40NTc3NyAxMzUuMDc4IDMuNjQ4MTRDMTM1LjI0MSAzLjgzODUxIDEzNS4zNzMgNC4wNTMxMiAxMzUuNDY2IDQuMjkxOTVDMTM1LjU1OSA0LjUzMDc4IDEzNS42MDQgNC43OTAzOCAxMzUuNjA0IDUuMDcwNzVDMTM1LjYwNCA1LjM4NTczIDEzNS41NDIgNS42Nzk5NCAxMzUuNDIxIDUuOTU2ODVDMTM1LjMgNi4yMzM3NSAxMzUuMTM0IDYuNDcyNTkgMTM0LjkyNiA2LjY4MDI3QzEzNC43MTggNi44ODc5NSAxMzQuNDc2IDcuMDUwNjMgMTM0LjE5NiA3LjE3NTI0QzEzMy45MTUgNy4yOTYzOCAxMzMuNjIxIDcuMzU4NjkgMTMzLjMwNiA3LjM1ODY5QzEzMi45NyA3LjM1ODY5IDEzMi42NTUgNy4yOTI5MiAxMzIuMzY4IDcuMTYxMzlDMTMyLjA3NyA3LjAyOTg2IDEzMS44MjggNi44NDk4NyAxMzEuNjIgNi42MTc5NkMxMzEuNyA2LjUzODM1IDEzMS43OCA2LjQ2MjIgMTMxLjg2NiA2LjM4MjU5QzEzMS45NTMgNi4zMDI5OCAxMzIuMDM2IDYuMjI2ODMgMTMyLjExMiA2LjE0NzIyQzEzMi4yNTQgNi4zMTMzNiAxMzIuNDI3IDYuNDQ0OSAxMzIuNjI4IDYuNTQ4NzRDMTMyLjgyOCA2LjY1MjU4IDEzMy4wNSA2LjcwNDQ5IDEzMy4yOTIgNi43MDQ0OUMxMzMuNTE0IDYuNzA0NDkgMTMzLjcyNSA2LjY2Mjk2IDEzMy45MjYgNi41NzY0M0MxMzQuMTI2IDYuNDg5ODkgMTM0LjMgNi4zNzIyMSAxMzQuNDUyIDYuMjIzMzdDMTM0LjYwMSA2LjA3NDUzIDEzNC43MTggNS45MDE0NyAxMzQuODA1IDUuNzA0MTdDMTM0Ljg5MSA1LjUwNjg3IDEzNC45MzMgNS4yOTkxOSAxMzQuOTMzIDUuMDc3NjdDMTM0LjkzMyA0Ljg1NjE0IDEzNC44OTEgNC42NDg0NiAxMzQuODA1IDQuNDUxMTdDMTM0LjcxOCA0LjI1Mzg3IDEzNC42MDEgNC4wODQyNyAxMzQuNDUyIDMuOTQyMzVDMTM0LjMwMyAzLjgwMDQ0IDEzNC4xMjYgMy42ODYyMSAxMzMuOTI2IDMuNTk5NjhDMTMzLjcyNSAzLjUxMzE1IDEzMy41MTQgMy40NzE2MSAxMzMuMjkyIDMuNDcxNjFDMTMzLjA1IDMuNDcxNjEgMTMyLjgyMiAzLjU0MDg0IDEzMi42MDcgMy42NzU4M0wxMzIuNjEgMy42NTg1MloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xMzYuOTM0IDUuMTYwODNDMTM2LjkzNCA0LjY0NTA5IDEzNy4wNDQgNC4xNjM5NyAxMzcuMjYyIDMuNzE3NDVDMTM3LjQ4IDMuMjcwOTQgMTM3Ljc2MSAyLjg1MjEyIDEzOC4xMDQgMi40Njc5MUMxMzguNDQ2IDIuMDgwMjUgMTM4LjgzIDEuNzIwMjcgMTM5LjI1MyAxLjM4NDUyQzEzOS42NzUgMS4wNDg3NyAxNDAuMDg3IDAuNzMzNzg4IDE0MC40ODggMC40Mzk1NzVDMTQwLjU2MSAwLjUyNjEwOCAxNDAuNjMgMC42MTI2NDIgMTQwLjY5NiAwLjcwMjYzNkMxNDAuNzY1IDAuNzkyNjMxIDE0MC44MzUgMC44NzkxNjQgMTQwLjkwNCAwLjk2NTY5N0MxNDAuMjk1IDEuMzc0MTMgMTM5LjggMS43NTgzNCAxMzkuNDE5IDIuMTE4MzJDMTM5LjAzOCAyLjQ3ODMgMTM4Ljc0IDIuODAwMiAxMzguNTMzIDMuMDc3MTFDMTM4LjYxOSAyLjk5NzUgMTM4LjcyIDIuOTM1MTkgMTM4LjgzNyAyLjg4MzI3QzEzOC45NTUgMi44MzQ4MiAxMzkuMDgzIDIuODA3MTIgMTM5LjIxOCAyLjgwNzEyQzEzOS41MzMgMi44MDcxMiAxMzkuODMxIDIuODY1OTcgMTQwLjEwOCAyLjk4MzY1QzE0MC4zODggMy4xMDEzNCAxNDAuNjMgMy4yNjQwMiAxNDAuODM4IDMuNDY4MjRDMTQxLjA0NiAzLjY3MjQ2IDE0MS4yMDggMy45MTEyOSAxNDEuMzMzIDQuMTg4MkMxNDEuNDU0IDQuNDY1MSAxNDEuNTE2IDQuNzU5MzIgMTQxLjUxNiA1LjA3NDNDMTQxLjUxNiA1LjM4OTI4IDE0MS40NTQgNS42ODM0OSAxNDEuMzMzIDUuOTYwNEMxNDEuMjEyIDYuMjM3MyAxNDEuMDQ2IDYuNDc2MTMgMTQwLjgzOCA2LjY4MDM1QzE0MC42MyA2Ljg4NDU3IDE0MC4zODggNy4wNDcyNSAxNDAuMTA4IDcuMTY4NEMxMzkuODI3IDcuMjg5NTUgMTM5LjUzMyA3LjM1MTg1IDEzOS4yMTggNy4zNTE4NUMxMzguOTAzIDcuMzUxODUgMTM4LjYxOSA3LjI5MzAxIDEzOC4zNDIgNy4xNzg3OEMxMzguMDY1IDcuMDY0NTYgMTM3LjgyNyA2LjkwODggMTM3LjYyMiA2LjcxMTUxQzEzNy40MTggNi41MTQyMSAxMzcuMjU1IDYuMjgyMyAxMzcuMTI3IDYuMDE1NzhDMTM3LjAwMyA1Ljc0NTc5IDEzNi45MzcgNS40NjE5NyAxMzYuOTMgNS4xNjQyOUwxMzYuOTM0IDUuMTYwODNaTTEzNy42MTkgNS4wNzQzQzEzNy42MTkgNS4yOTU4MiAxMzcuNjYgNS41MDY5NiAxMzcuNzQ0IDUuNzAwOEMxMzcuODI3IDUuODk4MDkgMTM3LjkzNyA2LjA2NzcgMTM4LjA4MyA2LjIxNjU0QzEzOC4yMjUgNi4zNjE5MSAxMzguMzk0IDYuNDc5NiAxMzguNTg4IDYuNTY2MTNDMTM4Ljc4MiA2LjY1MjY2IDEzOC45OSA2LjY5NDIgMTM5LjIxMSA2LjY5NDJDMTM5LjQzMyA2LjY5NDIgMTM5LjY0NCA2LjY1MjY2IDEzOS44NDUgNi41NjYxM0MxNDAuMDQ1IDYuNDc5NiAxNDAuMjE4IDYuMzY1MzcgMTQwLjM3MSA2LjIxNjU0QzE0MC41MiA2LjA3MTE2IDE0MC42MzcgNS44OTgwOSAxNDAuNzI0IDUuNzAwOEMxNDAuODEgNS41MDM1IDE0MC44NTIgNS4yOTU4MiAxNDAuODUyIDUuMDc0M0MxNDAuODUyIDQuODUyNzcgMTQwLjgxIDQuNjQ1MDkgMTQwLjcyNCA0LjQ0NzhDMTQwLjYzNyA0LjI1MDUgMTQwLjUyIDQuMDgwODkgMTQwLjM3MSAzLjkzODk4QzE0MC4yMjIgMy43OTcwNyAxNDAuMDQ1IDMuNjgyODQgMTM5Ljg0NSAzLjU5NjMxQzEzOS42NDQgMy41MDk3OCAxMzkuNDMzIDMuNDY4MjQgMTM5LjIxMSAzLjQ2ODI0QzEzOC45OSAzLjQ2ODI0IDEzOC43ODIgMy41MDk3OCAxMzguNTg4IDMuNTk2MzFDMTM4LjM5NCAzLjY4Mjg0IDEzOC4yMjggMy43OTcwNyAxMzguMDgzIDMuOTM4OThDMTM3Ljk0MSA0LjA4MDg5IDEzNy44MjcgNC4yNTA1IDEzNy43NDQgNC40NDc4QzEzNy42NiA0LjY0NTA5IDEzNy42MTkgNC44NTI3NyAxMzcuNjE5IDUuMDc0M1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNDIuMzg1IDMuNzU1NTVDMTQyLjM4NSAzLjI3MDk2IDE0Mi40NTQgMi44MTA2MSAxNDIuNTg5IDIuMzc3OTRDMTQyLjcyNCAxLjk0NTI3IDE0Mi45MjIgMS41Njc5OSAxNDMuMTc0IDEuMjQ2MDhDMTQzLjQyNyAwLjkyNDE4IDE0My43MzIgMC42NzE1MDMgMTQ0LjA4NSAwLjQ4NDU5MUMxNDQuNDM4IDAuMjk3NjggMTQ0LjgzNiAwLjIwNDIyNCAxNDUuMjgyIDAuMjA0MjI0QzE0NS43MjkgMC4yMDQyMjQgMTQ2LjEyMyAwLjMwMTE0MSAxNDYuNDggMC40OTQ5NzVDMTQ2LjgzMyAwLjY4ODgxIDE0Ny4xMzQgMC45NDg0MSAxNDcuMzggMS4yNzcyNEMxNDcuNjI2IDEuNjA2MDYgMTQ3LjgxNiAxLjk4NjgxIDE0Ny45NDQgMi40MTk0OEMxNDguMDcyIDIuODUyMTQgMTQ4LjEzOCAzLjMxMjUgMTQ4LjEzOCAzLjc5NzA4QzE0OC4xMzggNC4zMjY2NyAxNDguMDU1IDQuODA3NzkgMTQ3Ljg5MiA1LjI0NzM4QzE0Ny43MjYgNS42ODM1MSAxNDcuNTExIDYuMDU3MzMgMTQ3LjI0MSA2LjM2ODg1QzE0Ni45NzEgNi42ODAzNyAxNDYuNjYzIDYuOTIyNjcgMTQ2LjMxNCA3LjA5MjI3QzE0NS45NjQgNy4yNjUzNCAxNDUuNjAxIDcuMzQ4NDEgMTQ1LjIzIDcuMzQ4NDFDMTQ0Ljg2IDcuMzQ4NDEgMTQ0LjUgNy4yNTg0MSAxNDQuMTU3IDcuMDgxODlDMTQzLjgxNSA2LjkwNTM2IDE0My41MSA2LjY1NjE0IDE0My4yNDcgNi4zNDExNkMxNDIuOTg0IDYuMDI2MTggMTQyLjc3MyA1LjY0ODkgMTQyLjYyMSA1LjIwOTMxQzE0Mi40NjggNC43Njk3MiAxNDIuMzg5IDQuMjg1MTMgMTQyLjM4OSAzLjc1NTU1SDE0Mi4zODVaTTE0My4wNiAzLjc1NTU1QzE0My4wNiA0LjE3NzgzIDE0My4xMTkgNC41Njg5NiAxNDMuMjMzIDQuOTI1NDhDMTQzLjM0NyA1LjI4MiAxNDMuNTA3IDUuNTkzNTIgMTQzLjcwNCA1Ljg1MzEyQzE0My45MDUgNi4xMTI3MSAxNDQuMTM3IDYuMzIwMzkgMTQ0LjQgNi40NjkyM0MxNDQuNjYzIDYuNjE4MDcgMTQ0Ljk0MyA2LjY5NDIyIDE0NS4yMzcgNi42OTQyMkMxNDUuNTMyIDYuNjk0MjIgMTQ1LjgwMiA2LjYyMTUzIDE0Ni4wNjggNi40Nzk2MkMxNDYuMzM1IDYuMzM3NyAxNDYuNTczIDYuMTM2OTQgMTQ2Ljc3OCA1Ljg3NzM0QzE0Ni45ODIgNS42MTc3NCAxNDcuMTQ1IDUuMzEzMTUgMTQ3LjI3MyA0Ljk1MzE3QzE0Ny4zOTcgNC41OTY2NSAxNDcuNDU5IDQuMjA1NTIgMTQ3LjQ1OSAzLjc4MzI0QzE0Ny40NTkgMy40NDc0OSAxNDcuNDE4IDMuMTA0ODIgMTQ3LjMzMSAyLjc1ODY5QzE0Ny4yNDUgMi40MTI1NSAxNDcuMTEgMi4wOTc1NyAxNDYuOTMgMS44MTM3NEMxNDYuNzUgMS41Mjk5MSAxNDYuNTIxIDEuMzAxNDcgMTQ2LjI0OCAxLjEyMTQ4QzE0NS45NzUgMC45NDE0ODcgMTQ1LjY1NiAwLjg1NDk1NCAxNDUuMjgyIDAuODU0OTU0QzE0NC45MDggMC44NTQ5NTQgMTQ0LjU4NyAwLjk0MTQ4NyAxNDQuMzA2IDEuMTExMDlDMTQ0LjAyNiAxLjI4NDE2IDE0My43OTcgMS41MDkxNSAxNDMuNjE0IDEuNzg2MDVDMTQzLjQzMSAyLjA2NjQyIDE0My4yOTYgMi4zNzc5NCAxNDMuMjAyIDIuNzI0MDdDMTQzLjEwOSAzLjA3MDIxIDE0My4wNjQgMy40MTI4OCAxNDMuMDY0IDMuNzQ4NjNMMTQzLjA2IDMuNzU1NTVaIiBmaWxsPSJ3aGl0ZSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzM1M181NTQwIj4KPHJlY3Qgd2lkdGg9IjE0OC4xMzgiIGhlaWdodD0iNTEuMDcxOSIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K" class="logo-presentacion">
                     <h2 class="title-presentacion">{{ fechaAno.getFullYear()}}</h2>
                     <h3 class="subtitle-presentacion">{{nombreEvaluacion}}</h3>
                     <!--<h3 class="subtitle-presentacion">A360º</h3>-->
-
                 </div>
             </div>
             <div class="html2pdf__page-break"></div>
 
+            <!--Madurez General-->
+            <div class="contenedor">
+                <div class="d-flex w-100 justify-around align-center">
+                    <div class="title-madurez">
+                        <h2>Madurez General</h2>
+                    </div>
+                    <div class="tipoempresa">
+                        <div class="tipoempresa">
+                            <div class="p-3" v-if="tamanoempresa.nombre == 'Microempresa'">
+                                <img :src="microEmpresaNegro" />
+                            </div>
+                            <div class="p-3" v-else>
+                                <img :src="microEmpresa" />
+                            </div>
+
+                            <div class="p-3" v-if="tamanoempresa.nombre == 'Pequeña Empresa'">
+                                <img :src="pequenaEmpresaNegro" />
+                            </div>
+                            <div class="p-3" v-else>
+                                <img :src="pequenaEmpresa" />
+                            </div>
+
+                            <div class="p-3" v-if="tamanoempresa.nombre == 'Mediana Empresa'">
+                                <img :src="medianaEmpresaNegro" />
+                            </div>
+                                <div class="p-3" v-else>
+                                <img :src="medianaEmpresa" />
+                            </div>
+
+                            <div class="p-3" v-if="tamanoempresa.nombre == 'Gran Empresa'">
+                                <img :src="granEmpresaNegro" />
+                            </div>
+                            <div class="p-3" v-else>
+                                <img :src="granEmpresa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="primary d-flex w-100 justify-around align-center  px-2 py-2">
+                    <div style="width: 50%;">
+                        <h2 class="titulomadurez">{{nivelMadurez}}</h2>
+                        <div class="subtitle-madurez">
+                            <h4>Nivel de madurez</h4>
+                        </div>
+                        <div class="back-cajas">
+                            <div class="cajas-madurez-5">5</div>
+                            <div class="cajas-madurez-4">4</div>
+                            <div class="cajas-madurez-3">3</div>
+                            <div class="cajas-madurez-2">2</div>
+                            <div class="cajas-madurez-1">1</div>
+                        </div>
+                    </div>
+                    <div style="width: 50%;">
+                        <div class="textos-madurez">
+                            <h6 v-if="userSelected.empresa">{{userSelected.empresa.rutEmpresa}}</h6>
+                            <h6 v-if="userSelected.empresa">{{userSelected.empresa.razonSocial}}</h6>
+                        </div>
+                        <div class="parrafo-madurez">
+                            <p>{{IM.nivelReporte}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Termino Madurez General-->
+
+            <div class="html2pdf__page-break"></div>
+
+            <!--Importancia Relativa-->
+            <div class="cards-grafictabsresult pt-4">
+                <div  class="px-2">
+                    <div class="graficatablas" >
+                        <CChart type="bar"
+                                v-if="resumenImportanciaRelativa"
+                                :data="resumenImportanciaRelativa"
+                                :height="250"
+                                :width="200"
+                                :options="{ maintainAspectRatio: false, plugins: { legend: { display: false } } }" />
+                    </div>
+                </div>
+
+                <div class="bodycard" style="width:100%;">
+                    <h2>Importancia Relativa</h2>
+                    <p>
+                        “Valor porcentual obtenido al analizar a la empresa dentro del tipo de “industria" a la que pertenece, donde se refleja la importancia de cada área con respecto a la actividad de la empresa. Ayuda a visualizar la relevancia de un área dentro de la compañía”
+                    </p>
+                </div>
+            </div>
+            <!--Fin Importancia Relativa-->
+
+            <div class="html2pdf__page-break"></div>
+
+            <!--Puntuacion entre areas-->
+            <div class="cards-grafictabsresult pt-4">
+
+                <div class="px-2">
+                    <div class="graficatablas" >
+                        <CChart type="radar"
+                                v-if="resumenPuntuacionArea"
+                                :data="resumenPuntuacionArea"
+                                :height="300"
+                                :width="300"
+                                :options=" {  responsive: true,  maintainAspectRatio: false,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } },
+                                            plugins: { legend: { display: false } } }" />
+                    </div>
+                </div>
+
+                <div class="bodycard" style="width:100%;">
+                    <h2>Puntuación entre las áreas</h2>
+                    <p>Valor porcentual de cada área, en comparación con las otras, dentro de la organización. Ayuda a visualizar que área está mejor evaluada y cuales tienen una evaluación menor. Entendiendo como 100% la mejor evaluación posible</p>
+                </div>
+            </div>
+            <!--Fin Puntuacion entre areas-->
+
+            <div class="html2pdf__page-break"></div>
+
+            <!--Areas Maduras -->
             <div class="seccion1 p-1 d-flex justify-center">
                 <div style="width: 46%;">
                     <table class="table1" style="width:90%">
@@ -566,123 +681,11 @@
                     </table>
                 </div>
             </div>
+            <!--Fin Areas Maduras -->
 
-            <div class="html2pdf__page-break"></div>
+            <!--<div class="html2pdf__page-break"></div>-->
 
-            <div class="cards-grafictabsresult pt-4">
-
-                <div class="px-2">
-                    <div class="graficatablas" >
-                        <CChart type="radar"
-                                v-if="resumenPuntuacionArea"
-                                :data="resumenPuntuacionArea"
-                                :height="300"
-                                :width="300"
-                                :options=" {  responsive: true,  maintainAspectRatio: false,  scales: { r: { max: 100, min: 0, ticks: { stepSize: 10 } } },
-                                            plugins: { legend: { display: false } } }" />
-                    </div>
-                </div>
-
-                <div class="bodycard" style="width:100%;">
-                    <h2>Puntuación entre las áreas</h2>
-                    <p>Valor porcentual de cada área, en comparación con las otras, dentro de la organización. Ayuda a visualizar que área está mejor evaluada y cuales tienen una evaluación menor. Entendiendo como 100% la mejor evaluación posible</p>
-                </div>
-            </div>
-
-            <div class="html2pdf__page-break"></div>
-
-            <!--Madurez General-->
-            <div class="contenedor">
-                <div class="d-flex w-100 justify-around align-center">
-                    <div class="title-madurez">
-                        <h2>Madurez General</h2>
-                    </div>
-                    <div class="tipoempresa">
-                        <div class="tipoempresa">
-                            <div class="p-3" v-if="tamanoempresa.nombre == 'Microempresa'">
-                                <img :src="microEmpresaNegro" />
-                            </div>
-                            <div class="p-3" v-else>
-                                <img :src="microEmpresa" />
-                            </div>
-
-                            <div class="p-3" v-if="tamanoempresa.nombre == 'Pequeña Empresa'">
-                                <img :src="pequenaEmpresaNegro" />
-                            </div>
-                            <div class="p-3" v-else>
-                                <img :src="pequenaEmpresa" />
-                            </div>
-
-                            <div class="p-3" v-if="tamanoempresa.nombre == 'Mediana Empresa'">
-                                <img :src="medianaEmpresaNegro" />
-                            </div>
-                                <div class="p-3" v-else>
-                                <img :src="medianaEmpresa" />
-                            </div>
-
-                            <div class="p-3" v-if="tamanoempresa.nombre == 'Gran Empresa'">
-                                <img :src="granEmpresaNegro" />
-                            </div>
-                            <div class="p-3" v-else>
-                                <img :src="granEmpresa" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="primary d-flex w-100 justify-around align-center  px-2 py-2">
-                    <div style="width: 50%;">
-                        <h2 class="titulomadurez">{{nivelMadurez}}</h2>
-                        <div class="subtitle-madurez">
-                            <h4>Nivel de madurez</h4>
-                        </div>
-                        <div class="back-cajas">
-                            <div class="cajas-madurez-5">5</div>
-                            <div class="cajas-madurez-4">4</div>
-                            <div class="cajas-madurez-3">3</div>
-                            <div class="cajas-madurez-2">2</div>
-                            <div class="cajas-madurez-1">1</div>
-                        </div>
-                    </div>
-                    <div style="width: 50%;">
-                        <div class="textos-madurez">
-                            <h6 v-if="userSelected.empresa">{{userSelected.empresa.rutEmpresa}}</h6>
-                            <h6 v-if="userSelected.empresa">{{userSelected.empresa.razonSocial}}</h6>
-                        </div>
-                        <div class="parrafo-madurez">
-                            <p>{{IM.nivelReporte}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="html2pdf__page-break"></div>
-
-            <div class="cards-grafictabsresult pt-4">
-
-
-                <div  class="px-2">
-                    <div class="graficatablas" >
-                        <CChart type="bar"
-                                v-if="resumenImportanciaRelativa"
-                                :data="resumenImportanciaRelativa"
-                                :height="250"
-                                :width="200"
-                                :options="{ maintainAspectRatio: false, plugins: { legend: { display: false } } }" />
-                    </div>
-                </div>
-
-
-
-                <div class="bodycard" style="width:100%;">
-                    <h2>Importancia Relativa</h2>
-                    <p>
-                        “Valor porcentual obtenido al analizar a la empresa dentro del tipo de “industria" a la que pertenece, donde se refleja la importancia de cada área con respecto a la actividad de la empresa. Ayuda a visualizar la relevancia de un área dentro de la compañía”
-                    </p>
-                </div>
-            </div>
-
-            <!--Termino Madurez General-->
-
+            <!--Resultados entre areas-->
             <div class="contenedor">
                 <div :id="'pills-'+ ima.segmentacionAreaId" name="pills-areas" role="tabpanel" aria-labelledby="pills-estrategias-tab"
                      tabindex="0" v-for="ima in IMA" :value="ima.segmentacionAreaId" :key="ima.segmentacionAreaId" :v-if="ima.activaArea">
@@ -911,11 +914,8 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
             </div>
+            <!--Fin Resultados entre areas-->
 
             <div class="html2pdf__page-break"></div>
 
@@ -976,6 +976,60 @@
                     </div>
                 </div>
             </div>
+
+            <div class="html2pdf__page-break"></div>
+
+            <!--Niveles de madurez-->
+
+            <section class="cards cards-resumen mt-5 mb-4 justify-content-between">
+                <div class="cards" >
+                    <div class="cards-grafictabsresult pt-4 ">
+                        <div class="bodycard">
+                            <h2>Niveles de madurez</h2>
+                            <p>
+                                El <b>índice de madurez empresarial</b>, se refiere como el grado en que una empresa ha desarrollado y adoptado buenas
+                                prácticas en sus procesos y dirección, lo que le permite operar de manera más efectiva y eficiente, alcanzando así
+                                sus objetivos y metas a largo plazo. La evaluación de la madurez empresarial, implica la medición del nivel de
+                                madurez actual de la empresa y la identificación de las áreas en las que se deben hacer mejoras para alcanzar un
+                                mayor grado de madurez y competitividad.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="html2pdf__page-break"></div>
+
+            <div class="contenedor">
+
+                <h3 class="titleafterleyend">Niveles de madurez</h3>
+
+                <div class="level-descrip d-flex flex-column">
+                    <div class="d-flex justify-content-around w-100" v-for="(nivelReporte,index) in reporte.reporteItemNivelBasicos" :value="nivelReporte.id" :key="nivelReporte.id">
+                  
+                        <div :class="'nivel-' + nivelReporte.orden + '-descrip'" v-if="index<=1">
+                            <p>{{nivelReporte.orden}}</p>
+                        </div>
+                        <div :class="'nivel-' + nivelReporte.orden + '-description w-100'" v-if="index<=1">
+                            {{nivelReporte.detalle}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="html2pdf__page-break"></div>
+
+                <div class="level-descrip d-flex flex-column">
+                    <div class="d-flex justify-content-around w-100" v-for="(nivelReporte,index) in reporte.reporteItemNivelBasicos" :value="nivelReporte.id" :key="nivelReporte.id">
+                        <div :class="'nivel-' + nivelReporte.orden + '-descrip'" v-if="index>=2">
+                            <p>{{nivelReporte.orden}}</p>
+                        </div>
+                        <div :class="'nivel-' + nivelReporte.orden + '-description w-100'" v-if="index>=2">
+                            {{nivelReporte.detalle}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Fin Niveles de madurez-->
         </div>
     </div>
     <!--Termino Contendio-->
@@ -1011,6 +1065,15 @@
 
     .contenedor {
         /*height:550px;*/
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .contenedorPortada {
+        height:555px;
         display: flex;
         flex-direction: column;
         align-items: start;
@@ -1542,6 +1605,7 @@ export default {
         fechaAno : new Date(),
         pdfBool: false,
         contadorLineas:1,
+        contadorLineasNiveles: 1,
         userSelected: [],
         empresa: [],
         fechaHoy : "",
@@ -1577,19 +1641,19 @@ export default {
         muestraBotonDescarga: true,
     });
 
-      const route = useRoute();
-      const lineasContador = () => {
-          var salida = true;
+    const route = useRoute();
+    const lineasContador = () => {
+        var salida = true;
 
-          if (state.contadorLineas == 4) {
-              state.contadorLineas = 1;
-              salida = true;
-          } else {
-              state.contadorLineas++
-              salida = false;
-          }
-          return salida;
-      };
+        if (state.contadorLineas == 4) {
+            state.contadorLineas = 1;
+            salida = true;
+        } else {
+            state.contadorLineas++
+            salida = false;
+        }
+        return salida;
+    };
     
     const exportToPDF = () => {
        // /*html2pdf(document.getElementById("document_container"), {
