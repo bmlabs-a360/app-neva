@@ -13,7 +13,7 @@
             </ul>
             <div class="">
                 <div class="control has-icon">
-                    <input class="input new w-100" type="text"  @change="getEvaluacionesPaginated(true)" id="buscadorEvaluacion" placeholder="Buscador Evaluación">
+                    <input class="input new w-100" type="text"  @change="limpiarGraficos();getEvaluacionesPaginated(true)" id="buscadorEvaluacion" placeholder="Buscador Evaluación">
                     <label class="form-icon search" for="">
                         <svg width="24" height="24" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_258_3270)">
@@ -357,9 +357,6 @@ export default {
         state.resumenPuntuacionArea = [];
         state.resumenImportanciaRelativa = [];
         await getEvaluacionesPaginated(false);
-        if (state.evaluaciones.length > 0){
-            cargarGraficos(state.evaluaciones[0]);
-        }
     };
 
     const getEvaluacionesPaginated = async (iniciarPage) => {
@@ -408,6 +405,9 @@ export default {
                     state.SegmentacionAreas = state.SegmentacionAreas.concat(m.segmentacionAreas);
                     return;
                 });
+                if (state.evaluaciones.length > 0){
+                    cargarGraficos(state.evaluaciones[0]);
+                }
             })
             .catch((error) => {
                 console.log("error",error);
@@ -422,10 +422,6 @@ export default {
         await getEvaluacionesPaginated(false);
         await getIM();
         await getEstadoSubArea();
-
-        if (state.evaluaciones.length > 0){
-            cargarGraficos(state.evaluaciones[0]);
-        }
     };
 
     const getIM = async () => {
@@ -479,12 +475,13 @@ export default {
     };
 
     const cargarGraficos = async (evaluacionSelected) => {
-        if (document.getElementById(evaluacionSelected.id) != undefined){
-            document.getElementById(evaluacionSelected.id).checked = true;
-        } 
         state.evaluacionSelected = evaluacionSelected;
         await getIMA();
         getGraficoPuntuacionArea();
+        
+        if (document.getElementById(evaluacionSelected.id) != undefined){
+            document.getElementById(evaluacionSelected.id).checked = true;
+        } 
     };
 
     const getIMA = async () => {
@@ -585,6 +582,12 @@ export default {
         };
     };
 
+    const limpiarGraficos = () => {
+        state.resumenIM = [];
+        state.resumenImportanciaRelativa = [];
+        state.resumenPuntuacionArea = [];
+    };
+
     const ir = (namePageDestiny, evaluacion) => {
         return router.push({ name: namePageDestiny , query : {evaluacionId : evaluacion.id, evaluacionNombre: evaluacion.nombre} });
     };
@@ -604,7 +607,8 @@ export default {
         ir,
         cargarGraficos,
         selectedPagination,
-        getEvaluacionesPaginated
+        getEvaluacionesPaginated,
+        limpiarGraficos,
     };
   },
 };
