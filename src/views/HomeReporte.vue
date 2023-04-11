@@ -683,229 +683,232 @@
 
             <!--Termino Madurez General-->
 
+            <!--camilo-->
             <div class="contenedor">
                 <div :id="'pills-'+ ima.segmentacionAreaId" name="pills-areas" role="tabpanel" aria-labelledby="pills-estrategias-tab"
-                     tabindex="0" v-for="ima in IMA" :value="ima.segmentacionAreaId" :key="ima.segmentacionAreaId">
+                     tabindex="0" v-for="ima in IMA" :value="ima.segmentacionAreaId" :key="ima.segmentacionAreaId" :v-if="ima.activaArea">
+                    <div v-if="ima.activaArea">
 
-                    <div class="html2pdf__page-break"></div>
+                        <div class="html2pdf__page-break"></div>
 
-                    <!-- Inicio Cajas -->
-                    <div class="my-5 d-flex flex-wrap justify-content-between">
-                        <div>
-                            <h3 class="titleafterleyend">{{ima.nombreArea}}</h3>
+                        <!-- Inicio Cajas -->
+                        <div class="my-5 d-flex flex-wrap justify-content-between">
+                            <div>
+                                <h3 class="titleafterleyend">{{ima.nombreArea}}</h3>
+                            </div>
+                            <div class="circle d-flex flex-wrap align-items-center">
+                                <div class="leyend d-flex align-items-center">
+                                    <div class="grafica ">
+                                        <button class="btn circle-res order-md-2 ">
+                                            {{ima.imaValor}}
+                                        </button>
+                                    </div>
+                                    <h5>Aporte IM</h5>
+                                </div>
+
+                                <div class="leyend d-flex align-items-center">
+                                    <div class="grafica">
+                                        <button class="btn circle-blue order-md-2 ">
+                                            {{ima.cumplimiento}}%
+                                        </button>
+                                    </div>
+                                    <h5>Cumplimiento</h5>
+                                </div>
+
+                                <div class="leyend d-flex align-items-center">
+                                    <div class="grafica">
+                                        <button class="btn circle-red order-md-2">
+                                            <p style=" color: rgb(155 155 155); ">{{ima.brecha}}%</p>
+                                        </button>
+                                    </div>
+                                    <h5>Brecha</h5>
+                                </div>
+                            </div>
                         </div>
-                        <div class="circle d-flex flex-wrap align-items-center">
-                            <div class="leyend d-flex align-items-center">
-                                <div class="grafica ">
-                                    <button class="btn circle-res order-md-2 ">
-                                        {{ima.imaValor}}
-                                    </button>
-                                </div>
-                                <h5>Aporte IM</h5>
-                            </div>
-
-                            <div class="leyend d-flex align-items-center">
-                                <div class="grafica">
-                                    <button class="btn circle-blue order-md-2 ">
-                                        {{ima.cumplimiento}}%
-                                    </button>
-                                </div>
-                                <h5>Cumplimiento</h5>
-                            </div>
-
-                            <div class="leyend d-flex align-items-center">
-                                <div class="grafica">
-                                    <button class="btn circle-red order-md-2">
-                                        <p style=" color: rgb(155 155 155); ">{{ima.brecha}}%</p>
-                                    </button>
-                                </div>
-                                <h5>Brecha</h5>
-                            </div>
-                        </div>
-                    </div>
 
 
-                    <div class="w-100 d-flex flex-column justify-center align-center">
-                        <section class="cards mt-1 mb-4 justify-content-between">
-                            <div style="width: 30%;">
-                                <h2 class="valorestitulomadurez">{{parseFloat(ima.imaValor).toFixed(0)}}</h2>
-                                <div class="valoressubtitle-madurez">
-                                    <h4>Nivel de madurez</h4>
-                                </div>
-                                <div class="back-cajas pb-2">
-                                    <div class="cajas-madurez-5">5</div>
-                                    <div class="cajas-madurez-4">4</div>
-                                    <div class="cajas-madurez-3">3</div>
-                                    <div class="cajas-madurez-2">2</div>
-                                    <div class="cajas-madurez-1">1</div>
-                                </div>
-                            </div>
-
-                        </section>
-                    </div>
-
-                    <div class="html2pdf__page-break"></div>
-
-                    <div class="cards-grafictabsresult pt-4">
-
-
-                        <CChart type="bar" :data="ima.resumenCapacidad" v-if="ima.resumenCapacidad"
-                                :height="200"
-                                :width="400"
-                                :options=" {
-                                    plugins:{horizonalLinePlugin},
-                                    responsive: true,
-                                    scales: {
-                                        x: {
-                                            stacked: true,
-                                        },
-                                        y: {
-                                            stacked: true
-                                        }
-                                    }
-                                }"
-                                labels="resumenCapacidad" />
-
-
-                        <section class="cards cards-resumen mt-1 mb-4 justify-content-between">
-                            <div class="cards">
-                                <div class="cards-grafictabsresult pt-4">
-                                    <div class="bodycard">
-                                        <h2>Nivel de desarrollo por subáreas</h2>
-                                        <p>El nivel de desarrollo por subáreas se refiere a la evaluación de las capacidades en relación con una empresa e industria específica. La calificación otorgada indica el grado de desarrollo de cada capacidad dentro de una subárea y, por consiguiente, dentro de un área más amplia. Los posibles resultados de esta evaluación son: Capacidad Inexistente, Poco Desarrollada, Desarrollada y Muy Desarrollada.</p>
+                        <div class="w-100 d-flex flex-column justify-center align-center">
+                            <section class="cards mt-1 mb-4 justify-content-between">
+                                <div style="width: 30%;">
+                                    <h2 class="valorestitulomadurez">{{parseFloat(ima.imaValor).toFixed(0)}}</h2>
+                                    <div class="valoressubtitle-madurez">
+                                        <h4>Nivel de madurez</h4>
+                                    </div>
+                                    <div class="back-cajas pb-2">
+                                        <div class="cajas-madurez-5">5</div>
+                                        <div class="cajas-madurez-4">4</div>
+                                        <div class="cajas-madurez-3">3</div>
+                                        <div class="cajas-madurez-2">2</div>
+                                        <div class="cajas-madurez-1">1</div>
                                     </div>
                                 </div>
+
+                            </section>
+                        </div>
+
+                        <div class="html2pdf__page-break"></div>
+
+                        <div class="cards-grafictabsresult pt-4">
+
+
+                            <CChart type="bar" :data="ima.resumenCapacidad" v-if="ima.resumenCapacidad"
+                                    :height="200"
+                                    :width="400"
+                                    :options=" {
+                                        plugins:{horizonalLinePlugin},
+                                        responsive: true,
+                                        scales: {
+                                            x: {
+                                                stacked: true,
+                                            },
+                                            y: {
+                                                stacked: true
+                                            }
+                                        }
+                                    }"
+                                    labels="resumenCapacidad" />
+
+
+                            <section class="cards cards-resumen mt-1 mb-4 justify-content-between">
+                                <div class="cards">
+                                    <div class="cards-grafictabsresult pt-4">
+                                        <div class="bodycard">
+                                            <h2>Nivel de desarrollo por subáreas</h2>
+                                            <p>El nivel de desarrollo por subáreas se refiere a la evaluación de las capacidades en relación con una empresa e industria específica. La calificación otorgada indica el grado de desarrollo de cada capacidad dentro de una subárea y, por consiguiente, dentro de un área más amplia. Los posibles resultados de esta evaluación son: Capacidad Inexistente, Poco Desarrollada, Desarrollada y Muy Desarrollada.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+
+                        <div class="html2pdf__page-break"></div>
+
+                        <div class="seccion1 p-1 d-flex justify-center">
+                            <div style="width: 46%;">
+                                <table class="table1" style="width:90%">
+                                    <tr>
+                                        <th colspan="3" style="text-align: initial;" class="titulotable">TOP 3 CAPACIDADES </th>
+                                    </tr>
+                                    <div class="w-100 table-responsive pie-table">
+                                        <table class="table-res table-hover">
+                                            <tbody>
+                                                <tr :v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMayor in capacidadvalorMayor" :value="capacidadMayor.segmentacionAreaId" :key="capacidadMayor.segmentacionAreaId">
+                                                    <td class="w-1" v-if="capacidadMayor.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <h4 class="text-center text-md-start uppercase" >{{capacidadMayor.capacidad}}</h4>
+                                                    </td>
+                                                    <!--<td class="">
+                                                        <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
+                                                    </td>-->
+                                                </tr>
+                                                <tr  v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
+                                                    <td><h4>No existe información para mostrar</h4></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </table>
                             </div>
-                        </section>
+                            <div style="width: 40%;">
+                                <table class="table1" style="width:100%">
+                                    <tr>
+                                        <th colspan="3" style="text-align: initial;" class="titulotable">3 PEORES CAPACIDADES </th>
 
-                    </div>
-
-                    <div class="html2pdf__page-break"></div>
-
-                    <div class="seccion1 p-1 d-flex justify-center">
-                        <div style="width: 46%;">
-                            <table class="table1" style="width:90%">
-                                <tr>
-                                    <th colspan="3" style="text-align: initial;" class="titulotable">TOP 3 CAPACIDADES </th>
-                                </tr>
-                                <div class="w-100 table-responsive pie-table">
-                                    <table class="table-res table-hover">
-                                        <tbody>
-                                            <tr :v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMayor in capacidadvalorMayor" :value="capacidadMayor.segmentacionAreaId" :key="capacidadMayor.segmentacionAreaId">
-                                                <td class="w-1" v-if="capacidadMayor.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <h4 class="text-center text-md-start uppercase" >{{capacidadMayor.capacidad}}</h4>
-                                                </td>
-                                                <!--<td class="">
-                                                    <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
-                                                </td>-->
-                                            </tr>
-                                            <tr  v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
-                                                <td><h4>No existe información para mostrar</h4></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </table>
+                                    </tr>
+                                    <div class="w-100 table-responsive pie-table">
+                                        <table class="table-res table-hover">
+                                            <tbody>
+                                                <!--<tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
+                                                    <td class="w-1">
+                                                        <h4 class="text-center text-md-start uppercase" >{{top3PeorCapacidadByArea.capacidad}}</h4>
+                                                    </td>-->
+                                                    <!--<td class="">
+                                                        <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
+                                                    </td>-->
+                                                <tr :v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMenor in capacidadvalorMenor" :value="capacidadMenor.segmentacionAreaId" :key="capacidadMenor.segmentacionAreaId">
+                                                    <td class="w-1" v-if="capacidadMenor.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <h4 class="text-center text-md-start uppercase" >{{capacidadMenor.capacidad}}</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
+                                                    <td><h4>No existe información para mostrar</h4></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </table>
+                            </div>
                         </div>
-                        <div style="width: 40%;">
-                            <table class="table1" style="width:100%">
-                                <tr>
-                                    <th colspan="3" style="text-align: initial;" class="titulotable">3 PEORES CAPACIDADES </th>
-
-                                </tr>
-                                <div class="w-100 table-responsive pie-table">
-                                    <table class="table-res table-hover">
-                                        <tbody>
-                                            <!--<tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
-                                                <td class="w-1">
-                                                    <h4 class="text-center text-md-start uppercase" >{{top3PeorCapacidadByArea.capacidad}}</h4>
-                                                </td>-->
-                                                <!--<td class="">
-                                                    <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
-                                                </td>-->
-                                            <tr :v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMenor in capacidadvalorMenor" :value="capacidadMenor.segmentacionAreaId" :key="capacidadMenor.segmentacionAreaId">
-                                                <td class="w-1" v-if="capacidadMenor.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <h4 class="text-center text-md-start uppercase" >{{capacidadMenor.capacidad}}</h4>
-                                                </td>
-                                            </tr>
-                                            <tr v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
-                                                <td><h4>No existe información para mostrar</h4></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </table>
-                        </div>
-                    </div>
 
 
-                    <div class="seccion1 p-1 d-flex justify-center">
-                        <div style="width: 46%;">
-                            <table class="table1" style="width:90%">
-                                <tr>
-                                    <th colspan="3" style="text-align: initial;" class="titulotable">SUBÁREAS MADURAS </th>
-                                </tr>
-                                <div class="w-100 table-responsive pie-table">
-                                    <table class="table-res table-hover">
-                                        <tbody>
-                                            <tr :v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id">
-                                                <td scope="row" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <div class="min-w pt-5">
-                                                        <CChart type="doughnut" :data="SubAreaMadura.nivelMadurezSubAreas"
-                                                                :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
-                                                                        text:(SubAreaMadura.cumplimiento).toString()+'%',
-                                                                        position: 'bottom' } }}" />
-                                                    </div>
-                                                </td>
-                                                <td class="w-1" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <h4 class="text-center text-md-start">{{SubAreaMadura.nombreSubArea}}</h4>
-                                                </td>
-                                                <td class="w-1" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <h4 class="text-center text-md-start">Nivel {{parseFloat(SubAreaMadura.imsaValor).toFixed(0)}}</h4>
-                                                </td>
-                                            </tr>
-                                            <tr v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
-                                                <td><h4>No existe información para mostrar</h4></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="seccion1 p-1 d-flex justify-center">
+                            <div style="width: 46%;">
+                                <table class="table1" style="width:90%">
+                                    <tr>
+                                        <th colspan="3" style="text-align: initial;" class="titulotable">SUBÁREAS MADURAS </th>
+                                    </tr>
+                                    <div class="w-100 table-responsive pie-table">
+                                        <table class="table-res table-hover">
+                                            <tbody>
+                                                <tr :v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id">
+                                                    <td scope="row" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <div class="min-w pt-5">
+                                                            <CChart type="doughnut" :data="SubAreaMadura.nivelMadurezSubAreas"
+                                                                    :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
+                                                                            text:(SubAreaMadura.cumplimiento).toString()+'%',
+                                                                            position: 'bottom' } }}" />
+                                                        </div>
+                                                    </td>
+                                                    <td class="w-1" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <h4 class="text-center text-md-start">{{SubAreaMadura.nombreSubArea}}</h4>
+                                                    </td>
+                                                    <td class="w-1" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <h4 class="text-center text-md-start">Nivel {{parseFloat(SubAreaMadura.imsaValor).toFixed(0)}}</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
+                                                    <td><h4>No existe información para mostrar</h4></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                            </table>
-                        </div>
-                        <div style="width: 40%;">
-                            <table class="table1" style="width:100%">
-                                <tr>
-                                    <th colspan="3" style="text-align: initial;" class="titulotable">SUBÁREAS A MEJORAR</th>
+                                </table>
+                            </div>
+                            <div style="width: 40%;">
+                                <table class="table1" style="width:100%">
+                                    <tr>
+                                        <th colspan="3" style="text-align: initial;" class="titulotable">SUBÁREAS A MEJORAR</th>
 
-                                </tr>
-                                <div class="w-100 table-responsive pie-table">
-                                    <table class="table-res table-hover">
-                                        <tbody>
-                                            <tr :v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
-                                                <td scope="row" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <div class="min-w pt-5">
-                                                        <CChart type="doughnut" :data="SubAreaMejorar.nivelMadurezSubAreas"
-                                                                :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
-                                                                        text:(SubAreaMejorar.cumplimiento).toString()+'%',
-                                                                        position: 'bottom' } }}" />
-                                                    </div>
-                                                </td>
-                                                <td class="w-1" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <h4 class="text-center text-md-start">{{SubAreaMejorar.nombreSubArea}}</h4>
-                                                </td>
-                                                <td class="w-1" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
-                                                    <h4 class="text-center text-md-start">Nivel {{parseFloat(SubAreaMejorar.imsaValor).toFixed(0)}}</h4>
-                                                </td>
-                                            </tr>
-                                            <tr v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length ==0">
-                                                <td><h4>No existe información para mostrar</h4></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </table>
+                                    </tr>
+                                    <div class="w-100 table-responsive pie-table">
+                                        <table class="table-res table-hover">
+                                            <tbody>
+                                                <tr :v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMejorar in SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMejorar.id" :key="SubAreaMejorar.id">
+                                                    <td scope="row" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <div class="min-w pt-5">
+                                                            <CChart type="doughnut" :data="SubAreaMejorar.nivelMadurezSubAreas"
+                                                                    :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
+                                                                            text:(SubAreaMejorar.cumplimiento).toString()+'%',
+                                                                            position: 'bottom' } }}" />
+                                                        </div>
+                                                    </td>
+                                                    <td class="w-1" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <h4 class="text-center text-md-start">{{SubAreaMejorar.nombreSubArea}}</h4>
+                                                    </td>
+                                                    <td class="w-1" v-if="SubAreaMejorar.segmentacionAreaId === ima.segmentacionAreaId">
+                                                        <h4 class="text-center text-md-start">Nivel {{parseFloat(SubAreaMejorar.imsaValor).toFixed(0)}}</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="SubAreasMejorar.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length ==0">
+                                                    <td><h4>No existe información para mostrar</h4></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
