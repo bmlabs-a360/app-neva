@@ -683,7 +683,6 @@
 
             <!--Termino Madurez General-->
 
-            <!--camilo-->
             <div class="contenedor">
                 <div :id="'pills-'+ ima.segmentacionAreaId" name="pills-areas" role="tabpanel" aria-labelledby="pills-estrategias-tab"
                      tabindex="0" v-for="ima in IMA" :value="ima.segmentacionAreaId" :key="ima.segmentacionAreaId" :v-if="ima.activaArea">
