@@ -939,7 +939,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="recomendacion in feedback" :key="recomendacion.id">
+                                    <tr v-for="(recomendacion,indiceRecomendacion) in feedback" :key="recomendacion.id">
                                         <td v-if="recomendacion.respuestaValor != '4'">
                                             <div class="me-md-3">
                                                 <td class="text-center text-md-start">{{recomendacion.preguntaCapacidad}}</td>
@@ -966,7 +966,7 @@
                                             </div>
                                         </td>
 
-                                        <div v-if="lineasContador()">
+                                        <div v-if="indiceRecomendacion > 0 && indiceRecomendacion % 4 == 0">
                                             <div class="html2pdf__page-break"></div>
                                         </div>
                                     </tr>
@@ -1642,18 +1642,6 @@ export default {
     });
 
     const route = useRoute();
-    const lineasContador = () => {
-        var salida = true;
-
-        if (state.contadorLineas == 4) {
-            state.contadorLineas = 1;
-            salida = true;
-        } else {
-            state.contadorLineas++
-            salida = false;
-        }
-        return salida;
-    };
     
     const exportToPDF = () => {
        // /*html2pdf(document.getElementById("document_container"), {
@@ -1784,12 +1772,11 @@ export default {
               },
 
           };
-
-
-          html2pdf().from(element).set(opt).toPdf().get('pdf')
-
-    
-              .save();
+          
+          const newLocal = html2pdf().from(element);
+          const newLocal_1 = newLocal.set(opt).toPdf();
+          const newLocal_2 = newLocal_1.get('pdf');
+          newLocal_2.save();
          // state.pdfBool = !state.pdfBool;
 
  
@@ -2494,7 +2481,6 @@ export default {
 
     return {
         ...toRefs(state),
-        lineasContador,
         exportToPDF,
         downloadPDF,
         horizonalLinePlugin,
