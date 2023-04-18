@@ -479,7 +479,7 @@
     <!--Termino Contendio-->
     <!--Contenido-->
     <!--<body class="btn" id="element-to-print">-->
-    <div id="document_pdf" style=" margin-top: -15000px;">
+    <div id="document_pdf" style=" margin-top: -15000px;" >
 
         <div class="seccion1 p-1 d-flex justify-center">
             <button class="btn btn-primary" @click="downloadPDF">Descargar</button>
@@ -550,8 +550,8 @@
                     </div>
                     <div style="width: 50%;">
                         <div class="textos-madurez">
-                            <h6 v-if="userSelected.empresa">{{userSelected.empresa.rutEmpresa}}</h6>
-                            <h6 v-if="userSelected.empresa">{{userSelected.empresa.razonSocial}}</h6>
+                            <h6 :v-if="empresa">{{empresa.rutEmpresa}}</h6>
+                            <h6 :v-if="empresa">{{empresa.razonSocial}}</h6>
                         </div>
                         <div class="parrafo-madurez">
                             <p>{{IM.nivelReporte}}</p>
@@ -795,16 +795,13 @@
                                     <div class="w-100 table-responsive pie-table">
                                         <table class="table-res table-hover">
                                             <tbody>
-                                                <tr :v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMayor in capacidadvalorMayor" :value="capacidadMayor.segmentacionAreaId" :key="capacidadMayor.segmentacionAreaId">
-                                                    <td class="w-1" v-if="capacidadMayor.segmentacionAreaId === ima.segmentacionAreaId">
-                                                        <h4 class="text-center text-md-start uppercase" >{{capacidadMayor.capacidad}}</h4>
-                                                    </td>
-                                                    <!--<td class="">
-                                                        <h4 class="">Nivel {{parseFloat(top3capacidadByarea.imsaValor).toFixed(0)}}</h4>
-                                                    </td>-->
-                                                </tr>
                                                 <tr  v-if="capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
                                                     <td><h4>No existe información para mostrar</h4></td>
+                                                </tr>
+                                                <tr v-else v-for="(capacidadMayor,index) in capacidadvalorMayor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="capacidadMayor.segmentacionAreaId" :key="capacidadMayor.segmentacionAreaId">
+                                                    <td class="w-1" v-if="index<3">
+                                                        <h4 class="text-center text-md-start uppercase" >{{capacidadMayor.capacidad}}</h4>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -821,20 +818,13 @@
                                     <div class="w-100 table-responsive pie-table">
                                         <table class="table-res table-hover">
                                             <tbody>
-                                                <!--<tr v-if="top3peoresCapacidadesByarea.length >0" v-for="top3PeorCapacidadByArea in top3peoresCapacidadesByarea" :value="top3PeorCapacidadByArea.segmentacionAreaId" :key="top3PeorCapacidadByArea.segmentacionAreaId">
-                                                    <td class="w-1">
-                                                        <h4 class="text-center text-md-start uppercase" >{{top3PeorCapacidadByArea.capacidad}}</h4>
-                                                    </td>-->
-                                                    <!--<td class="">
-                                                        <h4 class="">Nivel {{parseFloat(top3PeorCapacidadByArea.imsaValor).toFixed(0)}}</h4>
-                                                    </td>-->
-                                                <tr :v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0 && capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length<3"  v-for="capacidadMenor in capacidadvalorMenor" :value="capacidadMenor.segmentacionAreaId" :key="capacidadMenor.segmentacionAreaId">
-                                                    <td class="w-1" v-if="capacidadMenor.segmentacionAreaId === ima.segmentacionAreaId">
-                                                        <h4 class="text-center text-md-start uppercase" >{{capacidadMenor.capacidad}}</h4>
-                                                    </td>
-                                                </tr>
                                                 <tr v-if="capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length==0">
                                                     <td><h4>No existe información para mostrar</h4></td>
+                                                </tr>
+                                                <tr v-else v-for="(capacidadMenor,index) in capacidadvalorMenor.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="capacidadMenor.segmentacionAreaId" :key="capacidadMenor.segmentacionAreaId">
+                                                    <td class="w-1" v-if="index<3">
+                                                        <h4 class="text-center text-md-start uppercase" >{{capacidadMenor.capacidad}}</h4>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -853,8 +843,8 @@
                                     <div class="w-100 table-responsive pie-table">
                                         <table class="table-res table-hover">
                                             <tbody>
-                                                <tr :v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras" :value="SubAreaMadura.id" :key="SubAreaMadura.id">
-                                                    <td scope="row" v-if="SubAreaMadura.segmentacionAreaId === ima.segmentacionAreaId">
+                                                <tr :v-if="SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId).length>0" v-for="SubAreaMadura in SubAreasMaduras.filter(x=> x.segmentacionAreaId == ima.segmentacionAreaId)" :value="SubAreaMadura.id" :key="SubAreaMadura.id"> 
+                                                    <td>
                                                         <div class="min-w pt-5">
                                                             <CChart type="doughnut" :data="SubAreaMadura.nivelMadurezSubAreas"
                                                                     :options="{circumference: 180,rotation: -90,plugins: { title: { display: true,
@@ -939,34 +929,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(recomendacion,indiceRecomendacion) in feedback" :key="recomendacion.id">
-                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                    <tr v-for="(recomendacion,indiceRecomendacion) in feedback" :key="recomendacion.id"> 
+                                        <td>
                                             <div class="me-md-3">
                                                 <td class="text-center text-md-start">{{recomendacion.preguntaCapacidad}}</td>
                                             </div>
                                         </td>
-                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                        <td>
                                             <div class="me-md-3">
                                                 <td class="align1cont1">{{recomendacion.nombreArea}} / {{recomendacion.nombreSubArea}}</td>
                                             </div>
                                         </td>
-                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                        <td>
                                             <div class="me-md-3">
                                                 <td class="text-center text-md-start">{{recomendacion.respuestaRealimentacion}}</td>
                                             </div>
                                         </td>
-                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                        <td>
                                             <div class="me-md-3">
                                                 <td class="text-center text-md-start">{{recomendacion.tipoImportanciaNombre}}</td>
                                             </div>
                                         </td>
-                                        <td v-if="recomendacion.respuestaValor != '4'">
+                                        <td>
                                             <div class="me-md-3">
                                                 <td class="text-center text-md-start">{{recomendacion.tipoRespuestaValorNombre}}</td>
                                             </div>
                                         </td>
-
-                                        <div v-if="indiceRecomendacion > 0 && indiceRecomendacion % 4 == 0">
+                                        <div v-if="indiceRecomendacion > 0 && (indiceRecomendacion+ 1) % 4 == 0 ">
                                             <div class="html2pdf__page-break"></div>
                                         </div>
                                     </tr>
@@ -1604,8 +1593,6 @@ export default {
     const state = reactive({
         fechaAno : new Date(),
         pdfBool: false,
-        contadorLineas:1,
-        contadorLineasNiveles: 1,
         userSelected: [],
         empresa: [],
         fechaHoy : "",
@@ -1773,10 +1760,10 @@ export default {
 
           };
           
-          const newLocal = html2pdf().from(element);
-          const newLocal_1 = newLocal.set(opt).toPdf();
-          const newLocal_2 = newLocal_1.get('pdf');
-          newLocal_2.save();
+        const newLocal = html2pdf().from(element);
+        const newLocal_1 = newLocal.set(opt).toPdf();
+        const newLocal_2 = newLocal_1.get('pdf');
+        newLocal_2.save();
          // state.pdfBool = !state.pdfBool;
 
  
@@ -1843,11 +1830,11 @@ export default {
         }else{
             state.idempresa =  JSON.parse(localStorage.empresaModel).id;
         }
-        state.rutempresa =  JSON.parse(localStorage.empresaModel).rutEmpresa;
-        state.razonsocial = JSON.parse(localStorage.empresaModel).razonSocial;
+        
+        await getEmpresa();
+        
         if (await getNivelReporte() != false){
             //getMadurezGeneral();
-            await getEmpresa();
             await getIM();
             await getIMA();
             await getIMSA();
@@ -1897,6 +1884,8 @@ export default {
         .then((response) => {
             if (response.status != 200) return false;
             state.empresa = response.data;
+            state.rutempresa =  state.empresa.rutEmpresa;
+            state.razonsocial = state.empresa.razonSocial;
             let bodyTipoTamano = {
                 "id" : state.empresa.tipoTamanoEmpresaId
             }
