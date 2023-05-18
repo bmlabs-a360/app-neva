@@ -153,7 +153,7 @@
                     <input type="checkbox" v-model="terminos">
                     <span class="checkmark"></span>
                   </label>
-                  <label @click="visibleTerminosYCondiciones = true;" id="terminosycondiciones">Terminos y condiciones
+                  <label @click="visibleTerminosYCondiciones = true;" id="terminosycondiciones">Términos y condiciones
                   </label>
                 </div>
               </div>
@@ -171,7 +171,7 @@
 <!-- MODAL TERMINO Y CONDICIONES  -->
 <CModal
   backdrop="static"
-  size="lg"
+  size="xl"
   alignment="center"
   :visible="visibleTerminosYCondiciones"
   @close="
@@ -181,12 +181,13 @@
   "
 >
   <CModalHeader>
-      <CModalTitle>Terminos y condiciones</CModalTitle>&nbsp;&nbsp;
+      <CModalTitle>Términos y condiciones</CModalTitle>&nbsp;&nbsp;
   </CModalHeader>
   <CModalBody>
     <CContainer>
       <CRow>
-        <CCol sm="12">
+        <CCol>
+            <iframe style="width:100%; height: 70vh" src="../terminos_y_condiciones/completa_tu_acceso.pdf"/>
         </CCol>
       </CRow>
     </CContainer>

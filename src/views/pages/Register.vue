@@ -136,7 +136,7 @@
                   <input type="checkbox" id="checkTerminos" v-model="terminos">
                   <span class="checkmark"></span>
                 </label>
-                <label @click="visibleTerminosYCondiciones = true;" id="terminosycondiciones">Terminos y condiciones
+                <label @click="visibleTerminosYCondiciones = true;" id="terminosycondiciones">Términos y condiciones
                 </label>
               </div>
               <div class="registro mb-5">
@@ -156,7 +156,7 @@
 <!-- MODAL TERMINO Y CONDICIONES  -->
 <CModal
   backdrop="static"
-  size="lg"
+  size="xl"
   alignment="center"
   :visible="visibleTerminosYCondiciones"
   @close="
@@ -166,12 +166,13 @@
   "
 >
   <CModalHeader>
-      <CModalTitle>Terminos y condiciones</CModalTitle>&nbsp;&nbsp;
+      <CModalTitle>Términos y condiciones</CModalTitle>&nbsp;&nbsp;
   </CModalHeader>
   <CModalBody>
     <CContainer>
       <CRow>
-        <CCol sm="12">
+        <CCol>
+             <iframe style="width:100%; height: 70vh" src="../terminos_y_condiciones/crea_tu_acceso.pdf"/>
         </CCol>
       </CRow>
     </CContainer>
@@ -319,8 +320,8 @@ export default {
         }
 
         if (!document.getElementById("checkTerminos").checked){
-          state.mensajeError = "Debe aceptar terminos y condiciones ";
-          swal.fire("Registro usuario", "Debe aceptar terminos y condiciones", "warning");
+          state.mensajeError = "Debe aceptar términos y condiciones ";
+          swal.fire("Registro usuario", "Debe aceptar términos y condiciones", "warning");
           return false;
         }
 
