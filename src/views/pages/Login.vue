@@ -317,12 +317,24 @@ export default {
               if (response.status == 200) {
                 accesosValidacion(response);
               } else {
-                swal.fire("Login", "email/password incorrecto o la cuenta no fue verificada por email de activación", "warning");
+                swal.fire("Login", "El email o password es incorrecto.", "warning");
               }
               return false;
             })
-            .catch(() => {
-              swal.fire("Login", "email/password incorrecto o la cuenta no fue verificada por email de activación", "warning");
+            .catch((error) => {
+              if (error.response && error.response.data && error.response.data.detail && error.response.data.detail.includes("not_active")) {
+                swal.fire(
+                  "Login",
+                  "Debe verificar su cuenta de correo. Revise su bandeja y presione el link de activación",
+                  "warning"
+                );
+                return;
+              }
+              swal.fire(
+                  "Login",
+                  "El email o password es incorrecto.",
+                  "warning"
+              );
             });
         })
         .catch(() => {
