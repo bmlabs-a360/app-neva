@@ -317,12 +317,12 @@ export default {
               if (response.status == 200) {
                 accesosValidacion(response);
               } else {
-                swal.fire("Login", "El email o password es incorrecto.", "warning");
+                swal.fire("Login", "email/password incorrecto o la cuenta no fue verificada por email de activación", "warning");
               }
               return false;
             })
             .catch(() => {
-              swal.fire("Login", "El email o password es incorrecto.", "warning");
+              swal.fire("Login", "email/password incorrecto o la cuenta no fue verificada por email de activación", "warning");
             });
         })
         .catch(() => {
