@@ -322,10 +322,18 @@ export default {
               return false;
             })
             .catch((error) => {
-              if (error.response && error.response.data && error.response.data.detail && error.response.data.detail.includes("not_active")) {
+              if (error.response && error.response.data && error.response.data.detail && error.response.data.detail.includes("not_verified")) {
                 swal.fire(
                   "Login",
                   "Debe verificar su cuenta de correo. Revise su bandeja y presione el link de activación",
+                  "warning"
+                );
+                return;
+              }
+              if (error.response && error.response.data && error.response.data.detail && error.response.data.detail.includes("incomplete_data")) {
+                swal.fire(
+                  "Login",
+                  "Debe verificar su cuenta de correo. Revise su bandeja y presione el link de activación.",
                   "warning"
                 );
                 return;
