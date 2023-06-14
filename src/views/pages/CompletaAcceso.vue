@@ -140,9 +140,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="detail">
+                <!--div class="detail">
                   <p>Fecha estimada de entrega: <span>23 de octubre</span>  Cada paquete tiene un número de seguimiento</p>
-                </div>
+                </div-->
               </div>
             </div>
           </div>
